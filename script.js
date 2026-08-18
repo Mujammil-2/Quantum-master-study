@@ -1,6 +1,6 @@
-=================================================
-   QMS CORE ENGINE (Phase 1)
-   Features: Theme Switcher, Audio System, Particles
+/* =================================================
+   QMS CORE ENGINE (Phase 1 & 2 Integration)
+   Features: Theme Switcher, Audio System, Particles, Login Redirect
 ================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -59,73 +59,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 3. LOGIN BUTTON LOGIC (Phase 1 Dummy) ---
+    // --- 3. LOGIN BUTTON LOGIC (Redirect to Dashboard) ---
     const loginBtn = document.getElementById('google-login-btn');
     if(loginBtn) {
         loginBtn.addEventListener('click', () => {
             // बटन पर क्लिक करते ही टेक्स्ट बदलेगा
             loginBtn.innerHTML = `<i class="ri-loader-4-line ri-spin"></i> Authenticating...`;
             
-            // 2 सेकंड बाद डैशबोर्ड पर भेज देगा (अगले फेज़ में असली लॉगिन लगेगा)
+            // 1.5 सेकंड बाद सीधे नए प्रीमियम डैशबोर्ड पर भेज देगा (कोई पॉप-अप नहीं आएगा)
             setTimeout(() => {
-                alert("लॉगिन सफल! (Phase 2 में यहाँ असली Google Login लगेगा)");
-                // window.location.href = 'dashboard.html'; // Phase 3 में इसे एक्टिवेट करेंगे
-                loginBtn.innerHTML = `<i class="ri-google-fill"></i> Continue with Google`;
-            }, 2000);
+                window.location.href = 'dashboard.html'; 
+            }, 1500);
         });
     }
 
     // --- 4. PREMIUM PARTICLE BACKGROUND SYSTEM ---
     const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let particlesArray = [];
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-    });
 
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2;
-            this.speedX = Math.random() * 1 - 0.5;
-            this.speedY = Math.random() * 1 - 0.5;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+        function initParticles() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.width * canvas.height) / 10000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
         }
-        draw() {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
         }
+
+        initParticles();
+        animateParticles();
     }
-
-    function initParticles() {
-        particlesArray = [];
-        let numberOfParticles = (canvas.width * canvas.height) / 10000;
-        for (let i = 0; i < numberOfParticles; i++) {
-            particlesArray.push(new Particle());
-        }
-    }
-
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particlesArray.length; i++) {
-            particlesArray[i].update();
-            particlesArray[i].draw();
-        }
-        requestAnimationFrame(animateParticles);
-    }
-
-    initParticles();
-    animateParticles()
+});
