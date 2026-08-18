@@ -1,4 +1,4 @@
-/* =================================================
+=================================================
    QMS CORE ENGINE (Phase 1)
    Features: Theme Switcher, Audio System, Particles
 ================================================= */
@@ -128,5 +128,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initParticles();
-    animateParticles();
-});
+    animateParticles()
