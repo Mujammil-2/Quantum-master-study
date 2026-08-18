@@ -1,0 +1,247 @@
+/* =================================================
+   QMS CORE STYLES & MULTI-THEME ENGINE (Phase 1)
+================================================= */
+
+/* --- 8 PREMIUM THEMES (CSS VARIABLES) --- */
+:root[data-theme="default"] {
+    --accent-main: #00d4ff;
+    --accent-glow: rgba(0, 212, 255, 0.5);
+    --bg-base: #050914;
+    --bg-glass: rgba(13, 27, 62, 0.4);
+}
+
+:root[data-theme="cyberpunk"] {
+    --accent-main: #ff00ff;
+    --accent-glow: rgba(255, 0, 255, 0.5);
+    --bg-base: #0a0014;
+    --bg-glass: rgba(40, 10, 50, 0.4);
+}
+
+:root[data-theme="emerald"] {
+    --accent-main: #00ff88;
+    --accent-glow: rgba(0, 255, 136, 0.5);
+    --bg-base: #02120a;
+    --bg-glass: rgba(10, 40, 25, 0.4);
+}
+
+:root[data-theme="sunset"] {
+    --accent-main: #ff5e00;
+    --accent-glow: rgba(255, 94, 0, 0.5);
+    --bg-base: #140500;
+    --bg-glass: rgba(62, 20, 5, 0.4);
+}
+
+:root[data-theme="crimson"] {
+    --accent-main: #ff003c;
+    --accent-glow: rgba(255, 0, 60, 0.5);
+    --bg-base: #120202;
+    --bg-glass: rgba(50, 10, 10, 0.4);
+}
+
+:root[data-theme="royal"] {
+    --accent-main: #ffd700;
+    --accent-glow: rgba(255, 215, 0, 0.5);
+    --bg-base: #0f0c00;
+    --bg-glass: rgba(40, 35, 10, 0.4);
+}
+
+/* --- COMMON VARIABLES --- */
+:root {
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-ui: 'Inter', sans-serif;
+    --font-hindi: 'Noto Sans Devanagari', sans-serif;
+    --border-glass: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    overflow-x: hidden;
+    transition: background-color 0.5s ease;
+}
+
+/* Particle Background */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* --- GLASSMORPHISM UTILITIES --- */
+.glass-panel {
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.glass-card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+}
+
+/* --- THEME SWITCHER UI --- */
+.theme-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 50px;
+    animation: fadeInDown 1s ease;
+}
+
+.theme-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--btn-color);
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.theme-btn:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px var(--btn-color);
+}
+
+/* --- LANDING PAGE LAYOUT --- */
+.landing-wrapper {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 450px;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--accent-main);
+    animation: fadeUp 1s ease;
+}
+
+.brand-icon {
+    font-size: 4rem;
+    color: var(--accent-main);
+    filter: drop-shadow(0 0 20px var(--accent-glow));
+    transition: color 0.5s ease, filter 0.5s ease;
+}
+
+.brand-title {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    letter-spacing: 2px;
+    margin-top: 1rem;
+}
+
+.brand-title span {
+    color: var(--accent-main);
+    transition: color 0.5s ease;
+}
+
+.brand-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+}
+
+.features-list {
+    text-align: left;
+    max-width: 250px;
+    margin: 0 auto 2.5rem auto;
+}
+
+.features-list p {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+}
+
+.features-list i {
+    color: var(--accent-main);
+    margin-right: 10px;
+    transition: color 0.5s ease;
+}
+
+.features-list b {
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+}
+
+/* Google Button */
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 15px;
+    border-radius: 14px;
+    border: 1px solid var(--accent-main);
+    background: rgba(0,0,0,0.4);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.btn-google:hover {
+    background: var(--accent-main);
+    color: #000;
+    box-shadow: 0 0 30px var(--accent-glow);
+    transform: translateY(-3px);
+}
+
+.btn-google i {
+    font-size: 1.4rem;
+}
+
+.footer-text {
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+}
+
+/* Animations */
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
