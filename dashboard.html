@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="default">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>डैशबोर्ड | क्वांटम मास्टर स्टडी</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <audio id="sfx-click" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="particle-canvas-container"></div>
+
+    <div class="dashboard-wrapper">
+        <!-- टॉप नेविगेशन बार -->
+        <header class="dash-header glass-panel">
+            <div class="brand-mini">
+                <i class="ri-reactjs-line brand-icon-small"></i>
+                <h2>क्यू एम एस<span>.</span></h2>
+            </div>
+            
+            <div class="user-profile">
+                <div class="streak-badge glass-panel">
+                    <i class="ri-fire-fill" style="color: #ff9900;"></i> <span>0 दिन</span>
+                </div>
+                <button class="icon-btn sfx-trigger" title="सूचनाएं"><i class="ri-notification-3-line"></i></button>
+                <div class="avatar sfx-trigger"><i class="ri-user-smile-fill"></i></div>
+            </div>
+        </header>
+
+        <main class="dash-grid">
+            <!-- स्वागत सेक्शन -->
+            <div class="welcome-section glass-card span-full">
+                <h1 class="welcome-title">आपका स्वागत है, <span class="gradient-text">विद्वान</span> 👋</h1>
+                <p>क्लास 11वीं और 12वीं के आपके 5 मुख्य विषयों (PCM + Hindi + English) का स्टडी वर्कस्पेस तैयार है।</p>
+            </div>
+
+            <!-- अध्ययन अवलोकन (Study Overview) -->
+            <div class="stats-grid span-full">
+                <div class="stat-box glass-card">
+                    <h2 class="stat-number">5</h2>
+                    <p>📚 कुल विषय</p>
+                </div>
+                <div class="stat-box glass-card">
+                    <h2 class="stat-number">65+</h2>
+                    <p>📖 कुल अध्याय</p>
+                </div>
+                <div class="stat-box glass-card">
+                    <h2 class="stat-number">0</h2>
+                    <p>✅ पूर्ण किए गए</p>
+                </div>
+                <div class="stat-box glass-card">
+                    <h2 class="stat-number">0</h2>
+                    <p>🏆 कुल पॉइंट्स (XP)</p>
+                </div>
+            </div>
+
+            <!-- सीखना जारी रखें (Continue Learning) -->
+            <div class="continue-card glass-card span-2">
+                <div class="card-header">
+                    <h3><i class="ri-play-circle-line"></i> सीखना जारी रखें</h3>
+                </div>
+                <div class="continue-content">
+                    <div class="chap-info">
+                        <span class="badge physics-badge">भौतिक विज्ञान (Physics)</span>
+                        <h4>गति के नियम (Laws of Motion)</h4>
+                        <p>न्यूटन का तीसरा नियम और उसके अनुप्रयोग</p>
+                    </div>
+                    <button class="btn-primary-glow sfx-trigger">अध्याय खोलें <i class="ri-arrow-right-line"></i></button>
+                </div>
+            </div>
+
+            <!-- दैनिक लक्ष्य (Daily Goal) -->
+            <div class="goal-card glass-card">
+                <div class="card-header">
+                    <h3><i class="ri-focus-2-line"></i> दैनिक लक्ष्य</h3>
+                    <span class="goal-edit sfx-trigger">संपादित करें</span>
+                </div>
+                <div class="goal-content">
+                    <div class="goal-timer">
+                        <span class="current-time">0</span> / 90 मिनट
+                    </div>
+                    <div class="progress-track goal-track">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <p class="goal-msg">आज की पढ़ाई शुरू करें! 💪</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
