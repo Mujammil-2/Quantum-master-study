@@ -1,8 +1,7 @@
 /* =================================================
-   QMS VIDEO PLAYER ENGINE (Phase 7)
+   QMS VIDEO PLAYER ENGINE (Phase 7 & 8)
 ================================================= */
 
-// वही मिनी-डेटाबेस ताकि हम चैप्टर का नाम दिखा सकें
 const qmsDatabase = {
     physics: [
         { id: 1, title: "वैद्युत आवेश तथा क्षेत्र", subtitle: "Electric Charges and Fields" },
@@ -23,16 +22,13 @@ const qmsDatabase = {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // थीम सेट करना
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
-    // URL से सब्जेक्ट और चैप्टर ID पढ़ना
     const urlParams = new URLSearchParams(window.location.search);
     const subject = urlParams.get('subject') || 'physics';
     const chapterId = parseInt(urlParams.get('chapter')) || 1;
 
-    // बैक बटन को सही पेज पर भेजना
     const backBtn = document.getElementById('back-to-chapters');
     if(backBtn) {
         backBtn.addEventListener('click', () => {
@@ -40,19 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // डेटाबेस से चैप्टर की डिटेल्स खोजना
     let currentChapter = { title: "अज्ञात अध्याय", subtitle: "Unknown Chapter" };
     if(qmsDatabase[subject]) {
         const found = qmsDatabase[subject].find(ch => ch.id === chapterId);
         if(found) currentChapter = found;
     }
 
-    // पेज पर डिटेल्स अपडेट करना
     document.getElementById('player-subject-tag').innerText = subject.toUpperCase();
     document.getElementById('player-chapter-title').innerText = currentChapter.title;
     document.getElementById('player-chapter-subtitle').innerText = currentChapter.subtitle;
 
-    // बटन्स पर साउंड इफ़ेक्ट
     const sfxClick = document.getElementById('sfx-click');
     document.querySelectorAll('.sfx-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -62,5 +55,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 sfxClick.play().catch(() => {});
             }
         });
+    });
+
+    // ==========================================
+    // PHASE 8: MARK COMPLETE LOGIC
+    // ==========================================
+    const markCompleteBtn = document.querySelector('.btn-primary-glow');
+    
+    // लोकल स्टोरेज से चेक करना कि क्या ये चैप्टर पहले से पूरा है?
+    let completedData = JSON.parse(localStorage.getItem('qms_completed')) || {};
+    let chapterKey = subject + '_' + chapterId;
+
+    // अगर पहले से पूरा है, तो बटन को हरा कर दो
+    if (completedData[chapterKey]) {
+        markCompleteBtn.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)';
+        markCompleteBtn.style.background = '#00ff88'; // Green color
+        markCompleteBtn.style.color = '#000';
+        markCompleteBtn.disabled = true;
+    }
+
+    // जब यूजर 'Mark Complete' बटन दबाए
+    markCompleteBtn.addEventListener('click', () => {
+        if (!completedData[chapterKey]) {
+            completedData[chapterKey] = true;
+            localStorage.setItem('qms_completed', JSON.stringify(completedData)); // फोन में सेव करना
+            
+            // बटन का डिज़ाइन बदलना
+            markCompleteBtn.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)';
+            markCompleteBtn.style.background = '#00ff88'; 
+            markCompleteBtn.style.color = '#000';
+            markCompleteBtn.disabled = true;
+
+            alert('🎉 बधाई हो! आपने यह अध्याय पूरा कर लिया है। आपको 50 XP मिले!');
+        }
     });
 });
