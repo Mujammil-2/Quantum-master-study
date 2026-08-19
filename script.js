@@ -31,11 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ब्राउज़र पॉलिसी के अनुसार म्यूजिक तभी चलेगा जब यूजर स्क्रीन पर कहीं भी क्लिक करेगा
     document.body.addEventListener('click', () => {
         if (!isMusicPlaying && bgMusic) {
-            bgMusic.volume = 0.15; // वॉल्यूम कम रखा गया है
-            bgMusic.play().catch(() => console.log("Audio play blocked."));
+            bgMusic.volume = 0.15;
+            bgMusic.play().catch(() => {});
             isMusicPlaying = true;
         }
-    }, { once: true }); // सिर्फ पहली बार क्लिक करने पर म्यूजिक ऑन होगा
+    }, { once: true }); 
 
     // बटन्स पर क्लिक साउंड
     document.querySelectorAll('.sfx-trigger').forEach(btn => {
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // थीम बदलने पर खास साइ-फाई (Sci-fi) साउंड
+    // थीम बदलने पर खास साइ-फाई साउंड
     document.querySelectorAll('.sfx-theme-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
             if (sfxTheme) {
@@ -59,16 +59,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 3. LOGIN BUTTON LOGIC (Redirect to Dashboard) ---
+    // --- 3. LOGIN BUTTON LOGIC (Redirect with Cache Busting) ---
     const loginBtn = document.getElementById('google-login-btn');
     if(loginBtn) {
         loginBtn.addEventListener('click', () => {
             // बटन पर क्लिक करते ही टेक्स्ट बदलेगा
             loginBtn.innerHTML = `<i class="ri-loader-4-line ri-spin"></i> Authenticating...`;
             
-            // 1.5 सेकंड बाद सीधे नए प्रीमियम डैशबोर्ड पर भेज देगा (कोई पॉप-अप नहीं आएगा)
+            // 1.5 सेकंड बाद सीधे नए प्रीमियम डैशबोर्ड पर भेज देगा 
+            // (?v=5 ब्राउज़र को नया पेज लोड करने के लिए मजबूर करेगा)
             setTimeout(() => {
-                window.location.href = 'dashboard.html'; 
+                window.location.href = 'dashboard.html?v=5'; 
             }, 1500);
         });
     }
@@ -119,14 +120,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        initParticles();
-        animateParticles();
-    }
-});
