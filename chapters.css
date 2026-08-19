@@ -1,0 +1,207 @@
+/* =================================================
+   QMS CHAPTERS STYLES (Phase 5)
+================================================= */
+.chapters-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+}
+
+.chapters-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    animation: fadeUp 0.6s ease;
+}
+
+/* Subject Hero Card */
+.subject-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-top: 4px solid var(--accent-main);
+    background: linear-gradient(145deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 100%);
+}
+
+.hero-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    color: var(--accent-main);
+    margin-right: 1.5rem;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.hero-info {
+    flex-grow: 1;
+    min-width: 250px;
+}
+
+.tag {
+    font-size: 0.8rem;
+    color: var(--accent-main);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.hero-info h1 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+}
+
+.hero-info p#subject-subtitle {
+    color: var(--text-secondary);
+    font-family: var(--font-hindi);
+}
+
+.subject-progress {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-glass);
+}
+
+.progress-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0 10px;
+    font-family: var(--font-heading);
+    color: var(--text-secondary);
+}
+
+/* Chapter List */
+.chapter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.chapter-card {
+    display: flex;
+    align-items: center;
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.chapter-card:hover {
+    transform: translateY(-3px);
+    border-left-color: var(--accent-main);
+    background: rgba(255,255,255,0.08);
+}
+
+.chap-num {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.2);
+    width: 50px;
+    text-align: center;
+}
+
+.chapter-card:hover .chap-num {
+    color: var(--accent-main);
+}
+
+.chap-details {
+    flex-grow: 1;
+    padding-left: 15px;
+    border-left: 1px solid var(--border-glass);
+}
+
+.chap-details h4 {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+    font-family: var(--font-hindi);
+}
+
+.chap-details p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.chap-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.75rem;
+    color: var(--accent-main);
+}
+
+.chap-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent-glow);
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.btn-play {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-main);
+    color: #000;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--accent-glow);
+    transition: 0.3s;
+}
+
+.chapter-card:hover .btn-play {
+    transform: scale(1.1);
+}
+
+/* Locked State */
+.chapter-card.locked {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.chapter-card.locked:hover {
+    transform: none;
+    border-left-color: transparent;
+}
+
+.chapter-card.locked .btn-play {
+    display: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .chapters-main { padding: 0 1rem; }
+    .subject-hero { padding: 1.5rem; }
+    .hero-info h1 { font-size: 1.8rem; }
+    .hero-icon { width: 60px; height: 60px; font-size: 2rem; margin-right: 1rem; }
+    .chapter-card { padding: 1rem; }
+    .chap-num { font-size: 1.2rem; width: 40px; }
+    .chap-details h4 { font-size: 1.1rem; }
+    .btn-play { width: 40px; height: 40px; font-size: 1.2rem; }
+}
