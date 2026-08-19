@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="default">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>स्टडी वर्कस्पेस | क्वांटम मास्टर स्टडी</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="player.css">
+</head>
+<body>
+
+    <audio id="sfx-click" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="particle-canvas-container"></div>
+
+    <div class="player-wrapper">
+        <header class="dash-header glass-panel">
+            <div class="brand-mini sfx-trigger" id="back-to-chapters" style="cursor:pointer;">
+                <i class="ri-arrow-left-line"></i>
+                <h2>अध्यायों पर लौटें</h2>
+            </div>
+            <div class="user-profile">
+                <button class="icon-btn sfx-trigger" title="डाउट पूछें"><i class="ri-question-answer-line"></i></button>
+            </div>
+        </header>
+
+        <main class="player-grid">
+            
+            <div class="video-section span-2">
+                <div class="video-container glass-card">
+                    <iframe id="main-video" src="https://www.youtube.com/embed/Sc6mB923g_0?si=O3s7k9PntCgX_D2e" title="QMS Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                
+                <div class="video-info glass-card">
+                    <span class="tag" id="player-subject-tag">Subject</span>
+                    <h1 id="player-chapter-title">अध्याय का नाम लोड हो रहा है...</h1>
+                    <p id="player-chapter-subtitle">Chapter Subtitle</p>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-secondary sfx-trigger"><i class="ri-download-cloud-2-line"></i> नोट्स डाउनलोड करें</button>
+                        <button class="btn-primary-glow sfx-trigger"><i class="ri-check-double-line"></i> पूर्ण चिह्नित करें (Mark Complete)</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="syllabus-section">
+                <div class="glass-card topics-card">
+                    <div class="card-header">
+                        <h3><i class="ri-list-check-2"></i> इस अध्याय के टॉपिक्स</h3>
+                    </div>
+                    <ul class="topic-list">
+                        <li class="active sfx-trigger">
+                            <i class="ri-play-circle-fill"></i>
+                            <span>1. प्रस्तावना और बेसिक कॉन्सेप्ट्स</span>
+                        </li>
+                        <li class="sfx-trigger">
+                            <i class="ri-play-circle-line"></i>
+                            <span>2. महत्वपूर्ण सूत्र (Formulas)</span>
+                        </li>
+                        <li class="sfx-trigger">
+                            <i class="ri-play-circle-line"></i>
+                            <span>3. NCERT के उदाहरण (Examples)</span>
+                        </li>
+                        <li class="sfx-trigger">
+                            <i class="ri-play-circle-line"></i>
+                            <span>4. अभ्यास प्रश्न (Exercise)</span>
+                        </li>
+                        <li class="locked">
+                            <i class="ri-lock-2-line"></i>
+                            <span>5. पिछले वर्षों के प्रश्न (PYQs)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="player.js"></script>
+</body>
+</html>
