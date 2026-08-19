@@ -1,15 +1,7 @@
-/* =================================================
-   QMS CORE ENGINE (Phase 1 & 2 Integration)
-   Features: Theme Switcher, Audio System, Particles, Login Redirect
-================================================= */
-
 document.addEventListener('DOMContentLoaded', () => {
-
-    // --- 1. MULTI-COLOR THEME ENGINE ---
+    // 1. Theme Logic
     const htmlElement = document.documentElement;
     const themeButtons = document.querySelectorAll('.theme-btn');
-    
-    // लोकल स्टोरेज से पिछली थीम लोड करें
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     htmlElement.setAttribute('data-theme', savedTheme);
 
@@ -17,27 +9,24 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => {
             const selectedTheme = e.target.getAttribute('data-set-theme');
             htmlElement.setAttribute('data-theme', selectedTheme);
-            localStorage.setItem('qms_theme', selectedTheme); // थीम सेव करें
+            localStorage.setItem('qms_theme', selectedTheme);
         });
     });
 
-    // --- 2. DYNAMIC AUDIO ENGINE ---
+    // 2. Audio Logic
     const bgMusic = document.getElementById('bg-music');
     const sfxClick = document.getElementById('sfx-click');
     const sfxTheme = document.getElementById('sfx-theme');
-
     let isMusicPlaying = false;
 
-    // ब्राउज़र पॉलिसी के अनुसार म्यूजिक तभी चलेगा जब यूजर स्क्रीन पर कहीं भी क्लिक करेगा
     document.body.addEventListener('click', () => {
         if (!isMusicPlaying && bgMusic) {
             bgMusic.volume = 0.15;
             bgMusic.play().catch(() => {});
             isMusicPlaying = true;
         }
-    }, { once: true }); 
+    }, { once: true });
 
-    // बटन्स पर क्लिक साउंड
     document.querySelectorAll('.sfx-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
             if (sfxClick) {
@@ -48,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // थीम बदलने पर खास साइ-फाई साउंड
     document.querySelectorAll('.sfx-theme-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
             if (sfxTheme) {
@@ -59,27 +47,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 3. LOGIN BUTTON LOGIC (Redirect with Cache Busting) ---
+    // 3. Login Logic
     const loginBtn = document.getElementById('google-login-btn');
     if(loginBtn) {
         loginBtn.addEventListener('click', () => {
-            // बटन पर क्लिक करते ही टेक्स्ट बदलेगा
             loginBtn.innerHTML = `<i class="ri-loader-4-line ri-spin"></i> Authenticating...`;
-            
-            // 1.5 सेकंड बाद सीधे नए प्रीमियम डैशबोर्ड पर भेज देगा 
-            // (?v=5 ब्राउज़र को नया पेज लोड करने के लिए मजबूर करेगा)
             setTimeout(() => {
-                window.location.href = 'dashboard.html?v=5'; 
+                window.location.href = 'dashboard.html'; 
             }, 1500);
         });
     }
 
-    // --- 4. PREMIUM PARTICLE BACKGROUND SYSTEM ---
+    // 4. Particles Logic
     const canvas = document.getElementById('particle-canvas');
     if (canvas) {
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
-
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -120,3 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+    }
+});
