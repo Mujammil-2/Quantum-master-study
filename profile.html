@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>माई प्रोफाइल | क्वांटम मास्टर स्टडी</title>
+    <title>कंट्रोल सेंटर | क्वांटम मास्टर स्टडी</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,21 +22,30 @@
     <div id="particle-canvas-container"></div>
 
     <div class="profile-wrapper">
+        <!-- टॉप हेडर (Logo के साथ) -->
         <header class="dash-header glass-panel">
             <div class="brand-mini sfx-trigger" onclick="window.location.href='dashboard.html'" style="cursor:pointer;">
                 <i class="ri-arrow-left-line"></i>
-                <h2>डैशबोर्ड पर लौटें</h2>
+                <h2>डैशबोर्ड</h2>
+            </div>
+            <div class="brand-mini">
+                <div class="logo-icon"><i class="ri-atom-line"></i></div>
+                <h2>QMS</h2>
             </div>
         </header>
 
         <main class="profile-main">
-            <!-- प्रोफाइल कार्ड -->
+            <!-- प्रोफाइल हीरो (Custom Image & Name Edit) -->
             <div class="profile-hero glass-card">
-                <div class="avatar-large">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" alt="User Avatar">
+                <div class="image-upload-wrapper">
+                    <img id="user-profile-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" alt="User Avatar">
+                    <!-- कैमरा आइकॉन जिससे फोन की गैलरी खुलेगी -->
+                    <label for="img-upload" class="upload-btn sfx-trigger" title="फोटो बदलें"><i class="ri-camera-fill"></i></label>
+                    <input type="file" id="img-upload" hidden accept="image/*">
                 </div>
+                
                 <div class="user-details">
-                    <h1>Alina Sami</h1>
+                    <h1 id="user-display-name">Alina Sami <i class="ri-edit-circle-fill edit-icon sfx-trigger" id="edit-name-btn" title="नाम बदलें"></i></h1>
                     <p class="tag">कक्षा 12वीं • Science (PCM)</p>
                 </div>
             </div>
@@ -54,32 +63,37 @@
                     <i class="ri-book-read-fill" style="color: var(--accent-main);"></i>
                     <div class="stat-info">
                         <h3 id="profile-completed">0</h3>
-                        <p>अध्याय पूरे किए</p>
+                        <p>अध्याय पूर्ण</p>
                     </div>
                 </div>
             </div>
 
-            <!-- सेटिंग्स सेक्शन -->
+            <!-- प्रो सेटिंग्स पैनल -->
             <div class="settings-container glass-card">
                 <div class="settings-header">
-                    <h3><i class="ri-settings-4-line"></i> ऐप सेटिंग्स</h3>
+                    <h3><i class="ri-settings-4-fill"></i> ऐप सेटिंग्स</h3>
                 </div>
 
+                <!-- 1. स्टडी मीडियम -->
                 <div class="setting-item">
                     <div class="setting-text">
-                        <h4>स्टडी मीडियम (Medium)</h4>
-                        <p>अपने नोट्स और वीडियो की भाषा चुनें</p>
+                        <h4>स्टडी मीडियम (Language)</h4>
+                        <p>अपने नोट्स और वीडियो की भाषा सेट करें</p>
                     </div>
-                    <select id="medium-selector" class="custom-select sfx-trigger">
-                        <option value="hindi">Hindi Medium</option>
-                        <option value="english">English Medium</option>
-                    </select>
+                    <div class="segmented-control">
+                        <input type="radio" name="medium" id="med-hindi" value="hindi" checked>
+                        <label for="med-hindi" class="sfx-trigger">हिंदी</label>
+                        
+                        <input type="radio" name="medium" id="med-english" value="english">
+                        <label for="med-english" class="sfx-trigger">English</label>
+                    </div>
                 </div>
 
+                <!-- 2. ऐप थीम -->
                 <div class="setting-item">
                     <div class="setting-text">
-                        <h4>ऐप थीम (Theme)</h4>
-                        <p>अपनी पसंद का कलर डिज़ाइन चुनें</p>
+                        <h4>कलर थीम (Theme)</h4>
+                        <p>वेबसाइट का लुक और कलर बदलें</p>
                     </div>
                     <div class="theme-options">
                         <button class="theme-btn sfx-trigger default-btn" data-set-theme="default"></button>
@@ -88,12 +102,25 @@
                     </div>
                 </div>
 
+                <!-- 3. साउंड और म्यूजिक -->
                 <div class="setting-item">
                     <div class="setting-text">
-                        <h4>अकाउंट रीसेट (Reset)</h4>
-                        <p>अपनी सारी प्रोग्रेस डिलीट करें</p>
+                        <h4>साउंड इफ़ेक्ट (SFX)</h4>
+                        <p>बटन क्लिक करने की आवाज़ ऑन/ऑफ करें</p>
                     </div>
-                    <button class="btn-danger sfx-trigger" id="reset-btn">डेटा रीसेट करें</button>
+                    <label class="switch sfx-trigger">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <!-- 4. डेटा रीसेट -->
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h4 style="color: #ff4d4d;">अकाउंट रीसेट</h4>
+                        <p>चेतावनी: यह आपकी सारी प्रोग्रेस मिटा देगा</p>
+                    </div>
+                    <button class="btn-danger sfx-trigger" id="reset-btn"><i class="ri-delete-bin-line"></i> डेटा रीसेट</button>
                 </div>
             </div>
         </main>
