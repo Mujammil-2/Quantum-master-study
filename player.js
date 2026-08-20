@@ -1,5 +1,5 @@
 /* =================================================
-   QMS VIDEO PLAYER ENGINE (PDF View/Download Logic)
+   QMS VIDEO PLAYER ENGINE (PDF View/Download Fixed)
 ================================================= */
 
 const qmsDatabase = {
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
-    // प्रोफाइल फोटो लोड करना (अगर यूजर ने गैलरी से लगाई हो)
+    // प्रोफाइल फोटो लोड करना 
     const savedImg = localStorage.getItem('qms_profile_img');
     if(savedImg) {
         const navImg = document.getElementById('nav-profile-img');
@@ -64,25 +64,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // PDF View and Download Logic
+    // PDF View and Download Logic (FIXED BUG)
     // ==========================================
     const viewBtn = document.getElementById('btn-view-notes');
     const downloadBtn = document.getElementById('btn-download-notes');
 
     if (viewBtn && downloadBtn) {
-        // 'पढ़ें' (View) बटन - नए टैब में पीडीएफ खोलेगा
+        
+        // 1. 'पढ़ें' (View) बटन - Google Drive Viewer से खोलेगा (बिना डाउनलोड किए)
         viewBtn.addEventListener('click', () => {
             if(currentChapter.pdfUrl !== "#") {
-                window.open(currentChapter.pdfUrl, '_blank');
+                // Google Docs Viewer URL format
+                const viewerUrl = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(currentChapter.pdfUrl)}`;
+                window.open(viewerUrl, '_blank');
             } else {
                 alert("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।");
             }
         });
 
-        // 'डाउनलोड' (Download) बटन - फोन में डाउनलोड करेगा
+        // 2. 'डाउनलोड' (Download) बटन - फोन में डाउनलोड करेगा
         downloadBtn.addEventListener('click', () => {
             if(currentChapter.pdfUrl !== "#") {
-                // PDF फाइल को डाउनलोड करने का लॉजिक (Anchor tag method)
                 const link = document.createElement('a');
                 link.href = currentChapter.pdfUrl;
                 link.download = `QMS_${subject}_Chapter_${chapterId}_Notes.pdf`;
