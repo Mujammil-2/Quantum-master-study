@@ -1,5 +1,5 @@
 /* =================================================
-   QMS VIDEO PLAYER ENGINE (PDF View/Download Fixed)
+   QMS VIDEO PLAYER ENGINE (Live PDF Reader Fixed)
 ================================================= */
 
 const qmsDatabase = {
@@ -64,25 +64,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // PDF View and Download Logic (FIXED BUG)
+    // 1. PDF View and Download Logic (Live Fix)
     // ==========================================
     const viewBtn = document.getElementById('btn-view-notes');
     const downloadBtn = document.getElementById('btn-download-notes');
 
     if (viewBtn && downloadBtn) {
         
-        // 1. 'पढ़ें' (View) बटन - Google Drive Viewer से खोलेगा (बिना डाउनलोड किए)
+        // 'पढ़ें' (View) बटन - Google Docs के लाइव रीडर में खुलेगा (बिना डाउनलोड हुए)
         viewBtn.addEventListener('click', () => {
             if(currentChapter.pdfUrl !== "#") {
-                // Google Docs Viewer URL format
-                const viewerUrl = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(currentChapter.pdfUrl)}`;
-                window.open(viewerUrl, '_blank');
+                // यह सबसे बेस्ट तरीका है लाइव PDF दिखाने का!
+                const liveReaderUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(currentChapter.pdfUrl)}`;
+                window.open(liveReaderUrl, '_blank');
             } else {
                 alert("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।");
             }
         });
 
-        // 2. 'डाउनलोड' (Download) बटन - फोन में डाउनलोड करेगा
+        // 'डाउनलोड' (Download) बटन - फोन में डायरेक्ट डाउनलोड करेगा
         downloadBtn.addEventListener('click', () => {
             if(currentChapter.pdfUrl !== "#") {
                 const link = document.createElement('a');
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // Mark Complete Logic
+    // 2. Mark Complete Logic
     // ==========================================
     const markCompleteBtn = document.getElementById('mark-complete-btn');
     let completedData = JSON.parse(localStorage.getItem('qms_completed')) || {};
