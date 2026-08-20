@@ -1,22 +1,24 @@
 /* =================================================
-   QMS VIDEO PLAYER ENGINE (Phase 7 & 8)
+   QMS VIDEO PLAYER ENGINE (Phase 7, 8 & 9)
+   Auto NCERT PDF Fetching Enabled
 ================================================= */
 
+// यहाँ मैंने NCERT के असली और सीधे (Direct) लिंक्स जोड़ दिए हैं!
 const qmsDatabase = {
     physics: [
-        { id: 1, title: "वैद्युत आवेश तथा क्षेत्र", subtitle: "Electric Charges and Fields" },
-        { id: 2, title: "स्थिरवैद्युत विभव तथा धारिता", subtitle: "Electrostatic Potential & Capacitance" },
-        { id: 3, title: "विद्युत धारा", subtitle: "Current Electricity" }
+        { id: 1, title: "वैद्युत आवेश तथा क्षेत्र", subtitle: "Electric Charges and Fields", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph101.pdf" },
+        { id: 2, title: "स्थिरवैद्युत विभव तथा धारिता", subtitle: "Electrostatic Potential & Capacitance", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph102.pdf" },
+        { id: 3, title: "विद्युत धारा", subtitle: "Current Electricity", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph103.pdf" }
     ],
     chemistry: [
-        { id: 1, title: "विलयन", subtitle: "Solutions" },
-        { id: 2, title: "वैद्युतरसायन", subtitle: "Electrochemistry" },
-        { id: 3, title: "रासायनिक बलगतिकी", subtitle: "Chemical Kinetics" }
+        { id: 1, title: "विलयन", subtitle: "Solutions", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech101.pdf" },
+        { id: 2, title: "वैद्युतरसायन", subtitle: "Electrochemistry", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech102.pdf" },
+        { id: 3, title: "रासायनिक बलगतिकी", subtitle: "Chemical Kinetics", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech103.pdf" }
     ],
     mathematics: [
-        { id: 1, title: "संबंध एवं फलन", subtitle: "Relations and Functions" },
-        { id: 2, title: "प्रतिलोम त्रिकोणमितीय फलन", subtitle: "Inverse Trigonometric Functions" },
-        { id: 3, title: "आव्यूह", subtitle: "Matrices" }
+        { id: 1, title: "संबंध एवं फलन", subtitle: "Relations and Functions", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh101.pdf" },
+        { id: 2, title: "प्रतिलोम त्रिकोणमितीय फलन", subtitle: "Inverse Trigonometric Functions", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh102.pdf" },
+        { id: 3, title: "आव्यूह", subtitle: "Matrices", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh103.pdf" }
     ]
 };
 
@@ -36,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    let currentChapter = { title: "अज्ञात अध्याय", subtitle: "Unknown Chapter" };
+    let currentChapter = { title: "अज्ञात अध्याय", subtitle: "Unknown Chapter", pdfUrl: "#" };
     if(qmsDatabase[subject]) {
         const found = qmsDatabase[subject].find(ch => ch.id === chapterId);
         if(found) currentChapter = found;
@@ -58,29 +60,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
+    // PHASE 9: DOWNLOAD NCERT NOTES (Smart Logic)
+    // ==========================================
+    const downloadBtn = document.querySelector('.btn-secondary');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            if(currentChapter.pdfUrl && currentChapter.pdfUrl !== "#") {
+                // यह सीधे NCERT की साइट से उस चैप्टर की PDF खोल देगा
+                window.open(currentChapter.pdfUrl, '_blank');
+            } else {
+                alert("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।");
+            }
+        });
+    }
+
+    // ==========================================
     // PHASE 8: MARK COMPLETE LOGIC
     // ==========================================
     const markCompleteBtn = document.querySelector('.btn-primary-glow');
     
-    // लोकल स्टोरेज से चेक करना कि क्या ये चैप्टर पहले से पूरा है?
     let completedData = JSON.parse(localStorage.getItem('qms_completed')) || {};
     let chapterKey = subject + '_' + chapterId;
 
-    // अगर पहले से पूरा है, तो बटन को हरा कर दो
     if (completedData[chapterKey]) {
         markCompleteBtn.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)';
-        markCompleteBtn.style.background = '#00ff88'; // Green color
+        markCompleteBtn.style.background = '#00ff88'; 
         markCompleteBtn.style.color = '#000';
         markCompleteBtn.disabled = true;
     }
 
-    // जब यूजर 'Mark Complete' बटन दबाए
     markCompleteBtn.addEventListener('click', () => {
         if (!completedData[chapterKey]) {
             completedData[chapterKey] = true;
-            localStorage.setItem('qms_completed', JSON.stringify(completedData)); // फोन में सेव करना
+            localStorage.setItem('qms_completed', JSON.stringify(completedData)); 
             
-            // बटन का डिज़ाइन बदलना
             markCompleteBtn.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)';
             markCompleteBtn.style.background = '#00ff88'; 
             markCompleteBtn.style.color = '#000';
