@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="default">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>माई प्रोफाइल | क्वांटम मास्टर स्टडी</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+
+    <audio id="sfx-click" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="particle-canvas-container"></div>
+
+    <div class="profile-wrapper">
+        <header class="dash-header glass-panel">
+            <div class="brand-mini sfx-trigger" onclick="window.location.href='dashboard.html'" style="cursor:pointer;">
+                <i class="ri-arrow-left-line"></i>
+                <h2>डैशबोर्ड पर लौटें</h2>
+            </div>
+        </header>
+
+        <main class="profile-main">
+            <!-- प्रोफाइल कार्ड -->
+            <div class="profile-hero glass-card">
+                <div class="avatar-large">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" alt="User Avatar">
+                </div>
+                <div class="user-details">
+                    <h1>Alina Sami</h1>
+                    <p class="tag">कक्षा 12वीं • Science (PCM)</p>
+                </div>
+            </div>
+
+            <!-- स्टैट्स (Stats) ग्रिड -->
+            <div class="stats-grid">
+                <div class="stat-box glass-card">
+                    <i class="ri-copper-coin-fill" style="color: #ffd700;"></i>
+                    <div class="stat-info">
+                        <h3 id="profile-xp">0</h3>
+                        <p>कुल XP</p>
+                    </div>
+                </div>
+                <div class="stat-box glass-card">
+                    <i class="ri-book-read-fill" style="color: var(--accent-main);"></i>
+                    <div class="stat-info">
+                        <h3 id="profile-completed">0</h3>
+                        <p>अध्याय पूरे किए</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- सेटिंग्स सेक्शन -->
+            <div class="settings-container glass-card">
+                <div class="settings-header">
+                    <h3><i class="ri-settings-4-line"></i> ऐप सेटिंग्स</h3>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h4>स्टडी मीडियम (Medium)</h4>
+                        <p>अपने नोट्स और वीडियो की भाषा चुनें</p>
+                    </div>
+                    <select id="medium-selector" class="custom-select sfx-trigger">
+                        <option value="hindi">Hindi Medium</option>
+                        <option value="english">English Medium</option>
+                    </select>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h4>ऐप थीम (Theme)</h4>
+                        <p>अपनी पसंद का कलर डिज़ाइन चुनें</p>
+                    </div>
+                    <div class="theme-options">
+                        <button class="theme-btn sfx-trigger default-btn" data-set-theme="default"></button>
+                        <button class="theme-btn sfx-trigger purple-btn" data-set-theme="purple"></button>
+                        <button class="theme-btn sfx-trigger emerald-btn" data-set-theme="emerald"></button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <h4>अकाउंट रीसेट (Reset)</h4>
+                        <p>अपनी सारी प्रोग्रेस डिलीट करें</p>
+                    </div>
+                    <button class="btn-danger sfx-trigger" id="reset-btn">डेटा रीसेट करें</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>
