@@ -1,13 +1,13 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi" data-theme="default">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>कंट्रोल सेंटर | क्वांटम मास्टर स्टडी</title>
+    <title>अकाउंट सेटिंग्स | क्वांटम मास्टर स्टडी</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
@@ -22,32 +22,115 @@
     <div id="particle-canvas-container"></div>
 
     <div class="profile-wrapper">
-        <!-- टॉप हेडर (Logo के साथ) -->
-        <header class="dash-header glass-panel">
-            <div class="brand-mini sfx-trigger" onclick="window.location.href='dashboard.html'" style="cursor:pointer;">
+        <!-- Minimal Header -->
+        <header class="dash-header glass-panel clean-header">
+            <div class="back-btn sfx-trigger" onclick="window.location.href='dashboard.html'">
                 <i class="ri-arrow-left-line"></i>
-                <h2>डैशबोर्ड</h2>
+                <span>वापस जाएँ</span>
             </div>
             <div class="brand-mini">
-                <div class="logo-icon"><i class="ri-atom-line"></i></div>
-                <h2>QMS</h2>
+                <i class="ri-atom-line brand-icon"></i>
+                <span class="brand-text">QMS</span>
             </div>
         </header>
 
         <main class="profile-main">
-            <!-- प्रोफाइल हीरो (Custom Image & Name Edit) -->
-            <div class="profile-hero glass-card">
-                <div class="image-upload-wrapper">
-                    <img id="user-profile-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" alt="User Avatar">
-                    <!-- कैमरा आइकॉन जिससे फोन की गैलरी खुलेगी -->
-                    <label for="img-upload" class="upload-btn sfx-trigger" title="फोटो बदलें"><i class="ri-camera-fill"></i></label>
-                    <input type="file" id="img-upload" hidden accept="image/*">
+            <!-- Premium Profile Hero -->
+            <div class="profile-hero-clean glass-card">
+                <div class="avatar-section">
+                    <div class="image-upload-wrapper-clean">
+                        <img id="user-profile-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" alt="User Avatar">
+                        <label for="img-upload" class="upload-btn-clean sfx-trigger" title="फोटो बदलें"><i class="ri-camera-fill"></i></label>
+                        <input type="file" id="img-upload" hidden accept="image/*">
+                    </div>
                 </div>
                 
-                <div class="user-details">
-                    <h1 id="user-display-name">Alina Sami <i class="ri-edit-circle-fill edit-icon sfx-trigger" id="edit-name-btn" title="नाम बदलें"></i></h1>
-                    <p class="tag">कक्षा 12वीं • Science (PCM)</p>
+                <div class="user-details-clean">
+                    <div class="name-edit-group">
+                        <h1 id="user-display-name">Alina Sami</h1>
+                        <button class="edit-icon-clean sfx-trigger" id="edit-name-btn" title="नाम बदलें"><i class="ri-edit-line"></i></button>
+                    </div>
+                    <p class="tag-clean">कक्षा 12वीं • Science (PCM)</p>
                 </div>
             </div>
-.js"></script>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar-clean glass-card">
+                <div class="stat-item-clean">
+                    <div class="stat-icon-wrapper xp-color">
+                        <i class="ri-copper-coin-fill"></i>
+                    </div>
+                    <div class="stat-info-clean">
+                        <p>XP</p>
+                        <h3 id="profile-xp">0</h3>
+                    </div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item-clean">
+                    <div class="stat-icon-wrapper chap-color">
+                        <i class="ri-book-read-fill"></i>
+                    </div>
+                    <div class="stat-info-clean">
+                        <p>अध्याय</p>
+                        <h3 id="profile-completed">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Settings Panel -->
+            <div class="settings-container-clean glass-card">
+                <h3 class="section-title"><i class="ri-settings-4-fill"></i> प्रेफरेंस (Preferences)</h3>
+
+                <!-- 1. स्टडी मीडियम -->
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>स्टडी मीडियम</h4>
+                        <p>नोट्स और वीडियो की भाषा</p>
+                    </div>
+                    <div class="segmented-control-clean">
+                        <input type="radio" name="medium" id="med-hindi" value="hindi" checked>
+                        <label for="med-hindi" class="sfx-trigger">हिंदी</label>
+                        
+                        <input type="radio" name="medium" id="med-english" value="english">
+                        <label for="med-english" class="sfx-trigger">Eng</label>
+                    </div>
+                </div>
+
+                <!-- 2. ऐप थीम -->
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>कलर थीम</h4>
+                        <p>वेबसाइट का लुक चुनें</p>
+                    </div>
+                    <div class="theme-options-clean">
+                        <button class="theme-dot sfx-trigger default-theme" data-set-theme="default"></button>
+                        <button class="theme-dot sfx-trigger purple-theme" data-set-theme="purple"></button>
+                        <button class="theme-dot sfx-trigger emerald-theme" data-set-theme="emerald"></button>
+                    </div>
+                </div>
+
+                <!-- 3. साउंड -->
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>साउंड इफ़ेक्ट</h4>
+                        <p>क्लिक साउंड ऑन/ऑफ करें</p>
+                    </div>
+                    <label class="switch-clean sfx-trigger">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider-clean"></span>
+                    </label>
+                </div>
+                
+                 <!-- 4. डेटा रीसेट -->
+                 <div class="setting-row border-none mt-2">
+                    <button class="btn-danger-clean sfx-trigger" id="reset-btn">
+                        <i class="ri-delete-bin-line"></i> अपना डेटा रीसेट करें
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="profile.js"></script>
 </body>
+</html>
