@@ -1,9 +1,7 @@
 /* =================================================
-   QMS VIDEO PLAYER ENGINE (Phase 7, 8 & 9)
-   Auto NCERT PDF Fetching Enabled
+   QMS VIDEO PLAYER ENGINE (PDF View/Download Logic)
 ================================================= */
 
-// यहाँ मैंने NCERT के असली और सीधे (Direct) लिंक्स जोड़ दिए हैं!
 const qmsDatabase = {
     physics: [
         { id: 1, title: "वैद्युत आवेश तथा क्षेत्र", subtitle: "Electric Charges and Fields", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph101.pdf" },
@@ -27,18 +25,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
+    // प्रोफाइल फोटो लोड करना (अगर यूजर ने गैलरी से लगाई हो)
+    const savedImg = localStorage.getItem('qms_profile_img');
+    if(savedImg) {
+        const navImg = document.getElementById('nav-profile-img');
+        if(navImg) navImg.src = savedImg;
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const subject = urlParams.get('subject') || 'physics';
     const chapterId = parseInt(urlParams.get('chapter')) || 1;
 
-    const backBtn = document.getElementById('back-to-chapters');
-    if(backBtn) {
-        backBtn.addEventListener('click', () => {
-            window.location.href = `chapters.html?subject=${subject}`;
-        });
-    }
+    document.getElementById('back-to-chapters').addEventListener('click', () => {
+        window.location.href = `chapters.html?subject=${subject}`;
+    });
 
-    let currentChapter = { title: "अज्ञात अध्याय", subtitle: "Unknown Chapter", pdfUrl: "#" };
+    let currentChapter = { title: "अज्ञात अध्याय", subtitle: "Unknown", pdfUrl: "#" };
     if(qmsDatabase[subject]) {
         const found = qmsDatabase[subject].find(ch => ch.id === chapterId);
         if(found) currentChapter = found;
@@ -49,9 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('player-chapter-subtitle').innerText = currentChapter.subtitle;
 
     const sfxClick = document.getElementById('sfx-click');
+    let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
+
     document.querySelectorAll('.sfx-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (sfxClick) {
+            if (isSoundOn && sfxClick) {
                 sfxClick.currentTime = 0;
                 sfxClick.volume = 0.4;
                 sfxClick.play().catch(() => {});
@@ -60,14 +64,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // PHASE 9: DOWNLOAD NCERT NOTES (Smart Logic)
+    // PDF View and Download Logic
     // ==========================================
-    const downloadBtn = document.querySelector('.btn-secondary');
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', () => {
-            if(currentChapter.pdfUrl && currentChapter.pdfUrl !== "#") {
-                // यह सीधे NCERT की साइट से उस चैप्टर की PDF खोल देगा
+    const viewBtn = document.getElementById('btn-view-notes');
+    const downloadBtn = document.getElementById('btn-download-notes');
+
+    if (viewBtn && downloadBtn) {
+        // 'पढ़ें' (View) बटन - नए टैब में पीडीएफ खोलेगा
+        viewBtn.addEventListener('click', () => {
+            if(currentChapter.pdfUrl !== "#") {
                 window.open(currentChapter.pdfUrl, '_blank');
+            } else {
+                alert("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।");
+            }
+        });
+
+        // 'डाउनलोड' (Download) बटन - फोन में डाउनलोड करेगा
+        downloadBtn.addEventListener('click', () => {
+            if(currentChapter.pdfUrl !== "#") {
+                // PDF फाइल को डाउनलोड करने का लॉजिक (Anchor tag method)
+                const link = document.createElement('a');
+                link.href = currentChapter.pdfUrl;
+                link.download = `QMS_${subject}_Chapter_${chapterId}_Notes.pdf`;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             } else {
                 alert("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।");
             }
@@ -75,10 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // PHASE 8: MARK COMPLETE LOGIC
+    // Mark Complete Logic
     // ==========================================
-    const markCompleteBtn = document.querySelector('.btn-primary-glow');
-    
+    const markCompleteBtn = document.getElementById('mark-complete-btn');
     let completedData = JSON.parse(localStorage.getItem('qms_completed')) || {};
     let chapterKey = subject + '_' + chapterId;
 
@@ -98,8 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
             markCompleteBtn.style.background = '#00ff88'; 
             markCompleteBtn.style.color = '#000';
             markCompleteBtn.disabled = true;
-
-            alert('🎉 बधाई हो! आपने यह अध्याय पूरा कर लिया है। आपको 50 XP मिले!');
         }
     });
 });
