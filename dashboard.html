@@ -12,35 +12,57 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-        /* Premium Dashboard Fixes */
-        .dash-main-clean {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-            animation: fadeUp 0.6s ease;
+        .dash-main-clean { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; }
+        
+        /* Small Profile Icon */
+        .small-profile-btn { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-main); overflow: hidden; cursor: pointer; transition: 0.3s; }
+        .small-profile-btn img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* =========================================
+           PREMIUM SLIDE-OVER SETTINGS PANEL
+        ========================================= */
+        .profile-side-panel {
+            position: fixed; top: 0; right: -100%; /* Hidden by default */
+            width: 100%; max-width: 400px; height: 100vh;
+            background: rgba(15, 15, 25, 0.95); backdrop-filter: blur(20px);
+            z-index: 9999; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 1px solid rgba(255,255,255,0.05);
+            padding: 2rem 1.5rem; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
         }
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-        }
-        .small-profile-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-main);
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,240,255,0.2);
-            transition: 0.3s;
-        }
-        .small-profile-btn:hover { transform: scale(1.05); }
-        .small-profile-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .profile-side-panel.active { right: 0; /* Slide in */ }
+        .close-panel-btn { font-size: 1.5rem; cursor: pointer; position: absolute; top: 20px; left: 20px; color: var(--text-secondary); transition: 0.3s; }
+        .close-panel-btn:hover { color: #fff; }
+
+        /* Panel Content Styles */
+        .panel-header { text-align: center; margin-top: 2rem; margin-bottom: 2rem; }
+        .image-upload-wrapper-clean { position: relative; width: 100px; height: 100px; margin: 0 auto 1rem; }
+        .image-upload-wrapper-clean img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-main); }
+        .upload-btn-clean { position: absolute; bottom: 0; right: 0; background: var(--accent-main); color: #000; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 3px solid #12121e; }
+        .name-edit-group { display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .name-edit-group h2 { font-family: var(--font-heading); font-size: 1.5rem; }
+        .edit-icon-clean { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
+        
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .setting-info h4 { font-size: 1rem; font-weight: 500; }
+        .setting-info p { font-size: 0.8rem; color: var(--text-secondary); }
+        
+        /* Theme Dots & Switch */
+        .theme-options-clean { display: flex; gap: 10px; }
+        .theme-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); cursor: pointer; }
+        .default-theme { background: #00f0ff; } .purple-theme { background: #b535ff; } .emerald-theme { background: #00ff88; }
+        
+        /* Switch */
+        .switch-clean { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch-clean input { opacity: 0; width: 0; height: 0; }
+        .slider-clean { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); border-radius: 24px; transition: .3s; }
+        .slider-clean:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: #fff; border-radius: 50%; transition: .3s; }
+        input:checked + .slider-clean { background-color: var(--accent-main); }
+        input:checked + .slider-clean:before { transform: translateX(20px); background-color: #000; }
+        
+        /* Overlay Darken */
+        .overlay-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.5); z-index: 9998; }
+        .overlay-bg.active { display: block; }
     </style>
 </head>
 <body>
@@ -51,28 +73,77 @@
 
     <div id="particle-canvas-container"></div>
 
+    <!-- Black Overlay when panel opens -->
+    <div class="overlay-bg" id="panel-overlay"></div>
+
+    <!-- =========================================
+         THE SLIDING SETTINGS PANEL (Direct on Home)
+    ========================================== -->
+    <aside class="profile-side-panel" id="settings-panel">
+        <i class="ri-close-line close-panel-btn sfx-trigger" id="close-panel"></i>
+        
+        <div class="panel-header">
+            <div class="image-upload-wrapper-clean">
+                <img id="panel-profile-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" alt="User">
+                <label for="img-upload" class="upload-btn-clean sfx-trigger"><i class="ri-camera-fill"></i></label>
+                <input type="file" id="img-upload" hidden accept="image/*">
+            </div>
+            <div class="name-edit-group">
+                <h2 id="panel-user-name">Alina Sami</h2>
+                <button class="edit-icon-clean sfx-trigger" id="edit-name-btn"><i class="ri-edit-line"></i></button>
+            </div>
+            <p style="color: var(--accent-main); font-size: 0.85rem; margin-top: 5px;">कक्षा 12वीं • Science</p>
+        </div>
+
+        <h3 style="font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px;"><i class="ri-settings-4-fill"></i> प्रेफरेंस सेटिंग्स</h3>
+
+        <div class="setting-row">
+            <div class="setting-info">
+                <h4>कलर थीम</h4>
+                <p>वेबसाइट का लुक चुनें</p>
+            </div>
+            <div class="theme-options-clean">
+                <button class="theme-dot sfx-trigger default-theme" data-set-theme="default"></button>
+                <button class="theme-dot sfx-trigger purple-theme" data-set-theme="purple"></button>
+                <button class="theme-dot sfx-trigger emerald-theme" data-set-theme="emerald"></button>
+            </div>
+        </div>
+
+        <div class="setting-row">
+            <div class="setting-info">
+                <h4>साउंड इफ़ेक्ट</h4>
+                <p>क्लिक साउंड ऑन/ऑफ करें</p>
+            </div>
+            <label class="switch-clean sfx-trigger">
+                <input type="checkbox" id="sound-toggle" checked>
+                <span class="slider-clean"></span>
+            </label>
+        </div>
+
+        <button id="reset-btn" class="sfx-trigger" style="width: 100%; margin-top: 2rem; background: rgba(255,50,50,0.1); color: #ff4d4d; border: 1px solid rgba(255,50,50,0.3); padding: 12px; border-radius: 8px; cursor: pointer;">
+            <i class="ri-delete-bin-line"></i> डेटा रीसेट करें
+        </button>
+    </aside>
+
     <div class="dashboard-wrapper">
-        <!-- टॉप हेडर (कोने में प्रोफाइल फोटो के साथ) -->
         <header class="top-nav glass-panel">
             <div class="brand-mini">
                 <div class="logo-icon"><i class="ri-atom-line"></i></div>
                 <h2>QMS</h2>
             </div>
             
-            <!-- यह है तुम्हारा कोने वाला प्रोफाइल बटन -->
-            <div class="small-profile-btn sfx-trigger" onclick="window.location.href='profile.html'" title="प्रोफाइल सेटिंग्स">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" id="dash-small-avatar" alt="Profile">
+            <!-- CLICKING THIS OPENS THE PANEL -->
+            <div class="small-profile-btn sfx-trigger" id="open-panel-btn">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" id="dash-small-avatar" alt="Profile">
             </div>
         </header>
 
         <main class="dash-main-clean">
-            <!-- क्लीन वेलकम सेक्शन -->
             <div class="welcome-section" style="margin-bottom: 2rem;">
-                <h1 class="greeting" style="font-family: var(--font-heading); font-size: 2rem;">नमस्ते, <span class="highlight" id="dash-user-name">Student</span> 👋</h1>
+                <h1 class="greeting" style="font-family: var(--font-heading); font-size: 2rem;">नमस्ते, <span class="highlight" id="dash-user-name">Alina</span> 👋</h1>
                 <p class="subtitle" style="color: var(--text-secondary);">आज कुछ नया सीखने का समय है!</p>
             </div>
 
-            <!-- स्टैट्स (Stats) -->
             <div class="stats-grid">
                 <div class="stat-card glass-card">
                     <div class="stat-icon"><i class="ri-fire-fill"></i></div>
@@ -81,7 +152,6 @@
                         <p>एक्टिव स्ट्रीक</p>
                     </div>
                 </div>
-                
                 <div class="stat-card glass-card sfx-trigger" onclick="window.location.href='subjects.html'" style="cursor:pointer;">
                     <div class="stat-icon"><i class="ri-book-open-fill"></i></div>
                     <div class="stat-info">
@@ -89,7 +159,6 @@
                         <p>विषय (Subjects)</p>
                     </div>
                 </div>
-                
                 <div class="stat-card glass-card">
                     <div class="stat-icon"><i class="ri-check-double-fill"></i></div>
                     <div class="stat-info">
@@ -97,7 +166,6 @@
                         <p>पूर्ण किए गए</p>
                     </div>
                 </div>
-                
                 <div class="stat-card glass-card">
                     <div class="stat-icon"><i class="ri-copper-coin-fill"></i></div>
                     <div class="stat-info">
