@@ -1,14 +1,17 @@
 /* =========================================================================
    QMS JAVASCRIPT MASTER ENGINE (DASHBOARD)
-   - Features: Advanced Particles (Formulas + Dots), Modals, Timer, Audio
+   - Features: Advanced Particles, Named Themes, Image Compressor, Timer
 ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. SPLASH SCREEN LOGIC (LOADING) ---
+    // ==========================================
+    // 1. SPLASH SCREEN LOGIC (LOADING)
+    // ==========================================
     const splashScreen = document.getElementById('splash-screen');
     const loadingBar = document.getElementById('loading-bar');
     const loadingText = document.getElementById('loading-text');
+    
     let progress = 0;
     const loadingInterval = setInterval(() => {
         progress += Math.random() * 15;
@@ -29,7 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 200);
 
-    // --- 2. DYNAMIC GREETING & QUOTES ---
+    // ==========================================
+    // 2. DYNAMIC GREETING & MOTIVATIONAL QUOTES
+    // ==========================================
     const hour = new Date().getHours();
     let greetingText = "नमस्ते";
     if (hour < 12) greetingText = "सुप्रभात (Good Morning)";
@@ -43,12 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
         "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।",
         "जितना कठिन संघर्ष होगा, जीत उतनी ही शानदार होगी।",
         "सफलता की शुरुआत हमेशा 'मैं कर सकता हूँ' से होती है।",
-        "ज्ञान वह निवेश है जिसका मुनाफा जीवन भर मिलता है।"
+        "ज्ञान वह निवेश है जिसका मुनाफा जीवन भर मिलता है।",
+        "ब्रह्मांड को समझने के लिए पहले खुद पर विश्वास करना पड़ता है।"
     ];
     const quoteEl = document.getElementById('daily-quote');
     if(quoteEl) quoteEl.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
 
-    // --- 3. POMODORO TIMER LOGIC ---
+    // ==========================================
+    // 3. POMODORO FOCUS TIMER (25 Minutes)
+    // ==========================================
     let timerInterval; let timeLeft = 25 * 60; let isTimerRunning = false;
     const timerDisplay = document.getElementById('timer-display');
     const timerStartBtn = document.getElementById('timer-start-btn');
@@ -82,7 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
         timerResetBtn.addEventListener('click', () => { clearInterval(timerInterval); isTimerRunning = false; timeLeft = 25 * 60; updateTimerDisplay(); timerStartBtn.innerText = "स्टार्ट (Start)"; timerStartBtn.style.background = "var(--accent-main)"; });
     }
 
-    // --- 4. ADVANCED QUANTUM PARTICLES (BOTH FORMULAS & DOTS) ---
+    // ==========================================
+    // 4. ADVANCED QUANTUM PARTICLES (BOTH FORMULAS & DOTS)
+    // ==========================================
     const canvas = document.getElementById('bg-canvas');
     if(canvas) {
         const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -91,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         class QuantumParticle {
             constructor() {
-                // 60% chance to be a glowing firefly dot, 40% chance to be a formula symbol
                 this.type = Math.random() > 0.4 ? 'dot' : 'symbol';
                 this.symbol = scienceSymbols[Math.floor(Math.random() * scienceSymbols.length)];
                 this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
@@ -100,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.size = Math.random() * 15 + 10;
                     this.speedX = Math.random() * 0.5 - 0.25; this.speedY = Math.random() * -0.8 - 0.2;
                 } else {
-                    this.size = Math.random() * 3 + 1; // Small firefly dots
+                    this.size = Math.random() * 3 + 1; 
                     this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * -1 - 0.2;
                 }
                 
@@ -114,8 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
             draw() {
                 const rootStyle = getComputedStyle(document.documentElement);
                 const accentColor = rootStyle.getPropertyValue('--accent-main').trim() || '#00f0ff';
-                
-                // Pulsing blink effect
                 let currentOpacity = ((Math.sin(this.angle) + 1) / 2) * 0.8 + 0.1;
                 
                 ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
@@ -130,11 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
                 }
-                ctx.shadowBlur = 0; // Reset
+                ctx.shadowBlur = 0; 
             }
         }
         
-        // Generate 60 mixed particles (Dots + Symbols)
         for (let i = 0; i < 60; i++) particlesArray.push(new QuantumParticle());
         
         function animateParticles() { 
@@ -146,7 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
     }
 
-    // --- 5. PREMIUM MODALS & TOASTS (Reusable functions) ---
+    // ==========================================
+    // 5. PREMIUM MODALS & TOASTS 
+    // ==========================================
     window.showCustomToast = function(message, isError = false) {
         const toast = document.createElement('div');
         toast.className = isError ? 'qms-toast-msg qms-toast-error' : 'qms-toast-msg';
@@ -194,7 +202,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modalOverlay.classList.remove('active');
     });
 
-    // --- 6. LOAD USER DATA & STATS ---
+    // ==========================================
+    // 6. LOAD USER DATA & STATS 
+    // ==========================================
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
     const savedName = localStorage.getItem('qms_user_name') || 'Alina Sami';
@@ -213,7 +223,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('dash-completed-count')) document.getElementById('dash-completed-count').innerText = completedCount;
     if(document.getElementById('dash-total-xp')) document.getElementById('dash-total-xp').innerText = completedCount * 50;
 
-    // --- 7. PANEL LOGIC & SETTINGS ---
+    // ==========================================
+    // 7. PANEL LOGIC & NAMED THEMES
+    // ==========================================
     const panel = document.getElementById('settings-panel'); const overlay = document.getElementById('panel-overlay');
     function closePanel() { if(panel) panel.classList.remove('active'); if(overlay) overlay.classList.remove('active'); }
     
@@ -221,10 +233,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('close-panel')) document.getElementById('close-panel').addEventListener('click', closePanel); 
     if(overlay) overlay.addEventListener('click', closePanel);
 
-    document.querySelectorAll('.theme-dot').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const newTheme = btn.getAttribute('data-set-theme');
-            document.documentElement.setAttribute('data-theme', newTheme); localStorage.setItem('qms_theme', newTheme);
+    // FIX: Updated logic for the new Named Theme Cards
+    document.querySelectorAll('.theme-option-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const newTheme = this.getAttribute('data-set-theme');
+            document.documentElement.setAttribute('data-theme', newTheme); 
+            localStorage.setItem('qms_theme', newTheme);
         });
     });
 
@@ -233,14 +247,41 @@ document.addEventListener('DOMContentLoaded', () => {
         if(el) el.addEventListener('change', (e) => localStorage.setItem(`qms_${id}`, e.target.value));
     });
 
-    // --- 8. AUDIO FX SYSTEM ---
+    // ==========================================
+    // 8. AUDIO FX SYSTEM 
+    // ==========================================
     const sfxClick = document.getElementById('sfx-click');
     let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
+    
+    function updateToggleUI(checkbox) {
+        if(checkbox.checked) {
+            checkbox.nextElementSibling.style.backgroundColor = 'var(--accent-main)';
+            checkbox.nextElementSibling.style.boxShadow = '0 0 10px var(--accent-glow)';
+        } else {
+            checkbox.nextElementSibling.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            checkbox.nextElementSibling.style.boxShadow = 'none';
+        }
+    }
+    
+    const soundToggle = document.getElementById('sound-toggle');
+    if(soundToggle) {
+        soundToggle.checked = isSoundOn;
+        updateToggleUI(soundToggle);
+        
+        soundToggle.addEventListener('change', (e) => {
+            isSoundOn = e.target.checked; 
+            localStorage.setItem('qms_sound', isSoundOn ? 'on' : 'off');
+            updateToggleUI(e.target);
+        });
+    }
+
     document.querySelectorAll('.sfx-trigger').forEach(btn => {
         btn.addEventListener('click', () => { if (isSoundOn && sfxClick) { sfxClick.currentTime = 0; sfxClick.volume = 1.0; sfxClick.play().catch(()=>{}); } });
     });
 
-    // --- 9. PROFILE IMAGE UPLOAD (COMPRESSION FIX) ---
+    // ==========================================
+    // 9. PROFILE IMAGE UPLOAD (COMPRESSION FIX)
+    // ==========================================
     const imgUpload = document.getElementById('img-upload');
     if(imgUpload) {
         imgUpload.addEventListener('change', function(event) {
@@ -270,7 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 10. EDIT NAME & LOGOUT ---
+    // ==========================================
+    // 10. EDIT NAME & LOGOUT 
+    // ==========================================
     const editBtn = document.getElementById('edit-name-btn');
     if(editBtn) {
         editBtn.addEventListener('click', function() {
