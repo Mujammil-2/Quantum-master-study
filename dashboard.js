@@ -1,10 +1,58 @@
 /* =================================================
-   QMS DASHBOARD ENGINE (Premium Custom Modals Fix)
+   QMS DASHBOARD ENGINE (Pro Version with Particles)
 ================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. CUSTOM PREMIUM MODALS (Bye Bye Default Browser Alerts!) ---
+    // --- 1. BACKGROUND PARTICLES LOGIC ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    let particlesArray = [];
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.speedY = Math.random() * -0.5 - 0.1;
+            this.opacity = Math.random() * 0.5 + 0.1;
+        }
+        update() {
+            this.y += this.speedY;
+            if (this.y < 0) {
+                this.y = canvas.height;
+                this.x = Math.random() * canvas.width;
+            }
+        }
+        draw() {
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    // Create 70 particles for premium feel
+    for (let i = 0; i < 70; i++) { particlesArray.push(new Particle()); }
+    
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    // --- 2. PREMIUM CUSTOM MODALS ---
     const modalStyle = document.createElement('style');
     modalStyle.innerHTML = `
         .qms-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
@@ -21,11 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .btn-confirm { background: var(--accent-main); color: #000; }
         .btn-confirm:hover { box-shadow: 0 0 15px var(--accent-glow); }
         .btn-danger-confirm { background: #ff4d4d; color: #fff; }
-        .btn-danger-confirm:hover { box-shadow: 0 0 15px rgba(255, 77, 77, 0.4); }
     `;
     document.head.appendChild(modalStyle);
 
-    // Modal HTML Structure
     const modalOverlay = document.createElement('div');
     modalOverlay.className = 'qms-modal-overlay';
     modalOverlay.innerHTML = `
@@ -42,44 +88,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modalTitle = document.getElementById('qms-modal-title');
     const modalInput = document.getElementById('qms-modal-input');
-    const modalCancel = document.getElementById('qms-modal-cancel');
     const modalConfirm = document.getElementById('qms-modal-confirm');
     let currentCallback = null;
 
     function showCustomPrompt(title, defaultValue, callback) {
         modalTitle.innerHTML = `<i class="ri-edit-2-line" style="color: var(--accent-main); font-size: 1.5rem; display:block; margin-bottom: 5px;"></i> ${title}`;
-        modalInput.style.display = 'block';
-        modalInput.value = defaultValue;
-        modalConfirm.className = 'qms-modal-btn btn-confirm';
-        modalConfirm.innerText = 'सेव करें';
-        modalOverlay.classList.add('active');
-        setTimeout(() => modalInput.focus(), 100);
-        currentCallback = callback;
+        modalInput.style.display = 'block'; modalInput.value = defaultValue;
+        modalConfirm.className = 'qms-modal-btn btn-confirm'; modalConfirm.innerText = 'सेव करें';
+        modalOverlay.classList.add('active'); setTimeout(() => modalInput.focus(), 100); currentCallback = callback;
     }
 
     function showCustomConfirm(title, callback) {
         modalTitle.innerHTML = `<i class="ri-error-warning-line" style="color: #ff4d4d; font-size: 2rem; display:block; margin-bottom: 5px;"></i> ${title}`;
         modalInput.style.display = 'none';
-        modalConfirm.className = 'qms-modal-btn btn-danger-confirm';
-        modalConfirm.innerText = 'हाँ, डिलीट करें';
-        modalOverlay.classList.add('active');
-        currentCallback = callback;
+        modalConfirm.className = 'qms-modal-btn btn-danger-confirm'; modalConfirm.innerText = 'हाँ, डिलीट करें';
+        modalOverlay.classList.add('active'); currentCallback = callback;
     }
 
-    function closeModal() {
-        modalOverlay.classList.remove('active');
-        currentCallback = null;
-    }
-
-    modalCancel.addEventListener('click', closeModal);
+    document.getElementById('qms-modal-cancel').addEventListener('click', () => modalOverlay.classList.remove('active'));
     modalConfirm.addEventListener('click', () => {
-        if (currentCallback) {
-            currentCallback(modalInput.style.display === 'none' ? true : modalInput.value);
-        }
-        closeModal();
+        if (currentCallback) currentCallback(modalInput.style.display === 'none' ? true : modalInput.value);
+        modalOverlay.classList.remove('active');
     });
 
-    // --- 2. INITIAL LOAD (Theme, Name, Avatar) ---
+    // --- 3. LOAD USER DATA ---
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -93,47 +125,53 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('panel-profile-img').src = savedImg;
     }
 
-    // Load Stats
     let completedData = JSON.parse(localStorage.getItem('qms_completed')) || {};
     let completedCount = Object.keys(completedData).length;
     document.getElementById('dash-completed-count').innerText = completedCount;
     document.getElementById('dash-total-xp').innerText = completedCount * 50;
 
-    // --- 3. SOUND EFFECTS ---
+    // --- 4. PANEL OPEN/CLOSE LOGIC ---
+    const panel = document.getElementById('settings-panel');
+    const overlay = document.getElementById('panel-overlay');
+    function closePanel() { panel.classList.remove('active'); overlay.classList.remove('active'); }
+    
+    document.getElementById('open-panel-btn').addEventListener('click', () => { panel.classList.add('active'); overlay.classList.add('active'); });
+    document.getElementById('close-panel').addEventListener('click', closePanel);
+    overlay.addEventListener('click', closePanel);
+
+    // --- 5. SETTINGS: THEMES (8 Colors) ---
+    document.querySelectorAll('.theme-dot').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const newTheme = btn.getAttribute('data-set-theme');
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('qms_theme', newTheme);
+        });
+    });
+
+    // --- 6. SETTINGS: PDF LOCATION ---
+    const pdfPref = document.getElementById('pdf-location-pref');
+    const savedPdfPref = localStorage.getItem('qms_pdf_pref') || 'default';
+    pdfPref.value = savedPdfPref;
+    pdfPref.addEventListener('change', (e) => {
+        localStorage.setItem('qms_pdf_pref', e.target.value);
+    });
+
+    // --- 7. SETTINGS: SOUND & PROFILE EDITS ---
     const sfxClick = document.getElementById('sfx-click');
     const soundToggle = document.getElementById('sound-toggle');
     let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
     soundToggle.checked = isSoundOn;
-
     soundToggle.addEventListener('change', (e) => {
-        isSoundOn = e.target.checked;
-        localStorage.setItem('qms_sound', isSoundOn ? 'on' : 'off');
+        isSoundOn = e.target.checked; localStorage.setItem('qms_sound', isSoundOn ? 'on' : 'off');
     });
 
     document.querySelectorAll('.sfx-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (isSoundOn && sfxClick) {
-                sfxClick.currentTime = 0; sfxClick.volume = 0.4; sfxClick.play().catch(()=>{});
-            }
+            if (isSoundOn && sfxClick) { sfxClick.currentTime = 0; sfxClick.volume = 0.4; sfxClick.play().catch(()=>{}); }
         });
     });
 
-    // --- 4. PANEL OPEN/CLOSE LOGIC ---
-    const panel = document.getElementById('settings-panel');
-    const overlay = document.getElementById('panel-overlay');
-    const openBtn = document.getElementById('open-panel-btn');
-    const closeBtn = document.getElementById('close-panel');
-
-    function openPanel() { panel.classList.add('active'); overlay.classList.add('active'); }
-    function closePanel() { panel.classList.remove('active'); overlay.classList.remove('active'); }
-
-    openBtn.addEventListener('click', openPanel);
-    closeBtn.addEventListener('click', closePanel);
-    overlay.addEventListener('click', closePanel);
-
-    // --- 5. LIVE UPDATE: IMAGE UPLOAD ---
-    const imgUploadInput = document.getElementById('img-upload');
-    imgUploadInput.addEventListener('change', function(event) {
+    document.getElementById('img-upload').addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -147,13 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 6. LIVE UPDATE: NAME CHANGE (Using Premium Prompt) ---
-    const editNameBtn = document.getElementById('edit-name-btn');
-    editNameBtn.addEventListener('click', function() {
-        const currentSavedName = localStorage.getItem('qms_user_name') || 'Alina Sami';
-        
-        // No more ugly alert! Using our Premium Custom Modal
-        showCustomPrompt("अपना नया नाम दर्ज करें", currentSavedName, (newName) => {
+    document.getElementById('edit-name-btn').addEventListener('click', function() {
+        const currentName = localStorage.getItem('qms_user_name') || 'Alina Sami';
+        showCustomPrompt("अपना नया नाम दर्ज करें", currentName, (newName) => {
             if(newName && newName.trim() !== "") {
                 const cleanName = newName.trim();
                 localStorage.setItem('qms_user_name', cleanName);
@@ -163,24 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 7. LIVE UPDATE: THEME CHANGE ---
-    document.querySelectorAll('.theme-dot').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const newTheme = btn.getAttribute('data-set-theme');
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('qms_theme', newTheme);
-        });
-    });
-
-    // --- 8. RESET LOGIC (Using Premium Confirm) ---
     document.getElementById('reset-btn').addEventListener('click', () => {
-        
-        // No more ugly alert! Using our Premium Custom Modal
         showCustomConfirm("चेतावनी<br>क्या आप सच में अपना सारा डेटा और प्रोग्रेस डिलीट करना चाहते हैं?", (confirmed) => {
-            if (confirmed) {
-                localStorage.clear();
-                window.location.href = "index.html"; 
-            }
+            if (confirmed) { localStorage.clear(); window.location.href = "index.html"; }
         });
     });
 });
