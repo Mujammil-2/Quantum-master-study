@@ -9,20 +9,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- सिर्फ style.css लिंक होगी, और कोई CSS फाइल नहीं -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- कस्टम प्रीमियम साउंड -->
+    <!-- कस्टम साउंड -->
     <audio id="sfx-click" preload="auto">
         <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- जुगनू एनीमेशन (Fireflies & Formulas) के लिए कैनवास -->
+    <!-- जुगनू एनीमेशन (Fireflies & Formulas) -->
     <canvas id="bg-canvas"></canvas>
 
     <div class="dashboard-wrapper">
-        <!-- हेडर (Header) -->
         <header class="glass-panel" style="display: flex; padding: 1.2rem 1.5rem; align-items: center; justify-content: space-between;">
             <div class="brand-mini sfx-trigger" onclick="window.location.href='subjects.html'" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
                 <i class="ri-arrow-left-line" style="font-size: 1.5rem; color: var(--accent-main);"></i>
@@ -39,7 +40,7 @@
         </header>
 
         <main class="chapters-main">
-            <!-- सब्जेक्ट का हीरो कार्ड (प्रोग्रेस बार के साथ) -->
+            <!-- सब्जेक्ट हीरो कार्ड -->
             <div class="subject-hero-card glass-card" id="subject-hero-card">
                 <div class="hero-content">
                     <p class="board-tag">कक्षा 12वीं • NCERT</p>
@@ -61,13 +62,12 @@
                 </div>
             </div>
 
-            <!-- चैप्टर्स लिस्ट का हेडर -->
             <div class="chapters-header">
                 <h2 style="font-family: var(--font-hindi); font-size: 1.5rem;">सभी अध्याय</h2>
                 <i class="ri-sort-desc" style="font-size: 1.5rem; color: var(--text-secondary);"></i>
             </div>
 
-            <!-- डायनामिक चैप्टर्स लिस्ट (यहाँ JS से कार्ड्स आएंगे) -->
+            <!-- यहाँ JS से एकदम परफेक्ट कार्ड्स आएंगे -->
             <div class="chapters-list" id="dynamic-chapter-list">
                 <!-- Chapters load here -->
             </div>
