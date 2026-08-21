@@ -9,10 +9,9 @@
 </head>
 <body>
 
-    <!-- कस्टम साउंड -->
-    <audio id="sfx-click" preload="auto">
-        <source src="click.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
+    <!-- जुगनू एनीमेशन के लिए कैनवास -->
+    <canvas id="bg-canvas"></canvas>
 
     <div class="dashboard-wrapper">
         <header class="glass-panel" style="display: flex; padding: 1.2rem 1.5rem;">
@@ -27,60 +26,29 @@
                 <button class="class-btn active sfx-trigger">कक्षा 12वीं (Board)</button>
                 <button class="class-btn sfx-trigger">कक्षा 11वीं (Foundation)</button>
             </div>
-
             <div class="subjects-header">
                 <h1 class="page-title">अपना विषय चुनें</h1>
                 <p class="page-subtitle">क्वांटम मास्टर स्टडी का संपूर्ण NCERT पाठ्यक्रम</p>
             </div>
-
             <div class="subjects-grid">
                 <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=physics'">
                     <div class="subject-icon physics-icon"><i class="ri-flashlight-fill"></i></div>
-                    <div class="subject-details">
-                        <h2>भौतिक विज्ञान</h2>
-                        <p>Physics (PCM)</p>
-                        <div class="subject-meta"><span>14 अध्याय</span><span>0% पूर्ण</span></div>
-                    </div>
+                    <div class="subject-details"><h2>भौतिक विज्ञान</h2><p>Physics (PCM)</p></div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
-
                 <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=chemistry'">
                     <div class="subject-icon chemistry-icon"><i class="ri-test-tube-fill"></i></div>
-                    <div class="subject-details">
-                        <h2>रसायन विज्ञान</h2>
-                        <p>Chemistry (PCM)</p>
-                        <div class="subject-meta"><span>10 अध्याय</span><span>0% पूर्ण</span></div>
-                    </div>
+                    <div class="subject-details"><h2>रसायन विज्ञान</h2><p>Chemistry (PCM)</p></div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
-
                 <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=mathematics'">
                     <div class="subject-icon math-icon"><i class="ri-functions"></i></div>
-                    <div class="subject-details">
-                        <h2>गणित</h2>
-                        <p>Mathematics (PCM)</p>
-                        <div class="subject-meta"><span>13 अध्याय</span><span>0% पूर्ण</span></div>
-                    </div>
+                    <div class="subject-details"><h2>गणित</h2><p>Mathematics (PCM)</p></div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
             </div>
         </main>
     </div>
-
-    <script>
-        // Theme & Sound Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('qms_theme') || 'default';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-
-            const sfxClick = document.getElementById('sfx-click');
-            let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
-            document.querySelectorAll('.sfx-trigger').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (isSoundOn && sfxClick) { sfxClick.currentTime = 0; sfxClick.play().catch(()=>{}); }
-                });
-            });
-        });
-    </script>
+    <script src="subjects.js"></script>
 </body>
 </html>
