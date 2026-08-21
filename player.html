@@ -12,19 +12,15 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="player.css">
     <style>
-        /* FIX: Prevents the giant face bug */
-        .header-profile-fix {
-            width: 42px; height: 42px; border-radius: 50%; 
-            border: 2px solid var(--accent-main); overflow: hidden; 
-            cursor: pointer; box-shadow: 0 0 10px rgba(0,240,255,0.2);
-        }
+        .header-profile-fix { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-main); overflow: hidden; cursor: pointer; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
         .header-profile-fix img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
 
+    <!-- तुम्हारा नया प्रीमियम साउंड यहाँ लग गया है -->
     <audio id="sfx-click" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
+        <source src="click.mp3" type="audio/mpeg">
     </audio>
 
     <div id="particle-canvas-container"></div>
@@ -36,14 +32,12 @@
                 <h2>अध्यायों पर लौटें</h2>
             </div>
             
-            <!-- FIX IMPLEMENTED HERE (Clicking goes to dashboard where settings live) -->
             <div class="header-profile-fix sfx-trigger" onclick="window.location.href='dashboard.html'" title="डैशबोर्ड पर जाएँ">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" id="nav-profile-img" alt="Profile">
             </div>
         </header>
 
         <main class="player-grid">
-            
             <div class="video-section span-2">
                 <div class="video-container glass-card">
                     <iframe id="main-video" src="https://www.youtube.com/embed/ysz5S6PUM-U" title="QMS Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -78,7 +72,6 @@
                     </ul>
                 </div>
             </div>
-
         </main>
     </div>
 
