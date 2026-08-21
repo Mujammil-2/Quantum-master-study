@@ -3,54 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>क्वांटम मास्टर स्टडी (QMS)</title>
+    <title>लॉगिन | क्वांटम मास्टर स्टडी</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .auth-wrapper { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 2rem; position: relative; z-index: 10; }
+        .auth-card { background: rgba(15, 15, 25, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); padding: 3rem 2rem; border-radius: 20px; text-align: center; max-width: 400px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.5); animation: fadeUp 0.8s ease; }
+        .auth-logo { font-size: 4rem; color: var(--accent-main); margin-bottom: 1rem; text-shadow: 0 0 20px var(--accent-glow); }
+        .auth-card h1 { font-family: var(--font-heading); font-size: 2rem; margin-bottom: 5px; }
+        .auth-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2.5rem; }
+        .google-btn { background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; border: none; transition: 0.3s; }
+        .google-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
+        .google-btn img { width: 24px; }
+        .footer-text { margin-top: 2rem; font-size: 0.75rem; color: var(--text-secondary); }
+    </style>
 </head>
 <body>
-    <audio id="bg-music" loop preload="auto">
-        <source src="https://assets.mixkit.co/music/preview/mixkit-deep-meditation-109.mp3" type="audio/mpeg">
-    </audio>
+
+    <!-- तुम्हारा नया प्रीमियम साउंड यहाँ लग गया है -->
     <audio id="sfx-click" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sfx-theme" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-sci-fi-click-900.mp3" type="audio/mpeg">
+        <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <canvas id="particle-canvas"></canvas>
+    <div id="particle-canvas-container"></div>
 
-    <div class="theme-switcher glass-panel">
-        <div class="theme-btn sfx-theme-trigger" data-set-theme="default" style="--btn-color: #00d4ff;"></div>
-        <div class="theme-btn sfx-theme-trigger" data-set-theme="cyberpunk" style="--btn-color: #ff00ff;"></div>
-        <div class="theme-btn sfx-theme-trigger" data-set-theme="emerald" style="--btn-color: #00ff88;"></div>
-        <div class="theme-btn sfx-theme-trigger" data-set-theme="sunset" style="--btn-color: #ff5e00;"></div>
-        <div class="theme-btn sfx-theme-trigger" data-set-theme="crimson" style="--btn-color: #ff003c;"></div>
-        <div class="theme-btn sfx-theme-trigger" data-set-theme="royal" style="--btn-color: #ffd700;"></div>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <i class="ri-atom-line auth-logo"></i>
+            <h1>QMS</h1>
+            <p>क्वांटम मास्टर स्टडी में आपका स्वागत है।<br>अपना सफर शुरू करें।</p>
+            <button class="google-btn sfx-trigger" onclick="window.location.href='dashboard.html'">
+                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google">
+                Google से साइन इन करें
+            </button>
+            <p class="footer-text">© 2026 QMS Learning</p>
+        </div>
     </div>
 
-    <main class="landing-wrapper">
-        <div class="glass-card login-box">
-            <div class="brand-logo"><i class="ri-reactjs-line brand-icon"></i></div>
-            <h1 class="brand-title">क्यू एम एस<span>.</span></h1>
-            <p class="brand-subtitle">Quantum Master Study</p>
-            
-            <div class="features-list">
-                <p><i class="ri-check-double-line"></i> Master <b>Physics</b>.</p>
-                <p><i class="ri-check-double-line"></i> Master <b>Chemistry</b>.</p>
-                <p><i class="ri-check-double-line"></i> Master <b>Mathematics</b>.</p>
-            </div>
-
-            <button class="btn-google sfx-trigger" id="google-login-btn">
-                <i class="ri-google-fill"></i> Continue with Google
-            </button>
-            <p class="footer-text">EST. 2026 • PHASE 1: FOUNDATION</p>
-        </div>
-    </main>
-
     <script src="script.js"></script>
+    <script>
+        document.querySelector('.google-btn').addEventListener('click', () => {
+            const sfx = document.getElementById('sfx-click');
+            if(sfx) { sfx.volume = 1.0; sfx.play().catch(()=>{}); }
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 300);
+        });
+    </script>
 </body>
 </html>
