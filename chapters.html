@@ -4,28 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>अध्याय | क्वांटम मास्टर स्टडी</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="chapters.css">
 </head>
 <body>
 
-    <!-- तुम्हारा नया प्रीमियम साउंड यहाँ लग गया है -->
+    <!-- कस्टम साउंड -->
     <audio id="sfx-click" preload="auto">
         <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="particle-canvas-container"></div>
-
     <div class="dashboard-wrapper">
-        <header class="dash-header glass-panel">
-            <div class="brand-mini sfx-trigger" onclick="window.location.href='subjects.html'" style="cursor:pointer;">
-                <i class="ri-arrow-left-line"></i>
-                <h2>विषयों पर लौटें</h2>
+        <header class="glass-panel" style="display: flex; padding: 1.2rem 1.5rem;">
+            <div class="brand-mini sfx-trigger" onclick="window.location.href='subjects.html'" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
+                <i class="ri-arrow-left-line" style="font-size: 1.2rem;"></i>
+                <h2 style="font-size: 1.1rem;">विषयों पर लौटें</h2>
             </div>
         </header>
 
@@ -43,7 +36,7 @@
                 </div>
                 <div class="progress-stats">
                     <span id="total-chapters-count">कुल अध्याय: 0</span>
-                    <span>0% पूर्ण</span>
+                    <span id="progress-text-display">0% पूर्ण</span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" style="width: 0%;"></div>
@@ -56,7 +49,7 @@
             </div>
 
             <div class="chapters-list" id="dynamic-chapter-list">
-                <!-- Chapters load here -->
+                <!-- Chapters load here via chapters.js -->
             </div>
         </main>
     </div>
