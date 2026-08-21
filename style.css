@@ -1,6 +1,6 @@
 /* ==========================================================================
-   QMS MASTER STYLESHEET (ULTIMATE PREMIUM BUILD)
-   - Detailed UI/UX, 8 Named Themes, Glassmorphism, Responsive Grid
+   QMS MASTER STYLESHEET (ULTIMATE PREMIUM BUILD - 100% FIXED)
+   - Detailed UI/UX, 8 Named Themes, Glassmorphism, Fixed Grid Layouts
 ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap');
@@ -18,7 +18,6 @@
     --font-hindi: 'Noto Sans Devanagari', sans-serif;
 }
 
-/* 8 Themes System */
 :root[data-theme="default"] { --accent-main: #00f0ff; --accent-glow: rgba(0, 240, 255, 0.4); }
 :root[data-theme="purple"] { --accent-main: #b535ff; --accent-glow: rgba(181, 53, 255, 0.4); }
 :root[data-theme="emerald"] { --accent-main: #00ff88; --accent-glow: rgba(0, 255, 136, 0.4); }
@@ -32,15 +31,7 @@
    2. RESET, BASE & CANVAS
 -------------------------------------------------------------------------- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    font-family: var(--font-main);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* Custom Scrollbar */
+body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-main); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
 ::-webkit-scrollbar-thumb { background: var(--accent-main); border-radius: 10px; }
@@ -51,28 +42,13 @@ body {
 /* --------------------------------------------------------------------------
    3. GLASSMORPHISM COMPONENTS
 -------------------------------------------------------------------------- */
-.glass-card {
-    background: rgba(20, 20, 30, 0.6);
-    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--border-glass);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, border-color 0.3s ease;
-}
-.glass-panel {
-    background: rgba(15, 15, 25, 0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-glass);
-}
+.glass-card { background: rgba(20, 20, 30, 0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--border-glass); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.3s ease, border-color 0.3s ease; }
+.glass-panel { background: rgba(15, 15, 25, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-glass); }
 
 /* --------------------------------------------------------------------------
    4. BUTTONS & UI ELEMENTS
 -------------------------------------------------------------------------- */
-.btn-primary-glow {
-    background: var(--accent-main); color: #000; border: none; padding: 15px 24px;
-    border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 15px var(--accent-glow); display: inline-flex; justify-content: center; align-items: center; gap: 8px;
-}
+.btn-primary-glow { background: var(--accent-main); color: #000; border: none; padding: 15px 24px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px var(--accent-glow); display: inline-flex; justify-content: center; align-items: center; gap: 8px; }
 .btn-primary-glow:hover { transform: translateY(-3px); box-shadow: 0 0 25px var(--accent-glow); }
 
 /* --------------------------------------------------------------------------
@@ -87,11 +63,7 @@ body {
 /* --------------------------------------------------------------------------
    6. SPLASH SCREEN (LOADING)
 -------------------------------------------------------------------------- */
-#splash-screen {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #0f0f19; z-index: 100000;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-}
+#splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #0f0f19; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
 .premium-logo { width: 120px; height: 120px; animation: pulseGlow 2s infinite alternate; }
 .orbit { animation: spin 8s linear infinite; transform-origin: 50px 50px; }
 .orbit-reverse { animation: spinReverse 10s linear infinite; transform-origin: 50px 50px; }
@@ -100,26 +72,20 @@ body {
 .loading-bar-fill { width: 0%; height: 100%; background: var(--accent-main); box-shadow: 0 0 15px var(--accent-glow); transition: width 0.1s linear; }
 
 /* --------------------------------------------------------------------------
-   7. DASHBOARD LAYOUT & HEADER
+   7. DASHBOARD LAYOUT
 -------------------------------------------------------------------------- */
 .dash-main-clean { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
 .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; }
 .brand-mini { display: flex; align-items: center; gap: 10px; }
 .mini-qms-logo { width: 35px; height: 35px; }
 .brand-mini h2 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; }
-
-.small-profile-btn {
-    width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent-main);
-    overflow: hidden; cursor: pointer; box-shadow: 0 0 15px var(--accent-glow); transition: 0.3s;
-}
+.small-profile-btn { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent-main); overflow: hidden; cursor: pointer; box-shadow: 0 0 15px var(--accent-glow); transition: 0.3s; }
 .small-profile-btn:hover { transform: scale(1.05); }
 .small-profile-btn img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Dashboard Widgets */
 .welcome-banner { display: flex; justify-content: space-between; align-items: center; padding: 2rem; border-radius: 20px; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.5) 100%); border-left: 5px solid var(--accent-main); margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
 .welcome-text h1 { font-family: var(--font-heading); font-size: 2.2rem; }
 .level-badge { background: var(--accent-glow); border: 1px solid var(--accent-main); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; display: inline-block; margin-top: 10px; }
-
 .quote-box { padding: 1.5rem; text-align: center; font-style: italic; color: var(--accent-main); font-family: var(--font-hindi); margin-bottom: 2rem; background: rgba(0,0,0,0.3); border-radius: 15px; border: 1px dashed var(--accent-main); font-size: 1.1rem; letter-spacing: 0.5px;}
 
 .timer-card { padding: 2rem; text-align: center; margin-bottom: 2.5rem; background: linear-gradient(to top, rgba(15,15,25,0.8), rgba(255,255,255,0.05)); border: 1px solid var(--accent-main); }
@@ -134,9 +100,9 @@ body {
 .stat-icon { font-size: 2rem; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; color: var(--accent-main); }
 
 /* --------------------------------------------------------------------------
-   8. SUBJECTS PAGE LAYOUT
+   8. SUBJECTS & CHAPTERS PAGES (100% FIXED LAYOUT - NO BROKEN GRIDS)
 -------------------------------------------------------------------------- */
-.subjects-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
+.subjects-main, .chapters-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
 .class-selector { display: flex; background: rgba(0,0,0,0.4); padding: 5px; border-radius: 15px; margin-bottom: 2rem; }
 .class-btn { flex: 1; padding: 12px; border: none; background: transparent; color: var(--text-secondary); border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; }
 .class-btn.active { background: var(--accent-main); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
@@ -145,18 +111,53 @@ body {
 .page-subtitle { color: var(--text-secondary); }
 
 .subjects-grid { display: flex; flex-direction: column; gap: 15px; }
-.subject-card { display: flex; align-items: center; padding: 1.5rem; gap: 20px; cursor: pointer; transition: 0.3s; border-left: 4px solid transparent; }
+.subject-card { display: flex !important; align-items: center !important; padding: 1.5rem !important; gap: 20px !important; cursor: pointer; transition: 0.3s; border-left: 4px solid transparent; flex-direction: row !important; }
 .subject-card:hover { background: rgba(255,255,255,0.05); border-left-color: var(--accent-main); transform: translateX(5px); }
-.subject-icon { width: 55px; height: 55px; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; background: rgba(255,255,255,0.05); }
+.subject-icon { width: 55px; height: 55px; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; background: rgba(255,255,255,0.05); flex-shrink: 0; }
 .physics-icon { color: #00f0ff; } .chemistry-icon { color: #b535ff; } .math-icon { color: #00ff88; }
 .subject-details { flex-grow: 1; }
-.subject-details h2 { font-family: var(--font-hindi); font-size: 1.4rem; margin-bottom: 2px; }
-.subject-details p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; }
+.subject-details h2 { font-family: var(--font-hindi); font-size: 1.4rem; margin-bottom: 2px; line-height: 1.2;}
+.subject-details p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; line-height: 1.2;}
 .subject-meta { display: flex; gap: 15px; font-size: 0.8rem; color: #fff; }
-.arrow-icon { font-size: 1.5rem; color: var(--text-secondary); }
+.arrow-icon { font-size: 1.5rem; color: var(--text-secondary); flex-shrink: 0;}
+
+/* CHAPTER HERO CARD FIXED */
+.subject-hero-card { padding: 2rem; border-top: 4px solid var(--accent-main); margin-bottom: 2rem; display: block !important;}
+.hero-content { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+.board-tag { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; width: fit-content; display: inline-block; }
+.hero-title-group { display: flex; align-items: center; gap: 15px; }
+.hero-icon { font-size: 2.5rem; color: var(--accent-main); display: flex; align-items: center; justify-content: center;}
+.hero-title-group h1 { font-family: var(--font-hindi); font-size: 2rem; margin: 0; line-height: 1.2;}
+.hero-title-group p { color: var(--text-secondary); margin: 0; }
+
+.progress-stats { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-secondary); }
+.progress-track { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; display: block; }
+.progress-fill { height: 100%; background: var(--accent-main); box-shadow: 0 0 10px var(--accent-glow); transition: width 0.5s ease; border-radius: 10px; }
+
+/* CHAPTERS LIST (THE REAL FIX FOR YOUR SCREENSHOT) */
+.chapters-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.chapters-header h2 { margin: 0; }
+.chapters-list { display: flex; flex-direction: column; gap: 15px; }
+
+.chapter-card { display: flex !important; flex-direction: row !important; align-items: center !important; padding: 1.2rem !important; gap: 15px !important; transition: 0.3s; cursor: pointer; border-left: 4px solid transparent; }
+.chapter-card:hover:not(.locked) { transform: translateX(5px); border-left-color: var(--accent-main); background: rgba(255,255,255,0.05); }
+
+.chap-num { font-size: 1.5rem; font-family: var(--font-heading); font-weight: 700; color: rgba(255,255,255,0.2); width: 40px; text-align: center; flex-shrink: 0; display: block;}
+.chap-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: center;}
+.chap-details h4 { font-family: var(--font-hindi); font-size: 1.1rem; margin-bottom: 4px; color: #fff; line-height: 1.3;}
+.chap-details p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; line-height: 1.2;}
+.chap-meta { display: flex; gap: 12px; font-size: 0.75rem; color: #fff; opacity: 0.8; align-items: center;}
+.chap-meta span { display: flex; align-items: center; gap: 4px; }
+
+.btn-play { width: 42px !important; height: 42px !important; border-radius: 50% !important; border: none; background: rgba(255,255,255,0.1); color: #fff; display: flex !important; justify-content: center !important; align-items: center !important; font-size: 1.2rem; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
+.chapter-card:hover:not(.locked) .btn-play { background: var(--accent-main); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
+.chapter-card.locked { opacity: 0.5; cursor: not-allowed; }
+.chapter-card.locked .btn-play { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.3); }
+.btn-play.completed { background: #00ff88 !important; color: #000 !important; box-shadow: 0 0 15px rgba(0,255,136,0.4) !important; }
+
 
 /* --------------------------------------------------------------------------
-   9. SETTINGS SIDE PANEL (PROFILE MODAL)
+   9. SETTINGS SIDE PANEL
 -------------------------------------------------------------------------- */
 .profile-side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 420px; height: 100vh; background: rgba(15, 15, 25, 0.98); backdrop-filter: blur(20px); z-index: 9999; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-left: 1px solid rgba(255,255,255,0.05); padding: 2rem 1.5rem; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
 .profile-side-panel.active { right: 0; }
@@ -168,43 +169,12 @@ body {
 .image-upload-wrapper-clean img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-main); box-shadow: 0 0 20px var(--accent-glow);}
 .upload-btn-clean { position: absolute; bottom: 0; right: 0; background: var(--accent-main); color: #000; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 3px solid #12121e; }
 
-/* --- NEW PREMIUM THEME GRID WITH NAMES --- */
-.theme-grid-named {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    padding: 15px 0;
-    margin-bottom: 20px;
-}
-.theme-option-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-.theme-option-card:hover {
-    transform: translateY(-5px);
-}
-.theme-color-circle {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.1);
-    transition: 0.3s;
-}
-.theme-option-card:hover .theme-color-circle {
-    border-color: #fff;
-    box-shadow: 0 0 15px rgba(255,255,255,0.5);
-}
-.theme-name {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-family: var(--font-main);
-    text-align: center;
-    font-weight: 500;
-}
+.theme-grid-named { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 15px 0; margin-bottom: 20px; }
+.theme-option-card { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.3s ease; }
+.theme-option-card:hover { transform: translateY(-5px); }
+.theme-color-circle { width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); transition: 0.3s; }
+.theme-option-card:hover .theme-color-circle { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.5); }
+.theme-name { font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-main); text-align: center; font-weight: 500; }
 
 .setting-section-title { font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-top: 1.5rem; margin-bottom: 10px; color: var(--accent-main); display: flex; align-items: center; gap: 8px; font-family: var(--font-heading);}
 .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -215,15 +185,9 @@ body {
 .overlay-bg.active { display: block; }
 
 /* --------------------------------------------------------------------------
-   12. CUSTOM TOASTS & MODALS (Replaces alert/prompt)
+   10. CUSTOM TOASTS & MODALS
 -------------------------------------------------------------------------- */
-.qms-toast-msg {
-    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-    background: var(--accent-main); color: #000; padding: 12px 24px;
-    border-radius: 50px; font-weight: 600; box-shadow: 0 10px 30px var(--accent-glow);
-    z-index: 10000; display: flex; align-items: center; gap: 8px; font-size: 0.95rem;
-    animation: slideUpToast 0.4s ease forwards; white-space: nowrap;
-}
+.qms-toast-msg { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent-main); color: #000; padding: 12px 24px; border-radius: 50px; font-weight: 600; box-shadow: 0 10px 30px var(--accent-glow); z-index: 10000; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; animation: slideUpToast 0.4s ease forwards; white-space: nowrap; }
 .qms-toast-error { background: #ff4d4d; color: #fff; box-shadow: 0 10px 30px rgba(255, 77, 77, 0.4); }
 
 .qms-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10001; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
