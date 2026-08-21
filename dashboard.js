@@ -1,41 +1,68 @@
 /* =================================================
-   QMS DASHBOARD ENGINE (Pro Version with Particles)
+   QMS DASHBOARD ENGINE (Science Particles & Splash)
 ================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. BACKGROUND PARTICLES LOGIC ---
+    // --- 1. SPLASH SCREEN LOGIC ---
+    const splashScreen = document.getElementById('splash-screen');
+    const loadingBar = document.getElementById('loading-bar');
+    const loadingText = document.getElementById('loading-text');
+    
+    // Animate Loading Bar
+    let progress = 0;
+    const loadingInterval = setInterval(() => {
+        progress += Math.random() * 20;
+        if (progress > 100) progress = 100;
+        loadingBar.style.width = `${progress}%`;
+        
+        if (progress > 30 && progress < 70) loadingText.innerText = 'यूज़र डेटा लोड हो रहा है...';
+        if (progress > 70) loadingText.innerText = 'डैशबोर्ड तैयार है!';
+        
+        if (progress === 100) {
+            clearInterval(loadingInterval);
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => splashScreen.style.visibility = 'hidden', 800);
+            }, 500); // 0.5 sec pause at 100%
+        }
+    }, 250); // Total splash time approx 2-3 seconds
+
+
+    // --- 2. SCIENCE PARTICLES LOGIC ---
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
+    // Physics, Math & Chemistry Symbols
+    const scienceSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ'];
     let particlesArray = [];
+    
     class Particle {
         constructor() {
+            this.symbol = scienceSymbols[Math.floor(Math.random() * scienceSymbols.length)];
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2.5 + 0.5;
-            this.speedY = Math.random() * -0.5 - 0.1;
-            this.opacity = Math.random() * 0.5 + 0.1;
+            this.size = Math.random() * 12 + 10; // Font size
+            this.speedY = Math.random() * -0.6 - 0.2; // Float upwards
+            this.opacity = Math.random() * 0.25 + 0.05; // Subtle visibility
         }
         update() {
             this.y += this.speedY;
-            if (this.y < 0) {
-                this.y = canvas.height;
+            if (this.y < -30) {
+                this.y = canvas.height + 30;
                 this.x = Math.random() * canvas.width;
             }
         }
         draw() {
             ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.font = `${this.size}px "Space Grotesk", sans-serif`;
+            ctx.fillText(this.symbol, this.x, this.y);
         }
     }
     
-    // Create 70 particles for premium feel
-    for (let i = 0; i < 70; i++) { particlesArray.push(new Particle()); }
+    for (let i = 0; i < 45; i++) { particlesArray.push(new Particle()); }
     
     function animateParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -52,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.height = window.innerHeight;
     });
 
-    // --- 2. PREMIUM CUSTOM MODALS ---
+    // --- 3. PREMIUM CUSTOM MODALS ---
     const modalStyle = document.createElement('style');
     modalStyle.innerHTML = `
         .qms-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
@@ -67,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .btn-cancel { background: rgba(255,255,255,0.1); color: #fff; }
         .btn-cancel:hover { background: rgba(255,255,255,0.2); }
         .btn-confirm { background: var(--accent-main); color: #000; }
-        .btn-confirm:hover { box-shadow: 0 0 15px var(--accent-glow); }
         .btn-danger-confirm { background: #ff4d4d; color: #fff; }
     `;
     document.head.appendChild(modalStyle);
@@ -101,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showCustomConfirm(title, callback) {
         modalTitle.innerHTML = `<i class="ri-error-warning-line" style="color: #ff4d4d; font-size: 2rem; display:block; margin-bottom: 5px;"></i> ${title}`;
         modalInput.style.display = 'none';
-        modalConfirm.className = 'qms-modal-btn btn-danger-confirm'; modalConfirm.innerText = 'हाँ, डिलीट करें';
+        modalConfirm.className = 'qms-modal-btn btn-danger-confirm'; modalConfirm.innerText = 'हाँ, लॉगआउट करें';
         modalOverlay.classList.add('active'); currentCallback = callback;
     }
 
@@ -111,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalOverlay.classList.remove('active');
     });
 
-    // --- 3. LOAD USER DATA ---
+    // --- 4. LOAD DATA (Theme, Name, Avatar, Stats) ---
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -130,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('dash-completed-count').innerText = completedCount;
     document.getElementById('dash-total-xp').innerText = completedCount * 50;
 
-    // --- 4. PANEL OPEN/CLOSE LOGIC ---
+    // --- 5. PANEL OPEN/CLOSE LOGIC ---
     const panel = document.getElementById('settings-panel');
     const overlay = document.getElementById('panel-overlay');
     function closePanel() { panel.classList.remove('active'); overlay.classList.remove('active'); }
@@ -139,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('close-panel').addEventListener('click', closePanel);
     overlay.addEventListener('click', closePanel);
 
-    // --- 5. SETTINGS: THEMES (8 Colors) ---
+    // --- 6. SETTINGS: THEMES (8 Colors) ---
     document.querySelectorAll('.theme-dot').forEach(btn => {
         btn.addEventListener('click', () => {
             const newTheme = btn.getAttribute('data-set-theme');
@@ -148,15 +174,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 6. SETTINGS: PDF LOCATION ---
-    const pdfPref = document.getElementById('pdf-location-pref');
-    const savedPdfPref = localStorage.getItem('qms_pdf_pref') || 'default';
-    pdfPref.value = savedPdfPref;
-    pdfPref.addEventListener('change', (e) => {
-        localStorage.setItem('qms_pdf_pref', e.target.value);
+    // --- 7. SETTINGS PREFS (Save Logic) ---
+    ['pdf-location-pref', 'video-quality-pref', 'font-size-pref'].forEach(id => {
+        const el = document.getElementById(id);
+        const saved = localStorage.getItem(`qms_${id}`);
+        if(saved) el.value = saved;
+        el.addEventListener('change', (e) => localStorage.setItem(`qms_${id}`, e.target.value));
     });
 
-    // --- 7. SETTINGS: SOUND & PROFILE EDITS ---
+    // --- 8. SOUND & PROFILE EDITS ---
     const sfxClick = document.getElementById('sfx-click');
     const soundToggle = document.getElementById('sound-toggle');
     let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
@@ -198,8 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('reset-btn').addEventListener('click', () => {
-        showCustomConfirm("चेतावनी<br>क्या आप सच में अपना सारा डेटा और प्रोग्रेस डिलीट करना चाहते हैं?", (confirmed) => {
-            if (confirmed) { localStorage.clear(); window.location.href = "index.html"; }
+        showCustomConfirm("चेतावनी<br>क्या आप लॉगआउट करना चाहते हैं?", (confirmed) => {
+            if (confirmed) { window.location.href = "index.html"; }
         });
     });
 });
