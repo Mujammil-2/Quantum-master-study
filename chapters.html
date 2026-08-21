@@ -9,10 +9,9 @@
 </head>
 <body>
 
-    <!-- कस्टम साउंड -->
-    <audio id="sfx-click" preload="auto">
-        <source src="click.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
+    <!-- जुगनू एनीमेशन के लिए कैनवास -->
+    <canvas id="bg-canvas"></canvas>
 
     <div class="dashboard-wrapper">
         <header class="glass-panel" style="display: flex; padding: 1.2rem 1.5rem;">
@@ -38,22 +37,13 @@
                     <span id="total-chapters-count">कुल अध्याय: 0</span>
                     <span id="progress-text-display">0% पूर्ण</span>
                 </div>
-                <div class="progress-track">
-                    <div class="progress-fill" style="width: 0%;"></div>
-                </div>
+                <div class="progress-track"><div class="progress-fill" style="width: 0%;"></div></div>
             </div>
 
-            <div class="chapters-header">
-                <h2>सभी अध्याय</h2>
-                <i class="ri-sort-desc"></i>
-            </div>
-
-            <div class="chapters-list" id="dynamic-chapter-list">
-                <!-- Chapters load here via chapters.js -->
-            </div>
+            <div class="chapters-header"><h2>सभी अध्याय</h2><i class="ri-sort-desc"></i></div>
+            <div class="chapters-list" id="dynamic-chapter-list"></div>
         </main>
     </div>
-
     <script src="chapters.js"></script>
 </body>
 </html>
