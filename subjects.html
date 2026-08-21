@@ -10,14 +10,13 @@
 <body>
 
     <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
-    <!-- जुगनू एनीमेशन के लिए कैनवास -->
-    <canvas id="bg-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas> <!-- जुगनू एनीमेशन के लिए -->
 
     <div class="dashboard-wrapper">
         <header class="glass-panel" style="display: flex; padding: 1.2rem 1.5rem;">
             <div class="brand-mini sfx-trigger" onclick="window.location.href='dashboard.html'" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
-                <i class="ri-arrow-left-line" style="font-size: 1.2rem;"></i>
-                <h2 style="font-size: 1.1rem;">डैशबोर्ड पर लौटें</h2>
+                <i class="ri-arrow-left-line" style="font-size: 1.5rem; color: var(--accent-main);"></i>
+                <h2 style="font-size: 1.2rem;">डैशबोर्ड पर लौटें</h2>
             </div>
         </header>
 
@@ -26,29 +25,47 @@
                 <button class="class-btn active sfx-trigger">कक्षा 12वीं (Board)</button>
                 <button class="class-btn sfx-trigger">कक्षा 11वीं (Foundation)</button>
             </div>
+            
             <div class="subjects-header">
                 <h1 class="page-title">अपना विषय चुनें</h1>
                 <p class="page-subtitle">क्वांटम मास्टर स्टडी का संपूर्ण NCERT पाठ्यक्रम</p>
             </div>
+            
             <div class="subjects-grid">
                 <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=physics'">
                     <div class="subject-icon physics-icon"><i class="ri-flashlight-fill"></i></div>
-                    <div class="subject-details"><h2>भौतिक विज्ञान</h2><p>Physics (PCM)</p></div>
+                    <div class="subject-details">
+                        <h2>भौतिक विज्ञान</h2>
+                        <p>Physics (PCM)</p>
+                        <div class="subject-meta"><span>14 अध्याय</span><span>प्रोग्रेस उपलब्ध</span></div>
+                    </div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
+                
                 <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=chemistry'">
                     <div class="subject-icon chemistry-icon"><i class="ri-test-tube-fill"></i></div>
-                    <div class="subject-details"><h2>रसायन विज्ञान</h2><p>Chemistry (PCM)</p></div>
+                    <div class="subject-details">
+                        <h2>रसायन विज्ञान</h2>
+                        <p>Chemistry (PCM)</p>
+                        <div class="subject-meta"><span>10 अध्याय</span><span>प्रोग्रेस उपलब्ध</span></div>
+                    </div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
+                
                 <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=mathematics'">
                     <div class="subject-icon math-icon"><i class="ri-functions"></i></div>
-                    <div class="subject-details"><h2>गणित</h2><p>Mathematics (PCM)</p></div>
+                    <div class="subject-details">
+                        <h2>गणित</h2>
+                        <p>Mathematics (PCM)</p>
+                        <div class="subject-meta"><span>13 अध्याय</span><span>प्रोग्रेस उपलब्ध</span></div>
+                    </div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
             </div>
         </main>
     </div>
-    <script src="subjects.js"></script>
+    
+    <!-- हम यहाँ डैशबोर्ड की स्क्रिप्ट लिंक कर रहे हैं ताकि जुगनू इफ़ेक्ट और साउंड काम करे -->
+    <script src="dashboard.js"></script>
 </body>
 </html>
