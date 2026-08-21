@@ -9,100 +9,87 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="subjects.css">
 </head>
 <body>
 
+    <!-- तुम्हारा नया प्रीमियम साउंड यहाँ लग गया है -->
     <audio id="sfx-click" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
+        <source src="click.mp3" type="audio/mpeg">
     </audio>
 
     <div id="particle-canvas-container"></div>
 
-    <div class="subjects-wrapper">
-        <!-- टॉप नेविगेशन -->
+    <div class="dashboard-wrapper">
         <header class="dash-header glass-panel">
             <div class="brand-mini sfx-trigger" onclick="window.location.href='dashboard.html'" style="cursor:pointer;">
                 <i class="ri-arrow-left-line"></i>
                 <h2>डैशबोर्ड पर लौटें</h2>
             </div>
-            <div class="user-profile">
-                <div class="avatar"><i class="ri-book-read-fill"></i></div>
-            </div>
         </header>
 
         <main class="subjects-main">
-            <!-- क्लास सेलेक्टर -->
-            <div class="class-selector glass-panel">
-                <button class="class-btn active sfx-trigger" data-class="12">कक्षा 12वीं (Board)</button>
-                <button class="class-btn sfx-trigger" data-class="11">कक्षा 11वीं (Foundation)</button>
+            <div class="class-selector glass-card">
+                <button class="class-btn active sfx-trigger">कक्षा 12वीं (Board)</button>
+                <button class="class-btn sfx-trigger">कक्षा 11वीं (Foundation)</button>
             </div>
 
-            <div class="header-text">
-                <h1 class="page-title">अपना विषय <span class="gradient-text">चुनें</span></h1>
-                <p>क्वांटम मास्टर स्टडी का संपूर्ण NCERT पाठ्यक्रम</p>
+            <div class="subjects-header">
+                <h1 class="page-title">अपना विषय चुनें</h1>
+                <p class="page-subtitle">क्वांटम मास्टर स्टडी का संपूर्ण NCERT पाठ्यक्रम</p>
             </div>
 
-            <!-- विषय ग्रिड (Subjects Grid) -->
             <div class="subjects-grid">
-                
-                <!-- Physics -->
-                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=physics'">
-                    <div class="sub-icon" style="color: #00d4ff; background: rgba(0,212,255,0.1);"><i class="ri-flashlight-fill"></i></div>
-                    <div class="sub-content">
-                        <h3>भौतिक विज्ञान</h3>
+                <div class="subject-card glass-card sfx-trigger" data-subject="physics">
+                    <div class="subject-icon physics-icon"><i class="ri-flashlight-fill"></i></div>
+                    <div class="subject-details">
+                        <h2>भौतिक विज्ञान</h2>
                         <p>Physics (PCM)</p>
-                        <div class="sub-meta"><span>14 अध्याय</span> <span>0% पूर्ण</span></div>
+                        <div class="subject-meta"><span>14 अध्याय</span><span>0% पूर्ण</span></div>
                     </div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
 
-                <!-- Chemistry -->
-                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=chemistry'">
-                    <div class="sub-icon" style="color: #b535ff; background: rgba(181,53,255,0.1);"><i class="ri-test-tube-fill"></i></div>
-                    <div class="sub-content">
-                        <h3>रसायन विज्ञान</h3>
+                <div class="subject-card glass-card sfx-trigger" data-subject="chemistry">
+                    <div class="subject-icon chemistry-icon"><i class="ri-test-tube-fill"></i></div>
+                    <div class="subject-details">
+                        <h2>रसायन विज्ञान</h2>
                         <p>Chemistry (PCM)</p>
-                        <div class="sub-meta"><span>10 अध्याय</span> <span>0% पूर्ण</span></div>
+                        <div class="subject-meta"><span>10 अध्याय</span><span>0% पूर्ण</span></div>
                     </div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
 
-                <!-- Mathematics -->
-                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=mathematics'">
-                    <div class="sub-icon" style="color: #00ff88; background: rgba(0,255,136,0.1);"><i class="ri-functions"></i></div>
-                    <div class="sub-content">
-                        <h3>गणित</h3>
+                <div class="subject-card glass-card sfx-trigger" data-subject="mathematics">
+                    <div class="subject-icon math-icon"><i class="ri-functions"></i></div>
+                    <div class="subject-details">
+                        <h2>गणित</h2>
                         <p>Mathematics (PCM)</p>
-                        <div class="sub-meta"><span>13 अध्याय</span> <span>0% पूर्ण</span></div>
+                        <div class="subject-meta"><span>13 अध्याय</span><span>0% पूर्ण</span></div>
                     </div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
 
-                <!-- Hindi -->
-                <div class="subject-card glass-card sfx-trigger">
-                    <div class="sub-icon" style="color: #ff9900; background: rgba(255,153,0,0.1);"><i class="ri-translate"></i></div>
-                    <div class="sub-content">
-                        <h3>हिन्दी</h3>
+                <div class="subject-card glass-card locked sfx-trigger">
+                    <div class="subject-icon lang-icon"><i class="ri-translate-2"></i></div>
+                    <div class="subject-details">
+                        <h2>हिन्दी</h2>
                         <p>Hindi (Core)</p>
-                        <div class="sub-meta"><span>आरोह + वितान</span> <span>0% पूर्ण</span></div>
+                        <div class="subject-meta"><span>आरोह + वितान</span><span>0% पूर्ण</span></div>
                     </div>
-                    <i class="ri-lock-line lock-icon" title="जल्द आ रहा है"></i>
+                    <i class="ri-lock-2-line arrow-icon"></i>
                 </div>
 
-                <!-- English -->
-                <div class="subject-card glass-card sfx-trigger">
-                    <div class="sub-icon" style="color: #ff3366; background: rgba(255,51,102,0.1);"><i class="ri-english-input"></i></div>
-                    <div class="sub-content">
-                        <h3>अंग्रेज़ी</h3>
+                <div class="subject-card glass-card locked sfx-trigger">
+                    <div class="subject-icon eng-icon">En</div>
+                    <div class="subject-details">
+                        <h2>अंग्रेज़ी</h2>
                         <p>English (Core)</p>
-                        <div class="sub-meta"><span>Flamingo + Vistas</span> <span>0% पूर्ण</span></div>
+                        <div class="subject-meta"><span>Flamingo + Vistas</span><span>0% पूर्ण</span></div>
                     </div>
-                    <i class="ri-lock-line lock-icon" title="जल्द आ रहा है"></i>
+                    <i class="ri-lock-2-line arrow-icon"></i>
                 </div>
-
             </div>
         </main>
     </div>
