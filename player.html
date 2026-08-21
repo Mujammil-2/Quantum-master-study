@@ -9,9 +9,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="player.css">
+    <style>
+        /* FIX: Prevents the giant face bug */
+        .header-profile-fix {
+            width: 42px; height: 42px; border-radius: 50%; 
+            border: 2px solid var(--accent-main); overflow: hidden; 
+            cursor: pointer; box-shadow: 0 0 10px rgba(0,240,255,0.2);
+        }
+        .header-profile-fix img { width: 100%; height: 100%; object-fit: cover; }
+    </style>
 </head>
 <body>
 
@@ -22,12 +30,14 @@
     <div id="particle-canvas-container"></div>
 
     <div class="player-wrapper">
-        <header class="dash-header glass-panel">
+        <header class="dash-header glass-panel" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="brand-mini sfx-trigger" id="back-to-chapters" style="cursor:pointer;">
                 <i class="ri-arrow-left-line"></i>
                 <h2>अध्यायों पर लौटें</h2>
             </div>
-            <div class="user-profile sfx-trigger" onclick="window.location.href='profile.html'" style="cursor:pointer;">
+            
+            <!-- FIX IMPLEMENTED HERE (Clicking goes to dashboard where settings live) -->
+            <div class="header-profile-fix sfx-trigger" onclick="window.location.href='dashboard.html'" title="डैशबोर्ड पर जाएँ">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" id="nav-profile-img" alt="Profile">
             </div>
         </header>
@@ -36,21 +46,19 @@
             
             <div class="video-section span-2">
                 <div class="video-container glass-card">
-                    <iframe id="main-video" src="https://www.youtube.com/embed/LXb3EKWsInQ" title="QMS Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe id="main-video" src="https://www.youtube.com/embed/ysz5S6PUM-U" title="QMS Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
                 
                 <div class="video-info glass-card">
                     <span class="tag" id="player-subject-tag">Subject</span>
-                    <h1 id="player-chapter-title">अध्याय का नाम लोड हो रहा है...</h1>
+                    <h1 id="player-chapter-title">अध्याय लोड हो रहा है...</h1>
                     <p id="player-chapter-subtitle">Chapter Subtitle</p>
                     
                     <div class="action-buttons">
-                        <!-- PDF View & Download Group -->
                         <div class="notes-action-group">
                             <button class="btn-secondary sfx-trigger" id="btn-view-notes"><i class="ri-eye-line"></i> नोट्स पढ़ें</button>
                             <button class="btn-icon sfx-trigger" id="btn-download-notes" title="पीडीएफ डाउनलोड करें"><i class="ri-download-2-line"></i></button>
                         </div>
-
                         <button class="btn-primary-glow sfx-trigger" id="mark-complete-btn"><i class="ri-check-double-line"></i> पूर्ण चिह्नित करें</button>
                     </div>
                 </div>
