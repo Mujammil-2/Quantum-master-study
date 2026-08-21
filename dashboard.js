@@ -1,68 +1,160 @@
-/* =================================================
-   QMS DASHBOARD ENGINE (Science Particles & Splash)
-================================================= */
+/* =========================================================================
+   QMS DASHBOARD MASTER ENGINE
+   Features: Firefly Particles, Pomodoro Timer, Dynamic Quotes, Premium Modals
+========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- 1. SPLASH SCREEN LOGIC ---
+
+    // ==========================================
+    // 1. SPLASH SCREEN LOGIC (LOADING)
+    // ==========================================
     const splashScreen = document.getElementById('splash-screen');
     const loadingBar = document.getElementById('loading-bar');
     const loadingText = document.getElementById('loading-text');
     
-    // Animate Loading Bar
     let progress = 0;
     const loadingInterval = setInterval(() => {
-        progress += Math.random() * 20;
+        progress += Math.random() * 15;
         if (progress > 100) progress = 100;
         loadingBar.style.width = `${progress}%`;
         
-        if (progress > 30 && progress < 70) loadingText.innerText = 'यूज़र डेटा लोड हो रहा है...';
-        if (progress > 70) loadingText.innerText = 'डैशबोर्ड तैयार है!';
+        if (progress > 30 && progress < 70) loadingText.innerText = 'यूज़र प्रोफाइल सिंक्रनाइज़ हो रही है...';
+        if (progress > 70) loadingText.innerText = 'क्वांटम इंजन लोड हो रहा है...';
         
         if (progress === 100) {
             clearInterval(loadingInterval);
             setTimeout(() => {
                 splashScreen.style.opacity = '0';
                 setTimeout(() => splashScreen.style.visibility = 'hidden', 800);
-            }, 500); // 0.5 sec pause at 100%
+            }, 600); 
         }
-    }, 250); // Total splash time approx 2-3 seconds
+    }, 200);
 
+    // ==========================================
+    // 2. DYNAMIC GREETING & MOTIVATIONAL QUOTES
+    // ==========================================
+    const hour = new Date().getHours();
+    let greetingText = "नमस्ते";
+    if (hour < 12) greetingText = "सुप्रभात (Good Morning)";
+    else if (hour < 18) greetingText = "शुभ दोपहर (Good Afternoon)";
+    else greetingText = "शुभ संध्या (Good Evening)";
+    document.getElementById('dynamic-greeting').innerText = greetingText;
 
-    // --- 2. SCIENCE PARTICLES LOGIC ---
+    const quotes = [
+        "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।",
+        "जितना कठिन संघर्ष होगा, जीत उतनी ही शानदार होगी।",
+        "सफलता की शुरुआत हमेशा 'मैं कर सकता हूँ' से होती है।",
+        "ज्ञान वह निवेश है जिसका मुनाफा जीवन भर मिलता है।",
+        "ब्रह्मांड को समझने के लिए पहले खुद पर विश्वास करना पड़ता है।"
+    ];
+    document.getElementById('daily-quote').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+
+    // ==========================================
+    // 3. POMODORO FOCUS TIMER (25 Minutes)
+    // ==========================================
+    let timerInterval;
+    let timeLeft = 25 * 60; // 25 minutes in seconds
+    let isTimerRunning = false;
+    const timerDisplay = document.getElementById('timer-display');
+    const timerStartBtn = document.getElementById('timer-start-btn');
+    const timerResetBtn = document.getElementById('timer-reset-btn');
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    timerStartBtn.addEventListener('click', () => {
+        if (!isTimerRunning) {
+            isTimerRunning = true;
+            timerStartBtn.innerText = "पॉज़ (Pause)";
+            timerStartBtn.style.background = "#ffc107";
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    isTimerRunning = false;
+                    alert("शानदार! आपका 25 मिनट का फोकस सेशन पूरा हुआ। 5 मिनट का ब्रेक लें।");
+                    timeLeft = 25 * 60;
+                    updateTimerDisplay();
+                    timerStartBtn.innerText = "स्टार्ट (Start)";
+                    timerStartBtn.style.background = "var(--accent-main)";
+                }
+            }, 1000);
+        } else {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerStartBtn.innerText = "रिज्यूम (Resume)";
+            timerStartBtn.style.background = "var(--accent-main)";
+        }
+    });
+
+    timerResetBtn.addEventListener('click', () => {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        timeLeft = 25 * 60;
+        updateTimerDisplay();
+        timerStartBtn.innerText = "स्टार्ट (Start)";
+        timerStartBtn.style.background = "var(--accent-main)";
+    });
+
+    // ==========================================
+    // 4. FIREFLY PARTICLES (GLOWING MATH/SCIENCE SYMBOLS)
+    // ==========================================
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    // Physics, Math & Chemistry Symbols
     const scienceSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ'];
     let particlesArray = [];
     
-    class Particle {
+    class FireflyParticle {
         constructor() {
             this.symbol = scienceSymbols[Math.floor(Math.random() * scienceSymbols.length)];
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 12 + 10; // Font size
-            this.speedY = Math.random() * -0.6 - 0.2; // Float upwards
-            this.opacity = Math.random() * 0.25 + 0.05; // Subtle visibility
+            this.size = Math.random() * 15 + 10; // Font size 10 to 25
+            this.speedX = Math.random() * 0.5 - 0.25; // Gentle horizontal drift
+            this.speedY = Math.random() * -0.8 - 0.2; // Float upwards
+            this.blinkSpeed = Math.random() * 0.05 + 0.02; // Speed of blinking
+            this.angle = Math.random() * Math.PI * 2; // Starting phase for blink
         }
         update() {
             this.y += this.speedY;
+            this.x += this.speedX;
+            this.angle += this.blinkSpeed; // Increment angle for sine wave
+            
+            // Loop around screen
             if (this.y < -30) {
                 this.y = canvas.height + 30;
                 this.x = Math.random() * canvas.width;
             }
+            if (this.x < -30 || this.x > canvas.width + 30) this.speedX *= -1;
         }
         draw() {
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            // Get current theme color for the glowing effect dynamically
+            const rootStyle = getComputedStyle(document.documentElement);
+            const accentColor = rootStyle.getPropertyValue('--accent-main').trim() || '#00f0ff';
+            
+            // Calculate opacity using sine wave (0.1 to 0.9) to simulate Firefly blink
+            let currentOpacity = ((Math.sin(this.angle) + 1) / 2) * 0.8 + 0.1;
+            
+            ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
+            ctx.shadowBlur = currentOpacity * 20; // Glow gets stronger as it gets brighter
+            ctx.shadowColor = accentColor; // The glow matches the theme!
             ctx.font = `${this.size}px "Space Grotesk", sans-serif`;
             ctx.fillText(this.symbol, this.x, this.y);
+            
+            ctx.shadowBlur = 0; // Reset for next items
         }
     }
     
-    for (let i = 0; i < 45; i++) { particlesArray.push(new Particle()); }
+    // Create 50 Fireflies
+    for (let i = 0; i < 50; i++) { particlesArray.push(new FireflyParticle()); }
     
     function animateParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -79,7 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.height = window.innerHeight;
     });
 
-    // --- 3. PREMIUM CUSTOM MODALS ---
+    // ==========================================
+    // 5. PREMIUM CUSTOM MODALS (UI ALERTS)
+    // ==========================================
     const modalStyle = document.createElement('style');
     modalStyle.innerHTML = `
         .qms-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
@@ -137,11 +231,13 @@ document.addEventListener('DOMContentLoaded', () => {
         modalOverlay.classList.remove('active');
     });
 
-    // --- 4. LOAD DATA (Theme, Name, Avatar, Stats) ---
+    // ==========================================
+    // 6. INITIAL DATA LOAD & THEME MANAGEMENT
+    // ==========================================
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
-    const savedName = localStorage.getItem('qms_user_name') || 'Alina Sami';
+    const savedName = localStorage.getItem('qms_user_name') || 'Student';
     document.getElementById('dash-user-name').innerText = savedName;
     document.getElementById('panel-user-name').innerText = savedName;
 
@@ -156,7 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('dash-completed-count').innerText = completedCount;
     document.getElementById('dash-total-xp').innerText = completedCount * 50;
 
-    // --- 5. PANEL OPEN/CLOSE LOGIC ---
+    // ==========================================
+    // 7. SETTINGS PANEL LOGIC
+    // ==========================================
     const panel = document.getElementById('settings-panel');
     const overlay = document.getElementById('panel-overlay');
     function closePanel() { panel.classList.remove('active'); overlay.classList.remove('active'); }
@@ -165,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('close-panel').addEventListener('click', closePanel);
     overlay.addEventListener('click', closePanel);
 
-    // --- 6. SETTINGS: THEMES (8 Colors) ---
+    // 8 Themes switching logic
     document.querySelectorAll('.theme-dot').forEach(btn => {
         btn.addEventListener('click', () => {
             const newTheme = btn.getAttribute('data-set-theme');
@@ -174,26 +272,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 7. SETTINGS PREFS (Save Logic) ---
-    ['pdf-location-pref', 'video-quality-pref', 'font-size-pref'].forEach(id => {
+    // PDF and Video Prefs
+    ['pdf-location-pref', 'video-quality-pref'].forEach(id => {
         const el = document.getElementById(id);
         const saved = localStorage.getItem(`qms_${id}`);
         if(saved) el.value = saved;
         el.addEventListener('change', (e) => localStorage.setItem(`qms_${id}`, e.target.value));
     });
 
-    // --- 8. SOUND & PROFILE EDITS ---
+    // ==========================================
+    // 8. SOUND FX & PROFILE EDITS
+    // ==========================================
     const sfxClick = document.getElementById('sfx-click');
     const soundToggle = document.getElementById('sound-toggle');
     let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
+    
+    // Custom Checkbox UI styling update
+    function updateToggleUI(checkbox) {
+        if(checkbox.checked) {
+            checkbox.nextElementSibling.style.backgroundColor = 'var(--accent-main)';
+            checkbox.nextElementSibling.style.boxShadow = '0 0 10px var(--accent-glow)';
+        } else {
+            checkbox.nextElementSibling.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            checkbox.nextElementSibling.style.boxShadow = 'none';
+        }
+    }
+    
     soundToggle.checked = isSoundOn;
+    updateToggleUI(soundToggle);
+    
     soundToggle.addEventListener('change', (e) => {
-        isSoundOn = e.target.checked; localStorage.setItem('qms_sound', isSoundOn ? 'on' : 'off');
+        isSoundOn = e.target.checked; 
+        localStorage.setItem('qms_sound', isSoundOn ? 'on' : 'off');
+        updateToggleUI(e.target);
     });
 
     document.querySelectorAll('.sfx-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (isSoundOn && sfxClick) { sfxClick.currentTime = 0; sfxClick.volume = 0.4; sfxClick.play().catch(()=>{}); }
+            if (isSoundOn && sfxClick) { sfxClick.currentTime = 0; sfxClick.volume = 1.0; sfxClick.play().catch(()=>{}); }
         });
     });
 
@@ -212,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('edit-name-btn').addEventListener('click', function() {
-        const currentName = localStorage.getItem('qms_user_name') || 'Alina Sami';
+        const currentName = localStorage.getItem('qms_user_name') || 'Student';
         showCustomPrompt("अपना नया नाम दर्ज करें", currentName, (newName) => {
             if(newName && newName.trim() !== "") {
                 const cleanName = newName.trim();
