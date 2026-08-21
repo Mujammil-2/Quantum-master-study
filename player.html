@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>स्टडी वर्कस्पेस | क्वांटम मास्टर स्टडी</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="player.css">
@@ -18,63 +14,35 @@
 </head>
 <body>
 
-    <!-- तुम्हारा नया प्रीमियम साउंड यहाँ लग गया है -->
-    <audio id="sfx-click" preload="auto">
-        <source src="click.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="particle-canvas-container"></div>
+    <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
+    <canvas id="bg-canvas"></canvas>
 
     <div class="player-wrapper">
         <header class="dash-header glass-panel" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="brand-mini sfx-trigger" id="back-to-chapters" style="cursor:pointer;">
-                <i class="ri-arrow-left-line"></i>
-                <h2>अध्यायों पर लौटें</h2>
+                <i class="ri-arrow-left-line"></i><h2>अध्यायों पर लौटें</h2>
             </div>
-            
-            <div class="header-profile-fix sfx-trigger" onclick="window.location.href='dashboard.html'" title="डैशबोर्ड पर जाएँ">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" id="nav-profile-img" alt="Profile">
+            <div class="header-profile-fix sfx-trigger" onclick="window.location.href='dashboard.html'">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" id="nav-profile-img" alt="Profile">
             </div>
         </header>
 
         <main class="player-grid">
             <div class="video-section span-2">
                 <div class="video-container glass-card">
-                    <iframe id="main-video" src="https://www.youtube.com/embed/ysz5S6PUM-U" title="QMS Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe id="main-video" src="https://www.youtube.com/embed/ysz5S6PUM-U" title="QMS Video Player" frameborder="0" allowfullscreen></iframe>
                 </div>
-                
                 <div class="video-info glass-card">
                     <span class="tag" id="player-subject-tag">Subject</span>
                     <h1 id="player-chapter-title">अध्याय लोड हो रहा है...</h1>
-                    <p id="player-chapter-subtitle">Chapter Subtitle</p>
-                    
-                    <div class="action-buttons">
-                        <div class="notes-action-group">
-                            <button class="btn-secondary sfx-trigger" id="btn-view-notes"><i class="ri-eye-line"></i> नोट्स पढ़ें</button>
-                            <button class="btn-icon sfx-trigger" id="btn-download-notes" title="पीडीएफ डाउनलोड करें"><i class="ri-download-2-line"></i></button>
-                        </div>
+                    <div class="action-buttons" style="margin-top: 20px;">
+                        <button class="btn-secondary sfx-trigger" id="btn-view-notes"><i class="ri-eye-line"></i> नोट्स पढ़ें</button>
                         <button class="btn-primary-glow sfx-trigger" id="mark-complete-btn"><i class="ri-check-double-line"></i> पूर्ण चिह्नित करें</button>
                     </div>
                 </div>
             </div>
-
-            <div class="syllabus-section">
-                <div class="glass-card topics-card">
-                    <div class="card-header">
-                        <h3><i class="ri-list-check-2"></i> इस अध्याय के टॉपिक्स</h3>
-                    </div>
-                    <ul class="topic-list">
-                        <li class="active sfx-trigger"><i class="ri-play-circle-fill"></i><span>1. प्रस्तावना और बेसिक कॉन्सेप्ट्स</span></li>
-                        <li class="sfx-trigger"><i class="ri-play-circle-line"></i><span>2. महत्वपूर्ण सूत्र (Formulas)</span></li>
-                        <li class="sfx-trigger"><i class="ri-play-circle-line"></i><span>3. NCERT के उदाहरण</span></li>
-                        <li class="sfx-trigger"><i class="ri-play-circle-line"></i><span>4. अभ्यास प्रश्न (Exercise)</span></li>
-                        <li class="locked"><i class="ri-lock-2-line"></i><span>5. पिछले वर्षों के प्रश्न (PYQs)</span></li>
-                    </ul>
-                </div>
-            </div>
         </main>
     </div>
-
     <script src="player.js"></script>
 </body>
 </html>
