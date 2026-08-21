@@ -1,247 +1,132 @@
 /* =================================================
-   QMS CORE STYLES & MULTI-THEME ENGINE (Phase 1)
+   QMS MASTER STYLESHEET (Pro-Level Global UI)
 ================================================= */
 
-/* --- 8 PREMIUM THEMES (CSS VARIABLES) --- */
-:root[data-theme="default"] {
-    --accent-main: #00d4ff;
-    --accent-glow: rgba(0, 212, 255, 0.5);
-    --bg-base: #050914;
-    --bg-glass: rgba(13, 27, 62, 0.4);
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap');
 
-:root[data-theme="cyberpunk"] {
-    --accent-main: #ff00ff;
-    --accent-glow: rgba(255, 0, 255, 0.5);
-    --bg-base: #0a0014;
-    --bg-glass: rgba(40, 10, 50, 0.4);
-}
-
-:root[data-theme="emerald"] {
-    --accent-main: #00ff88;
-    --accent-glow: rgba(0, 255, 136, 0.5);
-    --bg-base: #02120a;
-    --bg-glass: rgba(10, 40, 25, 0.4);
-}
-
-:root[data-theme="sunset"] {
-    --accent-main: #ff5e00;
-    --accent-glow: rgba(255, 94, 0, 0.5);
-    --bg-base: #140500;
-    --bg-glass: rgba(62, 20, 5, 0.4);
-}
-
-:root[data-theme="crimson"] {
-    --accent-main: #ff003c;
-    --accent-glow: rgba(255, 0, 60, 0.5);
-    --bg-base: #120202;
-    --bg-glass: rgba(50, 10, 10, 0.4);
-}
-
-:root[data-theme="royal"] {
-    --accent-main: #ffd700;
-    --accent-glow: rgba(255, 215, 0, 0.5);
-    --bg-base: #0f0c00;
-    --bg-glass: rgba(40, 35, 10, 0.4);
-}
-
-/* --- COMMON VARIABLES --- */
+/* --- 1. GLOBAL VARIABLES & 8 PREMIUM THEMES --- */
 :root {
-    --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.6);
+    --bg-dark: #0f0f19;
+    --text-main: #ffffff;
+    --text-secondary: #a0a0b0;
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --font-main: 'Inter', sans-serif;
     --font-heading: 'Space Grotesk', sans-serif;
-    --font-ui: 'Inter', sans-serif;
     --font-hindi: 'Noto Sans Devanagari', sans-serif;
-    --border-glass: rgba(255, 255, 255, 0.1);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* 8 Themes (यह ना होने से सफ़ेद स्क्रीन आ रही थी) */
+:root[data-theme="default"] { --accent-main: #00f0ff; --accent-glow: rgba(0, 240, 255, 0.4); }
+:root[data-theme="purple"] { --accent-main: #b535ff; --accent-glow: rgba(181, 53, 255, 0.4); }
+:root[data-theme="emerald"] { --accent-main: #00ff88; --accent-glow: rgba(0, 255, 136, 0.4); }
+:root[data-theme="crimson"] { --accent-main: #ff3366; --accent-glow: rgba(255, 51, 102, 0.4); }
+:root[data-theme="gold"] { --accent-main: #ffc107; --accent-glow: rgba(255, 193, 7, 0.4); }
+:root[data-theme="royal"] { --accent-main: #4169e1; --accent-glow: rgba(65, 105, 225, 0.4); }
+:root[data-theme="sunset"] { --accent-main: #ff7f50; --accent-glow: rgba(255, 127, 80, 0.4); }
+:root[data-theme="neonpink"] { --accent-main: #ff00ff; --accent-glow: rgba(255, 0, 255, 0.4); }
 
+/* --- 2. RESET & BASE --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-    background-color: var(--bg-base);
-    color: var(--text-primary);
-    font-family: var(--font-ui);
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-main);
     overflow-x: hidden;
-    transition: background-color 0.5s ease;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Particle Background */
-#particle-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* --- GLASSMORPHISM UTILITIES --- */
-.glass-panel {
-    background: var(--bg-glass);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-glass);
-    transition: background 0.5s ease, border-color 0.5s ease;
-}
-
+/* --- 3. GLASSMORPHISM CARDS --- */
 .glass-card {
-    background: var(--bg-glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(20, 20, 30, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--border-glass);
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.5s ease;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-/* --- THEME SWITCHER UI --- */
-.theme-switcher {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100;
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 50px;
-    animation: fadeInDown 1s ease;
+.glass-panel {
+    background: rgba(15, 15, 25, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-glass);
 }
 
-.theme-btn {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: var(--btn-color);
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.theme-btn:hover {
-    transform: scale(1.2);
-    box-shadow: 0 0 10px var(--btn-color);
-}
-
-/* --- LANDING PAGE LAYOUT --- */
-.landing-wrapper {
-    position: relative;
-    z-index: 10;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.login-box {
-    width: 100%;
-    max-width: 450px;
-    padding: 3rem 2rem;
-    text-align: center;
-    border-top: 1px solid var(--accent-main);
-    animation: fadeUp 1s ease;
-}
-
-.brand-icon {
-    font-size: 4rem;
-    color: var(--accent-main);
-    filter: drop-shadow(0 0 20px var(--accent-glow));
-    transition: color 0.5s ease, filter 0.5s ease;
-}
-
-.brand-title {
-    font-family: var(--font-heading);
-    font-size: 3.5rem;
-    letter-spacing: 2px;
-    margin-top: 1rem;
-}
-
-.brand-title span {
-    color: var(--accent-main);
-    transition: color 0.5s ease;
-}
-
-.brand-subtitle {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 2.5rem;
-}
-
-.features-list {
-    text-align: left;
-    max-width: 250px;
-    margin: 0 auto 2.5rem auto;
-}
-
-.features-list p {
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-    color: var(--text-secondary);
-}
-
-.features-list i {
-    color: var(--accent-main);
-    margin-right: 10px;
-    transition: color 0.5s ease;
-}
-
-.features-list b {
-    color: var(--text-primary);
-    font-family: var(--font-heading);
-}
-
-/* Google Button */
-.btn-google {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    padding: 15px;
-    border-radius: 14px;
-    border: 1px solid var(--accent-main);
-    background: rgba(0,0,0,0.4);
-    color: var(--text-primary);
-    font-size: 1.1rem;
-    font-family: var(--font-heading);
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s ease;
-    box-shadow: 0 0 15px var(--accent-glow);
-}
-
-.btn-google:hover {
+/* --- 4. GLOBAL BUTTONS --- */
+.btn-primary-glow {
     background: var(--accent-main);
     color: #000;
-    box-shadow: 0 0 30px var(--accent-glow);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 15px var(--accent-glow);
+    display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+}
+.btn-primary-glow:hover {
     transform: translateY(-3px);
+    box-shadow: 0 0 25px var(--accent-glow);
 }
 
-.btn-google i {
-    font-size: 1.4rem;
-}
-
-.footer-text {
-    margin-top: 2rem;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    letter-spacing: 2px;
-}
-
-/* Animations */
+/* --- 5. ANIMATIONS --- */
 @keyframes fadeUp {
-    0% { opacity: 0; transform: translateY(30px); }
-    100% { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeInDown {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
+/* --- 6. SUBJECTS & CHAPTERS LAYOUT (FIXED) --- */
+/* यह कोड न होने की वजह से सब्जेक्ट पेज बिगड़ गया था */
+.subjects-main, .chapters-main {
+    max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease;
 }
+.class-selector {
+    display: flex; background: rgba(0,0,0,0.4); padding: 5px; border-radius: 15px; margin-bottom: 2rem;
+}
+.class-btn {
+    flex: 1; padding: 12px; border: none; background: transparent; color: var(--text-secondary);
+    border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.3s;
+}
+.class-btn.active { background: var(--accent-main); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
+.subjects-header { text-align: center; margin-bottom: 2.5rem; }
+.page-title { font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 5px; }
+.page-subtitle { color: var(--text-secondary); }
+
+.subjects-grid { display: flex; flex-direction: column; gap: 15px; }
+.subject-card {
+    display: flex; align-items: center; padding: 1.5rem; gap: 20px;
+    cursor: pointer; transition: 0.3s; border-left: 4px solid transparent;
+}
+.subject-card:hover { background: rgba(255,255,255,0.05); border-left-color: var(--accent-main); transform: translateX(5px); }
+.subject-icon { width: 55px; height: 55px; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; background: rgba(255,255,255,0.05); }
+.physics-icon { color: #00f0ff; } .chemistry-icon { color: #b535ff; } .math-icon { color: #00ff88; }
+.subject-details { flex-grow: 1; }
+.subject-details h2 { font-family: var(--font-hindi); font-size: 1.4rem; margin-bottom: 2px; }
+.subject-details p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; }
+.subject-meta { display: flex; gap: 15px; font-size: 0.8rem; color: #fff; }
+.arrow-icon { font-size: 1.5rem; color: var(--text-secondary); }
+
+/* Chapters Specific Layout */
+.subject-hero-card { padding: 2rem; border-top: 4px solid var(--accent-main); margin-bottom: 2rem; }
+.hero-content { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+.hero-title-group { display: flex; align-items: center; gap: 15px; }
+.hero-icon { font-size: 2.5rem; color: var(--accent-main); }
+.hero-title-group h1 { font-family: var(--font-hindi); font-size: 2rem; }
+.board-tag { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; width: fit-content; }
+.progress-stats { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px; }
+.progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent-main); box-shadow: 0 0 10px var(--accent-glow); transition: width 0.5s ease; }
+
+.chapters-header { display: flex; justify-content: space-between; margin-bottom: 1.5rem; }
+.chapters-list { display: flex; flex-direction: column; gap: 15px; }
+.chapter-card { display: flex; align-items: center; padding: 1.2rem; gap: 15px; transition: 0.3s; cursor: pointer; }
+.chapter-card:hover:not(.locked) { transform: translateX(5px); border-color: var(--accent-main); }
+.chap-num { font-size: 1.5rem; font-family: var(--font-heading); font-weight: 700; color: rgba(255,255,255,0.2); width: 40px; text-align: center; }
+.chap-details { flex-grow: 1; }
+.chap-details h4 { font-family: var(--font-hindi); font-size: 1.1rem; margin-bottom: 3px; }
+.chap-details p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; }
+.chap-meta { display: flex; gap: 12px; font-size: 0.75rem; color: #fff; opacity: 0.8; }
+.btn-play { width: 40px; height: 40px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+.chapter-card:hover:not(.locked) .btn-play { background: var(--accent-main); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
+.chapter-card.locked { opacity: 0.5; cursor: not-allowed; }
+.chapter-card.locked .btn-play { background: transparent; border: 1px solid rgba(255,255,255,0.2); }
