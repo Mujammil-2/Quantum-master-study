@@ -43,7 +43,7 @@
     <div class="overlay-bg" id="panel-overlay"></div>
 
     <!-- =========================================
-         FULL PREMIUM SETTINGS PANEL
+         FULL PREMIUM SETTINGS PANEL (WITH NAMED COLORS)
     ========================================== -->
     <aside class="profile-side-panel" id="settings-panel">
         <i class="ri-close-line close-panel-btn sfx-trigger" id="close-panel"></i>
@@ -62,15 +62,41 @@
         </div>
 
         <h3 class="setting-section-title"><i class="ri-palette-fill"></i> कस्टमाइज़ेशन (Themes)</h3>
-        <div class="theme-grid">
-            <button class="theme-dot sfx-trigger t-default" data-set-theme="default" title="Cyan"></button>
-            <button class="theme-dot sfx-trigger t-purple" data-set-theme="purple" title="Purple"></button>
-            <button class="theme-dot sfx-trigger t-emerald" data-set-theme="emerald" title="Emerald"></button>
-            <button class="theme-dot sfx-trigger t-crimson" data-set-theme="crimson" title="Crimson"></button>
-            <button class="theme-dot sfx-trigger t-gold" data-set-theme="gold" title="Gold"></button>
-            <button class="theme-dot sfx-trigger t-royal" data-set-theme="royal" title="Royal Blue"></button>
-            <button class="theme-dot sfx-trigger t-sunset" data-set-theme="sunset" title="Sunset"></button>
-            <button class="theme-dot sfx-trigger t-neonpink" data-set-theme="neonpink" title="Neon Pink"></button>
+        
+        <!-- NEW NAMED THEME GRID (100% Bug Free) -->
+        <div class="theme-grid-named">
+            <div class="theme-option-card sfx-trigger" data-set-theme="default">
+                <div class="theme-color-circle" style="background: #00f0ff; box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);"></div>
+                <span class="theme-name">Cyan</span>
+            </div>
+            <div class="theme-option-card sfx-trigger" data-set-theme="purple">
+                <div class="theme-color-circle" style="background: #b535ff; box-shadow: 0 0 10px rgba(181, 53, 255, 0.4);"></div>
+                <span class="theme-name">Purple</span>
+            </div>
+            <div class="theme-option-card sfx-trigger" data-set-theme="emerald">
+                <div class="theme-color-circle" style="background: #00ff88; box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);"></div>
+                <span class="theme-name">Emerald</span>
+            </div>
+            <div class="theme-option-card sfx-trigger" data-set-theme="crimson">
+                <div class="theme-color-circle" style="background: #ff3366; box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);"></div>
+                <span class="theme-name">Crimson</span>
+            </div>
+            <div class="theme-option-card sfx-trigger" data-set-theme="gold">
+                <div class="theme-color-circle" style="background: #ffc107; box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);"></div>
+                <span class="theme-name">Gold</span>
+            </div>
+            <div class="theme-option-card sfx-trigger" data-set-theme="royal">
+                <div class="theme-color-circle" style="background: #4169e1; box-shadow: 0 0 10px rgba(65, 105, 225, 0.4);"></div>
+                <span class="theme-name">Royal</span>
+            </div>
+            <div class="theme-option-card sfx-trigger" data-set-theme="sunset">
+                <div class="theme-color-circle" style="background: #ff7f50; box-shadow: 0 0 10px rgba(255, 127, 80, 0.4);"></div>
+                <span class="theme-name">Sunset</span>
+            </div>
+            <div class="theme-option-card sfx-trigger" data-set-theme="neonpink">
+                <div class="theme-color-circle" style="background: #ff00ff; box-shadow: 0 0 10px rgba(255, 0, 255, 0.4);"></div>
+                <span class="theme-name">Neon Pink</span>
+            </div>
         </div>
 
         <h3 class="setting-section-title"><i class="ri-book-read-fill"></i> स्टडी प्रेफरेंस</h3>
@@ -104,6 +130,7 @@
                 <h4>सिस्टम साउंड (SFX)</h4>
                 <p>क्लिक और अलर्ट साउंड</p>
             </div>
+            <!-- Toggle UI handled by JS -->
             <label class="switch-clean sfx-trigger" style="position: relative; display: inline-block; width: 44px; height: 24px;">
                 <input type="checkbox" id="sound-toggle" checked style="opacity: 0; width: 0; height: 0;">
                 <span class="slider-clean" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--accent-main); border-radius: 24px; transition: .3s; box-shadow: 0 0 10px var(--accent-glow);"></span>
@@ -150,7 +177,7 @@
                 "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।"
             </div>
 
-            <!-- NEW: Pomodoro Focus Timer -->
+            <!-- Pomodoro Focus Timer -->
             <div class="timer-card glass-card">
                 <h3 style="margin-bottom: 10px; color: var(--text-secondary);"><i class="ri-timer-line"></i> फोकस टाइमर (Pomodoro)</h3>
                 <div class="timer-display" id="timer-display">25:00</div>
