@@ -12,56 +12,90 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-        .dash-main-clean { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
+        /* 8 PREMIUM THEMES VARIABLES */
+        :root[data-theme="default"] { --accent-main: #00f0ff; --accent-glow: rgba(0, 240, 255, 0.4); }
+        :root[data-theme="purple"] { --accent-main: #b535ff; --accent-glow: rgba(181, 53, 255, 0.4); }
+        :root[data-theme="emerald"] { --accent-main: #00ff88; --accent-glow: rgba(0, 255, 136, 0.4); }
+        :root[data-theme="crimson"] { --accent-main: #ff3366; --accent-glow: rgba(255, 51, 102, 0.4); }
+        :root[data-theme="gold"] { --accent-main: #ffc107; --accent-glow: rgba(255, 193, 7, 0.4); }
+        :root[data-theme="royal"] { --accent-main: #4169e1; --accent-glow: rgba(65, 105, 225, 0.4); }
+        :root[data-theme="sunset"] { --accent-main: #ff7f50; --accent-glow: rgba(255, 127, 80, 0.4); }
+        :root[data-theme="neonpink"] { --accent-main: #ff00ff; --accent-glow: rgba(255, 0, 255, 0.4); }
+
+        /* Background Canvas for Particles */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; pointer-events: none; }
+
+        /* Dashboard Premium Layout */
+        .dash-main-clean { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; }
         
-        /* Small Profile Icon */
-        .small-profile-btn { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-main); overflow: hidden; cursor: pointer; transition: 0.3s; }
+        .brand-mini { display: flex; align-items: center; gap: 8px; }
+        .brand-mini .logo-icon { background: var(--accent-glow); color: var(--accent-main); padding: 8px; border-radius: 10px; font-size: 1.5rem; border: 1px solid var(--accent-main); }
+        .brand-mini h2 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; }
+
+        .small-profile-btn { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent-main); overflow: hidden; cursor: pointer; box-shadow: 0 0 15px var(--accent-glow); transition: 0.3s; }
+        .small-profile-btn:hover { transform: scale(1.05); }
         .small-profile-btn img { width: 100%; height: 100%; object-fit: cover; }
         
+        /* Welcome Banner */
+        .welcome-banner { display: flex; justify-content: space-between; align-items: center; padding: 2rem; border-radius: 20px; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.5) 100%); border-left: 5px solid var(--accent-main); margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .welcome-text h1 { font-family: var(--font-heading); font-size: 2.2rem; }
+        .level-badge { background: var(--accent-glow); border: 1px solid var(--accent-main); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; display: inline-block; margin-top: 10px; }
+        
+        /* Stats Grid Fix */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card { padding: 1.5rem; display: flex; align-items: center; gap: 15px; border-radius: 15px; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--accent-main); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .stat-icon { font-size: 2rem; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; color: var(--accent-main); }
+        
+        /* Continue Learning Card */
+        .recent-activity { padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.05); }
+        .recent-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .recent-header h3 { font-size: 1.2rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .recent-box { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border-left: 3px solid var(--accent-main); }
+        .recent-box p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 5px;}
+        .recent-box h4 { font-size: 1.1rem; }
+        .play-circle-btn { font-size: 2rem; color: var(--accent-main); cursor: pointer; transition: 0.3s; }
+        .play-circle-btn:hover { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-glow); }
+
         /* =========================================
            PREMIUM SLIDE-OVER SETTINGS PANEL
         ========================================= */
-        .profile-side-panel {
-            position: fixed; top: 0; right: -100%; /* Hidden by default */
-            width: 100%; max-width: 400px; height: 100vh;
-            background: rgba(15, 15, 25, 0.95); backdrop-filter: blur(20px);
-            z-index: 9999; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-left: 1px solid rgba(255,255,255,0.05);
-            padding: 2rem 1.5rem; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-        }
-        .profile-side-panel.active { right: 0; /* Slide in */ }
-        .close-panel-btn { font-size: 1.5rem; cursor: pointer; position: absolute; top: 20px; left: 20px; color: var(--text-secondary); transition: 0.3s; }
-        .close-panel-btn:hover { color: #fff; }
+        .profile-side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh; background: rgba(15, 15, 25, 0.95); backdrop-filter: blur(20px); z-index: 9999; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-left: 1px solid rgba(255,255,255,0.05); padding: 2rem 1.5rem; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
+        .profile-side-panel.active { right: 0; }
+        .close-panel-btn { font-size: 1.8rem; cursor: pointer; position: absolute; top: 15px; left: 15px; color: var(--text-secondary); transition: 0.3s; background: rgba(255,255,255,0.05); border-radius: 50%; padding: 5px; }
+        .close-panel-btn:hover { color: #fff; background: var(--accent-main); color: #000; }
 
-        /* Panel Content Styles */
+        /* Panel Header */
         .panel-header { text-align: center; margin-top: 2rem; margin-bottom: 2rem; }
         .image-upload-wrapper-clean { position: relative; width: 100px; height: 100px; margin: 0 auto 1rem; }
-        .image-upload-wrapper-clean img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-main); }
+        .image-upload-wrapper-clean img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-main); box-shadow: 0 0 20px var(--accent-glow);}
         .upload-btn-clean { position: absolute; bottom: 0; right: 0; background: var(--accent-main); color: #000; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 3px solid #12121e; }
         .name-edit-group { display: flex; justify-content: center; align-items: center; gap: 8px; }
         .name-edit-group h2 { font-family: var(--font-heading); font-size: 1.5rem; }
-        .edit-icon-clean { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; }
         
+        /* 8 Theme Colors Grid */
+        .theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 10px 0; }
+        .theme-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; margin: 0 auto; }
+        .theme-dot:hover { transform: scale(1.2); border-color: #fff; }
+        
+        .t-default { background: #00f0ff; } .t-purple { background: #b535ff; } 
+        .t-emerald { background: #00ff88; } .t-crimson { background: #ff3366; } 
+        .t-gold { background: #ffc107; } .t-royal { background: #4169e1; } 
+        .t-sunset { background: #ff7f50; } .t-neonpink { background: #ff00ff; }
+
+        /* Settings Rows */
+        .setting-section-title { font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-top: 1.5rem; margin-bottom: 10px; color: var(--accent-main); display: flex; align-items: center; gap: 8px; font-family: var(--font-heading);}
         .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .setting-info h4 { font-size: 1rem; font-weight: 500; }
+        .setting-row:last-child { border-bottom: none; }
+        .setting-info h4 { font-size: 1rem; font-weight: 500; margin-bottom: 5px;}
         .setting-info p { font-size: 0.8rem; color: var(--text-secondary); }
         
-        /* Theme Dots & Switch */
-        .theme-options-clean { display: flex; gap: 10px; }
-        .theme-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); cursor: pointer; }
-        .default-theme { background: #00f0ff; } .purple-theme { background: #b535ff; } .emerald-theme { background: #00ff88; }
-        
-        /* Switch */
-        .switch-clean { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch-clean input { opacity: 0; width: 0; height: 0; }
-        .slider-clean { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); border-radius: 24px; transition: .3s; }
-        .slider-clean:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: #fff; border-radius: 50%; transition: .3s; }
-        input:checked + .slider-clean { background-color: var(--accent-main); }
-        input:checked + .slider-clean:before { transform: translateX(20px); background-color: #000; }
-        
-        /* Overlay Darken */
-        .overlay-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.5); z-index: 9998; }
+        /* Custom Select for PDF Settings */
+        .pro-select { background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px; outline: none; font-family: var(--font-main); cursor: pointer; }
+        .pro-select:focus { border-color: var(--accent-main); }
+
+        .overlay-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.6); z-index: 9998; backdrop-filter: blur(2px);}
         .overlay-bg.active { display: block; }
     </style>
 </head>
@@ -71,13 +105,13 @@
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="particle-canvas-container"></div>
+    <!-- Background Particles Canvas -->
+    <canvas id="bg-canvas"></canvas>
 
-    <!-- Black Overlay when panel opens -->
     <div class="overlay-bg" id="panel-overlay"></div>
 
     <!-- =========================================
-         THE SLIDING SETTINGS PANEL (Direct on Home)
+         PREMIUM SETTINGS PANEL (With 8 Colors & PDF options)
     ========================================== -->
     <aside class="profile-side-panel" id="settings-panel">
         <i class="ri-close-line close-panel-btn sfx-trigger" id="close-panel"></i>
@@ -90,29 +124,43 @@
             </div>
             <div class="name-edit-group">
                 <h2 id="panel-user-name">Alina Sami</h2>
-                <button class="edit-icon-clean sfx-trigger" id="edit-name-btn"><i class="ri-edit-line"></i></button>
+                <i class="ri-edit-box-line sfx-trigger" id="edit-name-btn" style="color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;"></i>
             </div>
-            <p style="color: var(--accent-main); font-size: 0.85rem; margin-top: 5px;">कक्षा 12वीं • Science</p>
+            <p style="color: var(--accent-main); font-size: 0.85rem; margin-top: 5px; font-weight: 600;">QMS प्रो स्टूडेंट</p>
         </div>
 
-        <h3 style="font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px;"><i class="ri-settings-4-fill"></i> प्रेफरेंस सेटिंग्स</h3>
+        <!-- Section 1: Themes -->
+        <h3 class="setting-section-title"><i class="ri-palette-fill"></i> कस्टमाइज़ेशन (Themes)</h3>
+        <div class="theme-grid">
+            <button class="theme-dot sfx-trigger t-default" data-set-theme="default" title="Cyan"></button>
+            <button class="theme-dot sfx-trigger t-purple" data-set-theme="purple" title="Purple"></button>
+            <button class="theme-dot sfx-trigger t-emerald" data-set-theme="emerald" title="Emerald"></button>
+            <button class="theme-dot sfx-trigger t-crimson" data-set-theme="crimson" title="Crimson"></button>
+            <button class="theme-dot sfx-trigger t-gold" data-set-theme="gold" title="Gold"></button>
+            <button class="theme-dot sfx-trigger t-royal" data-set-theme="royal" title="Royal Blue"></button>
+            <button class="theme-dot sfx-trigger t-sunset" data-set-theme="sunset" title="Sunset"></button>
+            <button class="theme-dot sfx-trigger t-neonpink" data-set-theme="neonpink" title="Neon Pink"></button>
+        </div>
+
+        <!-- Section 2: App Settings -->
+        <h3 class="setting-section-title"><i class="ri-settings-3-fill"></i> ऐप सेटिंग्स</h3>
+        
+        <div class="setting-row">
+            <div class="setting-info">
+                <h4>PDF डाउनलोड फोल्डर</h4>
+                <p>नोट्स कहाँ सेव करें?</p>
+            </div>
+            <select class="pro-select sfx-trigger" id="pdf-location-pref">
+                <option value="default">गैलरी / Default</option>
+                <option value="qms_folder">QMS फोल्डर</option>
+                <option value="ask">हर बार पूछें</option>
+            </select>
+        </div>
 
         <div class="setting-row">
             <div class="setting-info">
-                <h4>कलर थीम</h4>
-                <p>वेबसाइट का लुक चुनें</p>
-            </div>
-            <div class="theme-options-clean">
-                <button class="theme-dot sfx-trigger default-theme" data-set-theme="default"></button>
-                <button class="theme-dot sfx-trigger purple-theme" data-set-theme="purple"></button>
-                <button class="theme-dot sfx-trigger emerald-theme" data-set-theme="emerald"></button>
-            </div>
-        </div>
-
-        <div class="setting-row">
-            <div class="setting-info">
-                <h4>साउंड इफ़ेक्ट</h4>
-                <p>क्लिक साउंड ऑन/ऑफ करें</p>
+                <h4>सिस्टम साउंड</h4>
+                <p>क्लिक और अलर्ट साउंड</p>
             </div>
             <label class="switch-clean sfx-trigger">
                 <input type="checkbox" id="sound-toggle" checked>
@@ -120,8 +168,8 @@
             </label>
         </div>
 
-        <button id="reset-btn" class="sfx-trigger" style="width: 100%; margin-top: 2rem; background: rgba(255,50,50,0.1); color: #ff4d4d; border: 1px solid rgba(255,50,50,0.3); padding: 12px; border-radius: 8px; cursor: pointer;">
-            <i class="ri-delete-bin-line"></i> डेटा रीसेट करें
+        <button id="reset-btn" class="sfx-trigger" style="width: 100%; margin-top: 2rem; background: rgba(255,50,50,0.1); color: #ff4d4d; border: 1px solid rgba(255,50,50,0.3); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+            <i class="ri-delete-bin-line"></i> ऐप डेटा रीसेट करें
         </button>
     </aside>
 
@@ -132,51 +180,69 @@
                 <h2>QMS</h2>
             </div>
             
-            <!-- CLICKING THIS OPENS THE PANEL -->
-            <div class="small-profile-btn sfx-trigger" id="open-panel-btn">
+            <div class="small-profile-btn sfx-trigger" id="open-panel-btn" title="प्रोफाइल और सेटिंग्स">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alina&backgroundColor=b6e3f4" id="dash-small-avatar" alt="Profile">
             </div>
         </header>
 
         <main class="dash-main-clean">
-            <div class="welcome-section" style="margin-bottom: 2rem;">
-                <h1 class="greeting" style="font-family: var(--font-heading); font-size: 2rem;">नमस्ते, <span class="highlight" id="dash-user-name">Alina</span> 👋</h1>
-                <p class="subtitle" style="color: var(--text-secondary);">आज कुछ नया सीखने का समय है!</p>
+            <!-- Premium Banner -->
+            <div class="welcome-banner glass-card">
+                <div class="welcome-text">
+                    <h1 class="greeting">नमस्ते, <span class="highlight" id="dash-user-name">Alina</span> 👋</h1>
+                    <p class="subtitle" style="color: var(--text-secondary); margin-top: 5px;">आज आपका लक्ष्य क्या है? चलिए कुछ नया सीखते हैं!</p>
+                    <div class="level-badge"><i class="ri-vip-crown-fill"></i> लेवल 1 : बिगिनर</div>
+                </div>
             </div>
 
+            <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card glass-card">
-                    <div class="stat-icon"><i class="ri-fire-fill"></i></div>
+                    <div class="stat-icon" style="color: #ffc107;"><i class="ri-fire-fill"></i></div>
                     <div class="stat-info">
                         <h3 class="stat-number streak-badge"><span>1 दिन</span></h3>
-                        <p>एक्टिव स्ट्रीक</p>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">एक्टिव स्ट्रीक</p>
                     </div>
                 </div>
                 <div class="stat-card glass-card sfx-trigger" onclick="window.location.href='subjects.html'" style="cursor:pointer;">
-                    <div class="stat-icon"><i class="ri-book-open-fill"></i></div>
+                    <div class="stat-icon" style="color: #00f0ff;"><i class="ri-book-open-fill"></i></div>
                     <div class="stat-info">
                         <h3 class="stat-number">5</h3>
-                        <p>विषय (Subjects)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">कुल विषय</p>
                     </div>
                 </div>
                 <div class="stat-card glass-card">
-                    <div class="stat-icon"><i class="ri-check-double-fill"></i></div>
+                    <div class="stat-icon" style="color: #00ff88;"><i class="ri-check-double-fill"></i></div>
                     <div class="stat-info">
                         <h3 class="stat-number" id="dash-completed-count">0</h3>
-                        <p>पूर्ण किए गए</p>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">अध्याय पूरे किए</p>
                     </div>
                 </div>
                 <div class="stat-card glass-card">
-                    <div class="stat-icon"><i class="ri-copper-coin-fill"></i></div>
+                    <div class="stat-icon" style="color: #b535ff;"><i class="ri-copper-coin-fill"></i></div>
                     <div class="stat-info">
                         <h3 class="stat-number" id="dash-total-xp">0</h3>
-                        <p>कुल पॉइंट्स (XP)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem;">XP पॉइंट्स</p>
                     </div>
                 </div>
             </div>
 
-            <button class="btn-primary-glow sfx-trigger" onclick="window.location.href='subjects.html'" style="margin-top: 2rem; width: 100%; padding: 15px; font-size: 1.1rem;">
-                स्टडी शुरू करें <i class="ri-arrow-right-line"></i>
+            <!-- Recent Activity Block -->
+            <div class="recent-activity glass-card">
+                <div class="recent-header">
+                    <h3><i class="ri-history-line"></i> पिछली पढ़ाई (Continue Learning)</h3>
+                </div>
+                <div class="recent-box">
+                    <div>
+                        <p>Physics (PCM) • अध्याय 1</p>
+                        <h4>वैद्युत आवेश तथा क्षेत्र</h4>
+                    </div>
+                    <i class="ri-play-circle-fill play-circle-btn sfx-trigger" onclick="window.location.href='player.html?subject=physics&chapter=1'"></i>
+                </div>
+            </div>
+
+            <button class="btn-primary-glow sfx-trigger" onclick="window.location.href='subjects.html'" style="width: 100%; padding: 18px; font-size: 1.2rem; border-radius: 15px; font-family: var(--font-heading);">
+                <i class="ri-rocket-2-fill"></i> सभी विषय देखें (Start Study)
             </button>
         </main>
     </div>
