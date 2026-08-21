@@ -12,11 +12,7 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-        /* =========================================
-           8 PREMIUM THEMES (WHITE SCREEN BUG FIXED)
-        ========================================= */
         :root { background-color: #0f0f19 !important; color: #ffffff !important; }
-        
         :root[data-theme="default"] { --accent-main: #00f0ff; --accent-glow: rgba(0, 240, 255, 0.4); }
         :root[data-theme="purple"] { --accent-main: #b535ff; --accent-glow: rgba(181, 53, 255, 0.4); }
         :root[data-theme="emerald"] { --accent-main: #00ff88; --accent-glow: rgba(0, 255, 136, 0.4); }
@@ -29,17 +25,7 @@
         body { overflow-x: hidden; }
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.6; }
 
-        /* =========================================
-           DHAMAKEDAR SPLASH / LOADING SCREEN
-        ========================================= */
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: #0f0f19; z-index: 100000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        
-        /* Animated SVG Logo */
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #0f0f19; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
         .premium-logo { width: 120px; height: 120px; animation: pulseGlow 2s infinite alternate; }
         .orbit { animation: spin 8s linear infinite; transform-origin: 50px 50px; }
         .orbit-reverse { animation: spinReverse 10s linear infinite; transform-origin: 50px 50px; }
@@ -48,16 +34,11 @@
         @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 10px var(--accent-main)); } 100% { filter: drop-shadow(0 0 30px var(--accent-main)); } }
 
         .splash-title { font-family: var(--font-heading); font-size: 2.5rem; margin-top: 1.5rem; letter-spacing: 2px; color: #fff; text-shadow: 0 0 15px var(--accent-glow); }
-        
-        /* Loading Bar */
         .loading-bar-container { width: 250px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 2rem; overflow: hidden; position: relative; }
         .loading-bar-fill { width: 0%; height: 100%; background: var(--accent-main); box-shadow: 0 0 15px var(--accent-glow); transition: width 0.1s linear; }
         .loading-text { font-size: 0.85rem; color: var(--text-secondary); margin-top: 10px; font-family: var(--font-main); }
 
-        /* Header Logo Mini */
         .mini-qms-logo { width: 35px; height: 35px; }
-
-        /* Dashboard & Settings Panel UI */
         .dash-main-clean { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; }
         .brand-mini { display: flex; align-items: center; gap: 10px; }
@@ -69,6 +50,8 @@
         
         .welcome-banner { display: flex; justify-content: space-between; align-items: center; padding: 2rem; border-radius: 20px; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.5) 100%); border-left: 5px solid var(--accent-main); margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
         .welcome-text h1 { font-family: var(--font-heading); font-size: 2.2rem; }
+        .level-badge { background: var(--accent-glow); border: 1px solid var(--accent-main); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; display: inline-block; margin-top: 10px; }
+        
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
         .stat-card { padding: 1.5rem; display: flex; align-items: center; gap: 15px; border-radius: 15px; transition: 0.3s; background: rgba(15, 15, 25, 0.6); border: 1px solid rgba(255,255,255,0.05); }
         .stat-icon { font-size: 2rem; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; color: var(--accent-main); }
@@ -97,21 +80,17 @@
 </head>
 <body>
 
+    <!-- तुम्हारा नया प्रीमियम साउंड यहाँ लग गया है -->
     <audio id="sfx-click" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" type="audio/mpeg">
+        <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- =========================================
-         NEW: SPLASH SCREEN / LOADING SCREEN
-    ========================================== -->
     <div id="splash-screen">
-        <!-- SVG Quantum/Atom Logo -->
         <svg viewBox="0 0 100 100" class="premium-logo">
             <circle cx="50" cy="50" r="12" fill="var(--accent-main)"/>
             <ellipse cx="50" cy="50" rx="45" ry="15" fill="none" stroke="var(--accent-main)" stroke-width="3" class="orbit"/>
             <ellipse cx="50" cy="50" rx="45" ry="15" fill="none" stroke="var(--accent-main)" stroke-width="3" class="orbit" transform="rotate(60 50 50)"/>
             <ellipse cx="50" cy="50" rx="45" ry="15" fill="none" stroke="var(--accent-main)" stroke-width="3" class="orbit-reverse" transform="rotate(120 50 50)"/>
-            <!-- Electrons -->
             <circle cx="95" cy="50" r="4" fill="#fff" class="orbit"/>
         </svg>
         <h1 class="splash-title">QMS</h1>
@@ -121,14 +100,9 @@
         <p class="loading-text" id="loading-text">ऑथेंटिकेट हो रहा है...</p>
     </div>
 
-    <!-- Background Canvas (Now with Science Symbols!) -->
     <canvas id="bg-canvas"></canvas>
-
     <div class="overlay-bg" id="panel-overlay"></div>
 
-    <!-- =========================================
-         BHARA-BHARA SETTINGS PANEL
-    ========================================== -->
     <aside class="profile-side-panel" id="settings-panel">
         <i class="ri-close-line close-panel-btn sfx-trigger" id="close-panel"></i>
         
@@ -145,7 +119,6 @@
             <p style="color: var(--accent-main); font-size: 0.85rem; margin-top: 5px; font-weight: 600;">QMS प्रो स्टूडेंट <i class="ri-vip-crown-fill"></i></p>
         </div>
 
-        <!-- Section 1: Themes -->
         <h3 class="setting-section-title"><i class="ri-palette-fill"></i> कस्टमाइज़ेशन (Themes)</h3>
         <div class="theme-grid">
             <button class="theme-dot sfx-trigger t-default" data-set-theme="default" title="Cyan"></button>
@@ -158,7 +131,6 @@
             <button class="theme-dot sfx-trigger t-neonpink" data-set-theme="neonpink" title="Neon Pink"></button>
         </div>
 
-        <!-- Section 2: Study Preferences -->
         <h3 class="setting-section-title"><i class="ri-book-read-fill"></i> स्टडी प्रेफरेंस</h3>
         <div class="setting-row">
             <div class="setting-info">
@@ -195,7 +167,6 @@
             </select>
         </div>
 
-        <!-- Section 3: App Settings -->
         <h3 class="setting-section-title"><i class="ri-settings-3-fill"></i> ऐप सेटिंग्स</h3>
         <div class="setting-row">
             <div class="setting-info">
@@ -226,7 +197,6 @@
     <div class="dashboard-wrapper">
         <header class="top-nav glass-panel">
             <div class="brand-mini">
-                <!-- Mini Logo in Header -->
                 <svg viewBox="0 0 100 100" class="mini-qms-logo">
                     <circle cx="50" cy="50" r="15" fill="var(--accent-main)"/>
                     <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="var(--accent-main)" stroke-width="4" transform="rotate(0 50 50)"/>
@@ -289,7 +259,6 @@
 
     <script src="dashboard.js"></script>
     <script>
-        // Custom CSS for switches injected here to fix logic globally
         document.querySelectorAll('input[type="checkbox"]').forEach(input => {
             input.addEventListener('change', function() {
                 if(this.checked) {
@@ -300,7 +269,6 @@
                     this.nextElementSibling.style.boxShadow = 'none';
                 }
             });
-            // Init
             if(input.checked) {
                 input.nextElementSibling.style.backgroundColor = 'var(--accent-main)';
             }
