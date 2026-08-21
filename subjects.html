@@ -4,28 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>विषय चुनें | क्वांटम मास्टर स्टडी</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="subjects.css">
 </head>
 <body>
 
-    <!-- तुम्हारा नया प्रीमियम साउंड यहाँ लग गया है -->
+    <!-- कस्टम साउंड -->
     <audio id="sfx-click" preload="auto">
         <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="particle-canvas-container"></div>
-
     <div class="dashboard-wrapper">
-        <header class="dash-header glass-panel">
-            <div class="brand-mini sfx-trigger" onclick="window.location.href='dashboard.html'" style="cursor:pointer;">
-                <i class="ri-arrow-left-line"></i>
-                <h2>डैशबोर्ड पर लौटें</h2>
+        <header class="glass-panel" style="display: flex; padding: 1.2rem 1.5rem;">
+            <div class="brand-mini sfx-trigger" onclick="window.location.href='dashboard.html'" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
+                <i class="ri-arrow-left-line" style="font-size: 1.2rem;"></i>
+                <h2 style="font-size: 1.1rem;">डैशबोर्ड पर लौटें</h2>
             </div>
         </header>
 
@@ -41,7 +34,7 @@
             </div>
 
             <div class="subjects-grid">
-                <div class="subject-card glass-card sfx-trigger" data-subject="physics">
+                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=physics'">
                     <div class="subject-icon physics-icon"><i class="ri-flashlight-fill"></i></div>
                     <div class="subject-details">
                         <h2>भौतिक विज्ञान</h2>
@@ -51,7 +44,7 @@
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
 
-                <div class="subject-card glass-card sfx-trigger" data-subject="chemistry">
+                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=chemistry'">
                     <div class="subject-icon chemistry-icon"><i class="ri-test-tube-fill"></i></div>
                     <div class="subject-details">
                         <h2>रसायन विज्ञान</h2>
@@ -61,7 +54,7 @@
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
 
-                <div class="subject-card glass-card sfx-trigger" data-subject="mathematics">
+                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=mathematics'">
                     <div class="subject-icon math-icon"><i class="ri-functions"></i></div>
                     <div class="subject-details">
                         <h2>गणित</h2>
@@ -70,30 +63,24 @@
                     </div>
                     <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
-
-                <div class="subject-card glass-card locked sfx-trigger">
-                    <div class="subject-icon lang-icon"><i class="ri-translate-2"></i></div>
-                    <div class="subject-details">
-                        <h2>हिन्दी</h2>
-                        <p>Hindi (Core)</p>
-                        <div class="subject-meta"><span>आरोह + वितान</span><span>0% पूर्ण</span></div>
-                    </div>
-                    <i class="ri-lock-2-line arrow-icon"></i>
-                </div>
-
-                <div class="subject-card glass-card locked sfx-trigger">
-                    <div class="subject-icon eng-icon">En</div>
-                    <div class="subject-details">
-                        <h2>अंग्रेज़ी</h2>
-                        <p>English (Core)</p>
-                        <div class="subject-meta"><span>Flamingo + Vistas</span><span>0% पूर्ण</span></div>
-                    </div>
-                    <i class="ri-lock-2-line arrow-icon"></i>
-                </div>
             </div>
         </main>
     </div>
 
-    <script src="subjects.js"></script>
+    <script>
+        // Theme & Sound Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('qms_theme') || 'default';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+
+            const sfxClick = document.getElementById('sfx-click');
+            let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
+            document.querySelectorAll('.sfx-trigger').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (isSoundOn && sfxClick) { sfxClick.currentTime = 0; sfxClick.play().catch(()=>{}); }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
