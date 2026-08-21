@@ -1,6 +1,6 @@
 /* ==========================================================================
    QMS MASTER STYLESHEET (ULTIMATE PREMIUM BUILD)
-   - Detailed UI/UX, 8 Themes, Glassmorphism, Responsive Grid
+   - Detailed UI/UX, 8 Named Themes, Glassmorphism, Responsive Grid
 ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap');
@@ -134,7 +134,7 @@ body {
 .stat-icon { font-size: 2rem; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; color: var(--accent-main); }
 
 /* --------------------------------------------------------------------------
-   8. SUBJECTS PAGE LAYOUT (FIXED & RESTORED)
+   8. SUBJECTS PAGE LAYOUT
 -------------------------------------------------------------------------- */
 .subjects-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
 .class-selector { display: flex; background: rgba(0,0,0,0.4); padding: 5px; border-radius: 15px; margin-bottom: 2rem; }
@@ -156,35 +156,7 @@ body {
 .arrow-icon { font-size: 1.5rem; color: var(--text-secondary); }
 
 /* --------------------------------------------------------------------------
-   9. CHAPTERS PAGE LAYOUT
--------------------------------------------------------------------------- */
-.chapters-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; animation: fadeUp 0.6s ease; }
-.subject-hero-card { padding: 2rem; border-top: 4px solid var(--accent-main); margin-bottom: 2rem; }
-.hero-content { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
-.hero-title-group { display: flex; align-items: center; gap: 15px; }
-.hero-icon { font-size: 2.5rem; color: var(--accent-main); }
-.hero-title-group h1 { font-family: var(--font-hindi); font-size: 2rem; }
-.board-tag { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; width: fit-content; }
-.progress-stats { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px; }
-.progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent-main); box-shadow: 0 0 10px var(--accent-glow); transition: width 0.5s ease; }
-
-.chapters-header { display: flex; justify-content: space-between; margin-bottom: 1.5rem; }
-.chapters-list { display: flex; flex-direction: column; gap: 15px; }
-.chapter-card { display: flex; align-items: center; padding: 1.2rem; gap: 15px; transition: 0.3s; cursor: pointer; }
-.chapter-card:hover:not(.locked) { transform: translateX(5px); border-color: var(--accent-main); }
-.chap-num { font-size: 1.5rem; font-family: var(--font-heading); font-weight: 700; color: rgba(255,255,255,0.2); width: 40px; text-align: center; }
-.chap-details { flex-grow: 1; }
-.chap-details h4 { font-family: var(--font-hindi); font-size: 1.1rem; margin-bottom: 3px; }
-.chap-details p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px; }
-.chap-meta { display: flex; gap: 12px; font-size: 0.75rem; color: #fff; opacity: 0.8; }
-.btn-play { width: 40px; height: 40px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); color: #fff; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
-.chapter-card:hover:not(.locked) .btn-play { background: var(--accent-main); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
-.chapter-card.locked { opacity: 0.5; cursor: not-allowed; }
-.chapter-card.locked .btn-play { background: transparent; border: 1px solid rgba(255,255,255,0.2); }
-
-/* --------------------------------------------------------------------------
-   10. SETTINGS SIDE PANEL (PROFILE MODAL)
+   9. SETTINGS SIDE PANEL (PROFILE MODAL)
 -------------------------------------------------------------------------- */
 .profile-side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 420px; height: 100vh; background: rgba(15, 15, 25, 0.98); backdrop-filter: blur(20px); z-index: 9999; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-left: 1px solid rgba(255,255,255,0.05); padding: 2rem 1.5rem; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
 .profile-side-panel.active { right: 0; }
@@ -195,9 +167,44 @@ body {
 .image-upload-wrapper-clean { position: relative; width: 100px; height: 100px; margin: 0 auto 1rem; }
 .image-upload-wrapper-clean img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-main); box-shadow: 0 0 20px var(--accent-glow);}
 .upload-btn-clean { position: absolute; bottom: 0; right: 0; background: var(--accent-main); color: #000; width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 3px solid #12121e; }
-.theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 10px 0; }
-.theme-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; margin: 0 auto; }
-.theme-dot:hover { transform: scale(1.1); border-color: #fff; }
+
+/* --- NEW PREMIUM THEME GRID WITH NAMES --- */
+.theme-grid-named {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 15px 0;
+    margin-bottom: 20px;
+}
+.theme-option-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.theme-option-card:hover {
+    transform: translateY(-5px);
+}
+.theme-color-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.1);
+    transition: 0.3s;
+}
+.theme-option-card:hover .theme-color-circle {
+    border-color: #fff;
+    box-shadow: 0 0 15px rgba(255,255,255,0.5);
+}
+.theme-name {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-family: var(--font-main);
+    text-align: center;
+    font-weight: 500;
+}
 
 .setting-section-title { font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-top: 1.5rem; margin-bottom: 10px; color: var(--accent-main); display: flex; align-items: center; gap: 8px; font-family: var(--font-heading);}
 .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -208,7 +215,7 @@ body {
 .overlay-bg.active { display: block; }
 
 /* --------------------------------------------------------------------------
-   11. CUSTOM TOASTS & MODALS (Replaces alert/prompt)
+   12. CUSTOM TOASTS & MODALS (Replaces alert/prompt)
 -------------------------------------------------------------------------- */
 .qms-toast-msg {
     position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
