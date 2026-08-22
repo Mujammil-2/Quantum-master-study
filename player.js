@@ -1,8 +1,18 @@
 /* =========================================================================
-   QMS VIDEO PLAYER MASTER ENGINE
-   Features: 🔖 Bookmarks System, Smart BGM Memory, Particles, Toasts
+   QMS VIDEO PLAYER MASTER ENGINE (EXPANDED FULL CODE)
+   - 100% COMPLETE FILE
+   - FEATURES:
+     1. Database Loading
+     2. Smart BGM Memory Resume
+     3. 🔖 Bookmarks System (Save/Remove)
+     4. Animated Download PDF Logic
+     5. Complete Status Tracker
+     6. Quantum Fireflies
 ========================================================================= */
 
+// --------------------------------------------------------------------------
+// 1. QMS DATABASE
+// --------------------------------------------------------------------------
 const qmsDatabase = {
     physics: [
         { id: 1, title: "वैद्युत आवेश तथा क्षेत्र", subtitle: "Electric Charges and Fields", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph101.pdf" },
@@ -19,187 +29,436 @@ const qmsDatabase = {
     ]
 };
 
-window.showCustomToast = function(message, isError = false) {
-    const existingToast = document.querySelector('.qms-toast-msg'); if (existingToast) existingToast.remove();
-    const toastElement = document.createElement('div');
-    toastElement.className = isError ? 'qms-toast-msg qms-toast-error' : 'qms-toast-msg';
-    toastElement.innerHTML = isError ? `<i class="ri-error-warning-fill"></i> ${message}` : `<i class="ri-checkbox-circle-fill"></i> ${message}`;
-    document.body.appendChild(toastElement); setTimeout(() => { if (toastElement) toastElement.remove(); }, 3500);
+// --------------------------------------------------------------------------
+// 2. CUSTOM TOAST NOTIFICATION SYSTEM
+// --------------------------------------------------------------------------
+window.showCustomToast = function(messageContentText, isErrorNotification = false) {
+    // Prevent duplicate toasts
+    const existingOldToast = document.querySelector('.qms-toast-msg'); 
+    if (existingOldToast) {
+        existingOldToast.remove();
+    }
+    
+    // Create new DOM element for Toast
+    const dynamicToastElement = document.createElement('div');
+    
+    if (isErrorNotification) {
+        dynamicToastElement.className = 'qms-toast-msg qms-toast-error';
+        dynamicToastElement.innerHTML = `<i class="ri-error-warning-fill"></i> ${messageContentText}`;
+    } else {
+        dynamicToastElement.className = 'qms-toast-msg';
+        dynamicToastElement.innerHTML = `<i class="ri-checkbox-circle-fill"></i> ${messageContentText}`;
+    }
+    
+    document.body.appendChild(dynamicToastElement); 
+    
+    // Self destruct timer
+    setTimeout(() => { 
+        if (dynamicToastElement) {
+            dynamicToastElement.remove(); 
+        }
+    }, 3500);
 };
 
+// --------------------------------------------------------------------------
+// 3. MAIN DOM INITIALIZATION LOGIC
+// --------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // 1. SMART BGM MEMORY SYSTEM (Resumes Music)
+    // A. SMART BGM MEMORY SYSTEM (Resumes Music)
     // ==========================================
-    const bgmAudio = document.getElementById('bgm-audio');
-    if(bgmAudio) {
-        let isBgmOn = localStorage.getItem('qms_bgm') === 'on';
-        let savedBgmVolume = localStorage.getItem('qms_bgm_volume') || 0.3;
-        let savedBgmTime = localStorage.getItem('qms_bgm_time') || 0;
-        let savedBgmTrack = localStorage.getItem('qms_bgm_track') || 'bgm1.mp3';
+    const backgroundAudioPlayerNode = document.getElementById('bgm-audio');
+    
+    if (backgroundAudioPlayerNode) {
+        let isSystemBgmTurnedOn = localStorage.getItem('qms_bgm') === 'on';
+        let currentlySavedBgmVolume = localStorage.getItem('qms_bgm_volume') || 0.3;
+        let lastStoppedBgmTime = localStorage.getItem('qms_bgm_time') || 0;
+        let chosenBgmTrackName = localStorage.getItem('qms_bgm_track') || 'bgm1.mp3';
 
-        bgmAudio.src = savedBgmTrack;
-        bgmAudio.volume = parseFloat(savedBgmVolume);
-        bgmAudio.currentTime = parseFloat(savedBgmTime);
+        // Apply saved properties
+        backgroundAudioPlayerNode.src = chosenBgmTrackName;
+        backgroundAudioPlayerNode.volume = parseFloat(currentlySavedBgmVolume);
+        backgroundAudioPlayerNode.currentTime = parseFloat(lastStoppedBgmTime);
 
-        const playBgmSafely = () => { if (isBgmOn && bgmAudio.paused) bgmAudio.play().catch(e => console.log(e)); };
-        document.body.addEventListener('click', playBgmSafely, { once: true });
+        const tryPlayBgmSafelyAction = () => { 
+            if (isSystemBgmTurnedOn && backgroundAudioPlayerNode.paused) {
+                backgroundAudioPlayerNode.play().catch(errorData => {
+                    console.log("Audio play blocked by browser security.", errorData);
+                }); 
+            }
+        };
         
-        // Auto play if already allowed
-        if (isBgmOn) bgmAudio.play().catch(e => console.log("Waiting for user interaction"));
+        // Listen for a global click to ensure audio plays
+        document.body.addEventListener('click', tryPlayBgmSafelyAction, { once: true });
+        
+        // Auto play if browser already trusts the site
+        if (isSystemBgmTurnedOn) {
+            backgroundAudioPlayerNode.play().catch(errorData => {
+                console.log("Waiting for user manual interaction to start BGM.");
+            });
+        }
 
+        // Before user leaves this page, save exact audio time!
         window.addEventListener('beforeunload', () => {
-            localStorage.setItem('qms_bgm_time', bgmAudio.currentTime);
+            localStorage.setItem('qms_bgm_time', backgroundAudioPlayerNode.currentTime);
         });
     }
 
     // ==========================================
-    // 2. LOAD DATA (Theme, Image, Chapter Info)
+    // B. LOAD DATA & SET UI CONTENT
     // ==========================================
-    const savedTheme = localStorage.getItem('qms_theme') || 'default';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    const savedProfileImage = localStorage.getItem('qms_profile_img');
-    if (savedProfileImage && document.getElementById('nav-profile-img')) document.getElementById('nav-profile-img').src = savedProfileImage;
+    
+    // Theme Configuration
+    const currentlySavedUiTheme = localStorage.getItem('qms_theme') || 'default';
+    document.documentElement.setAttribute('data-theme', currentlySavedUiTheme);
+    
+    // Profile Avatar Logic
+    const savedUserProfileImageStr = localStorage.getItem('qms_profile_img');
+    const playerNavProfileImageNode = document.getElementById('nav-profile-img');
+    if (savedUserProfileImageStr && playerNavProfileImageNode) {
+        playerNavProfileImageNode.src = savedUserProfileImageStr;
+    }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    let subject = urlParams.get('subject') || 'physics';
-    let chapterId = parseInt(urlParams.get('chapter')) || 1;
+    // URL Parsing for Content Identification
+    const documentUrlParams = new URLSearchParams(window.location.search);
+    let activeSubjectQuery = documentUrlParams.get('subject') || 'physics';
+    let activeChapterIdQuery = parseInt(documentUrlParams.get('chapter')) || 1;
 
-    if (document.getElementById('back-to-chapters')) document.getElementById('back-to-chapters').addEventListener('click', () => { window.location.href = `chapters.html?subject=${subject}`; });
+    // Back Button Redirection Setup
+    const returnToChaptersButtonNode = document.getElementById('back-to-chapters');
+    if (returnToChaptersButtonNode) {
+        returnToChaptersButtonNode.addEventListener('click', () => { 
+            window.location.href = `chapters.html?subject=${activeSubjectQuery}`; 
+        });
+    }
 
-    let currentChapterDetails = { title: "अध्याय नहीं मिला", subtitle: "Not Found", pdfUrl: "#" };
-    if (qmsDatabase[subject]) { const foundChapter = qmsDatabase[subject].find(ch => ch.id === chapterId); if (foundChapter) currentChapterDetails = foundChapter; }
-
-    if (document.getElementById('player-subject-tag')) document.getElementById('player-subject-tag').innerText = subject.toUpperCase();
-    if (document.getElementById('player-chapter-title')) document.getElementById('player-chapter-title').innerText = currentChapterDetails.title;
-    if (document.getElementById('player-chapter-subtitle')) document.getElementById('player-chapter-subtitle').innerText = currentChapterDetails.subtitle;
-
-    // SFX Sounds
-    const sfxClickAudio = document.getElementById('sfx-click'); let isSoundTurnedOn = localStorage.getItem('qms_sound') !== 'off';
-    document.querySelectorAll('.sfx-trigger').forEach(button => { button.addEventListener('click', () => { if (isSoundTurnedOn && sfxClickAudio) { sfxClickAudio.currentTime = 0; sfxClickAudio.volume = 1.0; sfxClickAudio.play().catch(()=>{}); } }); });
-
-    // ==========================================
-    // 3. 🔖 BOOKMARK / SAVE NOTES LOGIC
-    // ==========================================
-    const bookmarkBtn = document.getElementById('btn-bookmark');
-    let bookmarksData = JSON.parse(localStorage.getItem('qms_bookmarks')) || {};
-    const currentChapterKey = subject + '_' + chapterId;
-
-    // Check if already bookmarked
-    if (bookmarksData[currentChapterKey]) {
-        if(bookmarkBtn) {
-            bookmarkBtn.innerHTML = '<i class="ri-heart-fill"></i> सेव्ड नोट्स (Saved)';
-            bookmarkBtn.classList.add('saved');
+    // Lookup Content in Database
+    let mappedChapterDetailsObj = { 
+        title: "अध्याय नहीं मिला", 
+        subtitle: "Not Found", 
+        pdfUrl: "#" 
+    };
+    
+    if (qmsDatabase[activeSubjectQuery]) { 
+        const matchedChapterObject = qmsDatabase[activeSubjectQuery].find(ch => ch.id === activeChapterIdQuery); 
+        if (matchedChapterObject) {
+            mappedChapterDetailsObj = matchedChapterObject; 
         }
     }
 
-    if(bookmarkBtn) {
-        bookmarkBtn.addEventListener('click', () => {
-            if (bookmarksData[currentChapterKey]) {
-                // Remove Bookmark
-                delete bookmarksData[currentChapterKey];
-                bookmarkBtn.innerHTML = '<i class="ri-heart-add-line"></i> बुकमार्क में सेव करें (Save)';
-                bookmarkBtn.classList.remove('saved');
+    // Inject Text into DOM elements
+    const tagDisplayElement = document.getElementById('player-subject-tag');
+    if (tagDisplayElement) {
+        tagDisplayElement.innerText = activeSubjectQuery.toUpperCase();
+    }
+    
+    const titleDisplayElement = document.getElementById('player-chapter-title');
+    if (titleDisplayElement) {
+        titleDisplayElement.innerText = mappedChapterDetailsObj.title;
+    }
+    
+    const subtitleDisplayElement = document.getElementById('player-chapter-subtitle');
+    if (subtitleDisplayElement) {
+        subtitleDisplayElement.innerText = mappedChapterDetailsObj.subtitle;
+    }
+
+    // Sound FX Event Listeners configuration
+    const sfxClickSoundAudioNode = document.getElementById('sfx-click'); 
+    let isSfxTurnedOnAppWide = localStorage.getItem('qms_sound') !== 'off';
+    
+    const allSfxClickableButtons = document.querySelectorAll('.sfx-trigger');
+    allSfxClickableButtons.forEach(actionButton => { 
+        actionButton.addEventListener('click', () => { 
+            if (isSfxTurnedOnAppWide && sfxClickSoundAudioNode) { 
+                sfxClickSoundAudioNode.currentTime = 0; 
+                sfxClickSoundAudioNode.volume = 1.0; 
+                sfxClickSoundAudioNode.play().catch(()=>{}); 
+            } 
+        }); 
+    });
+
+    // ==========================================
+    // C. 🔖 BOOKMARK / SAVE NOTES LOGIC
+    // ==========================================
+    const saveBookmarkActionButton = document.getElementById('btn-bookmark');
+    
+    // Retrieve Bookmarks Data
+    let userBookmarksDataCollection = {};
+    const existingRawBookmarksData = localStorage.getItem('qms_bookmarks');
+    if (existingRawBookmarksData) {
+        userBookmarksDataCollection = JSON.parse(existingRawBookmarksData);
+    }
+    
+    const specificChapterKeyIdentifier = activeSubjectQuery + '_' + activeChapterIdQuery;
+
+    // Validate if chapter is already bookmarked on load
+    if (userBookmarksDataCollection[specificChapterKeyIdentifier]) {
+        if (saveBookmarkActionButton) {
+            saveBookmarkActionButton.innerHTML = '<i class="ri-heart-fill"></i> सेव्ड नोट्स (Saved)';
+            saveBookmarkActionButton.classList.add('saved');
+        }
+    }
+
+    // Bookmark Button Click Event
+    if (saveBookmarkActionButton) {
+        saveBookmarkActionButton.addEventListener('click', () => {
+            
+            // IF ALREADY BOOKMARKED -> REMOVE
+            if (userBookmarksDataCollection[specificChapterKeyIdentifier]) {
+                delete userBookmarksDataCollection[specificChapterKeyIdentifier];
+                
+                // Update Button Design
+                saveBookmarkActionButton.innerHTML = '<i class="ri-heart-add-line"></i> बुकमार्क में सेव करें (Save)';
+                saveBookmarkActionButton.classList.remove('saved');
+                
                 window.showCustomToast("नोट्स को बुकमार्क से हटा दिया गया।");
+                
             } else {
-                // Add Bookmark
-                bookmarksData[currentChapterKey] = {
-                    subject: subject,
-                    id: chapterId,
-                    title: currentChapterDetails.title,
-                    subtitle: currentChapterDetails.subtitle
+                // IF NOT BOOKMARKED -> ADD TO SYSTEM
+                userBookmarksDataCollection[specificChapterKeyIdentifier] = {
+                    subject: activeSubjectQuery,
+                    id: activeChapterIdQuery,
+                    title: mappedChapterDetailsObj.title,
+                    subtitle: mappedChapterDetailsObj.subtitle
                 };
-                bookmarkBtn.innerHTML = '<i class="ri-heart-fill"></i> सेव्ड नोट्स (Saved)';
-                bookmarkBtn.classList.add('saved');
+                
+                // Update Button Design
+                saveBookmarkActionButton.innerHTML = '<i class="ri-heart-fill"></i> सेव्ड नोट्स (Saved)';
+                saveBookmarkActionButton.classList.add('saved');
+                
                 window.showCustomToast("चैप्टर बुकमार्क में सेव हो गया! ❤️");
             }
-            localStorage.setItem('qms_bookmarks', JSON.stringify(bookmarksData));
+            
+            // Save modified collection to LocalStorage
+            localStorage.setItem('qms_bookmarks', JSON.stringify(userBookmarksDataCollection));
         });
     }
 
     // ==========================================
-    // 4. PDF DOWNLOAD & VIEW LOGIC
+    // D. PDF DOWNLOAD & VIEW LOGIC
     // ==========================================
-    const btnViewNotes = document.getElementById('btn-view-notes');
-    if (btnViewNotes) { btnViewNotes.addEventListener('click', () => { if (currentChapterDetails.pdfUrl !== "#") { window.open(`https://docs.google.com/viewer?url=${encodeURIComponent(currentChapterDetails.pdfUrl)}`, '_blank'); } else { window.showCustomToast("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।", true); } }); }
+    const buttonLiveViewNotes = document.getElementById('btn-view-notes');
+    if (buttonLiveViewNotes) { 
+        buttonLiveViewNotes.addEventListener('click', () => { 
+            if (mappedChapterDetailsObj.pdfUrl !== "#") { 
+                const encodedPdfUrlString = encodeURIComponent(mappedChapterDetailsObj.pdfUrl);
+                window.open(`https://docs.google.com/viewer?url=${encodedPdfUrlString}`, '_blank'); 
+            } else { 
+                window.showCustomToast("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।", true); 
+            } 
+        }); 
+    }
 
-    const btnDownloadNotes = document.getElementById('btn-download-notes');
-    const downloadModal = document.getElementById('download-modal');
-    const downloadProgressFill = document.getElementById('download-progress-fill');
-    const downloadStatusText = document.getElementById('download-status-text');
+    const buttonDownloadPdfNotes = document.getElementById('btn-download-notes');
+    const dynamicDownloadModalOverlay = document.getElementById('download-modal');
+    const progressFillAnimatedBar = document.getElementById('download-progress-fill');
+    const progressStatusUpdateText = document.getElementById('download-status-text');
 
-    if (btnDownloadNotes) {
-        btnDownloadNotes.addEventListener('click', () => {
-            if (currentChapterDetails.pdfUrl !== "#") {
-                downloadModal.classList.add('active'); let progressValue = 0;
-                const progressInterval = setInterval(() => {
-                    progressValue += Math.floor(Math.random() * 10) + 5; if (progressValue > 100) progressValue = 100;
-                    downloadProgressFill.style.width = `${progressValue}%`; downloadStatusText.innerText = `सुरक्षित रूप से डाउनलोड हो रहा है... ${progressValue}%`;
-                    if (progressValue === 100) {
-                        clearInterval(progressInterval);
+    if (buttonDownloadPdfNotes) {
+        buttonDownloadPdfNotes.addEventListener('click', () => {
+            if (mappedChapterDetailsObj.pdfUrl !== "#") {
+                
+                // Show modal overlay
+                dynamicDownloadModalOverlay.classList.add('active'); 
+                
+                let pseudoProgressValue = 0;
+                
+                // Start Fake Progress Loop
+                const downloadProgressIntervalTimer = setInterval(() => {
+                    
+                    // Increment 5 to 15 percent
+                    pseudoProgressValue += Math.floor(Math.random() * 10) + 5; 
+                    
+                    if (pseudoProgressValue > 100) {
+                        pseudoProgressValue = 100;
+                    }
+                    
+                    progressFillAnimatedBar.style.width = `${pseudoProgressValue}%`; 
+                    progressStatusUpdateText.innerText = `सुरक्षित रूप से डाउनलोड हो रहा है... ${pseudoProgressValue}%`;
+                    
+                    if (pseudoProgressValue === 100) {
+                        clearInterval(downloadProgressIntervalTimer);
+                        
                         setTimeout(() => {
-                            downloadModal.classList.remove('active');
-                            setTimeout(() => { downloadProgressFill.style.width = '0%'; downloadStatusText.innerText = 'तैयार किया जा रहा है... 0%'; }, 500);
-                            const tempLink = document.createElement('a'); tempLink.href = currentChapterDetails.pdfUrl; tempLink.download = `QMS_Notes_Chapter_${chapterId}.pdf`; tempLink.target = '_blank'; document.body.appendChild(tempLink); tempLink.click(); document.body.removeChild(tempLink);
+                            dynamicDownloadModalOverlay.classList.remove('active');
+                            
+                            // Reset bar visually after modal closes
+                            setTimeout(() => { 
+                                progressFillAnimatedBar.style.width = '0%'; 
+                                progressStatusUpdateText.innerText = 'तैयार किया जा रहा है... 0%'; 
+                            }, 500);
+                            
+                            // Trigger actual Browser File Download
+                            const temporaryHyperlink = document.createElement('a'); 
+                            temporaryHyperlink.href = mappedChapterDetailsObj.pdfUrl; 
+                            temporaryHyperlink.download = `QMS_Notes_Chapter_${activeChapterIdQuery}.pdf`; 
+                            temporaryHyperlink.target = '_blank'; 
+                            
+                            document.body.appendChild(temporaryHyperlink); 
+                            temporaryHyperlink.click(); 
+                            document.body.removeChild(temporaryHyperlink);
+                            
                             window.showCustomToast("PDF सफलतापूर्वक डाउनलोड हो गई है!");
                         }, 500);
                     }
                 }, 200);
-            } else { window.showCustomToast("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।", true); }
+                
+            } else { 
+                window.showCustomToast("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।", true); 
+            }
         });
     }
 
     // ==========================================
-    // 5. MARK COMPLETE LOGIC
+    // E. MARK COMPLETE LOGIC (XP & Tracker)
     // ==========================================
-    const markCompleteBtn = document.getElementById('mark-complete-btn');
-    let completedDataStorage = localStorage.getItem('qms_completed'); let completedData = {}; if (completedDataStorage) completedData = JSON.parse(completedDataStorage);
-    if (completedData[currentChapterKey] === true) { if (markCompleteBtn) { markCompleteBtn.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)'; markCompleteBtn.style.background = '#00ff88'; markCompleteBtn.style.color = '#000'; markCompleteBtn.disabled = true; } }
+    const buttonMarkCompleteChapter = document.getElementById('mark-complete-btn');
     
-    if (markCompleteBtn) {
-        markCompleteBtn.addEventListener('click', () => {
-            if (completedData[currentChapterKey] !== true) {
-                completedData[currentChapterKey] = true; localStorage.setItem('qms_completed', JSON.stringify(completedData));
-                markCompleteBtn.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)'; markCompleteBtn.style.background = '#00ff88'; markCompleteBtn.style.color = '#000'; markCompleteBtn.disabled = true;
+    // Look up completion history
+    const savedCompletedDataRawString = localStorage.getItem('qms_completed'); 
+    let allCompletedChaptersDataObj = {}; 
+    
+    if (savedCompletedDataRawString) {
+        allCompletedChaptersDataObj = JSON.parse(savedCompletedDataRawString);
+    }
+    
+    // Evaluate initial UI state
+    if (allCompletedChaptersDataObj[specificChapterKeyIdentifier] === true) { 
+        if (buttonMarkCompleteChapter) { 
+            buttonMarkCompleteChapter.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)'; 
+            buttonMarkCompleteChapter.style.background = '#00ff88'; 
+            buttonMarkCompleteChapter.style.color = '#000'; 
+            buttonMarkCompleteChapter.disabled = true; 
+        } 
+    }
+    
+    // Listen for completion click
+    if (buttonMarkCompleteChapter) {
+        buttonMarkCompleteChapter.addEventListener('click', () => {
+            if (allCompletedChaptersDataObj[specificChapterKeyIdentifier] !== true) {
+                
+                // Add to record
+                allCompletedChaptersDataObj[specificChapterKeyIdentifier] = true; 
+                localStorage.setItem('qms_completed', JSON.stringify(allCompletedChaptersDataObj));
+                
+                // Change appearance
+                buttonMarkCompleteChapter.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)'; 
+                buttonMarkCompleteChapter.style.background = '#00ff88'; 
+                buttonMarkCompleteChapter.style.color = '#000'; 
+                buttonMarkCompleteChapter.disabled = true;
+                
+                // Notify user
                 window.showCustomToast("बधाई हो! आपने यह अध्याय पूरा कर लिया है। +50 XP");
             }
         });
     }
 
     // ==========================================
-    // 6. FIREFLY PARTICLES (GLOWING SYMBOLS)
+    // F. FIREFLY PARTICLES (GLOWING SYMBOLS)
     // ==========================================
-    const particleCanvas = document.getElementById('bg-canvas');
-    if (particleCanvas) {
-        const canvasCtx = particleCanvas.getContext('2d'); particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight;
-        const scienceFormulas = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ']; let activeParticlesArray = [];
-        class QuantumFirefly {
+    const targetParticleCanvasElement = document.getElementById('bg-canvas');
+    
+    if (targetParticleCanvasElement) {
+        const primaryCanvasContext2D = targetParticleCanvasElement.getContext('2d'); 
+        
+        targetParticleCanvasElement.width = window.innerWidth; 
+        targetParticleCanvasElement.height = window.innerHeight;
+        
+        const listOfScienceFormulaSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ']; 
+        let globalActiveParticlesArray = [];
+        
+        class QuantumFireflyObjectEngine {
             constructor() {
-                this.particleType = Math.random() > 0.4 ? 'dot' : 'symbol';
-                this.symbolText = scienceFormulas[Math.floor(Math.random() * scienceFormulas.length)];
-                this.positionX = Math.random() * particleCanvas.width; this.positionY = Math.random() * particleCanvas.height;
-                if (this.particleType === 'symbol') { this.fontSize = Math.random() * 15 + 10; this.velocityX = Math.random() * 0.5 - 0.25; this.velocityY = Math.random() * -0.8 - 0.2; } 
-                else { this.fontSize = Math.random() * 3 + 1; this.velocityX = Math.random() * 1 - 0.5; this.velocityY = Math.random() * -1 - 0.2; }
-                this.blinkSpeed = Math.random() * 0.05 + 0.02; this.blinkAngle = Math.random() * Math.PI * 2;
+                const shapeProbabilityFloat = Math.random();
+                if (shapeProbabilityFloat > 0.4) {
+                    this.geometricShapeType = 'dot';
+                } else {
+                    this.geometricShapeType = 'symbol';
+                }
+                
+                const randomSymbolSelectionIndex = Math.floor(Math.random() * listOfScienceFormulaSymbols.length);
+                this.textStringSymbol = listOfScienceFormulaSymbols[randomSymbolSelectionIndex];
+                
+                this.canvasPositionX = Math.random() * targetParticleCanvasElement.width; 
+                this.canvasPositionY = Math.random() * targetParticleCanvasElement.height;
+                
+                if (this.geometricShapeType === 'symbol') { 
+                    this.renderPixelSize = Math.random() * 15 + 10; 
+                    this.movementSpeedX = Math.random() * 0.5 - 0.25; 
+                    this.movementSpeedY = Math.random() * -0.8 - 0.2; 
+                } else { 
+                    this.renderPixelSize = Math.random() * 3 + 1; 
+                    this.movementSpeedX = Math.random() * 1 - 0.5; 
+                    this.movementSpeedY = Math.random() * -1 - 0.2; 
+                }
+                
+                this.alphaBlinkingVelocity = Math.random() * 0.05 + 0.02; 
+                this.alphaSineWaveAngle = Math.random() * Math.PI * 2;
             }
-            updatePosition() {
-                this.positionY += this.velocityY; this.positionX += this.velocityX; this.blinkAngle += this.blinkSpeed;
-                if (this.positionY < -30) { this.positionY = particleCanvas.height + 30; this.positionX = Math.random() * particleCanvas.width; }
-                if (this.positionX < -30 || this.positionX > particleCanvas.width + 30) { this.velocityX = this.velocityX * -1; }
+            
+            recalculateCoordinateLogic() {
+                this.canvasPositionY += this.movementSpeedY; 
+                this.canvasPositionX += this.movementSpeedX; 
+                this.alphaSineWaveAngle += this.alphaBlinkingVelocity;
+                
+                if (this.canvasPositionY < -30) { 
+                    this.canvasPositionY = targetParticleCanvasElement.height + 30; 
+                    this.canvasPositionX = Math.random() * targetParticleCanvasElement.width; 
+                }
+                
+                if (this.canvasPositionX < -30 || this.canvasPositionX > targetParticleCanvasElement.width + 30) { 
+                    this.movementSpeedX = this.movementSpeedX * -1; 
+                }
             }
-            drawParticle(context) {
-                const rootCssStyles = getComputedStyle(document.documentElement); let themeAccentColor = rootCssStyles.getPropertyValue('--accent-main').trim() || '#00f0ff';
-                let calculatedOpacity = ((Math.sin(this.blinkAngle) + 1) / 2) * 0.8 + 0.1;
-                context.fillStyle = `rgba(255, 255, 255, ${calculatedOpacity})`; context.shadowBlur = calculatedOpacity * 20; context.shadowColor = themeAccentColor;
-                if (this.particleType === 'symbol') { context.font = `${this.fontSize}px "Space Grotesk", sans-serif`; context.fillText(this.symbolText, this.positionX, this.positionY); } 
-                else { context.beginPath(); context.arc(this.positionX, this.positionY, this.fontSize, 0, Math.PI * 2); context.fill(); }
-                context.shadowBlur = 0;
+            
+            renderVisualsToCanvas(ctx) {
+                const globalRootComputedStyles = getComputedStyle(document.documentElement);
+                let currentThemeAccentColorHex = globalRootComputedStyles.getPropertyValue('--accent-main').trim();
+                
+                if (currentThemeAccentColorHex === "") {
+                    currentThemeAccentColorHex = '#00f0ff';
+                }
+                
+                let dynamicOpacityFloatValue = ((Math.sin(this.alphaSineWaveAngle) + 1) / 2) * 0.8 + 0.1;
+                
+                ctx.fillStyle = `rgba(255, 255, 255, ${dynamicOpacityFloatValue})`; 
+                ctx.shadowBlur = dynamicOpacityFloatValue * 20; 
+                ctx.shadowColor = currentThemeAccentColorHex;
+                
+                if (this.geometricShapeType === 'symbol') { 
+                    ctx.font = `${this.renderPixelSize}px "Space Grotesk", sans-serif`; 
+                    ctx.fillText(this.textStringSymbol, this.canvasPositionX, this.canvasPositionY); 
+                } else { 
+                    ctx.beginPath(); 
+                    ctx.arc(this.canvasPositionX, this.canvasPositionY, this.renderPixelSize, 0, Math.PI * 2); 
+                    ctx.fill(); 
+                }
+                
+                ctx.shadowBlur = 0; 
             }
         }
-        for (let counter = 0; counter < 60; counter++) activeParticlesArray.push(new QuantumFirefly());
-        function executeAnimationLoop() { canvasCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height); for (let i = 0; i < activeParticlesArray.length; i++) { activeParticlesArray[i].updatePosition(); activeParticlesArray[i].drawParticle(canvasCtx); } requestAnimationFrame(executeAnimationLoop); }
-        executeAnimationLoop();
-        window.addEventListener('resize', () => { particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight; });
+        
+        for (let loopCounter = 0; loopCounter < 60; loopCounter++) {
+            globalActiveParticlesArray.push(new QuantumFireflyObjectEngine());
+        }
+        
+        function runMainRenderingLoop() { 
+            primaryCanvasContext2D.clearRect(0, 0, targetParticleCanvasElement.width, targetParticleCanvasElement.height); 
+            
+            globalActiveParticlesArray.forEach(singleParticleElement => { 
+                singleParticleElement.recalculateCoordinateLogic(); 
+                singleParticleElement.renderVisualsToCanvas(primaryCanvasContext2D); 
+            }); 
+            
+            requestAnimationFrame(runMainRenderingLoop); 
+        }
+        
+        runMainRenderingLoop();
+        
+        window.addEventListener('resize', () => { 
+            targetParticleCanvasElement.width = window.innerWidth; 
+            targetParticleCanvasElement.height = window.innerHeight; 
+        });
     }
 });
