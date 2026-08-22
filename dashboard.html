@@ -9,10 +9,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- मुख्य स्टाइलशीट -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- =========================================
+         AUDIO PLAYERS (SFX & BGM)
+    ========================================== -->
     <!-- कस्टम क्लिक साउंड -->
     <audio id="sfx-click" preload="auto">
         <source src="click.mp3" type="audio/mpeg">
@@ -41,8 +46,12 @@
         <p class="loading-text" id="loading-text">सिस्टम इनिशियलाइज़ हो रहा है...</p>
     </div>
 
-    <!-- जुगनू एनीमेशन -->
+    <!-- =========================================
+         FIREFLY PARTICLES CANVAS
+    ========================================== -->
     <canvas id="bg-canvas"></canvas>
+    
+    <!-- पैनल ओवरले -->
     <div class="overlay-bg" id="panel-overlay"></div>
 
     <!-- =========================================
@@ -53,18 +62,27 @@
         
         <div class="panel-header">
             <div class="image-upload-wrapper-clean">
-                <img id="panel-profile-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" alt="User">
-                <label for="img-upload" class="upload-btn-clean sfx-trigger"><i class="ri-camera-fill"></i></label>
+                <img id="panel-profile-img" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" alt="User Profile Image">
+                <label for="img-upload" class="upload-btn-clean sfx-trigger">
+                    <i class="ri-camera-fill"></i>
+                </label>
                 <input type="file" id="img-upload" hidden accept="image/*">
             </div>
+            
             <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
                 <h2 id="panel-user-name" style="font-family: var(--font-heading); font-size: 1.5rem;">Alina Sami</h2>
-                <i class="ri-edit-box-line sfx-trigger" id="edit-name-btn" style="color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;"></i>
+                <i class="ri-edit-box-line sfx-trigger" id="edit-name-btn" style="color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;" title="नाम बदलें"></i>
             </div>
-            <p style="color: var(--accent-main); font-size: 0.85rem; margin-top: 5px; font-weight: 600;">QMS प्रो स्टूडेंट <i class="ri-vip-crown-fill"></i></p>
+            
+            <p style="color: var(--accent-main); font-size: 0.85rem; margin-top: 5px; font-weight: 600;">
+                QMS प्रो स्टूडेंट <i class="ri-vip-crown-fill"></i>
+            </p>
         </div>
 
-        <h3 class="setting-section-title"><i class="ri-palette-fill"></i> कस्टमाइज़ेशन (Themes)</h3>
+        <!-- 8 THEMES SECTION -->
+        <h3 class="setting-section-title">
+            <i class="ri-palette-fill"></i> कस्टमाइज़ेशन (Themes)
+        </h3>
         
         <div class="theme-grid-named">
             <div class="theme-option-card sfx-trigger" data-set-theme="default">
@@ -101,7 +119,11 @@
             </div>
         </div>
 
-        <h3 class="setting-section-title"><i class="ri-headphone-fill"></i> म्यूजिक प्लेयर (BGM)</h3>
+        <!-- 7 TRACK MUSIC PLAYER (BGM) -->
+        <h3 class="setting-section-title">
+            <i class="ri-headphone-fill"></i> म्यूजिक प्लेयर (BGM)
+        </h3>
+        
         <div class="setting-row">
             <div class="setting-info">
                 <h4>म्यूजिक ट्रैक</h4>
@@ -117,6 +139,7 @@
                 <option value="bgm7.mp3">Track 7 - Deep Relax & Study</option>
             </select>
         </div>
+
         <div class="setting-row">
             <div class="setting-info">
                 <h4>प्ले / पॉज़ म्यूजिक</h4>
@@ -127,6 +150,7 @@
                 <span class="slider-clean" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); border-radius: 24px; transition: .3s;"></span>
             </label>
         </div>
+        
         <div class="setting-row">
             <div class="setting-info">
                 <h4>म्यूजिक वॉल्यूम</h4>
@@ -134,7 +158,41 @@
             <input type="range" id="bgm-volume" min="0" max="1" step="0.1" value="0.3" style="width: 120px; accent-color: var(--accent-main); cursor: pointer;">
         </div>
 
-        <h3 class="setting-section-title"><i class="ri-settings-3-fill"></i> ऐप सेटिंग्स</h3>
+        <!-- STUDY PREFERENCES -->
+        <h3 class="setting-section-title">
+            <i class="ri-book-read-fill"></i> स्टडी प्रेफरेंस
+        </h3>
+        
+        <div class="setting-row">
+            <div class="setting-info">
+                <h4>PDF डाउनलोड फोल्डर</h4>
+                <p>नोट्स कहाँ सेव करें?</p>
+            </div>
+            <select class="pro-select sfx-trigger" id="pdf-location-pref">
+                <option value="default">गैलरी / Default</option>
+                <option value="qms_folder">QMS फोल्डर</option>
+                <option value="ask">हर बार पूछें</option>
+            </select>
+        </div>
+        
+        <div class="setting-row">
+            <div class="setting-info">
+                <h4>वीडियो क्वालिटी</h4>
+                <p>डिफ़ॉल्ट प्लेबैक रेज़ोल्यूशन</p>
+            </div>
+            <select class="pro-select sfx-trigger" id="video-quality-pref">
+                <option value="auto">Auto (अनुशंसित)</option>
+                <option value="1080p">1080p HD</option>
+                <option value="720p">720p</option>
+                <option value="480p">480p (Data Saver)</option>
+            </select>
+        </div>
+
+        <!-- APP SETTINGS -->
+        <h3 class="setting-section-title">
+            <i class="ri-settings-3-fill"></i> ऐप सेटिंग्स
+        </h3>
+        
         <div class="setting-row">
             <div class="setting-info">
                 <h4>सिस्टम साउंड (SFX)</h4>
@@ -155,6 +213,8 @@
          MAIN DASHBOARD CONTENT
     ========================================== -->
     <div class="dashboard-wrapper">
+        
+        <!-- HEADER -->
         <header class="top-nav glass-panel">
             <div class="brand-mini">
                 <svg viewBox="0 0 100 100" class="mini-qms-logo">
@@ -172,20 +232,33 @@
         </header>
 
         <main class="dash-main-clean">
+            
+            <!-- WELCOME BANNER -->
             <div class="welcome-banner glass-card">
                 <div class="welcome-text">
-                    <h1 class="greeting"><span id="dynamic-greeting">नमस्ते</span>, <span class="highlight" id="dash-user-name">Alina Sami</span> 👋</h1>
-                    <p class="subtitle" style="color: var(--text-secondary); margin-top: 5px;">आज आपका लक्ष्य क्या है? चलिए कुछ नया सीखते हैं!</p>
-                    <div class="level-badge"><i class="ri-rocket-2-fill"></i> QMS फाउंडेशन बैच 2026</div>
+                    <h1 class="greeting">
+                        <span id="dynamic-greeting">नमस्ते</span>, 
+                        <span class="highlight" id="dash-user-name">Alina Sami</span> 👋
+                    </h1>
+                    <p class="subtitle" style="color: var(--text-secondary); margin-top: 5px;">
+                        आज आपका लक्ष्य क्या है? चलिए कुछ नया सीखते हैं!
+                    </p>
+                    <div class="level-badge">
+                        <i class="ri-rocket-2-fill"></i> QMS फाउंडेशन बैच 2026
+                    </div>
                 </div>
             </div>
 
+            <!-- DAILY QUOTE -->
             <div class="quote-box" id="daily-quote">
                 "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।"
             </div>
 
+            <!-- POMODORO TIMER -->
             <div class="timer-card glass-card">
-                <h3 style="margin-bottom: 10px; color: var(--text-secondary);"><i class="ri-timer-line"></i> फोकस टाइमर (Pomodoro)</h3>
+                <h3 style="margin-bottom: 10px; color: var(--text-secondary);">
+                    <i class="ri-timer-line"></i> फोकस टाइमर (Pomodoro)
+                </h3>
                 <div class="timer-display" id="timer-display">25:00</div>
                 <div class="timer-controls">
                     <button class="timer-btn btn-start sfx-trigger" id="timer-start-btn">स्टार्ट</button>
@@ -193,30 +266,42 @@
                 </div>
             </div>
 
+            <!-- STATS GRID -->
             <div class="stats-grid">
                 <div class="stat-card glass-card">
-                    <div class="stat-icon" style="color: #ffc107;"><i class="ri-fire-fill"></i></div>
+                    <div class="stat-icon" style="color: #ffc107;">
+                        <i class="ri-fire-fill"></i>
+                    </div>
                     <div class="stat-info">
                         <h3 class="stat-number streak-badge"><span>1 दिन</span></h3>
                         <p style="color: var(--text-secondary); font-size: 0.85rem;">एक्टिव स्ट्रीक</p>
                     </div>
                 </div>
+                
                 <div class="stat-card glass-card sfx-trigger" onclick="window.location.href='subjects.html'" style="cursor:pointer;">
-                    <div class="stat-icon" style="color: var(--accent-main);"><i class="ri-book-open-fill"></i></div>
+                    <div class="stat-icon" style="color: var(--accent-main);">
+                        <i class="ri-book-open-fill"></i>
+                    </div>
                     <div class="stat-info">
                         <h3 class="stat-number">5</h3>
                         <p style="color: var(--text-secondary); font-size: 0.85rem;">कुल विषय</p>
                     </div>
                 </div>
+                
                 <div class="stat-card glass-card">
-                    <div class="stat-icon" style="color: #00ff88;"><i class="ri-check-double-fill"></i></div>
+                    <div class="stat-icon" style="color: #00ff88;">
+                        <i class="ri-check-double-fill"></i>
+                    </div>
                     <div class="stat-info">
                         <h3 class="stat-number" id="dash-completed-count">0</h3>
                         <p style="color: var(--text-secondary); font-size: 0.85rem;">अध्याय पूरे</p>
                     </div>
                 </div>
+                
                 <div class="stat-card glass-card">
-                    <div class="stat-icon" style="color: #b535ff;"><i class="ri-copper-coin-fill"></i></div>
+                    <div class="stat-icon" style="color: #b535ff;">
+                        <i class="ri-copper-coin-fill"></i>
+                    </div>
                     <div class="stat-info">
                         <h3 class="stat-number" id="dash-total-xp">0</h3>
                         <p style="color: var(--text-secondary); font-size: 0.85rem;">XP पॉइंट्स</p>
@@ -224,12 +309,15 @@
                 </div>
             </div>
 
-            <!-- 🔖 NEW BOOKMARKS SECTION -->
+            <!-- =========================================
+                 🔖 NEW: BOOKMARKS SECTION 🔖
+            ========================================== -->
             <div class="bookmarks-section" style="margin-bottom: 2.5rem; margin-top: 1rem;">
                 <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;">
                     <i class="ri-bookmark-3-fill"></i> सेव्ड नोट्स (Bookmarks)
                 </h3>
-                <!-- JS विल रेंडर बुकमार्क्स हेयर -->
+                
+                <!-- JS will render Bookmarks here dynamically -->
                 <div id="bookmarks-container">
                     <p style="color: var(--text-secondary); font-size: 0.9rem;">लोड हो रहा है...</p>
                 </div>
@@ -241,6 +329,7 @@
         </main>
     </div>
 
+    <!-- MAIN JAVASCRIPT LOGIC -->
     <script src="dashboard.js"></script>
 </body>
 </html>
