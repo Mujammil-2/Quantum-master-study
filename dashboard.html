@@ -23,6 +23,9 @@
         <source src="bgm1.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- =========================================
+         SPLASH SCREEN / LOADING SCREEN
+    ========================================== -->
     <div id="splash-screen">
         <svg viewBox="0 0 100 100" class="premium-logo">
             <circle cx="50" cy="50" r="12" fill="var(--accent-main)"/>
@@ -112,8 +115,7 @@
                 <option value="bgm3.mp3">Track 3 - Piano Vibe</option>
                 <option value="bgm4.mp3">Track 4 - Rain Sounds</option>
                 <option value="bgm5.mp3">Track 5 - Nature Ambient</option>
-                <option value="bgm6.mp3">Track 6 - Space Alpha</option>
-                <!-- यह है तुम्हारा नया 7वां ट्रैक -->
+                <option value="bgm6.mp3">Track 6 - Space Alpha Waves</option>
                 <option value="bgm7.mp3">Track 7 - Deep Relax & Study</option>
             </select>
         </div>
@@ -134,6 +136,31 @@
                 <h4>म्यूजिक वॉल्यूम</h4>
             </div>
             <input type="range" id="bgm-volume" min="0" max="1" step="0.1" value="0.3" style="width: 120px; accent-color: var(--accent-main); cursor: pointer;">
+        </div>
+
+        <h3 class="setting-section-title"><i class="ri-book-read-fill"></i> स्टडी प्रेफरेंस</h3>
+        <div class="setting-row">
+            <div class="setting-info">
+                <h4>PDF डाउनलोड फोल्डर</h4>
+                <p>नोट्स कहाँ सेव करें?</p>
+            </div>
+            <select class="pro-select sfx-trigger" id="pdf-location-pref">
+                <option value="default">गैलरी / Default</option>
+                <option value="qms_folder">QMS फोल्डर</option>
+                <option value="ask">हर बार पूछें</option>
+            </select>
+        </div>
+        <div class="setting-row">
+            <div class="setting-info">
+                <h4>वीडियो क्वालिटी</h4>
+                <p>डिफ़ॉल्ट प्लेबैक रेज़ोल्यूशन</p>
+            </div>
+            <select class="pro-select sfx-trigger" id="video-quality-pref">
+                <option value="auto">Auto (अनुशंसित)</option>
+                <option value="1080p">1080p HD</option>
+                <option value="720p">720p</option>
+                <option value="480p">480p (Data Saver)</option>
+            </select>
         </div>
 
         <h3 class="setting-section-title"><i class="ri-settings-3-fill"></i> ऐप सेटिंग्स</h3>
@@ -176,7 +203,7 @@
         <main class="dash-main-clean">
             <div class="welcome-banner glass-card">
                 <div class="welcome-text">
-                    <h1 class="greeting"><span id="dynamic-greeting">नमस्ते</span>, <span class="highlight" id="dash-user-name">Student</span> 👋</h1>
+                    <h1 class="greeting"><span id="dynamic-greeting">नमस्ते</span>, <span class="highlight" id="dash-user-name">Alina Sami</span> 👋</h1>
                     <p class="subtitle" style="color: var(--text-secondary); margin-top: 5px;">आज आपका लक्ष्य क्या है? चलिए कुछ नया सीखते हैं!</p>
                     <div class="level-badge"><i class="ri-rocket-2-fill"></i> QMS फाउंडेशन बैच 2026</div>
                 </div>
