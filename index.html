@@ -37,268 +37,88 @@
         }
 
         /* Canvas for Particles */
-        #bg-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2; /* Ensure particles show above background but below card */
-            pointer-events: none;
-        }
+        #bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
 
-        /* 🚀 NEW: Floating Features Button */
+        /* Floating Features Button */
         .info-float-btn {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-family: var(--font-hindi);
-            font-size: 0.95rem;
-            cursor: pointer;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: absolute; top: 25px; right: 25px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;
+            padding: 10px 18px; border-radius: 20px; font-family: var(--font-hindi); font-size: 0.95rem; cursor: pointer; z-index: 100;
+            display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .info-float-btn:hover {
-            background: var(--accent-main);
-            color: #000;
-            box-shadow: 0 0 20px var(--accent-glow);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
+        .info-float-btn:hover { background: var(--accent-main); color: #000; box-shadow: 0 0 20px var(--accent-glow); border-color: transparent; transform: translateY(-2px); }
 
-        .login-wrapper {
-            width: 100%;
-            max-width: 450px;
-            padding: 2rem;
-            z-index: 10;
-            animation: fadeUp 0.8s ease;
-        }
+        .login-wrapper { width: 100%; max-width: 450px; padding: 2rem; z-index: 10; animation: fadeUp 0.8s ease; }
 
         .auth-card {
-            padding: 2.5rem;
-            border-radius: 24px;
-            text-align: center;
-            background: rgba(15, 15, 25, 0.7);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            position: relative;
-            overflow: hidden;
+            padding: 2.5rem; border-radius: 24px; text-align: center; background: rgba(15, 15, 25, 0.7); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative; overflow: hidden;
         }
 
-        .auth-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 5px;
-            background: linear-gradient(90deg, var(--accent-main), #b535ff);
-        }
+        .auth-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--accent-main), #b535ff); }
 
-        .app-branding {
-            margin-bottom: 2rem;
-        }
-
-        .brand-logo-svg {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            animation: pulseGlow 3s infinite alternate;
-        }
-
-        .app-title {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
-        .app-subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
+        .app-branding { margin-bottom: 2rem; }
+        .brand-logo-svg { width: 60px; height: 60px; margin: 0 auto 15px; animation: pulseGlow 3s infinite alternate; }
+        .app-title { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; letter-spacing: 2px; color: #fff; margin-bottom: 5px; }
+        .app-subtitle { color: var(--text-secondary); font-size: 0.9rem; }
 
         /* Input Fields */
-        .input-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .auth-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 16px 16px 16px 45px;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .auth-input:focus {
-            border-color: var(--accent-main);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            transition: 0.3s;
-        }
-
-        .auth-input:focus + .input-icon {
-            color: var(--accent-main);
-        }
+        .input-group { margin-bottom: 1.5rem; position: relative; }
+        .auth-input { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); padding: 16px 16px 16px 45px; border-radius: 12px; color: #fff; font-size: 1rem; transition: all 0.3s ease; outline: none; }
+        .auth-input:focus { border-color: var(--accent-main); box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); background: rgba(0, 0, 0, 0.6); }
+        .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 1.2rem; transition: 0.3s; }
+        .auth-input:focus + .input-icon { color: var(--accent-main); }
 
         /* Buttons */
-        .btn-auth-primary {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent-main) 0%, #0099ff 100%);
-            color: #000;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.3);
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
+        .btn-auth-primary { width: 100%; background: linear-gradient(135deg, var(--accent-main) 0%, #0099ff 100%); color: #000; border: none; padding: 16px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0, 240, 255, 0.3); margin-bottom: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-auth-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 240, 255, 0.5); }
 
-        .btn-auth-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.5);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
+        .divider { display: flex; align-items: center; text-align: center; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .divider:not(:empty)::before { margin-right: .25em; }
         .divider:not(:empty)::after { margin-left: .25em; }
 
         /* Social Auth Grid */
-        .social-auth-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
+        .social-auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+        .social-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 10px; color: #fff; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .social-btn:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); border-color: rgba(255,255,255,0.3);}
 
-        .social-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
+        .btn-guest { width: 100%; background: transparent; border: 1px dashed rgba(255,255,255,0.3); color: var(--text-secondary); padding: 14px; border-radius: 10px; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 5px; }
+        .btn-guest:hover { background: rgba(255,255,255,0.05); color: #fff; border-color: #fff; }
+        .privacy-note { margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; }
+        .privacy-note i { color: #00ff88; }
 
-        .social-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        /* Specific Icon Colors for branding */
-        .ri-google-fill { color: #DB4437; }
-        .ri-facebook-circle-fill { color: #4267B2; }
-        .ri-instagram-fill { background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .btn-guest {
-            width: 100%;
-            background: transparent;
-            border: 1px dashed rgba(255,255,255,0.3);
-            color: var(--text-secondary);
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-guest:hover {
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            border-color: #fff;
-        }
-
-        .privacy-note {
-            margin-top: 1.5rem;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
-
-        .privacy-note i {
-            color: #00ff88;
-        }
-
-        /* 🚀 NEW: Features Modal Styles */
-        .features-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-            z-index: 10001; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: 0.3s ease;
-        }
+        /* Features Modal */
+        .features-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 10001; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
         .features-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        
-        .features-modal-box {
-            background: rgba(15, 15, 25, 0.95); border: 1px solid var(--accent-main);
-            padding: 2.5rem; border-radius: 20px; max-width: 450px; width: 90%;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-            transform: translateY(20px); transition: 0.3s ease;
-            text-align: left;
-        }
+        .features-modal-box { background: rgba(15, 15, 25, 0.95); border: 1px solid var(--accent-main); padding: 2.5rem; border-radius: 20px; max-width: 450px; width: 90%; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); transform: translateY(20px); transition: 0.3s ease; text-align: left; }
         .features-modal-overlay.active .features-modal-box { transform: translateY(0); }
-        
         .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 20px; margin-bottom: 25px; }
         .feature-list li { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 0.95rem; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 12px; border-left: 3px solid var(--accent-main); font-family: var(--font-hindi); }
-        .feature-list li i { font-size: 1.3rem; color: var(--accent-main); }
+
+        /* 🚀 NEW: Real OAuth Consent Modal */
+        .oauth-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10005; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s ease; }
+        .oauth-modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .oauth-modal-box { background: #1a1a2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 90%; max-width: 380px; padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.7); text-align: center; transform: scale(0.95); transition: 0.3s ease; }
+        .oauth-modal-overlay.active .oauth-modal-box { transform: scale(1); }
+        
+        .oauth-header { margin-bottom: 1.5rem; }
+        .oauth-header svg { width: 45px; height: 45px; margin-bottom: 15px; }
+        .oauth-header h3 { font-family: var(--font-main); font-size: 1.3rem; color: #fff; }
+        
+        .oauth-body { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: left; border: 1px dashed rgba(255,255,255,0.1); }
+        .oauth-body p { color: #fff; font-size: 0.9rem; margin-bottom: 10px; }
+        .oauth-body ul { color: var(--text-secondary); font-size: 0.85rem; padding-left: 20px; margin-bottom: 15px; }
+        .oauth-body ul li { margin-bottom: 5px; }
+        .oauth-privacy-text { font-size: 0.75rem; color: #888; text-align: center; }
+        
+        .oauth-footer { display: flex; gap: 15px; }
+        .oauth-btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 0.95rem; transition: 0.2s; }
+        .oauth-cancel { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .oauth-cancel:hover { background: rgba(255,255,255,0.1); }
+        .oauth-allow { background: #4285F4; color: #fff; } /* Default Google Blue */
+        .oauth-allow:hover { filter: brightness(1.1); }
     </style>
 </head>
 <body>
@@ -313,12 +133,12 @@
     <div class="glow-orb-2"></div>
     <canvas id="bg-canvas"></canvas>
 
-    <!-- 🚀 NEW: Floating Features Button -->
+    <!-- Floating Features Button -->
     <button class="info-float-btn sfx-trigger" id="open-features-btn">
         <i class="ri-information-line" style="font-size: 1.2rem;"></i> ऐप के फीचर्स
     </button>
 
-    <!-- 🚀 NEW: Features Modal -->
+    <!-- Features Modal -->
     <div class="features-modal-overlay" id="features-modal">
         <div class="features-modal-box">
             <h2 style="color: var(--accent-main); margin-bottom: 5px; font-family: var(--font-heading); font-size: 1.8rem;">🚀 QMS प्रीमियम फीचर्स</h2>
@@ -326,8 +146,8 @@
             
             <ul class="feature-list">
                 <li><i class="ri-book-read-fill"></i> सभी विषयों के स्मार्ट वीडियो और PDF नोट्स</li>
-                <li><i class="ri-timer-flash-fill"></i> कस्टम टाइमर के साथ लाइव 5 विषयों का मॉक टेस्ट</li>
-                <li><i class="ri-headphone-fill"></i> फोकस बढ़ाने के लिए 7 मल्टी-ट्रैक म्यूजिक प्लेयर (BGM)</li>
+                <li><i class="ri-timer-flash-fill"></i> कस्टम टाइमर के साथ 5 विषयों का लाइव मॉक टेस्ट</li>
+                <li><i class="ri-headphone-fill"></i> फोकस बढ़ाने के लिए 7 मल्टी-ट्रैक म्यूजिक प्लेयर</li>
                 <li><i class="ri-bookmark-3-fill"></i> फेवरेट चैप्टर्स के लिए स्मार्ट बुकमार्क सिस्टम</li>
                 <li><i class="ri-palette-fill"></i> 8 प्रीमियम कलर थीम्स और कस्टमाइज़ेशन</li>
                 <li><i class="ri-shield-check-fill" style="color: #00ff88;"></i> 100% प्राइवेट (डेटा डिवाइस में सुरक्षित)</li>
@@ -336,6 +156,29 @@
             <button class="btn-auth-primary sfx-trigger" id="close-features-btn" style="margin-bottom: 0;">
                 समझ गया (Got it) <i class="ri-thumb-up-fill"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- 🚀 NEW: REAL OAUTH CONSENT MODAL (PERMISSION SCREEN) -->
+    <div class="oauth-modal-overlay" id="oauth-modal">
+        <div class="oauth-modal-box">
+            <div class="oauth-header">
+                <!-- SVG Icon will be injected via JS -->
+                <div id="oauth-provider-icon"></div>
+                <h3>Sign in with <span id="oauth-provider-name">Provider</span></h3>
+            </div>
+            <div class="oauth-body">
+                <p><b>Quantum Master Study</b> निम्नलिखित की अनुमति मांग रहा है:</p>
+                <ul>
+                    <li>आपका नाम और प्रोफाइल तस्वीर देखें</li>
+                    <li>आपका ईमेल एड्रेस प्राप्त करें</li>
+                </ul>
+                <p class="oauth-privacy-text">अनुमति देकर, आप हमारे प्राइवेसी नियमों से सहमत होते हैं। आपका डेटा आपके डिवाइस पर ही रहेगा।</p>
+            </div>
+            <div class="oauth-footer">
+                <button class="oauth-btn oauth-cancel sfx-trigger" id="oauth-cancel-btn">Cancel</button>
+                <button class="oauth-btn oauth-allow sfx-trigger" id="oauth-allow-btn">Allow (अनुमति दें)</button>
+            </div>
         </div>
     </div>
 
@@ -354,7 +197,7 @@
                 <p class="app-subtitle">क्वांटम मास्टर स्टडी में आपका स्वागत है</p>
             </div>
 
-            <!-- Email / Password Login Form -->
+            <!-- Email / Password Form -->
             <form id="login-form">
                 <div class="input-group">
                     <input type="email" id="auth-email" class="auth-input" placeholder="ईमेल आईडी (Email)" required>
@@ -373,18 +216,40 @@
 
             <div class="divider">या (OR)</div>
 
-            <!-- Social Logins -->
+            <!-- 🚀 NEW: SOCIAL BUTTONS WITH REAL ORIGINAL SVG LOGOS -->
             <div class="social-auth-grid">
-                <button class="social-btn google sfx-trigger" onclick="handleSocialLogin('Google')">
-                    <i class="ri-google-fill" style="font-size: 1.2rem;"></i> Google
+                <button class="social-btn sfx-trigger" onclick="openOAuthConsent('Google')">
+                    <!-- Original Google SVG -->
+                    <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg> Google
                 </button>
-                <button class="social-btn facebook sfx-trigger" onclick="handleSocialLogin('Facebook')">
-                    <i class="ri-facebook-circle-fill" style="font-size: 1.2rem;"></i> Facebook
+                <button class="social-btn sfx-trigger" onclick="openOAuthConsent('Facebook')">
+                    <!-- Original Facebook SVG -->
+                    <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/>
+                        <path d="M16.671 15.542l.532-3.469h-3.328v-2.25c0-.949.465-1.874 1.956-1.874h1.514V5.002s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669v2.637H7.078v3.469h3.047v8.385a12.09 12.09 0 003.75 0v-8.385h2.796z" fill="#ffffff"/>
+                    </svg> Facebook
                 </button>
             </div>
             
-            <button class="social-btn instagram sfx-trigger" onclick="handleSocialLogin('Instagram')" style="width: 100%; margin-bottom: 15px;">
-                <i class="ri-instagram-fill" style="font-size: 1.2rem;"></i> Instagram से साइन इन करें
+            <button class="social-btn sfx-trigger" onclick="openOAuthConsent('Instagram')" style="width: 100%; margin-bottom: 15px;">
+                <!-- Original Instagram SVG -->
+                <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="ig-grad" x1="1" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#405de6" />
+                            <stop offset="25%" stop-color="#5851db" />
+                            <stop offset="50%" stop-color="#833ab4" />
+                            <stop offset="75%" stop-color="#c13584" />
+                            <stop offset="100%" stop-color="#e1306c" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.98a1.44 1.44 0 110 2.881 1.44 1.44 0 010-2.88z" fill="url(#ig-grad)"/>
+                </svg> Instagram से साइन इन करें
             </button>
 
             <!-- Guest Login -->
