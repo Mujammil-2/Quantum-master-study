@@ -5,7 +5,7 @@
      1. Full Syllabus Database (Physics=14, Chem=10, Math=13, Hindi=18, Eng=19)
      2. Smart BGM Memory Resume
      3. 🔖 Bookmarks System (Save/Remove)
-     4. Animated Download PDF Logic & Live View
+     4. Animated Download PDF Logic & DIRECT Live View
      5. Complete Status Tracker
      6. Quantum Fireflies Particles
 ========================================================================= */
@@ -113,13 +113,11 @@ const qmsDatabase = {
 // 2. CUSTOM TOAST NOTIFICATION SYSTEM
 // --------------------------------------------------------------------------
 window.showCustomToast = function(messageContentText, isErrorNotification = false) {
-    // Prevent duplicate toasts
     const existingOldToast = document.querySelector('.qms-toast-msg'); 
     if (existingOldToast) {
         existingOldToast.remove();
     }
     
-    // Create new DOM element for Toast
     const dynamicToastElement = document.createElement('div');
     
     if (isErrorNotification) {
@@ -132,7 +130,6 @@ window.showCustomToast = function(messageContentText, isErrorNotification = fals
     
     document.body.appendChild(dynamicToastElement); 
     
-    // Self destruct timer
     setTimeout(() => { 
         if (dynamicToastElement) {
             dynamicToastElement.remove(); 
@@ -156,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let lastStoppedBgmTime = localStorage.getItem('qms_bgm_time') || 0;
         let chosenBgmTrackName = localStorage.getItem('qms_bgm_track') || 'bgm1.mp3';
 
-        // Apply saved properties
         backgroundAudioPlayerNode.src = chosenBgmTrackName;
         backgroundAudioPlayerNode.volume = parseFloat(currentlySavedBgmVolume);
         backgroundAudioPlayerNode.currentTime = parseFloat(lastStoppedBgmTime);
@@ -169,17 +165,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         
-        // Listen for a global click to ensure audio plays
         document.body.addEventListener('click', tryPlayBgmSafelyAction, { once: true });
         
-        // Auto play if browser already trusts the site
         if (isSystemBgmTurnedOn) {
             backgroundAudioPlayerNode.play().catch(errorData => {
                 console.log("Waiting for user manual interaction to start BGM.");
             });
         }
 
-        // Before user leaves this page, save exact audio time!
         window.addEventListener('beforeunload', () => {
             localStorage.setItem('qms_bgm_time', backgroundAudioPlayerNode.currentTime);
         });
@@ -188,24 +181,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // B. LOAD DATA & SET UI CONTENT
     // ==========================================
-    
-    // Theme Configuration
     const currentlySavedUiTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', currentlySavedUiTheme);
     
-    // Profile Avatar Logic
     const savedUserProfileImageStr = localStorage.getItem('qms_profile_img');
     const playerNavProfileImageNode = document.getElementById('nav-profile-img');
     if (savedUserProfileImageStr && playerNavProfileImageNode) {
         playerNavProfileImageNode.src = savedUserProfileImageStr;
     }
 
-    // URL Parsing for Content Identification
     const documentUrlParams = new URLSearchParams(window.location.search);
     let activeSubjectQuery = documentUrlParams.get('subject') || 'physics';
     let activeChapterIdQuery = parseInt(documentUrlParams.get('chapter')) || 1;
 
-    // Back Button Redirection Setup
     const returnToChaptersButtonNode = document.getElementById('back-to-chapters');
     if (returnToChaptersButtonNode) {
         returnToChaptersButtonNode.addEventListener('click', () => { 
@@ -213,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Lookup Content in Database
     let mappedChapterDetailsObj = { 
         title: "अध्याय नहीं मिला", 
         subtitle: "Not Found", 
@@ -227,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Inject Text into DOM elements
     const tagDisplayElement = document.getElementById('player-subject-tag');
     if (tagDisplayElement) {
         tagDisplayElement.innerText = activeSubjectQuery.toUpperCase();
@@ -243,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
         subtitleDisplayElement.innerText = mappedChapterDetailsObj.subtitle;
     }
 
-    // Sound FX Event Listeners configuration
     const sfxClickSoundAudioNode = document.getElementById('sfx-click'); 
     let isSfxTurnedOnAppWide = localStorage.getItem('qms_sound') !== 'off';
     
@@ -263,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const saveBookmarkActionButton = document.getElementById('btn-bookmark');
     
-    // Retrieve Bookmarks Data
     let userBookmarksDataCollection = {};
     const existingRawBookmarksData = localStorage.getItem('qms_bookmarks');
     if (existingRawBookmarksData) {
@@ -272,7 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const specificChapterKeyIdentifier = activeSubjectQuery + '_' + activeChapterIdQuery;
 
-    // Validate if chapter is already bookmarked on load
     if (userBookmarksDataCollection[specificChapterKeyIdentifier]) {
         if (saveBookmarkActionButton) {
             saveBookmarkActionButton.innerHTML = '<i class="ri-heart-fill"></i> सेव्ड नोट्स (Saved)';
@@ -280,64 +263,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Bookmark Button Click Event
     if (saveBookmarkActionButton) {
         saveBookmarkActionButton.addEventListener('click', () => {
-            
-            // IF ALREADY BOOKMARKED -> REMOVE
             if (userBookmarksDataCollection[specificChapterKeyIdentifier]) {
                 delete userBookmarksDataCollection[specificChapterKeyIdentifier];
-                
-                // Update Button Design
                 saveBookmarkActionButton.innerHTML = '<i class="ri-heart-add-line"></i> बुकमार्क में सेव करें (Save)';
                 saveBookmarkActionButton.classList.remove('saved');
-                
                 window.showCustomToast("नोट्स को बुकमार्क से हटा दिया गया।");
-                
             } else {
-                // IF NOT BOOKMARKED -> ADD TO SYSTEM
                 userBookmarksDataCollection[specificChapterKeyIdentifier] = {
                     subject: activeSubjectQuery,
                     id: activeChapterIdQuery,
                     title: mappedChapterDetailsObj.title,
                     subtitle: mappedChapterDetailsObj.subtitle
                 };
-                
-                // Update Button Design
                 saveBookmarkActionButton.innerHTML = '<i class="ri-heart-fill"></i> सेव्ड नोट्स (Saved)';
                 saveBookmarkActionButton.classList.add('saved');
-                
                 window.showCustomToast("चैप्टर बुकमार्क में सेव हो गया! ❤️");
             }
-            
-            // Save modified collection to LocalStorage
             localStorage.setItem('qms_bookmarks', JSON.stringify(userBookmarksDataCollection));
         });
     }
 
     // ==========================================
-    // D. PDF DOWNLOAD & LIVE VIEW LOGIC
+    // D. PDF DOWNLOAD & DIRECT LIVE VIEW LOGIC
     // ==========================================
     
-    // 1. LIVE VIEW LOGIC (लाइव नोट्स पढ़ें)
+    // 1. LIVE VIEW LOGIC (Directly Open NCERT PDF)
     const buttonLiveViewNotes = document.getElementById('btn-view-notes');
     
     if (buttonLiveViewNotes) { 
         buttonLiveViewNotes.addEventListener('click', () => { 
             if (mappedChapterDetailsObj.pdfUrl && mappedChapterDetailsObj.pdfUrl !== "#") { 
-                // Google Docs Viewer के ज़रिये हम किसी भी PDF को ब्राउज़र में ही 'Live' खोल सकते हैं!
-                const encodedPdfUrlString = encodeURIComponent(mappedChapterDetailsObj.pdfUrl);
-                const liveViewerUrl = `https://docs.google.com/viewer?url=${encodedPdfUrlString}`;
                 
-                // नए टैब में असली PDF खोलें
-                window.open(liveViewerUrl, '_blank'); 
+                // 🚀 OPEN DIRECT NCERT PDF URL in NEW TAB
+                window.open(mappedChapterDetailsObj.pdfUrl, '_blank'); 
+                
             } else { 
                 window.showCustomToast("इस अध्याय के नोट्स (PDF) अभी उपलब्ध नहीं हैं।", true); 
             } 
         }); 
     }
 
-    // 2. PREMIUM PDF DOWNLOAD LOGIC (असली डाउनलोड)
+    // 2. PREMIUM PDF DOWNLOAD LOGIC
     const buttonDownloadPdfNotes = document.getElementById('btn-download-notes');
     const dynamicDownloadModalOverlay = document.getElementById('download-modal');
     const progressFillAnimatedBar = document.getElementById('download-progress-fill');
@@ -347,20 +315,12 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonDownloadPdfNotes.addEventListener('click', () => {
             if (mappedChapterDetailsObj.pdfUrl && mappedChapterDetailsObj.pdfUrl !== "#") {
                 
-                // Show modal overlay
                 dynamicDownloadModalOverlay.classList.add('active'); 
-                
                 let pseudoProgressValue = 0;
                 
-                // Start Fake Progress Loop
                 const downloadProgressIntervalTimer = setInterval(() => {
-                    
-                    // Increment 5 to 15 percent
                     pseudoProgressValue += Math.floor(Math.random() * 10) + 5; 
-                    
-                    if (pseudoProgressValue > 100) {
-                        pseudoProgressValue = 100;
-                    }
+                    if (pseudoProgressValue > 100) pseudoProgressValue = 100;
                     
                     progressFillAnimatedBar.style.width = `${pseudoProgressValue}%`; 
                     progressStatusUpdateText.innerText = `सुरक्षित रूप से डाउनलोड हो रहा है... ${pseudoProgressValue}%`;
@@ -370,30 +330,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         setTimeout(() => {
                             dynamicDownloadModalOverlay.classList.remove('active');
-                            
-                            // Reset bar visually after modal closes
                             setTimeout(() => { 
                                 progressFillAnimatedBar.style.width = '0%'; 
                                 progressStatusUpdateText.innerText = 'तैयार किया जा रहा है... 0%'; 
                             }, 500);
                             
-                            // ===========================================
-                            // 🚀 असली डाउनलोड ट्रिगर (REAL DOWNLOAD ACTION)
-                            // ===========================================
+                            // 🚀 REAL DOWNLOAD ACTION (Triggers browser download)
                             const temporaryHyperlink = document.createElement('a'); 
                             temporaryHyperlink.href = mappedChapterDetailsObj.pdfUrl; 
                             
-                            // You can set dynamic filename here based on subject/chapter
-                            const safeFileName = `${activeSubjectQuery}_chapter_${activeChapterIdQuery}_notes.pdf`;
+                            // Set filename dynamically based on subject and chapter
+                            const safeFileName = `QMS_${activeSubjectQuery}_chapter_${activeChapterIdQuery}_notes.pdf`;
                             temporaryHyperlink.download = safeFileName; 
-                            
-                            // Target blank so mobile download managers can catch it
                             temporaryHyperlink.target = '_blank'; 
                             
                             document.body.appendChild(temporaryHyperlink); 
                             temporaryHyperlink.click(); 
                             document.body.removeChild(temporaryHyperlink);
-                            // ===========================================
                             
                             window.showCustomToast("PDF सफलतापूर्वक डाउनलोड हो गई है!");
                         }, 500);
@@ -411,7 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const buttonMarkCompleteChapter = document.getElementById('mark-complete-btn');
     
-    // Look up completion history
     const savedCompletedDataRawString = localStorage.getItem('qms_completed'); 
     let allCompletedChaptersDataObj = {}; 
     
@@ -419,7 +371,6 @@ document.addEventListener('DOMContentLoaded', () => {
         allCompletedChaptersDataObj = JSON.parse(savedCompletedDataRawString);
     }
     
-    // Evaluate initial UI state
     if (allCompletedChaptersDataObj[specificChapterKeyIdentifier] === true) { 
         if (buttonMarkCompleteChapter) { 
             buttonMarkCompleteChapter.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)'; 
@@ -429,22 +380,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
     }
     
-    // Listen for completion click
     if (buttonMarkCompleteChapter) {
         buttonMarkCompleteChapter.addEventListener('click', () => {
             if (allCompletedChaptersDataObj[specificChapterKeyIdentifier] !== true) {
                 
-                // Add to record
                 allCompletedChaptersDataObj[specificChapterKeyIdentifier] = true; 
                 localStorage.setItem('qms_completed', JSON.stringify(allCompletedChaptersDataObj));
                 
-                // Change appearance
                 buttonMarkCompleteChapter.innerHTML = '<i class="ri-check-line"></i> पूर्ण हो गया (Completed)'; 
                 buttonMarkCompleteChapter.style.background = '#00ff88'; 
                 buttonMarkCompleteChapter.style.color = '#000'; 
                 buttonMarkCompleteChapter.disabled = true;
                 
-                // Notify user
                 window.showCustomToast("बधाई हो! आपने यह अध्याय पूरा कर लिया है। +50 XP");
             }
         });
@@ -457,7 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (targetParticleCanvasElement) {
         const primaryCanvasContext2D = targetParticleCanvasElement.getContext('2d'); 
-        
         targetParticleCanvasElement.width = window.innerWidth; 
         targetParticleCanvasElement.height = window.innerHeight;
         
