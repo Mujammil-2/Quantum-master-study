@@ -2,12 +2,13 @@
    QMS JAVASCRIPT MASTER ENGINE (DASHBOARD - 100% EXPANDED FULL CODE)
    - FEATURES:
      1. Multi-Track BGM Memory System
-     2. 50 MEGA BADGES SYSTEM (Emerald, Diamond, Ruby, etc.)
-     3. User Authentication & Privacy (No Hardcoded Names)
-     4. Pomodoro Focus Timer
-     5. Bookmarks (Saved Notes) Renderer
-     6. Daily Streak Calendar Logic
-     7. Dynamic Medium Switcher (Hindi / English)
+     2. 🏆 NEW: 4-Box Preview & "View All 50 Badges" Modal
+     3. 🏆 NEW: Celebration Pop-up Animation on New Badge Unlock
+     4. User Authentication & Privacy (No Hardcoded Names)
+     5. Pomodoro Focus Timer
+     6. Bookmarks (Saved Notes) Renderer
+     7. Daily Streak Calendar Logic
+     8. Dynamic Medium Switcher (Hindi / English)
 ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -440,25 +441,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 7. 🏆 50 MEGA BADGES SYSTEM (Gamification)
+    // 7. 🏆 50 MEGA BADGES SYSTEM (HARDCORE LOGIC)
     // ==========================================
     
-    // Privacy Fixed: Uses "Student" instead of hardcoded name
+    // Privacy Fixed
     const savedUserNameValue = localStorage.getItem('qms_user_name') || 'Student';
     
     let completedChaptersData = {};
     const rawCompletedData = localStorage.getItem('qms_completed');
-    
     if (rawCompletedData) {
         completedChaptersData = JSON.parse(rawCompletedData);
     }
     
     const completedChaptersCountNumber = Object.keys(completedChaptersData).length;
-    
     let storedExtraXp = parseInt(localStorage.getItem('qms_total_xp')) || 0;
     
     let grandTotalXp = (completedChaptersCountNumber * 50) + storedExtraXp;
-    
     localStorage.setItem('qms_total_xp', grandTotalXp);
 
     const dashUserNameElement = document.getElementById('dash-user-name');
@@ -466,11 +464,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dashUserNameElement.innerText = savedUserNameValue;
     }
     
-    const panelUserNameElement = document.getElementById('panel-user-name');
-    if (panelUserNameElement) {
-        panelUserNameElement.innerText = savedUserNameValue;
-    }
-
     const dashCompletedCountElement = document.getElementById('dash-completed-count');
     if (dashCompletedCountElement) {
         dashCompletedCountElement.innerText = completedChaptersCountNumber;
@@ -481,439 +474,221 @@ document.addEventListener('DOMContentLoaded', () => {
         dashTotalXpElement.innerText = grandTotalXp;
     }
 
-    // THE ULTIMATE 50 BADGES ARRAY (FULLY EXPANDED)
+    // THE ULTIMATE 50 BADGES ARRAY (VERY HARD TO COLLECT)
     const qmsBadgesData = [
-        { 
-            id: 'b1', 
-            name: 'स्टार्टर (Starter)', 
-            icon: 'ri-seedling-line', 
-            color: '#a0a0b0', 
-            requiredXp: 0, 
-            desc: 'QMS जॉइन किया' 
-        },
-        { 
-            id: 'b2', 
-            name: 'लर्नर (Learner)', 
-            icon: 'ri-book-read-line', 
-            color: '#00f0ff', 
-            requiredXp: 50, 
-            desc: '50 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b3', 
-            name: 'एक्सप्लोरर (Explorer)', 
-            icon: 'ri-compass-3-line', 
-            color: '#00ff88', 
-            requiredXp: 100, 
-            desc: '100 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b4', 
-            name: 'जिज्ञासु (Curious)', 
-            icon: 'ri-search-eye-line', 
-            color: '#b535ff', 
-            requiredXp: 150, 
-            desc: '150 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b5', 
-            name: 'ब्रॉन्ज़ I (Bronze I)', 
-            icon: 'ri-medal-line', 
-            color: '#cd7f32', 
-            requiredXp: 200, 
-            desc: '200 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b6', 
-            name: 'ब्रॉन्ज़ II (Bronze II)', 
-            icon: 'ri-medal-line', 
-            color: '#cd7f32', 
-            requiredXp: 300, 
-            desc: '300 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b7', 
-            name: 'ब्रॉन्ज़ III (Bronze III)', 
-            icon: 'ri-medal-fill', 
-            color: '#cd7f32', 
-            requiredXp: 400, 
-            desc: '400 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b8', 
-            name: 'सिल्वर I (Silver I)', 
-            icon: 'ri-award-line', 
-            color: '#c0c0c0', 
-            requiredXp: 500, 
-            desc: '500 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b9', 
-            name: 'सिल्वर II (Silver II)', 
-            icon: 'ri-award-line', 
-            color: '#c0c0c0', 
-            requiredXp: 600, 
-            desc: '600 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b10', 
-            name: 'सिल्वर III (Silver III)', 
-            icon: 'ri-award-fill', 
-            color: '#c0c0c0', 
-            requiredXp: 700, 
-            desc: '700 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b11', 
-            name: 'गोल्ड I (Gold I)', 
-            icon: 'ri-trophy-line', 
-            color: '#ffd700', 
-            requiredXp: 850, 
-            desc: '850 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b12', 
-            name: 'गोल्ड II (Gold II)', 
-            icon: 'ri-trophy-line', 
-            color: '#ffd700', 
-            requiredXp: 1000, 
-            desc: '1000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b13', 
-            name: 'गोल्ड III (Gold III)', 
-            icon: 'ri-trophy-fill', 
-            color: '#ffd700', 
-            requiredXp: 1150, 
-            desc: '1150 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b14', 
-            name: 'प्लेटिनम I (Platinum I)', 
-            icon: 'ri-vip-diamond-line', 
-            color: '#e5e4e2', 
-            requiredXp: 1300, 
-            desc: '1300 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b15', 
-            name: 'प्लेटिनम II (Platinum II)', 
-            icon: 'ri-vip-diamond-line', 
-            color: '#e5e4e2', 
-            requiredXp: 1500, 
-            desc: '1500 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b16', 
-            name: 'प्लेटिनम III (Platinum III)', 
-            icon: 'ri-vip-diamond-fill', 
-            color: '#e5e4e2', 
-            requiredXp: 1700, 
-            desc: '1700 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b17', 
-            name: 'एमराल्ड (Emerald)', 
-            icon: 'ri-gemstone-line', 
-            color: '#50c878', 
-            requiredXp: 2000, 
-            desc: '2000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b18', 
-            name: 'एमराल्ड स्टार (Star)', 
-            icon: 'ri-star-smile-fill', 
-            color: '#50c878', 
-            requiredXp: 2300, 
-            desc: '2300 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b19', 
-            name: 'एमराल्ड क्राउन (Crown)', 
-            icon: 'ri-vip-crown-fill', 
-            color: '#50c878', 
-            requiredXp: 2600, 
-            desc: '2600 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b20', 
-            name: 'रूबी (Ruby)', 
-            icon: 'ri-gemstone-fill', 
-            color: '#e0115f', 
-            requiredXp: 3000, 
-            desc: '3000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b21', 
-            name: 'रूबी स्टार (Star)', 
-            icon: 'ri-star-fill', 
-            color: '#e0115f', 
-            requiredXp: 3400, 
-            desc: '3400 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b22', 
-            name: 'रूबी क्राउन (Crown)', 
-            icon: 'ri-vip-crown-fill', 
-            color: '#e0115f', 
-            requiredXp: 3800, 
-            desc: '3800 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b23', 
-            name: 'नीलम (Sapphire)', 
-            icon: 'ri-gemstone-fill', 
-            color: '#0f52ba', 
-            requiredXp: 4300, 
-            desc: '4300 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b24', 
-            name: 'नीलम स्टार (Star)', 
-            icon: 'ri-star-fill', 
-            color: '#0f52ba', 
-            requiredXp: 4800, 
-            desc: '4800 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b25', 
-            name: 'नीलम क्राउन (Crown)', 
-            icon: 'ri-vip-crown-fill', 
-            color: '#0f52ba', 
-            requiredXp: 5300, 
-            desc: '5300 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b26', 
-            name: 'टोपाज़ (Topaz)', 
-            icon: 'ri-gemstone-fill', 
-            color: '#ffc87c', 
-            requiredXp: 5900, 
-            desc: '5900 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b27', 
-            name: 'टोपाज़ स्टार (Star)', 
-            icon: 'ri-star-fill', 
-            color: '#ffc87c', 
-            requiredXp: 6500, 
-            desc: '6500 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b28', 
-            name: 'टोपाज़ क्राउन (Crown)', 
-            icon: 'ri-vip-crown-fill', 
-            color: '#ffc87c', 
-            requiredXp: 7100, 
-            desc: '7100 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b29', 
-            name: 'एमेथिस्ट (Amethyst)', 
-            icon: 'ri-gemstone-fill', 
-            color: '#9966cc', 
-            requiredXp: 7800, 
-            desc: '7800 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b30', 
-            name: 'एमेथिस्ट स्टार (Star)', 
-            icon: 'ri-star-fill', 
-            color: '#9966cc', 
-            requiredXp: 8500, 
-            desc: '8500 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b31', 
-            name: 'एमेथिस्ट क्राउन (Crown)', 
-            icon: 'ri-vip-crown-fill', 
-            color: '#9966cc', 
-            requiredXp: 9200, 
-            desc: '9200 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b32', 
-            name: 'ओपल (Opal)', 
-            icon: 'ri-gemstone-fill', 
-            color: '#a8c3bc', 
-            requiredXp: 10000, 
-            desc: '10000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b33', 
-            name: 'ओपल स्टार (Star)', 
-            icon: 'ri-star-fill', 
-            color: '#a8c3bc', 
-            requiredXp: 11000, 
-            desc: '11000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b34', 
-            name: 'ओपल क्राउन (Crown)', 
-            icon: 'ri-vip-crown-fill', 
-            color: '#a8c3bc', 
-            requiredXp: 12000, 
-            desc: '12000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b35', 
-            name: 'डायमंड (Diamond)', 
-            icon: 'ri-vip-diamond-fill', 
-            color: '#b9f2ff', 
-            requiredXp: 13500, 
-            desc: '13500 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b36', 
-            name: 'डायमंड स्टार (Star)', 
-            icon: 'ri-star-fill', 
-            color: '#b9f2ff', 
-            requiredXp: 15000, 
-            desc: '15000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b37', 
-            name: 'डायमंड क्राउन (Crown)', 
-            icon: 'ri-vip-crown-fill', 
-            color: '#b9f2ff', 
-            requiredXp: 17000, 
-            desc: '17000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b38', 
-            name: 'पिंक डायमंड (Pink Diamond)', 
-            icon: 'ri-vip-diamond-fill', 
-            color: '#ffb6c1', 
-            requiredXp: 19000, 
-            desc: '19000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b39', 
-            name: 'येलो डायमंड (Yellow Diamond)', 
-            icon: 'ri-vip-diamond-fill', 
-            color: '#fffacd', 
-            requiredXp: 21500, 
-            desc: '21500 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b40', 
-            name: 'ब्लू डायमंड (Blue Diamond)', 
-            icon: 'ri-vip-diamond-fill', 
-            color: '#add8e6', 
-            requiredXp: 24000, 
-            desc: '24000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b41', 
-            name: 'ग्रीन डायमंड (Green Diamond)', 
-            icon: 'ri-vip-diamond-fill', 
-            color: '#90ee90', 
-            requiredXp: 27000, 
-            desc: '27000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b42', 
-            name: 'ब्लैक डायमंड (Black)', 
-            icon: 'ri-vip-diamond-fill', 
-            color: '#555555', 
-            requiredXp: 30000, 
-            desc: '30000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b43', 
-            name: 'रेड डायमंड (Red)', 
-            icon: 'ri-vip-diamond-fill', 
-            color: '#ff0000', 
-            requiredXp: 35000, 
-            desc: '35000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b44', 
-            name: 'क्वांटम नाइट (Knight)', 
-            icon: 'ri-sword-fill', 
-            color: '#ff00ff', 
-            requiredXp: 40000, 
-            desc: '40000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b45', 
-            name: 'क्वांटम लॉर्ड (Lord)', 
-            icon: 'ri-shield-star-fill', 
-            color: '#b535ff', 
-            requiredXp: 45000, 
-            desc: '45000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b46', 
-            name: 'क्वांटम मास्टर (Master)', 
-            icon: 'ri-meteor-fill', 
-            color: '#00f0ff', 
-            requiredXp: 55000, 
-            desc: '55000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b47', 
-            name: 'ग्रैंडमास्टर (Grandmaster)', 
-            icon: 'ri-fire-fill', 
-            color: '#ff4d4d', 
-            requiredXp: 65000, 
-            desc: '65000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b48', 
-            name: 'यूनिवर्स स्कॉलर (Scholar)', 
-            icon: 'ri-planet-fill', 
-            color: '#ffc107', 
-            requiredXp: 80000, 
-            desc: '80000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b49', 
-            name: 'सुप्रीम जीनियस (Genius)', 
-            icon: 'ri-brain-fill', 
-            color: '#00ff88', 
-            requiredXp: 100000, 
-            desc: '100000 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b50', 
-            name: 'लेजेंडरी गॉड (God)', 
-            icon: 'ri-sun-fill', 
-            color: '#ffffff', 
-            requiredXp: 150000, 
-            desc: '150000 XP प्राप्त किए' 
-        }
+        { id: 'b1', name: 'स्टार्टर (Starter)', icon: 'ri-seedling-line', color: '#a0a0b0', requiredXp: 0, desc: 'QMS जॉइन किया' },
+        { id: 'b2', name: 'लर्नर (Learner)', icon: 'ri-book-read-line', color: '#00f0ff', requiredXp: 100, desc: '100 XP प्राप्त किए' },
+        { id: 'b3', name: 'एक्सप्लोरर (Explorer)', icon: 'ri-compass-3-line', color: '#00ff88', requiredXp: 250, desc: '250 XP प्राप्त किए' },
+        { id: 'b4', name: 'जिज्ञासु (Curious)', icon: 'ri-search-eye-line', color: '#b535ff', requiredXp: 500, desc: '500 XP प्राप्त किए' },
+        { id: 'b5', name: 'ब्रॉन्ज़ I (Bronze I)', icon: 'ri-medal-line', color: '#cd7f32', requiredXp: 800, desc: '800 XP प्राप्त किए' },
+        { id: 'b6', name: 'ब्रॉन्ज़ II (Bronze II)', icon: 'ri-medal-line', color: '#cd7f32', requiredXp: 1200, desc: '1200 XP प्राप्त किए' },
+        { id: 'b7', name: 'ब्रॉन्ज़ III (Bronze III)', icon: 'ri-medal-fill', color: '#cd7f32', requiredXp: 1600, desc: '1600 XP प्राप्त किए' },
+        { id: 'b8', name: 'सिल्वर I (Silver I)', icon: 'ri-award-line', color: '#c0c0c0', requiredXp: 2100, desc: '2100 XP प्राप्त किए' },
+        { id: 'b9', name: 'सिल्वर II (Silver II)', icon: 'ri-award-line', color: '#c0c0c0', requiredXp: 2700, desc: '2700 XP प्राप्त किए' },
+        { id: 'b10', name: 'सिल्वर III (Silver III)', icon: 'ri-award-fill', color: '#c0c0c0', requiredXp: 3400, desc: '3400 XP प्राप्त किए' },
+        { id: 'b11', name: 'गोल्ड I (Gold I)', icon: 'ri-trophy-line', color: '#ffd700', requiredXp: 4200, desc: '4200 XP प्राप्त किए' },
+        { id: 'b12', name: 'गोल्ड II (Gold II)', icon: 'ri-trophy-line', color: '#ffd700', requiredXp: 5000, desc: '5000 XP प्राप्त किए' },
+        { id: 'b13', name: 'गोल्ड III (Gold III)', icon: 'ri-trophy-fill', color: '#ffd700', requiredXp: 6000, desc: '6000 XP प्राप्त किए' },
+        { id: 'b14', name: 'प्लेटिनम I (Platinum I)', icon: 'ri-vip-diamond-line', color: '#e5e4e2', requiredXp: 7200, desc: '7200 XP प्राप्त किए' },
+        { id: 'b15', name: 'प्लेटिनम II (Platinum II)', icon: 'ri-vip-diamond-line', color: '#e5e4e2', requiredXp: 8500, desc: '8500 XP प्राप्त किए' },
+        { id: 'b16', name: 'प्लेटिनम III (Platinum III)', icon: 'ri-vip-diamond-fill', color: '#e5e4e2', requiredXp: 10000, desc: '10000 XP प्राप्त किए' },
+        { id: 'b17', name: 'एमराल्ड (Emerald)', icon: 'ri-gemstone-line', color: '#50c878', requiredXp: 11500, desc: '11500 XP प्राप्त किए' },
+        { id: 'b18', name: 'एमराल्ड स्टार (Star)', icon: 'ri-star-smile-fill', color: '#50c878', requiredXp: 13000, desc: '13000 XP प्राप्त किए' },
+        { id: 'b19', name: 'एमराल्ड क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#50c878', requiredXp: 15000, desc: '15000 XP प्राप्त किए' },
+        { id: 'b20', name: 'रूबी (Ruby)', icon: 'ri-gemstone-fill', color: '#e0115f', requiredXp: 17500, desc: '17500 XP प्राप्त किए' },
+        { id: 'b21', name: 'रूबी स्टार (Star)', icon: 'ri-star-fill', color: '#e0115f', requiredXp: 20000, desc: '20000 XP प्राप्त किए' },
+        { id: 'b22', name: 'रूबी क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#e0115f', requiredXp: 23000, desc: '23000 XP प्राप्त किए' },
+        { id: 'b23', name: 'नीलम (Sapphire)', icon: 'ri-gemstone-fill', color: '#0f52ba', requiredXp: 26000, desc: '26000 XP प्राप्त किए' },
+        { id: 'b24', name: 'नीलम स्टार (Star)', icon: 'ri-star-fill', color: '#0f52ba', requiredXp: 29000, desc: '29000 XP प्राप्त किए' },
+        { id: 'b25', name: 'नीलम क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#0f52ba', requiredXp: 33000, desc: '33000 XP प्राप्त किए' },
+        { id: 'b26', name: 'टोपाज़ (Topaz)', icon: 'ri-gemstone-fill', color: '#ffc87c', requiredXp: 37000, desc: '37000 XP प्राप्त किए' },
+        { id: 'b27', name: 'टोपाज़ स्टार (Star)', icon: 'ri-star-fill', color: '#ffc87c', requiredXp: 41000, desc: '41000 XP प्राप्त किए' },
+        { id: 'b28', name: 'टोपाज़ क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#ffc87c', requiredXp: 46000, desc: '46000 XP प्राप्त किए' },
+        { id: 'b29', name: 'एमेथिस्ट (Amethyst)', icon: 'ri-gemstone-fill', color: '#9966cc', requiredXp: 51000, desc: '51000 XP प्राप्त किए' },
+        { id: 'b30', name: 'एमेथिस्ट स्टार (Star)', icon: 'ri-star-fill', color: '#9966cc', requiredXp: 57000, desc: '57000 XP प्राप्त किए' },
+        { id: 'b31', name: 'एमेथिस्ट क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#9966cc', requiredXp: 63000, desc: '63000 XP प्राप्त किए' },
+        { id: 'b32', name: 'ओपल (Opal)', icon: 'ri-gemstone-fill', color: '#a8c3bc', requiredXp: 70000, desc: '70000 XP प्राप्त किए' },
+        { id: 'b33', name: 'ओपल स्टार (Star)', icon: 'ri-star-fill', color: '#a8c3bc', requiredXp: 77000, desc: '77000 XP प्राप्त किए' },
+        { id: 'b34', name: 'ओपल क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#a8c3bc', requiredXp: 85000, desc: '85000 XP प्राप्त किए' },
+        { id: 'b35', name: 'डायमंड (Diamond)', icon: 'ri-vip-diamond-fill', color: '#b9f2ff', requiredXp: 93000, desc: '93000 XP प्राप्त किए' },
+        { id: 'b36', name: 'डायमंड स्टार (Star)', icon: 'ri-star-fill', color: '#b9f2ff', requiredXp: 102000, desc: '102000 XP प्राप्त किए' },
+        { id: 'b37', name: 'डायमंड क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#b9f2ff', requiredXp: 112000, desc: '112000 XP प्राप्त किए' },
+        { id: 'b38', name: 'पिंक डायमंड (Pink Diamond)', icon: 'ri-vip-diamond-fill', color: '#ffb6c1', requiredXp: 123000, desc: '123000 XP प्राप्त किए' },
+        { id: 'b39', name: 'येलो डायमंड (Yellow Diamond)', icon: 'ri-vip-diamond-fill', color: '#fffacd', requiredXp: 135000, desc: '135000 XP प्राप्त किए' },
+        { id: 'b40', name: 'ब्लू डायमंड (Blue Diamond)', icon: 'ri-vip-diamond-fill', color: '#add8e6', requiredXp: 148000, desc: '148000 XP प्राप्त किए' },
+        { id: 'b41', name: 'ग्रीन डायमंड (Green Diamond)', icon: 'ri-vip-diamond-fill', color: '#90ee90', requiredXp: 162000, desc: '162000 XP प्राप्त किए' },
+        { id: 'b42', name: 'ब्लैक डायमंड (Black)', icon: 'ri-vip-diamond-fill', color: '#555555', requiredXp: 178000, desc: '178000 XP प्राप्त किए' },
+        { id: 'b43', name: 'रेड डायमंड (Red)', icon: 'ri-vip-diamond-fill', color: '#ff0000', requiredXp: 195000, desc: '195000 XP प्राप्त किए' },
+        { id: 'b44', name: 'क्वांटम नाइट (Knight)', icon: 'ri-sword-fill', color: '#ff00ff', requiredXp: 215000, desc: '215000 XP प्राप्त किए' },
+        { id: 'b45', name: 'क्वांटम लॉर्ड (Lord)', icon: 'ri-shield-star-fill', color: '#b535ff', requiredXp: 238000, desc: '238000 XP प्राप्त किए' },
+        { id: 'b46', name: 'क्वांटम मास्टर (Master)', icon: 'ri-meteor-fill', color: '#00f0ff', requiredXp: 265000, desc: '265000 XP प्राप्त किए' },
+        { id: 'b47', name: 'ग्रैंडमास्टर (Grandmaster)', icon: 'ri-fire-fill', color: '#ff4d4d', requiredXp: 300000, desc: '300000 XP प्राप्त किए' },
+        { id: 'b48', name: 'यूनिवर्स स्कॉलर (Scholar)', icon: 'ri-planet-fill', color: '#ffc107', requiredXp: 350000, desc: '350000 XP प्राप्त किए' },
+        { id: 'b49', name: 'सुप्रीम जीनियस (Genius)', icon: 'ri-brain-fill', color: '#00ff88', requiredXp: 420000, desc: '420000 XP प्राप्त किए' },
+        { id: 'b50', name: 'लेजेंडरी गॉड (God)', icon: 'ri-sun-fill', color: '#ffffff', requiredXp: 500000, desc: '500000 XP प्राप्त किए' }
     ];
 
+    // --- 🚀 NEW: INJECT MEGA MODALS FOR BADGES (View All & Unlock Animation) ---
+    
+    // Modal 1: View All Badges Modal
+    const allBadgesModalHtml = `
+        <div id="all-badges-modal" class="qms-modal-overlay" style="z-index: 100002;">
+            <div class="qms-modal-box" style="max-width: 900px; max-height: 85vh; display:flex; flex-direction: column; padding: 0; background: #0f0f19;">
+                <div style="padding: 15px 20px; background: #111; border-bottom: 2px solid var(--accent-main); display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="color: #fff; font-family: var(--font-heading);"><i class="ri-medal-fill" style="color: var(--accent-main);"></i> सभी 50 अचीवमेंट्स (Badges)</h3>
+                    <button id="close-all-badges" class="sfx-trigger" style="background: rgba(255,50,50,0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 5px 15px; border-radius: 8px; cursor:pointer; font-weight: bold;">X Close</button>
+                </div>
+                <div id="all-badges-grid" style="padding: 20px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px;">
+                    <!-- JS will inject all 50 badges here -->
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', allBadgesModalHtml);
+
+    // Modal 2: Celebration Unlock Modal
+    const unlockModalHtml = `
+        <div id="unlock-badge-modal" class="qms-modal-overlay" style="z-index: 100005;">
+            <div class="qms-modal-box" style="background: radial-gradient(circle, #2a2a35 0%, #0f0f19 100%); border: 2px solid #ffc107; text-align: center; padding: 3rem 2rem; overflow: hidden; position: relative;">
+                <div style="position:absolute; top:-50%; left:-50%; width:200%; height:200%; background: repeating-conic-gradient(from 0deg, transparent 0deg 15deg, rgba(255,215,0,0.1) 15deg 30deg); animation: spin 10s linear infinite; z-index: 1;"></div>
+                <div style="position: relative; z-index: 2;">
+                    <h2 style="color: #00ff88; font-family: var(--font-heading); margin-bottom: 10px; font-size: 1.8rem; text-shadow: 0 0 15px #00ff88;">नया बैज अनलॉक हुआ! 🎉</h2>
+                    <div id="unlocked-badge-icon" style="font-size: 5rem; margin: 20px 0; animation: pulseGlow 1s infinite alternate; filter: drop-shadow(0 0 20px currentColor);"></div>
+                    <h3 id="unlocked-badge-name" style="color: #fff; font-size: 1.5rem; margin-bottom: 5px; font-family: var(--font-heading);"></h3>
+                    <p id="unlocked-badge-desc" style="color: var(--text-secondary); margin-bottom: 25px;"></p>
+                    <button id="claim-badge-btn" class="btn-primary-glow sfx-trigger" style="background: #ffc107; color: #000;">प्राप्त करें (Claim)</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', unlockModalHtml);
+
+    // Logic: Render 4 Boxes on Dashboard
     const badgesContainerElement = document.getElementById('badges-container');
     
     if (badgesContainerElement) {
-        let badgesHTMLString = '';
+        let unlockedBadgesList = qmsBadgesData.filter(b => grandTotalXp >= b.requiredXp);
+        let lockedBadgesList = qmsBadgesData.filter(b => grandTotalXp < b.requiredXp);
         
-        qmsBadgesData.forEach(badgeObject => {
-            const isBadgeUnlocked = grandTotalXp >= badgeObject.requiredXp;
-            
-            let badgeStatusClass = 'locked';
-            if (isBadgeUnlocked) {
-                badgeStatusClass = 'unlocked';
-            }
-            
-            let lockedOverlayHTML = '<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>';
-            if (isBadgeUnlocked) {
-                lockedOverlayHTML = '';
-            }
-            
-            badgesHTMLString += `
-                <div class="badge-card ${badgeStatusClass} sfx-trigger" title="${badgeObject.desc}">
-                    ${lockedOverlayHTML}
-                    <i class="${badgeObject.icon} badge-icon" style="color: ${badgeObject.color};"></i>
-                    <h4 class="badge-title">${badgeObject.name}</h4>
-                    <p class="badge-desc">${badgeObject.desc}</p>
+        let highestUnlocked = unlockedBadgesList[unlockedBadgesList.length - 1] || qmsBadgesData[0];
+        let nextTarget1 = lockedBadgesList[0] || qmsBadgesData[48];
+        let nextTarget2 = lockedBadgesList[1] || qmsBadgesData[49];
+        
+        let displayHtml = '';
+        
+        function getCardHtml(badgeObj, isUnlocked) {
+            const statusClass = isUnlocked ? 'unlocked' : 'locked';
+            const overlay = isUnlocked ? '' : '<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>';
+            return `
+                <div class="badge-card ${statusClass} sfx-trigger" title="${badgeObj.desc}">
+                    ${overlay}
+                    <i class="${badgeObj.icon} badge-icon" style="color: ${badgeObj.color};"></i>
+                    <h4 class="badge-title">${badgeObj.name}</h4>
+                    <p class="badge-desc">${badgeObj.desc}</p>
                 </div>
             `;
+        }
+
+        // Render Exactly 4 Boxes
+        displayHtml += getCardHtml(highestUnlocked, true);
+        displayHtml += getCardHtml(nextTarget1, false);
+        displayHtml += getCardHtml(nextTarget2, false);
+        
+        displayHtml += `
+            <div id="open-all-badges-btn" class="badge-card sfx-trigger" style="background: rgba(255,255,255,0.05); border: 1px dashed var(--accent-main); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer;">
+                <i class="ri-grid-fill badge-icon" style="color: var(--accent-main); animation: pulseGlow 2s infinite alternate;"></i>
+                <h4 class="badge-title" style="color: var(--accent-main);">सभी 50 बैज देखें</h4>
+                <p class="badge-desc">क्लिक करें</p>
+            </div>
+        `;
+        
+        badgesContainerElement.innerHTML = displayHtml;
+        
+        // Setup "View All Badges" click
+        document.getElementById('open-all-badges-btn').addEventListener('click', () => {
+            if (document.getElementById('sfx-click') && localStorage.getItem('qms_sound') !== 'off') {
+                document.getElementById('sfx-click').play().catch(()=>{});
+            }
+            
+            const modalGrid = document.getElementById('all-badges-grid');
+            let allHtml = '';
+            
+            qmsBadgesData.forEach(badge => {
+                const isUn = grandTotalXp >= badge.requiredXp;
+                allHtml += getCardHtml(badge, isUn);
+            });
+            
+            modalGrid.innerHTML = allHtml;
+            document.getElementById('all-badges-modal').style.display = 'flex';
+            
+            // Give a tiny delay then set opacity for smooth fade in
+            setTimeout(() => {
+                document.getElementById('all-badges-modal').classList.add('active');
+            }, 50);
         });
         
-        badgesContainerElement.innerHTML = badgesHTMLString;
+        // Close View All Modal
+        document.getElementById('close-all-badges').addEventListener('click', () => {
+            document.getElementById('all-badges-modal').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('all-badges-modal').style.display = 'none';
+            }, 300);
+        });
+    }
+
+    // Logic: Celebration Animation for NEWLY Unlocked Badges
+    let knownUnlockedIds = JSON.parse(localStorage.getItem('qms_known_badges')) || [];
+    let currentlyUnlockedIds = qmsBadgesData.filter(b => grandTotalXp >= b.requiredXp).map(b => b.id);
+    
+    let newlyUnlockedIds = currentlyUnlockedIds.filter(id => !knownUnlockedIds.includes(id));
+    
+    if (newlyUnlockedIds.length > 0) {
+        
+        // If it's the very first time loading the app (XP=0), just save Starter badge silently
+        if (knownUnlockedIds.length === 0 && grandTotalXp === 0) {
+            localStorage.setItem('qms_known_badges', JSON.stringify(currentlyUnlockedIds));
+        } else {
+            // They actually earned a new badge! Trigger the sequence.
+            let newBadgeObjects = qmsBadgesData.filter(b => newlyUnlockedIds.includes(b.id));
+            
+            function showUnlockModal(index) {
+                if (index >= newBadgeObjects.length) {
+                    localStorage.setItem('qms_known_badges', JSON.stringify(currentlyUnlockedIds));
+                    return;
+                }
+                
+                let b = newBadgeObjects[index];
+                
+                const iconEl = document.getElementById('unlocked-badge-icon');
+                iconEl.className = b.icon;
+                iconEl.style.color = b.color;
+                
+                document.getElementById('unlocked-badge-name').innerText = b.name;
+                document.getElementById('unlocked-badge-desc').innerText = `लक्ष्य पूरा हुआ: ${b.desc}`;
+                
+                const unlockModal = document.getElementById('unlock-badge-modal');
+                unlockModal.style.display = 'flex';
+                setTimeout(() => unlockModal.classList.add('active'), 50);
+                
+                // Play sound
+                if (document.getElementById('sfx-click') && localStorage.getItem('qms_sound') !== 'off') {
+                    document.getElementById('sfx-click').play().catch(()=>{});
+                }
+                
+                document.getElementById('claim-badge-btn').onclick = () => {
+                    unlockModal.classList.remove('active');
+                    setTimeout(() => {
+                        unlockModal.style.display = 'none';
+                        setTimeout(() => showUnlockModal(index + 1), 500);
+                    }, 300);
+                };
+            }
+            
+            // Start sequence after 1.5 seconds of dashboard loading
+            setTimeout(() => {
+                showUnlockModal(0);
+            }, 1500);
+        }
     }
 
     // ==========================================
