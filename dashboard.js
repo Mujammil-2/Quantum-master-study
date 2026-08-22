@@ -1,26 +1,102 @@
 /* =========================================================================
    QMS JAVASCRIPT MASTER ENGINE (DASHBOARD)
-   - Features: Advanced Particles, Named Themes, Image Compressor, Timer
+   - 100% Full Code (No Shortcuts)
+   - Features: Multi-Track BGM Memory System, Particles, Named Themes, Timer
 ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // 1. SPLASH SCREEN LOGIC (LOADING)
+    // 1. SMART BGM MEMORY SYSTEM (Multi-Track)
+    // ==========================================
+    const bgmAudio = document.getElementById('bgm-audio');
+    const bgmToggle = document.getElementById('bgm-toggle');
+    const bgmVolumeControl = document.getElementById('bgm-volume');
+    const bgmTrackSelect = document.getElementById('bgm-track-select');
+    
+    let isBgmOn = localStorage.getItem('qms_bgm') === 'on';
+    let savedBgmVolume = localStorage.getItem('qms_bgm_volume') || 0.3;
+    let savedBgmTime = localStorage.getItem('qms_bgm_time') || 0;
+    let savedBgmTrack = localStorage.getItem('qms_bgm_track') || 'bgm1.mp3'; 
+
+    function updateToggleUI(checkbox) {
+        if(!checkbox) return;
+        if(checkbox.checked) {
+            checkbox.nextElementSibling.style.backgroundColor = 'var(--accent-main)';
+            checkbox.nextElementSibling.style.boxShadow = '0 0 10px var(--accent-glow)';
+        } else {
+            checkbox.nextElementSibling.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            checkbox.nextElementSibling.style.boxShadow = 'none';
+        }
+    }
+
+    if (bgmAudio) {
+        bgmAudio.src = savedBgmTrack;
+        bgmAudio.volume = parseFloat(savedBgmVolume);
+        bgmAudio.currentTime = parseFloat(savedBgmTime);
+
+        if(bgmTrackSelect) bgmTrackSelect.value = savedBgmTrack;
+        if(bgmVolumeControl) bgmVolumeControl.value = savedBgmVolume;
+        if(bgmToggle) {
+            bgmToggle.checked = isBgmOn;
+            updateToggleUI(bgmToggle);
+        }
+
+        const playBgmSafely = () => {
+            if (isBgmOn && bgmAudio.paused) {
+                bgmAudio.play().catch(e => console.log("BGM Autoplay blocked until user interaction."));
+            }
+        };
+        
+        document.body.addEventListener('click', playBgmSafely, { once: true });
+
+        if(bgmTrackSelect) {
+            bgmTrackSelect.addEventListener('change', (e) => {
+                const newTrack = e.target.value;
+                localStorage.setItem('qms_bgm_track', newTrack); 
+                bgmAudio.src = newTrack; 
+                if (isBgmOn) {
+                    bgmAudio.play();
+                }
+            });
+        }
+
+        if(bgmToggle) {
+            bgmToggle.addEventListener('change', (e) => {
+                isBgmOn = e.target.checked;
+                localStorage.setItem('qms_bgm', isBgmOn ? 'on' : 'off');
+                updateToggleUI(e.target);
+                
+                if (isBgmOn) bgmAudio.play();
+                else bgmAudio.pause();
+            });
+        }
+
+        if(bgmVolumeControl) {
+            bgmVolumeControl.addEventListener('input', (e) => {
+                bgmAudio.volume = e.target.value;
+                localStorage.setItem('qms_bgm_volume', e.target.value);
+            });
+        }
+
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('qms_bgm_time', bgmAudio.currentTime);
+        });
+    }
+
+    // ==========================================
+    // 2. SPLASH SCREEN LOGIC
     // ==========================================
     const splashScreen = document.getElementById('splash-screen');
     const loadingBar = document.getElementById('loading-bar');
     const loadingText = document.getElementById('loading-text');
-    
     let progress = 0;
     const loadingInterval = setInterval(() => {
         progress += Math.random() * 15;
         if (progress > 100) progress = 100;
         if(loadingBar) loadingBar.style.width = `${progress}%`;
-        
         if (progress > 30 && progress < 70 && loadingText) loadingText.innerText = 'यूज़र प्रोफाइल सिंक्रनाइज़ हो रही है...';
         if (progress > 70 && loadingText) loadingText.innerText = 'क्वांटम इंजन लोड हो रहा है...';
-        
         if (progress === 100) {
             clearInterval(loadingInterval);
             setTimeout(() => {
@@ -33,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
 
     // ==========================================
-    // 2. DYNAMIC GREETING & MOTIVATIONAL QUOTES
+    // 3. DYNAMIC GREETING & QUOTES
     // ==========================================
     const hour = new Date().getHours();
     let greetingText = "नमस्ते";
@@ -47,15 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const quotes = [
         "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।",
         "जितना कठिन संघर्ष होगा, जीत उतनी ही शानदार होगी।",
-        "सफलता की शुरुआत हमेशा 'मैं कर सकता हूँ' से होती है।",
-        "ज्ञान वह निवेश है जिसका मुनाफा जीवन भर मिलता है।",
-        "ब्रह्मांड को समझने के लिए पहले खुद पर विश्वास करना पड़ता है।"
+        "सफलता की शुरुआत हमेशा 'मैं कर सकता हूँ' से होती है।"
     ];
     const quoteEl = document.getElementById('daily-quote');
     if(quoteEl) quoteEl.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
 
     // ==========================================
-    // 3. POMODORO FOCUS TIMER (25 Minutes)
+    // 4. POMODORO FOCUS TIMER
     // ==========================================
     let timerInterval; let timeLeft = 25 * 60; let isTimerRunning = false;
     const timerDisplay = document.getElementById('timer-display');
@@ -76,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (timeLeft > 0) { timeLeft--; updateTimerDisplay(); } 
                     else { 
                         clearInterval(timerInterval); isTimerRunning = false; 
-                        showCustomToast("शानदार! आपका 25 मिनट का फोकस सेशन पूरा हुआ।", false); 
+                        if(window.showCustomToast) window.showCustomToast("शानदार! आपका 25 मिनट का फोकस सेशन पूरा हुआ।", false); 
                         timeLeft = 25 * 60; updateTimerDisplay(); 
                         timerStartBtn.innerText = "स्टार्ट (Start)"; timerStartBtn.style.background = "var(--accent-main)"; 
                     }
@@ -91,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 4. ADVANCED QUANTUM PARTICLES (BOTH FORMULAS & DOTS)
+    // 5. ADVANCED QUANTUM PARTICLES
     // ==========================================
     const canvas = document.getElementById('bg-canvas');
     if(canvas) {
@@ -104,15 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.type = Math.random() > 0.4 ? 'dot' : 'symbol';
                 this.symbol = scienceSymbols[Math.floor(Math.random() * scienceSymbols.length)];
                 this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-                
                 if (this.type === 'symbol') {
-                    this.size = Math.random() * 15 + 10;
-                    this.speedX = Math.random() * 0.5 - 0.25; this.speedY = Math.random() * -0.8 - 0.2;
+                    this.size = Math.random() * 15 + 10; this.speedX = Math.random() * 0.5 - 0.25; this.speedY = Math.random() * -0.8 - 0.2;
                 } else {
-                    this.size = Math.random() * 3 + 1; 
-                    this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * -1 - 0.2;
+                    this.size = Math.random() * 3 + 1; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * -1 - 0.2;
                 }
-                
                 this.blinkSpeed = Math.random() * 0.05 + 0.02; this.angle = Math.random() * Math.PI * 2;
             }
             update() {
@@ -126,34 +196,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 let currentOpacity = ((Math.sin(this.angle) + 1) / 2) * 0.8 + 0.1;
                 
                 ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
-                ctx.shadowBlur = currentOpacity * 20; 
-                ctx.shadowColor = accentColor;
+                ctx.shadowBlur = currentOpacity * 20; ctx.shadowColor = accentColor;
                 
                 if (this.type === 'symbol') {
-                    ctx.font = `${this.size}px "Space Grotesk", sans-serif`; 
-                    ctx.fillText(this.symbol, this.x, this.y);
+                    ctx.font = `${this.size}px "Space Grotesk", sans-serif`; ctx.fillText(this.symbol, this.x, this.y);
                 } else {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
                 }
                 ctx.shadowBlur = 0; 
             }
         }
-        
         for (let i = 0; i < 60; i++) particlesArray.push(new QuantumParticle());
-        
-        function animateParticles() { 
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            particlesArray.forEach(p => { p.update(); p.draw(); }); 
-            requestAnimationFrame(animateParticles); 
-        }
+        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
         animateParticles();
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
     }
 
     // ==========================================
-    // 5. PREMIUM MODALS & TOASTS 
+    // 6. PREMIUM MODALS & TOASTS 
     // ==========================================
     window.showCustomToast = function(message, isError = false) {
         const toast = document.createElement('div');
@@ -203,12 +263,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 6. LOAD USER DATA & STATS 
+    // 7. LOAD USER DATA (THEMES, PROFILE)
     // ==========================================
-    const savedTheme = localStorage.getItem('qms_theme') || 'default';
-    document.documentElement.setAttribute('data-theme', savedTheme);
     const savedName = localStorage.getItem('qms_user_name') || 'Alina Sami';
-    
     if(document.getElementById('dash-user-name')) document.getElementById('dash-user-name').innerText = savedName; 
     if(document.getElementById('panel-user-name')) document.getElementById('panel-user-name').innerText = savedName;
     
@@ -224,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('dash-total-xp')) document.getElementById('dash-total-xp').innerText = completedCount * 50;
 
     // ==========================================
-    // 7. PANEL LOGIC & NAMED THEMES
+    // 8. PANEL LOGIC & SETTINGS
     // ==========================================
     const panel = document.getElementById('settings-panel'); const overlay = document.getElementById('panel-overlay');
     function closePanel() { if(panel) panel.classList.remove('active'); if(overlay) overlay.classList.remove('active'); }
@@ -233,7 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('close-panel')) document.getElementById('close-panel').addEventListener('click', closePanel); 
     if(overlay) overlay.addEventListener('click', closePanel);
 
-    // FIX: Updated logic for the new Named Theme Cards
     document.querySelectorAll('.theme-option-card').forEach(card => {
         card.addEventListener('click', function() {
             const newTheme = this.getAttribute('data-set-theme');
@@ -248,26 +304,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 8. AUDIO FX SYSTEM 
+    // 9. AUDIO FX SYSTEM (CLICK SOUNDS)
     // ==========================================
     const sfxClick = document.getElementById('sfx-click');
     let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
-    
-    function updateToggleUI(checkbox) {
-        if(checkbox.checked) {
-            checkbox.nextElementSibling.style.backgroundColor = 'var(--accent-main)';
-            checkbox.nextElementSibling.style.boxShadow = '0 0 10px var(--accent-glow)';
-        } else {
-            checkbox.nextElementSibling.style.backgroundColor = 'rgba(255,255,255,0.1)';
-            checkbox.nextElementSibling.style.boxShadow = 'none';
-        }
-    }
     
     const soundToggle = document.getElementById('sound-toggle');
     if(soundToggle) {
         soundToggle.checked = isSoundOn;
         updateToggleUI(soundToggle);
-        
         soundToggle.addEventListener('change', (e) => {
             isSoundOn = e.target.checked; 
             localStorage.setItem('qms_sound', isSoundOn ? 'on' : 'off');
@@ -280,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 9. PROFILE IMAGE UPLOAD (COMPRESSION FIX)
+    // 10. PROFILE IMAGE UPLOAD & COMPRESSION
     // ==========================================
     const imgUpload = document.getElementById('img-upload');
     if(imgUpload) {
@@ -312,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 10. EDIT NAME & LOGOUT 
+    // 11. EDIT NAME & LOGOUT
     // ==========================================
     const editBtn = document.getElementById('edit-name-btn');
     if(editBtn) {
