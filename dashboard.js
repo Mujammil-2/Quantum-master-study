@@ -6,7 +6,8 @@
      3. User Authentication (Logout, Edit Name)
      4. Pomodoro Timer
      5. Bookmarks (Saved Notes) Renderer
-     6. 🏆 NEW: GAMIFICATION & BADGES LOGIC
+     6. Gamification & Badges Logic
+     7. 📅 NEW: DAILY STREAK CALENDAR LOGIC
 ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -591,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 8. 🏆 NEW: GAMIFICATION & BADGES ENGINE 🏆
+    // 8. 🏆 GAMIFICATION & BADGES ENGINE
     // ==========================================
     
     // Step 1: Calculate Total Data (Chapters + Quiz XP)
@@ -949,4 +950,120 @@ document.addEventListener('DOMContentLoaded', () => {
             }); 
         }); 
     }
+
+    // ==========================================
+    // 13. 📅 NEW: DAILY STREAK CALENDAR LOGIC
+    // ==========================================
+    function initializeDailyStreakCalendar() {
+        const streakCalendarContainer = document.getElementById('streak-calendar');
+        const streakCountTextNode = document.getElementById('streak-count-text');
+        const mainTopStreakDisplay = document.getElementById('main-streak-display');
+        
+        if (!streakCalendarContainer) return;
+
+        // Function to safely get YYYY-MM-DD string for local timezone
+        const getLocalDateString = (dateObject) => {
+            const timeZoneOffset = dateObject.getTimezoneOffset() * 60000; 
+            return (new Date(dateObject - timeZoneOffset)).toISOString().split('T')[0];
+        };
+
+        const todayDateObject = new Date();
+        const todayDateString = getLocalDateString(todayDateObject);
+
+        // Fetch existing streak history
+        let currentStreakHistory = {};
+        const rawStreakData = localStorage.getItem('qms_streak_history');
+        if (rawStreakData) {
+            currentStreakHistory = JSON.parse(rawStreakData);
+        }
+        
+        // Mark today as visited
+        currentStreakHistory[todayDateString] = true;
+        
+        // Save back to local storage
+        localStorage.setItem('qms_streak_history', JSON.stringify(currentStreakHistory));
+
+        // Calculate Active Streak (counting backwards from today)
+        let activeStreakCount = 0;
+        let dateCheckerObject = new Date(todayDateObject);
+        
+        while (true) {
+            let checkerDateString = getLocalDateString(dateCheckerObject);
+            
+            if (currentStreakHistory[checkerDateString] === true) {
+                activeStreakCount++;
+                // Go back one day
+                dateCheckerObject.setDate(dateCheckerObject.getDate() - 1);
+            } else {
+                // Streak broken
+                break;
+            }
+        }
+        
+        // Update the texts in UI
+        if (streakCountTextNode) {
+            streakCountTextNode.innerText = activeStreakCount;
+        }
+        
+        if (mainTopStreakDisplay) {
+            mainTopStreakDisplay.innerText = activeStreakCount + ' दिन';
+        }
+
+        // --- RENDER 7-DAY CALENDAR (Monday to Sunday of Current Week) ---
+        
+        // Calculate the Date of Monday for the current week
+        let currentDayOfWeekNum = todayDateObject.getDay(); // 0 = Sun, 1 = Mon, etc.
+        let daysToSubtractForMonday = todayDateObject.getDate() - currentDayOfWeekNum + (currentDayOfWeekNum === 0 ? -6 : 1); 
+        let mondayDateObject = new Date(todayDateObject.setDate(daysToSubtractForMonday));
+
+        const dayNamesList = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        let calendarHtmlContent = '';
+
+        // Generate UI for all 7 days
+        for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+            
+            let loopTargetDateObj = new Date(mondayDateObject);
+            loopTargetDateObj.setDate(mondayDateObject.getDate() + dayIndex);
+            
+            let loopTargetDateString = getLocalDateString(loopTargetDateObj);
+            
+            let uiStatusClass = 'future';
+            let iconClassString = 'ri-checkbox-blank-circle-line'; // Default future empty circle
+
+            // We need a fresh 'today' for accurate comparison
+            let realTodayDateObj = new Date();
+            let realTodayDateString = getLocalDateString(realTodayDateObj);
+
+            if (loopTargetDateString === realTodayDateString) {
+                // This specific box is TODAY
+                uiStatusClass = 'today completed';
+                iconClassString = 'ri-check-line';
+            } 
+            else if (loopTargetDateObj < realTodayDateObj) {
+                // This specific box is in the PAST
+                if (currentStreakHistory[loopTargetDateString] === true) {
+                    uiStatusClass = 'completed';
+                    iconClassString = 'ri-check-line';
+                } else {
+                    uiStatusClass = 'missed';
+                    iconClassString = 'ri-close-line';
+                }
+            }
+
+            // Append HTML for this specific day
+            calendarHtmlContent += `
+                <div class="streak-day ${uiStatusClass}">
+                    <span class="streak-day-name">${dayNamesList[dayIndex]}</span>
+                    <div class="streak-circle"><i class="${iconClassString}"></i></div>
+                </div>
+            `;
+        }
+        
+        // Inject into the Dashboard
+        streakCalendarContainer.innerHTML = calendarHtmlContent;
+    }
+
+    // Call the function to render the calendar immediately
+    initializeDailyStreakCalendar();
+
 });
