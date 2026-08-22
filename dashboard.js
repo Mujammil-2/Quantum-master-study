@@ -3,11 +3,11 @@
    - FEATURES:
      1. Multi-Track BGM Memory System
      2. Advanced Firefly Particles
-     3. User Authentication (Logout, Edit Name)
+     3. User Authentication (Logout, Edit Name) - PRIVACY ENHANCED
      4. Pomodoro Timer
      5. Bookmarks (Saved Notes) Renderer
      6. Gamification & Badges Logic
-     7. 📅 NEW: DAILY STREAK CALENDAR LOGIC
+     7. DAILY STREAK CALENDAR LOGIC
 ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,24 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgmVolumeControl = document.getElementById('bgm-volume');
     const bgmTrackSelect = document.getElementById('bgm-track-select');
     
-    // Retrieve Saved Settings from LocalStorage
     let isBgmOn = localStorage.getItem('qms_bgm') === 'on';
     let savedBgmVolume = localStorage.getItem('qms_bgm_volume');
     if (savedBgmVolume === null) {
-        savedBgmVolume = 0.3; // Default Volume
+        savedBgmVolume = 0.3; 
     }
     
     let savedBgmTime = localStorage.getItem('qms_bgm_time');
     if (savedBgmTime === null) {
-        savedBgmTime = 0; // Default Time
+        savedBgmTime = 0; 
     }
     
     let savedBgmTrack = localStorage.getItem('qms_bgm_track');
     if (savedBgmTrack === null) {
-        savedBgmTrack = 'bgm1.mp3'; // Default Track
+        savedBgmTrack = 'bgm1.mp3'; 
     }
 
-    // Function to visually update the UI Toggle Switch
     function updateToggleUI(checkboxElement) {
         if (!checkboxElement) return;
         
@@ -52,59 +50,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initialize Audio Logic
     if (bgmAudio) {
-        
-        // Apply saved settings
         bgmAudio.src = savedBgmTrack;
         bgmAudio.volume = parseFloat(savedBgmVolume);
         bgmAudio.currentTime = parseFloat(savedBgmTime);
 
-        // Update UI controls to reflect saved states
-        if (bgmTrackSelect) {
-            bgmTrackSelect.value = savedBgmTrack;
-        }
-        
-        if (bgmVolumeControl) {
-            bgmVolumeControl.value = savedBgmVolume;
-        }
-        
+        if (bgmTrackSelect) bgmTrackSelect.value = savedBgmTrack;
+        if (bgmVolumeControl) bgmVolumeControl.value = savedBgmVolume;
         if (bgmToggle) {
             bgmToggle.checked = isBgmOn;
             updateToggleUI(bgmToggle);
         }
 
-        // Auto-play safely upon first user interaction
         const playBgmSafely = () => {
             if (isBgmOn && bgmAudio.paused) {
                 bgmAudio.play().catch(error => {
-                    console.log("BGM Autoplay blocked by browser. Awaiting manual user interaction.", error);
+                    console.log("BGM Autoplay blocked by browser.", error);
                 });
             }
         };
         
-        // Listen for a global click to trigger audio
         document.body.addEventListener('click', playBgmSafely, { once: true });
 
-        // Event Listener: Change Track
         if (bgmTrackSelect) {
             bgmTrackSelect.addEventListener('change', (event) => {
                 const newTrackValue = event.target.value;
                 localStorage.setItem('qms_bgm_track', newTrackValue); 
-                
                 bgmAudio.src = newTrackValue; 
-                
-                if (isBgmOn) {
-                    bgmAudio.play();
-                }
+                if (isBgmOn) bgmAudio.play();
             });
         }
 
-        // Event Listener: Toggle BGM ON/OFF
         if (bgmToggle) {
             bgmToggle.addEventListener('change', (event) => {
                 isBgmOn = event.target.checked;
-                
                 if (isBgmOn) {
                     localStorage.setItem('qms_bgm', 'on');
                     bgmAudio.play();
@@ -112,12 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('qms_bgm', 'off');
                     bgmAudio.pause();
                 }
-                
                 updateToggleUI(event.target);
             });
         }
 
-        // Event Listener: Change Volume
         if (bgmVolumeControl) {
             bgmVolumeControl.addEventListener('input', (event) => {
                 const newVolume = event.target.value;
@@ -126,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Event Listener: Save exact time right before leaving page
         window.addEventListener('beforeunload', () => {
             localStorage.setItem('qms_bgm_time', bgmAudio.currentTime);
         });
@@ -142,19 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let loadingProgress = 0;
     
     const loadingInterval = setInterval(() => {
-        // Increment progress randomly
         loadingProgress += Math.random() * 15;
+        if (loadingProgress > 100) loadingProgress = 100;
         
-        if (loadingProgress > 100) {
-            loadingProgress = 100;
-        }
-        
-        // Update Bar Width
         if (loadingBarElement) {
             loadingBarElement.style.width = `${loadingProgress}%`;
         }
         
-        // Update Text
         if (loadingTextElement) {
             if (loadingProgress > 30 && loadingProgress < 70) {
                 loadingTextElement.innerText = 'यूज़र प्रोफाइल सिंक्रनाइज़ हो रही है...';
@@ -164,10 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        // Finish Loading
         if (loadingProgress === 100) {
             clearInterval(loadingInterval);
-            
             setTimeout(() => {
                 if (splashScreenElement) {
                     splashScreenElement.style.opacity = '0';
@@ -185,13 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentHour = new Date().getHours();
     let dynamicGreetingText = "नमस्ते";
     
-    if (currentHour < 12) {
-        dynamicGreetingText = "सुप्रभात (Good Morning)";
-    } else if (currentHour < 18) {
-        dynamicGreetingText = "शुभ दोपहर (Good Afternoon)";
-    } else {
-        dynamicGreetingText = "शुभ संध्या (Good Evening)";
-    }
+    if (currentHour < 12) dynamicGreetingText = "सुप्रभात (Good Morning)";
+    else if (currentHour < 18) dynamicGreetingText = "शुभ दोपहर (Good Afternoon)";
+    else dynamicGreetingText = "शुभ संध्या (Good Evening)";
     
     const greetingDisplayElement = document.getElementById('dynamic-greeting');
     if (greetingDisplayElement) {
@@ -214,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. POMODORO FOCUS TIMER
     // ==========================================
     let focusTimerInterval; 
-    let focusTimeLeftInSeconds = 25 * 60; // 25 Minutes
+    let focusTimeLeftInSeconds = 25 * 60; 
     let isFocusTimerRunning = false;
     
     const timerDisplayElement = document.getElementById('timer-display');
@@ -223,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateTimerUserInterface() {
         if (!timerDisplayElement) return;
-        
         const remainingMinutes = Math.floor(focusTimeLeftInSeconds / 60);
         const remainingSeconds = focusTimeLeftInSeconds % 60;
         
@@ -236,17 +199,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (timerStartButton) {
         timerStartButton.addEventListener('click', () => {
             if (isFocusTimerRunning === false) {
-                // START OR RESUME TIMER
                 isFocusTimerRunning = true; 
                 timerStartButton.innerText = "पॉज़ (Pause)"; 
-                timerStartButton.style.background = "#ffc107"; // Yellow color for pause state
+                timerStartButton.style.background = "#ffc107"; 
                 
                 focusTimerInterval = setInterval(() => {
                     if (focusTimeLeftInSeconds > 0) {
                         focusTimeLeftInSeconds--; 
                         updateTimerUserInterface(); 
                     } else {
-                        // TIMER COMPLETE
                         clearInterval(focusTimerInterval); 
                         isFocusTimerRunning = false; 
                         
@@ -254,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             window.showCustomToast("शानदार! आपका 25 मिनट का फोकस सेशन पूरा हुआ।", false); 
                         }
                         
-                        // Reset automatically
                         focusTimeLeftInSeconds = 25 * 60; 
                         updateTimerUserInterface(); 
                         
@@ -263,7 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }, 1000);
             } else {
-                // PAUSE TIMER
                 clearInterval(focusTimerInterval); 
                 isFocusTimerRunning = false; 
                 timerStartButton.innerText = "रिज्यूम (Resume)"; 
@@ -289,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const bookmarksContainerElement = document.getElementById('bookmarks-container');
     
     if (bookmarksContainerElement) {
-        // Fetch saved bookmarks from localStorage
         const rawBookmarksData = localStorage.getItem('qms_bookmarks');
         let parsedBookmarks = {};
         
@@ -299,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const bookmarkKeysArray = Object.keys(parsedBookmarks);
 
-        // If no bookmarks exist
         if (bookmarkKeysArray.length === 0) {
             bookmarksContainerElement.innerHTML = `
                 <div class="glass-card" style="padding: 2rem; text-align: center; color: var(--text-secondary);">
@@ -309,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         } else {
-            // Setup Grid Layout Dynamically
             bookmarksContainerElement.style.display = 'grid';
             bookmarksContainerElement.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
             bookmarksContainerElement.style.gap = '15px';
@@ -318,19 +274,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             bookmarkKeysArray.forEach(key => {
                 let bookmarkItem = parsedBookmarks[key];
+                let iconColorHex = 'var(--accent-main)'; 
                 
-                // Determine icon color based on subject
-                let iconColorHex = 'var(--accent-main)'; // Default Physics
-                
-                if (bookmarkItem.subject === 'chemistry') {
-                    iconColorHex = '#b535ff'; // Purple
-                }
-                
-                if (bookmarkItem.subject === 'mathematics') {
-                    iconColorHex = '#00ff88'; // Emerald Green
-                }
+                if (bookmarkItem.subject === 'chemistry') { iconColorHex = '#b535ff'; }
+                if (bookmarkItem.subject === 'mathematics') { iconColorHex = '#00ff88'; }
 
-                // Construct HTML Card for the Bookmark
                 finalBookmarksHTML += `
                     <div class="glass-card sfx-trigger" 
                          style="padding: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.3s; border-left: 4px solid ${iconColorHex};" 
@@ -355,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             });
             
-            // Inject into DOM
             bookmarksContainerElement.innerHTML = finalBookmarksHTML;
         }
     }
@@ -367,7 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (backgroundCanvasElement) {
         const canvasContext = backgroundCanvasElement.getContext('2d'); 
-        
         backgroundCanvasElement.width = window.innerWidth; 
         backgroundCanvasElement.height = window.innerHeight;
         
@@ -376,23 +322,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         class QuantumFireflyParticle {
             constructor() {
-                // Determine if particle is a dot or a symbol
                 const typeProbability = Math.random();
-                if (typeProbability > 0.4) {
-                    this.particleShapeType = 'dot';
-                } else {
-                    this.particleShapeType = 'symbol';
-                }
+                if (typeProbability > 0.4) { this.particleShapeType = 'dot'; } 
+                else { this.particleShapeType = 'symbol'; }
                 
-                // Select Random Symbol
                 const randomSymbolIndex = Math.floor(Math.random() * scienceMathSymbolsArray.length);
                 this.symbolCharacter = scienceMathSymbolsArray[randomSymbolIndex];
                 
-                // Set Random Coordinates
                 this.coordinateX = Math.random() * backgroundCanvasElement.width; 
                 this.coordinateY = Math.random() * backgroundCanvasElement.height;
                 
-                // Set Speed and Size based on type
                 if (this.particleShapeType === 'symbol') { 
                     this.particleSize = Math.random() * 15 + 10; 
                     this.speedVelocityX = Math.random() * 0.5 - 0.25; 
@@ -403,7 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.speedVelocityY = Math.random() * -1 - 0.2; 
                 }
                 
-                // Blinking effect logic variables
                 this.blinkingSpeed = Math.random() * 0.05 + 0.02; 
                 this.blinkingSineAngle = Math.random() * Math.PI * 2;
             }
@@ -413,28 +351,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.coordinateX += this.speedVelocityX; 
                 this.blinkingSineAngle += this.blinkingSpeed;
                 
-                // Loop vertically
                 if (this.coordinateY < -30) { 
                     this.coordinateY = backgroundCanvasElement.height + 30; 
                     this.coordinateX = Math.random() * backgroundCanvasElement.width; 
                 }
-                
-                // Bounce horizontally
                 if (this.coordinateX < -30 || this.coordinateX > backgroundCanvasElement.width + 30) { 
                     this.speedVelocityX = this.speedVelocityX * -1; 
                 }
             }
             
             drawParticleToCanvas(ctx) {
-                // Determine correct color from active CSS Theme
                 const rootCssVariables = getComputedStyle(document.documentElement);
-                let themePrimaryColor = rootCssVariables.getPropertyValue('--accent-main').trim();
-                
-                if (!themePrimaryColor) {
-                    themePrimaryColor = '#00f0ff'; // Fallback
-                }
-                
-                // Calculate Blinking Opacity using Sine wave
+                let themePrimaryColor = rootCssVariables.getPropertyValue('--accent-main').trim() || '#00f0ff';
                 let dynamicOpacityValue = ((Math.sin(this.blinkingSineAngle) + 1) / 2) * 0.8 + 0.1;
                 
                 ctx.fillStyle = `rgba(255, 255, 255, ${dynamicOpacityValue})`;
@@ -450,32 +378,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fill(); 
                 }
                 
-                // Reset shadow blur so it doesn't leak
                 ctx.shadowBlur = 0; 
             }
         }
         
-        // Spawn 60 Particles
         for (let iterationCount = 0; iterationCount < 60; iterationCount++) {
             quantumParticlesArray.push(new QuantumFireflyParticle());
         }
         
-        // Define Animation Loop
         function executeParticleAnimationLoop() { 
             canvasContext.clearRect(0, 0, backgroundCanvasElement.width, backgroundCanvasElement.height); 
-            
             quantumParticlesArray.forEach(singleParticleObject => { 
                 singleParticleObject.updateParticleCoordinates(); 
                 singleParticleObject.drawParticleToCanvas(canvasContext); 
             }); 
-            
             requestAnimationFrame(executeParticleAnimationLoop); 
         }
         
-        // Start Loop
         executeParticleAnimationLoop();
         
-        // Listen for screen resize to adjust canvas boundaries
         window.addEventListener('resize', () => { 
             backgroundCanvasElement.width = window.innerWidth; 
             backgroundCanvasElement.height = window.innerHeight; 
@@ -485,19 +406,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 7. PREMIUM CUSTOM MODALS & TOASTS 
     // ==========================================
-    
-    // Toast Notification System
     window.showCustomToast = function(messageText, isErrorMessage = false) {
-        
-        // Remove existing toast if present
         const existingToastNode = document.querySelector('.qms-toast-msg'); 
-        if (existingToastNode) {
-            existingToastNode.remove();
-        }
+        if (existingToastNode) { existingToastNode.remove(); }
         
-        // Create new DOM element for Toast
         const toastElementNode = document.createElement('div'); 
-        
         if (isErrorMessage) {
             toastElementNode.className = 'qms-toast-msg qms-toast-error';
             toastElementNode.innerHTML = `<i class="ri-error-warning-fill"></i> ${messageText}`;
@@ -507,16 +420,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         document.body.appendChild(toastElementNode); 
-        
-        // Auto remove after 3 seconds
-        setTimeout(() => { 
-            if (toastElementNode) {
-                toastElementNode.remove(); 
-            }
-        }, 3000); 
+        setTimeout(() => { if (toastElementNode) toastElementNode.remove(); }, 3000); 
     };
 
-    // Modal UI Construction
     const modalOverlayContainer = document.createElement('div'); 
     modalOverlayContainer.className = 'qms-modal-overlay';
     modalOverlayContainer.innerHTML = `
@@ -536,7 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const targetModalConfirmButton = document.getElementById('qms-modal-confirm'); 
     let activeModalCallbackFunction = null;
 
-    // Show Prompt (For inputs like changing name)
     window.showCustomPrompt = function(titleText, defaultInputValue, callbackFunc) { 
         targetModalTitle.innerHTML = `<i class="ri-edit-2-line" style="color: var(--accent-main); font-size: 1.5rem; display:block; margin-bottom: 5px;"></i> ${titleText}`; 
         targetModalInput.style.display = 'block'; 
@@ -546,15 +451,10 @@ document.addEventListener('DOMContentLoaded', () => {
         targetModalConfirmButton.innerText = 'सेव करें'; 
         
         modalOverlayContainer.classList.add('active'); 
-        
-        setTimeout(() => {
-            targetModalInput.focus();
-        }, 100); 
-        
+        setTimeout(() => { targetModalInput.focus(); }, 100); 
         activeModalCallbackFunction = callbackFunc; 
     };
 
-    // Show Confirm (For actions like logout)
     window.showCustomConfirm = function(titleText, callbackFunc) { 
         targetModalTitle.innerHTML = `<i class="ri-error-warning-line" style="color: #ff4d4d; font-size: 2rem; display:block; margin-bottom: 5px;"></i> ${titleText}`; 
         targetModalInput.style.display = 'none'; 
@@ -563,11 +463,9 @@ document.addEventListener('DOMContentLoaded', () => {
         targetModalConfirmButton.innerText = 'हाँ, करें'; 
         
         modalOverlayContainer.classList.add('active'); 
-        
         activeModalCallbackFunction = callbackFunc; 
     };
     
-    // Modal Cancel Action
     const modalCancelButton = document.getElementById('qms-modal-cancel');
     if (modalCancelButton) {
         modalCancelButton.addEventListener('click', () => {
@@ -575,17 +473,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Modal Confirm Action
     if (targetModalConfirmButton) {
         targetModalConfirmButton.addEventListener('click', () => { 
             if (activeModalCallbackFunction) {
-                // If input is hidden, it's a confirm prompt, return boolean TRUE
-                if (targetModalInput.style.display === 'none') {
-                    activeModalCallbackFunction(true);
-                } else {
-                    // Otherwise return input text value
-                    activeModalCallbackFunction(targetModalInput.value);
-                }
+                if (targetModalInput.style.display === 'none') { activeModalCallbackFunction(true); } 
+                else { activeModalCallbackFunction(targetModalInput.value); }
             }
             modalOverlayContainer.classList.remove('active'); 
         });
@@ -594,9 +486,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 8. 🏆 GAMIFICATION & BADGES ENGINE
     // ==========================================
-    
-    // Step 1: Calculate Total Data (Chapters + Quiz XP)
-    const savedUserNameValue = localStorage.getItem('qms_user_name') || 'Alina Sami';
+    // 🚀 PRIVACY FIX: Removed hardcoded name "Alina Sami". Fallback is now "Student"
+    const savedUserNameValue = localStorage.getItem('qms_user_name') || 'Student';
     
     let completedChaptersData = {};
     const rawCompletedData = localStorage.getItem('qms_completed');
@@ -605,83 +496,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     const completedChaptersCountNumber = Object.keys(completedChaptersData).length;
-    
-    // Let's grab Quiz XP or any other extra XP saved in localStorage
     let storedExtraXp = parseInt(localStorage.getItem('qms_total_xp')) || 0;
-    
-    // Total XP = (Each completed chapter * 50) + Quiz XP
     let grandTotalXp = (completedChaptersCountNumber * 50) + storedExtraXp;
     
-    // Save it back safely so it's always synced
     localStorage.setItem('qms_total_xp', grandTotalXp);
 
-    // Update UI Stats
     const dashUserNameElement = document.getElementById('dash-user-name');
-    if (dashUserNameElement) {
-        dashUserNameElement.innerText = savedUserNameValue; 
-    }
+    if (dashUserNameElement) { dashUserNameElement.innerText = savedUserNameValue; }
     
     const panelUserNameElement = document.getElementById('panel-user-name');
-    if (panelUserNameElement) {
-        panelUserNameElement.innerText = savedUserNameValue;
-    }
+    if (panelUserNameElement) { panelUserNameElement.innerText = savedUserNameValue; }
 
     const dashCompletedCountElement = document.getElementById('dash-completed-count');
-    if (dashCompletedCountElement) {
-        dashCompletedCountElement.innerText = completedChaptersCountNumber;
-    }
+    if (dashCompletedCountElement) { dashCompletedCountElement.innerText = completedChaptersCountNumber; }
     
     const dashTotalXpElement = document.getElementById('dash-total-xp');
-    if (dashTotalXpElement) {
-        dashTotalXpElement.innerText = grandTotalXp;
-    }
+    if (dashTotalXpElement) { dashTotalXpElement.innerText = grandTotalXp; }
 
-    // Step 2: Define Badges Data Array
     const qmsBadgesData = [
-        { 
-            id: 'b1', 
-            name: 'क्वांटम स्टार्टर', 
-            icon: 'ri-seedling-fill', 
-            color: '#00f0ff', 
-            requiredXp: 0, 
-            desc: 'QMS जॉइन किया' 
-        },
-        { 
-            id: 'b2', 
-            name: 'फोकस मास्टर', 
-            icon: 'ri-focus-2-fill', 
-            color: '#00ff88', 
-            requiredXp: 100, 
-            desc: '100 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b3', 
-            name: 'सुपर स्कॉलर', 
-            icon: 'ri-book-open-fill', 
-            color: '#b535ff', 
-            requiredXp: 500, 
-            desc: '500 XP प्राप्त किए' 
-        },
-        { 
-            id: 'b4', 
-            name: 'क्वांटम लीजेंड', 
-            icon: 'ri-vip-crown-fill', 
-            color: '#ffc107', 
-            requiredXp: 1000, 
-            desc: '1000 XP प्राप्त किए' 
-        }
+        { id: 'b1', name: 'क्वांटम स्टार्टर', icon: 'ri-seedling-fill', color: '#00f0ff', requiredXp: 0, desc: 'QMS जॉइन किया' },
+        { id: 'b2', name: 'फोकस मास्टर', icon: 'ri-focus-2-fill', color: '#00ff88', requiredXp: 100, desc: '100 XP प्राप्त किए' },
+        { id: 'b3', name: 'सुपर स्कॉलर', icon: 'ri-book-open-fill', color: '#b535ff', requiredXp: 500, desc: '500 XP प्राप्त किए' },
+        { id: 'b4', name: 'क्वांटम लीजेंड', icon: 'ri-vip-crown-fill', color: '#ffc107', requiredXp: 1000, desc: '1000 XP प्राप्त किए' }
     ];
 
-    // Step 3: Render Badges to the Dashboard
     const badgesContainerElement = document.getElementById('badges-container');
-    
     if (badgesContainerElement) {
         let badgesHTMLString = '';
-        
         qmsBadgesData.forEach(badgeObject => {
-            // Check if user has enough XP to unlock this badge
             const isBadgeUnlocked = grandTotalXp >= badgeObject.requiredXp;
-            
             const badgeStatusClass = isBadgeUnlocked ? 'unlocked' : 'locked';
             const lockedOverlayHTML = isBadgeUnlocked ? '' : '<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>';
             
@@ -694,8 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         });
-        
-        // Inject into DOM
         badgesContainerElement.innerHTML = badgesHTMLString;
     }
 
@@ -706,12 +547,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidePanelOverlayBg = document.getElementById('panel-overlay'); 
     
     function closeSettingsPanelAction() { 
-        if (sidePanelElement) {
-            sidePanelElement.classList.remove('active'); 
-        }
-        if (sidePanelOverlayBg) {
-            sidePanelOverlayBg.classList.remove('active'); 
-        }
+        if (sidePanelElement) { sidePanelElement.classList.remove('active'); }
+        if (sidePanelOverlayBg) { sidePanelOverlayBg.classList.remove('active'); }
     }
     
     const openPanelButtonTrigger = document.getElementById('open-panel-btn');
@@ -731,7 +568,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sidePanelOverlayBg.addEventListener('click', closeSettingsPanelAction);
     }
 
-    // Theme Selection Logic
     const allThemeOptionCards = document.querySelectorAll('.theme-option-card');
     allThemeOptionCards.forEach(singleThemeCard => {
         singleThemeCard.addEventListener('click', function() { 
@@ -741,18 +577,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Preferences Selection Logic
     const preferenceDropdownIds = ['pdf-location-pref', 'video-quality-pref'];
-    
     preferenceDropdownIds.forEach(dropdownId => {
         const targetDropdownElement = document.getElementById(dropdownId); 
-        
         const previouslySavedPrefValue = localStorage.getItem(`qms_${dropdownId}`); 
-        
-        if (previouslySavedPrefValue && targetDropdownElement) {
-            targetDropdownElement.value = previouslySavedPrefValue;
-        }
-        
+        if (previouslySavedPrefValue && targetDropdownElement) { targetDropdownElement.value = previouslySavedPrefValue; }
         if (targetDropdownElement) {
             targetDropdownElement.addEventListener('change', (event) => {
                 localStorage.setItem(`qms_${dropdownId}`, event.target.value);
@@ -760,18 +589,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Profile Avatar Logic
     const savedProfileImageSrc = localStorage.getItem('qms_profile_img');
     if (savedProfileImageSrc) {
         const dashSmallAvatarImage = document.getElementById('dash-small-avatar');
-        if (dashSmallAvatarImage) {
-            dashSmallAvatarImage.src = savedProfileImageSrc; 
-        }
-        
+        if (dashSmallAvatarImage) { dashSmallAvatarImage.src = savedProfileImageSrc; }
         const panelProfileImageAvatar = document.getElementById('panel-profile-img');
-        if (panelProfileImageAvatar) {
-            panelProfileImageAvatar.src = savedProfileImageSrc; 
-        }
+        if (panelProfileImageAvatar) { panelProfileImageAvatar.src = savedProfileImageSrc; }
     }
 
     // ==========================================
@@ -779,40 +602,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const sfxClickAudioNode = document.getElementById('sfx-click'); 
     let isSystemSoundTurnedOn = true;
-    
-    if (localStorage.getItem('qms_sound') === 'off') {
-        isSystemSoundTurnedOn = false;
-    }
+    if (localStorage.getItem('qms_sound') === 'off') { isSystemSoundTurnedOn = false; }
     
     const soundToggleSwitchElement = document.getElementById('sound-toggle');
-    
     if (soundToggleSwitchElement) { 
         soundToggleSwitchElement.checked = isSystemSoundTurnedOn; 
         updateToggleUI(soundToggleSwitchElement); 
         
         soundToggleSwitchElement.addEventListener('change', (event) => { 
             isSystemSoundTurnedOn = event.target.checked; 
-            
-            if (isSystemSoundTurnedOn) {
-                localStorage.setItem('qms_sound', 'on');
-            } else {
-                localStorage.setItem('qms_sound', 'off');
-            }
-            
+            if (isSystemSoundTurnedOn) { localStorage.setItem('qms_sound', 'on'); } 
+            else { localStorage.setItem('qms_sound', 'off'); }
             updateToggleUI(event.target); 
         }); 
     }
 
-    // Bind click sound to all triggers
     const allSfxTriggerElements = document.querySelectorAll('.sfx-trigger');
     allSfxTriggerElements.forEach(triggerBtn => { 
         triggerBtn.addEventListener('click', () => { 
             if (isSystemSoundTurnedOn && sfxClickAudioNode) { 
                 sfxClickAudioNode.currentTime = 0; 
                 sfxClickAudioNode.volume = 1.0; 
-                sfxClickAudioNode.play().catch(err => {
-                    console.log("SFX Play Error:", err);
-                }); 
+                sfxClickAudioNode.play().catch(err => { console.log("SFX Play Error:", err); }); 
             } 
         }); 
     });
@@ -821,73 +632,45 @@ document.addEventListener('DOMContentLoaded', () => {
     // 11. PROFILE IMAGE UPLOAD & COMPRESSOR
     // ==========================================
     const profileImageUploadInput = document.getElementById('img-upload');
-    
     if (profileImageUploadInput) {
         profileImageUploadInput.addEventListener('change', function(event) {
             const uploadedFile = event.target.files[0];
-            
             if (uploadedFile) {
                 const fileReaderInstance = new FileReader();
-                
                 fileReaderInstance.onload = function(readerEvent) {
                     const tempImgNode = new Image();
-                    
                     tempImgNode.onload = function() {
                         const temporaryCanvas = document.createElement('canvas'); 
                         const temporaryCanvasContext = temporaryCanvas.getContext('2d');
-                        
-                        // Compress max dimension to 200px
                         const maxAllowedDimension = 200; 
                         let targetWidth = tempImgNode.width; 
                         let targetHeight = tempImgNode.height;
                         
                         if (targetWidth > targetHeight) { 
-                            if (targetWidth > maxAllowedDimension) { 
-                                targetHeight *= maxAllowedDimension / targetWidth; 
-                                targetWidth = maxAllowedDimension; 
-                            } 
+                            if (targetWidth > maxAllowedDimension) { targetHeight *= maxAllowedDimension / targetWidth; targetWidth = maxAllowedDimension; } 
                         } else { 
-                            if (targetHeight > maxAllowedDimension) { 
-                                targetWidth *= maxAllowedDimension / targetHeight; 
-                                targetHeight = maxAllowedDimension; 
-                            } 
+                            if (targetHeight > maxAllowedDimension) { targetWidth *= maxAllowedDimension / targetHeight; targetHeight = maxAllowedDimension; } 
                         }
                         
                         temporaryCanvas.width = targetWidth; 
                         temporaryCanvas.height = targetHeight; 
-                        
                         temporaryCanvasContext.drawImage(tempImgNode, 0, 0, targetWidth, targetHeight);
-                        
-                        // Convert to Base64 String format
                         const compressedImageBase64String = temporaryCanvas.toDataURL('image/jpeg', 0.8);
                         
-                        // Update UI Images
                         const dashSmallAvatarImg = document.getElementById('dash-small-avatar');
-                        if (dashSmallAvatarImg) {
-                            dashSmallAvatarImg.src = compressedImageBase64String; 
-                        }
-                        
+                        if (dashSmallAvatarImg) { dashSmallAvatarImg.src = compressedImageBase64String; }
                         const panelProfileImg = document.getElementById('panel-profile-img');
-                        if (panelProfileImg) {
-                            panelProfileImg.src = compressedImageBase64String;
-                        }
+                        if (panelProfileImg) { panelProfileImg.src = compressedImageBase64String; }
                         
-                        // Attempt to save to LocalStorage safely
                         try { 
                             localStorage.setItem('qms_profile_img', compressedImageBase64String); 
-                            if(window.showCustomToast) {
-                                window.showCustomToast("प्रोफाइल फोटो सफलतापूर्क सेव हो गई!"); 
-                            }
+                            if(window.showCustomToast) { window.showCustomToast("प्रोफाइल फोटो सफलतापूर्क सेव हो गई!"); }
                         } catch(localStorageError) { 
-                            if(window.showCustomToast) {
-                                window.showCustomToast("फोटो बहुत बड़ी है! सेव करने में एरर।", true); 
-                            }
+                            if(window.showCustomToast) { window.showCustomToast("फोटो बहुत बड़ी है! सेव करने में एरर।", true); }
                         }
                     };
-                    
                     tempImgNode.src = readerEvent.target.result;
                 };
-                
                 fileReaderInstance.readAsDataURL(uploadedFile);
             }
         });
@@ -897,54 +680,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // 12. EDIT PROFILE NAME & LOGOUT ACTIONS
     // ==========================================
     const editUserNameButton = document.getElementById('edit-name-btn');
-    
     if (editUserNameButton) { 
         editUserNameButton.addEventListener('click', function() { 
-            
-            const currentSavedNameValue = localStorage.getItem('qms_user_name') || 'Alina Sami'; 
+            // 🚀 PRIVACY FIX: Default value is 'Student', not 'Alina Sami'
+            const currentSavedNameValue = localStorage.getItem('qms_user_name') || 'Student'; 
             
             window.showCustomPrompt("अपना नया नाम दर्ज करें", currentSavedNameValue, (newSubmittedName) => { 
-                
-                // If name is valid and not empty
                 if (newSubmittedName && newSubmittedName.trim() !== "") { 
-                    
                     const cleanedNewName = newSubmittedName.trim(); 
-                    
-                    // Save
                     localStorage.setItem('qms_user_name', cleanedNewName); 
                     
-                    // Update UI Dashboard
                     const dashNameEl = document.getElementById('dash-user-name');
-                    if (dashNameEl) {
-                        dashNameEl.innerText = cleanedNewName; 
-                    }
+                    if (dashNameEl) { dashNameEl.innerText = cleanedNewName; }
                     
-                    // Update UI Panel
                     const panelNameEl = document.getElementById('panel-user-name');
-                    if (panelNameEl) {
-                        panelNameEl.innerText = cleanedNewName; 
-                    }
+                    if (panelNameEl) { panelNameEl.innerText = cleanedNewName; }
                     
-                    // Toast success
-                    if(window.showCustomToast) {
-                        window.showCustomToast("नाम सफलतापूर्वक अपडेट हो गया!");
-                    }
+                    if(window.showCustomToast) { window.showCustomToast("नाम सफलतापूर्वक अपडेट हो गया!"); }
                 } 
             }); 
         }); 
     }
 
     const resetLogoutButton = document.getElementById('reset-btn');
-    
     if (resetLogoutButton) { 
         resetLogoutButton.addEventListener('click', () => { 
             window.showCustomConfirm("क्या आप सच में लॉगआउट करना चाहते हैं?", (userConfirmedLogout) => { 
                 if (userConfirmedLogout === true) { 
-                    
-                    // Clear the Auth flag but KEEP the user data and XP safe!
                     localStorage.setItem('qms_is_logged_in', 'false');
-                    
-                    // Redirect to login index page
                     window.location.href = "index.html"; 
                 } 
             }); 
@@ -952,16 +715,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 13. 📅 NEW: DAILY STREAK CALENDAR LOGIC
+    // 13. 📅 DAILY STREAK CALENDAR LOGIC
     // ==========================================
     function initializeDailyStreakCalendar() {
         const streakCalendarContainer = document.getElementById('streak-calendar');
         const streakCountTextNode = document.getElementById('streak-count-text');
         const mainTopStreakDisplay = document.getElementById('main-streak-display');
-        
         if (!streakCalendarContainer) return;
 
-        // Function to safely get YYYY-MM-DD string for local timezone
         const getLocalDateString = (dateObject) => {
             const timeZoneOffset = dateObject.getTimezoneOffset() * 60000; 
             return (new Date(dateObject - timeZoneOffset)).toISOString().split('T')[0];
@@ -970,77 +731,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const todayDateObject = new Date();
         const todayDateString = getLocalDateString(todayDateObject);
 
-        // Fetch existing streak history
         let currentStreakHistory = {};
         const rawStreakData = localStorage.getItem('qms_streak_history');
-        if (rawStreakData) {
-            currentStreakHistory = JSON.parse(rawStreakData);
-        }
+        if (rawStreakData) { currentStreakHistory = JSON.parse(rawStreakData); }
         
-        // Mark today as visited
         currentStreakHistory[todayDateString] = true;
-        
-        // Save back to local storage
         localStorage.setItem('qms_streak_history', JSON.stringify(currentStreakHistory));
 
-        // Calculate Active Streak (counting backwards from today)
         let activeStreakCount = 0;
         let dateCheckerObject = new Date(todayDateObject);
         
         while (true) {
             let checkerDateString = getLocalDateString(dateCheckerObject);
-            
             if (currentStreakHistory[checkerDateString] === true) {
                 activeStreakCount++;
-                // Go back one day
                 dateCheckerObject.setDate(dateCheckerObject.getDate() - 1);
-            } else {
-                // Streak broken
-                break;
-            }
+            } else { break; }
         }
         
-        // Update the texts in UI
-        if (streakCountTextNode) {
-            streakCountTextNode.innerText = activeStreakCount;
-        }
-        
-        if (mainTopStreakDisplay) {
-            mainTopStreakDisplay.innerText = activeStreakCount + ' दिन';
-        }
+        if (streakCountTextNode) { streakCountTextNode.innerText = activeStreakCount; }
+        if (mainTopStreakDisplay) { mainTopStreakDisplay.innerText = activeStreakCount + ' दिन'; }
 
-        // --- RENDER 7-DAY CALENDAR (Monday to Sunday of Current Week) ---
-        
-        // Calculate the Date of Monday for the current week
-        let currentDayOfWeekNum = todayDateObject.getDay(); // 0 = Sun, 1 = Mon, etc.
+        let currentDayOfWeekNum = todayDateObject.getDay(); 
         let daysToSubtractForMonday = todayDateObject.getDate() - currentDayOfWeekNum + (currentDayOfWeekNum === 0 ? -6 : 1); 
         let mondayDateObject = new Date(todayDateObject.setDate(daysToSubtractForMonday));
 
         const dayNamesList = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         let calendarHtmlContent = '';
 
-        // Generate UI for all 7 days
         for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-            
             let loopTargetDateObj = new Date(mondayDateObject);
             loopTargetDateObj.setDate(mondayDateObject.getDate() + dayIndex);
-            
             let loopTargetDateString = getLocalDateString(loopTargetDateObj);
             
             let uiStatusClass = 'future';
-            let iconClassString = 'ri-checkbox-blank-circle-line'; // Default future empty circle
+            let iconClassString = 'ri-checkbox-blank-circle-line'; 
 
-            // We need a fresh 'today' for accurate comparison
             let realTodayDateObj = new Date();
             let realTodayDateString = getLocalDateString(realTodayDateObj);
 
             if (loopTargetDateString === realTodayDateString) {
-                // This specific box is TODAY
                 uiStatusClass = 'today completed';
                 iconClassString = 'ri-check-line';
             } 
             else if (loopTargetDateObj < realTodayDateObj) {
-                // This specific box is in the PAST
                 if (currentStreakHistory[loopTargetDateString] === true) {
                     uiStatusClass = 'completed';
                     iconClassString = 'ri-check-line';
@@ -1050,7 +784,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Append HTML for this specific day
             calendarHtmlContent += `
                 <div class="streak-day ${uiStatusClass}">
                     <span class="streak-day-name">${dayNamesList[dayIndex]}</span>
@@ -1058,12 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
-        
-        // Inject into the Dashboard
         streakCalendarContainer.innerHTML = calendarHtmlContent;
     }
-
-    // Call the function to render the calendar immediately
     initializeDailyStreakCalendar();
-
 });
