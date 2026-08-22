@@ -5,6 +5,7 @@
      2. Multi-Subject Quiz Database (Physics, Chem, Math, Hindi, Eng)
      3. Dynamic Score & XP System
      4. Smart BGM Memory Integration
+     5. 🚀 NEW: PROFESSIONAL CUSTOM MODALS & TOASTS (No Native Alerts)
 ========================================================================= */
 
 // --------------------------------------------------------------------------
@@ -48,11 +49,78 @@ const quizDatabase = {
     ]
 };
 
-
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // 2. LOAD BGM, THEME & SOUND LOGIC
+    // 2. PREMIUM CUSTOM MODALS & TOASTS 
+    //    (NO MORE NATIVE BROWSER ALERTS!)
+    // ==========================================
+    
+    // Toast Notification System
+    window.showCustomToast = function(messageText, isErrorMessage = false) {
+        const existingToastNode = document.querySelector('.qms-toast-msg'); 
+        if (existingToastNode) existingToastNode.remove();
+        
+        const toastElementNode = document.createElement('div'); 
+        if (isErrorMessage) {
+            toastElementNode.className = 'qms-toast-msg qms-toast-error';
+            toastElementNode.innerHTML = `<i class="ri-error-warning-fill"></i> ${messageText}`;
+        } else {
+            toastElementNode.className = 'qms-toast-msg';
+            toastElementNode.innerHTML = `<i class="ri-checkbox-circle-fill"></i> ${messageText}`;
+        }
+        
+        document.body.appendChild(toastElementNode); 
+        setTimeout(() => { if (toastElementNode) toastElementNode.remove(); }, 3500); 
+    };
+
+    // Modal UI Construction
+    const modalOverlayContainer = document.createElement('div'); 
+    modalOverlayContainer.className = 'qms-modal-overlay';
+    modalOverlayContainer.innerHTML = `
+        <div class="qms-modal-box">
+            <div class="qms-modal-title" id="qms-modal-title"></div>
+            <div class="qms-modal-buttons" style="margin-top: 20px;">
+                <button class="qms-modal-btn btn-cancel" id="qms-modal-cancel">रद्द करें</button>
+                <button class="qms-modal-btn btn-confirm" id="qms-modal-confirm">हाँ, छोड़ें</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modalOverlayContainer);
+
+    const targetModalTitle = document.getElementById('qms-modal-title'); 
+    const targetModalConfirmButton = document.getElementById('qms-modal-confirm'); 
+    const targetModalCancelButton = document.getElementById('qms-modal-cancel');
+    let activeModalCallbackFunction = null;
+
+    // Custom Confirm Function for Quiz
+    window.showCustomConfirm = function(titleText, callbackFunc) { 
+        targetModalTitle.innerHTML = `<i class="ri-error-warning-line" style="color: #ff4d4d; font-size: 2.5rem; display:block; margin-bottom: 10px;"></i> ${titleText}`; 
+        targetModalConfirmButton.style.background = '#ff4d4d'; 
+        targetModalConfirmButton.style.color = '#fff'; 
+        
+        modalOverlayContainer.classList.add('active'); 
+        activeModalCallbackFunction = callbackFunc; 
+    };
+    
+    if (targetModalCancelButton) {
+        targetModalCancelButton.addEventListener('click', () => {
+            modalOverlayContainer.classList.remove('active');
+        });
+    }
+    
+    if (targetModalConfirmButton) {
+        targetModalConfirmButton.addEventListener('click', () => { 
+            if (activeModalCallbackFunction) {
+                activeModalCallbackFunction(true);
+            }
+            modalOverlayContainer.classList.remove('active'); 
+        });
+    }
+
+
+    // ==========================================
+    // 3. LOAD BGM, THEME & SOUND LOGIC
     // ==========================================
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -62,7 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playClickSound() {
         if (isSoundOn && sfxClick) {
-            sfxClick.currentTime = 0; sfxClick.volume = 1.0; sfxClick.play().catch(()=>{});
+            sfxClick.currentTime = 0; 
+            sfxClick.volume = 1.0; 
+            sfxClick.play().catch(()=>{});
         }
     }
 
@@ -77,18 +147,25 @@ document.addEventListener('DOMContentLoaded', () => {
         let savedBgmTime = localStorage.getItem('qms_bgm_time') || 0;
         let savedBgmTrack = localStorage.getItem('qms_bgm_track') || 'bgm1.mp3';
 
-        bgmAudio.src = savedBgmTrack; bgmAudio.volume = parseFloat(savedBgmVolume); bgmAudio.currentTime = parseFloat(savedBgmTime);
-        document.body.addEventListener('click', () => { if (isBgmOn && bgmAudio.paused) bgmAudio.play().catch(e => console.log(e)); }, { once: true });
-        window.addEventListener('beforeunload', () => { localStorage.setItem('qms_bgm_time', bgmAudio.currentTime); });
+        bgmAudio.src = savedBgmTrack; 
+        bgmAudio.volume = parseFloat(savedBgmVolume); 
+        bgmAudio.currentTime = parseFloat(savedBgmTime);
+        
+        document.body.addEventListener('click', () => { 
+            if (isBgmOn && bgmAudio.paused) bgmAudio.play().catch(e => console.log(e)); 
+        }, { once: true });
+        
+        window.addEventListener('beforeunload', () => { 
+            localStorage.setItem('qms_bgm_time', bgmAudio.currentTime); 
+        });
     }
 
     // ==========================================
-    // 3. QUIZ SETUP LOGIC (MANUAL TIMER & SUBJECT)
+    // 4. QUIZ SETUP LOGIC (MANUAL TIMER & SUBJECT)
     // ==========================================
     let selectedSubject = 'physics';
-    let selectedTimeMinutes = 5; // Default 5 minutes
+    let selectedTimeMinutes = 5; 
     
-    // Subject Selection
     const subjectBtns = document.querySelectorAll('.quiz-subject-btn');
     subjectBtns.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -98,22 +175,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Custom Timer Selection
     const timeDisplay = document.getElementById('selected-time');
     document.getElementById('btn-time-minus').addEventListener('click', () => {
-        if(selectedTimeMinutes > 1) { selectedTimeMinutes--; timeDisplay.innerText = selectedTimeMinutes; }
+        if(selectedTimeMinutes > 1) { 
+            selectedTimeMinutes--; 
+            timeDisplay.innerText = selectedTimeMinutes; 
+        }
     });
     document.getElementById('btn-time-plus').addEventListener('click', () => {
-        if(selectedTimeMinutes < 60) { selectedTimeMinutes++; timeDisplay.innerText = selectedTimeMinutes; }
+        if(selectedTimeMinutes < 60) { 
+            selectedTimeMinutes++; 
+            timeDisplay.innerText = selectedTimeMinutes; 
+        }
     });
 
-    // Leave Button
+    // 🚀 NEW: Professional Leave Quiz Confirmation
     document.getElementById('leave-quiz-btn').addEventListener('click', () => {
-        if(confirm("क्या आप टेस्ट बीच में छोड़कर जाना चाहते हैं?")) { window.location.href = 'dashboard.html'; }
+        window.showCustomConfirm("क्या आप सच में टेस्ट बीच में छोड़कर जाना चाहते हैं?", (isConfirmed) => {
+            if (isConfirmed) {
+                window.location.href = 'dashboard.html';
+            }
+        });
     });
 
     // ==========================================
-    // 4. QUIZ ENGINE VARIABLES & LOGIC
+    // 5. QUIZ ENGINE VARIABLES & LOGIC
     // ==========================================
     let currentQuestions = [];
     let currentQuestionIndex = 0;
@@ -128,10 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerDisplayBox = document.getElementById('timer-display');
     const timeLeftText = document.getElementById('time-left');
 
-    // Start Quiz
     document.getElementById('start-quiz-btn').addEventListener('click', () => {
         currentQuestions = [...quizDatabase[selectedSubject]];
-        // Shuffle questions randomly
         currentQuestions.sort(() => Math.random() - 0.5);
         
         currentQuestionIndex = 0;
@@ -147,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadQuestion();
     });
 
-    // Load Question
     const questionTextEl = document.getElementById('question-text');
     const optionsContainer = document.getElementById('options-container');
     const counterEl = document.getElementById('question-counter');
@@ -173,12 +256,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Check Answer
     function checkAnswer(selectedIndex, correctIndex, clickedBtn) {
         playClickSound();
         const allBtns = optionsContainer.querySelectorAll('.option-btn');
         
-        // Disable all buttons after click
         allBtns.forEach(btn => btn.disabled = true);
 
         if(selectedIndex === correctIndex) {
@@ -187,14 +268,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             clickedBtn.classList.add('wrong');
             wrongAnswers++;
-            // Show correct answer in green
             allBtns[correctIndex].classList.add('correct');
         }
 
         nextBtn.style.display = 'block';
     }
 
-    // Next Question
     nextBtn.addEventListener('click', () => {
         currentQuestionIndex++;
         if(currentQuestionIndex < currentQuestions.length) {
@@ -205,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 5. TIMER ENGINE
+    // 6. TIMER ENGINE
     // ==========================================
     function startTimer() {
         updateTimerText();
@@ -214,12 +293,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 timeLeftSeconds--;
                 updateTimerText();
                 
-                // Turn red if less than 60 seconds
-                if(timeLeftSeconds < 60) { timerDisplayBox.style.color = '#ff3366'; timerDisplayBox.style.textShadow = '0 0 15px rgba(255, 51, 102, 0.6)'; }
+                if(timeLeftSeconds < 60) { 
+                    timerDisplayBox.style.color = '#ff3366'; 
+                    timerDisplayBox.style.textShadow = '0 0 15px rgba(255, 51, 102, 0.6)'; 
+                }
             } else {
                 clearInterval(timerInterval);
-                alert("समय समाप्त! (Time's Up)");
-                endQuiz();
+                
+                // 🚀 NEW: Professional Toast instead of native alert
+                window.showCustomToast("समय समाप्त हो गया है! (Time's Up)", true);
+                setTimeout(() => {
+                    endQuiz();
+                }, 1500);
             }
         }, 1000);
     }
@@ -231,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 6. END QUIZ & SHOW RESULT (XP SYSTEM)
+    // 7. END QUIZ & SHOW RESULT (XP SYSTEM)
     // ==========================================
     function endQuiz() {
         clearInterval(timerInterval);
@@ -241,58 +326,122 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let totalQ = currentQuestions.length;
         let percentage = Math.round((score / totalQ) * 100);
-        let xpGained = score * 20; // 20 XP per correct answer
+        let xpGained = score * 20; 
 
         document.getElementById('final-score').innerText = `${percentage}%`;
         document.getElementById('stat-correct').innerText = score;
         document.getElementById('stat-wrong').innerText = wrongAnswers;
         document.getElementById('stat-xp').innerText = `+${xpGained} XP`;
 
-        // Update color based on score
         const scoreCircle = document.getElementById('final-score');
-        if(percentage >= 80) { scoreCircle.style.borderColor = '#00ff88'; scoreCircle.style.color = '#00ff88'; document.getElementById('result-message').innerText = "बेहतरीन प्रदर्शन! (Excellent)"; }
-        else if(percentage >= 50) { scoreCircle.style.borderColor = '#ffc107'; scoreCircle.style.color = '#ffc107'; document.getElementById('result-message').innerText = "अच्छा प्रयास! (Good Effort)"; }
-        else { scoreCircle.style.borderColor = '#ff3366'; scoreCircle.style.color = '#ff3366'; document.getElementById('result-message').innerText = "और अभ्यास की ज़रूरत है। (Need Practice)"; }
+        if(percentage >= 80) { 
+            scoreCircle.style.borderColor = '#00ff88'; 
+            scoreCircle.style.color = '#00ff88'; 
+            document.getElementById('result-message').innerText = "बेहतरीन प्रदर्शन! (Excellent)"; 
+        }
+        else if(percentage >= 50) { 
+            scoreCircle.style.borderColor = '#ffc107'; 
+            scoreCircle.style.color = '#ffc107'; 
+            document.getElementById('result-message').innerText = "अच्छा प्रयास! (Good Effort)"; 
+        }
+        else { 
+            scoreCircle.style.borderColor = '#ff3366'; 
+            scoreCircle.style.color = '#ff3366'; 
+            document.getElementById('result-message').innerText = "और अभ्यास की ज़रूरत है। (Need Practice)"; 
+        }
 
-        // Optional: Save XP to LocalStorage for Dashboard
         let currentXP = parseInt(localStorage.getItem('qms_total_xp')) || 0;
         localStorage.setItem('qms_total_xp', currentXP + xpGained);
     }
 
     // ==========================================
-    // 7. BACKGROUND FIREFLIES (PARTICLES)
+    // 8. BACKGROUND FIREFLIES (PARTICLES)
     // ==========================================
     const canvas = document.getElementById('bg-canvas');
     if(canvas) {
-        const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d'); 
+        canvas.width = window.innerWidth; 
+        canvas.height = window.innerHeight;
+        
         const scienceSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ'];
         let particlesArray = [];
+        
         class QuantumParticle {
             constructor() {
                 this.type = Math.random() > 0.4 ? 'dot' : 'symbol';
                 this.symbol = scienceSymbols[Math.floor(Math.random() * scienceSymbols.length)];
-                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-                if (this.type === 'symbol') { this.size = Math.random() * 15 + 10; this.speedX = Math.random() * 0.5 - 0.25; this.speedY = Math.random() * -0.8 - 0.2; } 
-                else { this.size = Math.random() * 3 + 1; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * -1 - 0.2; }
-                this.blinkSpeed = Math.random() * 0.05 + 0.02; this.angle = Math.random() * Math.PI * 2;
+                this.x = Math.random() * canvas.width; 
+                this.y = Math.random() * canvas.height;
+                
+                if (this.type === 'symbol') { 
+                    this.size = Math.random() * 15 + 10; 
+                    this.speedX = Math.random() * 0.5 - 0.25; 
+                    this.speedY = Math.random() * -0.8 - 0.2; 
+                } 
+                else { 
+                    this.size = Math.random() * 3 + 1; 
+                    this.speedX = Math.random() * 1 - 0.5; 
+                    this.speedY = Math.random() * -1 - 0.2; 
+                }
+                
+                this.blinkSpeed = Math.random() * 0.05 + 0.02; 
+                this.angle = Math.random() * Math.PI * 2;
             }
             update() {
-                this.y += this.speedY; this.x += this.speedX; this.angle += this.blinkSpeed;
-                if (this.y < -30) { this.y = canvas.height + 30; this.x = Math.random() * canvas.width; }
-                if (this.x < -30 || this.x > canvas.width + 30) this.speedX *= -1;
+                this.y += this.speedY; 
+                this.x += this.speedX; 
+                this.angle += this.blinkSpeed;
+                
+                if (this.y < -30) { 
+                    this.y = canvas.height + 30; 
+                    this.x = Math.random() * canvas.width; 
+                }
+                if (this.x < -30 || this.x > canvas.width + 30) {
+                    this.speedX *= -1;
+                }
             }
             draw() {
-                const rootStyle = getComputedStyle(document.documentElement); let accentColor = rootStyle.getPropertyValue('--accent-main').trim() || '#00f0ff';
+                const rootStyle = getComputedStyle(document.documentElement); 
+                let accentColor = rootStyle.getPropertyValue('--accent-main').trim() || '#00f0ff';
+                
                 let currentOpacity = ((Math.sin(this.angle) + 1) / 2) * 0.8 + 0.1;
-                ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`; ctx.shadowBlur = currentOpacity * 20; ctx.shadowColor = accentColor;
-                if (this.type === 'symbol') { ctx.font = `${this.size}px "Space Grotesk", sans-serif`; ctx.fillText(this.symbol, this.x, this.y); } 
-                else { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+                
+                ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`; 
+                ctx.shadowBlur = currentOpacity * 20; 
+                ctx.shadowColor = accentColor;
+                
+                if (this.type === 'symbol') { 
+                    ctx.font = `${this.size}px "Space Grotesk", sans-serif`; 
+                    ctx.fillText(this.symbol, this.x, this.y); 
+                } 
+                else { 
+                    ctx.beginPath(); 
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+                    ctx.fill(); 
+                }
+                
                 ctx.shadowBlur = 0; 
             }
         }
-        for (let i = 0; i < 60; i++) particlesArray.push(new QuantumParticle());
-        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
+        
+        for (let i = 0; i < 60; i++) {
+            particlesArray.push(new QuantumParticle());
+        }
+        
+        function animateParticles() { 
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            particlesArray.forEach(p => { 
+                p.update(); 
+                p.draw(); 
+            }); 
+            requestAnimationFrame(animateParticles); 
+        }
+        
         animateParticles();
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+        
+        window.addEventListener('resize', () => { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
+        });
     }
 });
