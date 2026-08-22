@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="default">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>मॉक टेस्ट | क्वांटम मास्टर स्टडी</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 🎵 साउंड और BGM प्लेयर -->
+    <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
+    <audio id="bgm-audio" loop preload="auto"><source src="bgm1.mp3" type="audio/mpeg"></audio>
+    
+    <!-- बैकग्राउंड कैनवास (पार्टिकल्स) -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="quiz-wrapper">
+        <!-- HEADER -->
+        <header class="quiz-header-card glass-card">
+            <div class="brand-mini sfx-trigger" id="leave-quiz-btn" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
+                <i class="ri-arrow-left-line" style="font-size: 1.5rem; color: var(--accent-main);"></i>
+                <h2 style="font-size: 1.2rem;">डैशबोर्ड</h2>
+            </div>
+            
+            <div class="quiz-timer-box" id="timer-display" style="display: none;">
+                <i class="ri-timer-flash-line"></i> <span id="time-left">00:00</span>
+            </div>
+        </header>
+
+        <!-- 1. QUIZ SETUP PANEL (विषय और टाइमर चुनें) -->
+        <div class="glass-card quiz-setup-panel" id="setup-panel">
+            <i class="ri-brain-line" style="font-size: 4rem; color: var(--accent-main); margin-bottom: 10px; display: block;"></i>
+            <h1 class="quiz-setup-title">मॉक टेस्ट सेट करें</h1>
+            <p style="color: var(--text-secondary);">अपनी परीक्षा की तैयारी को परखें। अपना विषय और समय चुनें।</p>
+
+            <div class="subject-select-grid" id="subject-selector">
+                <button class="quiz-subject-btn active sfx-trigger" data-subject="physics">भौतिक विज्ञान</button>
+                <button class="quiz-subject-btn sfx-trigger" data-subject="chemistry">रसायन विज्ञान</button>
+                <button class="quiz-subject-btn sfx-trigger" data-subject="maths">गणित</button>
+                <button class="quiz-subject-btn sfx-trigger" data-subject="hindi">हिंदी</button>
+                <button class="quiz-subject-btn sfx-trigger" data-subject="english">अंग्रेज़ी</button>
+            </div>
+
+            <div class="time-setter">
+                <p>समय (मिनट):</p>
+                <button class="time-btn sfx-trigger" id="btn-time-minus"><i class="ri-subtract-line"></i></button>
+                <span class="time-display" id="selected-time">5</span>
+                <button class="time-btn sfx-trigger" id="btn-time-plus"><i class="ri-add-line"></i></button>
+            </div>
+
+            <button class="btn-primary-glow sfx-trigger" id="start-quiz-btn" style="width: 100%; font-size: 1.2rem; padding: 18px;">
+                <i class="ri-play-fill"></i> टेस्ट शुरू करें
+            </button>
+        </div>
+
+        <!-- 2. QUESTION AREA (टेस्ट चल रहा है) -->
+        <div class="question-container" id="question-panel">
+            <div class="question-text" id="question-text">प्रश्न यहाँ लोड होगा...</div>
+            
+            <div class="options-grid" id="options-container">
+                <!-- ऑप्शंस JS से आएंगे -->
+            </div>
+
+            <div class="quiz-footer">
+                <span class="question-counter" id="question-counter">प्रश्न 1 / 10</span>
+                <button class="btn-primary-glow sfx-trigger" id="next-btn" style="display: none; padding: 10px 20px;">
+                    अगला <i class="ri-arrow-right-line"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. RESULT SCREEN (स्कोरकार्ड) -->
+        <div class="glass-card result-container" id="result-panel">
+            <h2 style="font-size: 2rem; margin-bottom: 5px;">टेस्ट समाप्त!</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;" id="result-message">बहुत बढ़िया प्रयास।</p>
+
+            <div class="score-circle" id="final-score">0%</div>
+
+            <div class="result-stats">
+                <div class="r-stat">
+                    <h3>सही उत्तर</h3>
+                    <p class="text-green" id="stat-correct">0</p>
+                </div>
+                <div class="r-stat">
+                    <h3>गलत उत्तर</h3>
+                    <p class="text-red" id="stat-wrong">0</p>
+                </div>
+                <div class="r-stat">
+                    <h3>XP मिले</h3>
+                    <p class="text-gold" id="stat-xp">+0 XP</p>
+                </div>
+            </div>
+
+            <button class="btn-primary-glow sfx-trigger" onclick="window.location.reload()" style="width: 100%;">
+                <i class="ri-refresh-line"></i> एक और टेस्ट दें
+            </button>
+        </div>
+
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+</html>
