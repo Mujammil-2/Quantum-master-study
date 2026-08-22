@@ -296,7 +296,22 @@
                 </div>
             </div>
 
-            <div class="bookmarks-section" style="margin-bottom: 2.5rem; margin-top: 1rem;">
+            <!-- =========================================
+                 🏆 NEW: ACHIEVEMENTS & BADGES SECTION
+            ========================================== -->
+            <div class="badges-section">
+                <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;">
+                    <i class="ri-medal-fill"></i> अचीवमेंट्स और बैज
+                </h3>
+                
+                <!-- JS will render badges dynamically here based on XP -->
+                <div class="badges-grid" id="badges-container">
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">लोड हो रहा है...</p>
+                </div>
+            </div>
+
+            <!-- 🔖 SAVED NOTES SECTION -->
+            <div class="bookmarks-section" style="margin-bottom: 2.5rem; margin-top: 2rem;">
                 <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;">
                     <i class="ri-bookmark-3-fill"></i> सेव्ड नोट्स (Bookmarks)
                 </h3>
@@ -306,9 +321,7 @@
                 </div>
             </div>
 
-            <!-- =========================================
-                 📝 NEW: QUIZ ENTRY BUTTON
-            ========================================== -->
+            <!-- 📝 QUIZ ENTRY BUTTON -->
             <button class="btn-primary-glow sfx-trigger" onclick="window.location.href='quiz.html'" style="width: 100%; padding: 18px; font-size: 1.2rem; border-radius: 15px; margin-bottom: 20px; background: linear-gradient(135deg, #ff00ff 0%, #b535ff 100%); color: #fff; box-shadow: 0 10px 30px rgba(181, 53, 255, 0.4);">
                 <i class="ri-brain-line"></i> मॉक टेस्ट (Quiz) दें
             </button>
