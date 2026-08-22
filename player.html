@@ -12,96 +12,398 @@
     
     <link rel="stylesheet" href="style.css">
     
+    <!-- Player Page Specific CSS (Fully Expanded) -->
     <style>
-        .player-wrapper { max-width: 1200px; margin: 0 auto; padding: 1rem; animation: fadeUp 0.6s ease; }
-        .header-profile-fix { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent-main); overflow: hidden; cursor: pointer; box-shadow: 0 0 15px var(--accent-glow); transition: transform 0.3s ease; }
-        .header-profile-fix:hover { transform: scale(1.05); }
-        .header-profile-fix img { width: 100%; height: 100%; object-fit: cover; }
-        .player-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-top: 1.5rem; }
-        @media (max-width: 900px) { .player-grid { grid-template-columns: 1fr; } }
-        .video-container { width: 100%; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; margin-bottom: 20px; border: 2px solid var(--border-glass); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
-        .video-container iframe { width: 100%; height: 100%; border: none; }
-        .video-info { padding: 2rem; border-radius: 20px; }
-        .video-info .tag { background: rgba(255, 255, 255, 0.1); color: var(--accent-main); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 15px; }
-        .video-info h1 { font-family: var(--font-hindi); font-size: 2.2rem; margin-bottom: 5px; line-height: 1.2; }
-        .video-info p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 25px; }
-        
-        .action-buttons-container { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        .top-action-row { display: flex; gap: 15px; width: 100%; }
-        
-        .btn-view-notes { flex: 1; background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .btn-view-notes:hover { background: rgba(255, 255, 255, 0.2); border-color: #fff; }
-        
-        .btn-download-premium { flex: 1; background: linear-gradient(135deg, #ff00ff 0%, #b535ff 100%); color: #fff; border: none; padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 5px 20px rgba(181, 53, 255, 0.4); }
-        .btn-download-premium:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(181, 53, 255, 0.6); }
+        .player-wrapper { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 1rem; 
+            animation: fadeUp 0.6s ease; 
+        }
 
-        /* 🔖 BOOKMARK BUTTON STYLING */
-        .btn-bookmark { width: 100%; background: rgba(0,0,0,0.5); color: #fff; border: 1px dashed var(--accent-main); padding: 15px; border-radius: 12px; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 5px; }
-        .btn-bookmark:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); }
-        .btn-bookmark.saved { background: rgba(255, 51, 102, 0.1); border: 1px solid #ff3366; color: #ff3366; }
+        .header-profile-fix { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            border: 2px solid var(--accent-main); 
+            overflow: hidden; 
+            cursor: pointer; 
+            box-shadow: 0 0 15px var(--accent-glow); 
+            transition: transform 0.3s ease; 
+        }
         
-        .btn-mark-complete { width: 100%; background: var(--accent-main); color: #000; border: none; padding: 18px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 20px var(--accent-glow); }
-        .btn-mark-complete:hover { transform: translateY(-3px); box-shadow: 0 8px 30px var(--accent-glow); }
-        .btn-mark-complete:disabled { background: #00ff88; color: #000; cursor: not-allowed; transform: none; box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
+        .header-profile-fix:hover { 
+            transform: scale(1.05); 
+        }
+        
+        .header-profile-fix img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
 
-        .download-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 10005; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-        .download-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .download-modal-box { background: rgba(15, 15, 25, 0.95); border: 1px solid var(--accent-main); padding: 2.5rem; border-radius: 20px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); transform: translateY(20px); transition: transform 0.3s ease; }
-        .download-modal-overlay.active .download-modal-box { transform: translateY(0); }
-        .download-icon-animate { font-size: 3rem; color: var(--accent-main); margin-bottom: 15px; animation: bounceUpDown 1s infinite alternate; }
-        @keyframes bounceUpDown { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
-        .download-progress-bar-container { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 20px 0; overflow: hidden; }
-        .download-progress-fill { width: 0%; height: 100%; background: var(--accent-main); box-shadow: 0 0 15px var(--accent-glow); transition: width 0.1s linear; }
-        .download-status-text { color: #fff; font-size: 1rem; font-weight: 500; }
+        .player-grid { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            gap: 20px; 
+            margin-top: 1.5rem; 
+        }
+        
+        @media (max-width: 900px) { 
+            .player-grid { 
+                grid-template-columns: 1fr; 
+            } 
+        }
 
-        .topics-card { padding: 1.5rem; height: fit-content; }
-        .card-header h3 { font-size: 1.2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; color: var(--accent-main); }
-        .topic-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-        .topic-list li { padding: 15px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.3s ease; }
-        .topic-list li:hover:not(.locked) { background: rgba(255, 255, 255, 0.1); border-color: var(--accent-main); transform: translateX(5px); }
-        .topic-list li.active { background: var(--accent-glow); border-color: var(--accent-main); color: #fff; }
-        .topic-list li.locked { opacity: 0.5; cursor: not-allowed; }
+        .video-container { 
+            width: 100%; 
+            aspect-ratio: 16 / 9; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            margin-bottom: 20px; 
+            border: 2px solid var(--border-glass); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+        }
+        
+        .video-container iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+        }
+
+        .video-info { 
+            padding: 2rem; 
+            border-radius: 20px; 
+        }
+        
+        .video-info .tag { 
+            background: rgba(255, 255, 255, 0.1); 
+            color: var(--accent-main); 
+            padding: 5px 15px; 
+            border-radius: 20px; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+        }
+        
+        .video-info h1 { 
+            font-family: var(--font-hindi); 
+            font-size: 2.2rem; 
+            margin-bottom: 5px; 
+            line-height: 1.2; 
+        }
+        
+        .video-info p { 
+            color: var(--text-secondary); 
+            font-size: 1rem; 
+            margin-bottom: 25px; 
+        }
+        
+        .action-buttons-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            margin-top: 20px; 
+        }
+        
+        .top-action-row { 
+            display: flex; 
+            gap: 15px; 
+            width: 100%; 
+        }
+        
+        .btn-view-notes { 
+            flex: 1; 
+            background: rgba(255, 255, 255, 0.1); 
+            color: #fff; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-size: 1rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        
+        .btn-view-notes:hover { 
+            background: rgba(255, 255, 255, 0.2); 
+            border-color: #fff; 
+        }
+        
+        .btn-download-premium { 
+            flex: 1; 
+            background: linear-gradient(135deg, #ff00ff 0%, #b535ff 100%); 
+            color: #fff; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-size: 1rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+            box-shadow: 0 5px 20px rgba(181, 53, 255, 0.4); 
+        }
+        
+        .btn-download-premium:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(181, 53, 255, 0.6); 
+        }
+
+        /* 🔖 BOOKMARK BUTTON STYLING EXPANDED */
+        .btn-bookmark { 
+            width: 100%; 
+            background: rgba(0,0,0,0.5); 
+            color: #fff; 
+            border: 1px dashed var(--accent-main); 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-size: 1.05rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+            margin-bottom: 5px; 
+        }
+        
+        .btn-bookmark:hover { 
+            background: rgba(255,255,255,0.05); 
+            transform: translateY(-2px); 
+        }
+        
+        .btn-bookmark.saved { 
+            background: rgba(255, 51, 102, 0.1); 
+            border: 1px solid #ff3366; 
+            color: #ff3366; 
+        }
+        
+        .btn-mark-complete { 
+            width: 100%; 
+            background: var(--accent-main); 
+            color: #000; 
+            border: none; 
+            padding: 18px; 
+            border-radius: 12px; 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px; 
+            box-shadow: 0 5px 20px var(--accent-glow); 
+        }
+        
+        .btn-mark-complete:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 30px var(--accent-glow); 
+        }
+        
+        .btn-mark-complete:disabled { 
+            background: #00ff88; 
+            color: #000; 
+            cursor: not-allowed; 
+            transform: none; 
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); 
+        }
+
+        /* DOWNLOAD MODAL STYLES EXPANDED */
+        .download-modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100vh; 
+            background: rgba(0, 0, 0, 0.8); 
+            backdrop-filter: blur(10px); 
+            z-index: 10005; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.3s ease; 
+        }
+        
+        .download-modal-overlay.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
+        
+        .download-modal-box { 
+            background: rgba(15, 15, 25, 0.95); 
+            border: 1px solid var(--accent-main); 
+            padding: 2.5rem; 
+            border-radius: 20px; 
+            text-align: center; 
+            max-width: 400px; 
+            width: 90%; 
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); 
+            transform: translateY(20px); 
+            transition: transform 0.3s ease; 
+        }
+        
+        .download-modal-overlay.active .download-modal-box { 
+            transform: translateY(0); 
+        }
+        
+        .download-icon-animate { 
+            font-size: 3rem; 
+            color: var(--accent-main); 
+            margin-bottom: 15px; 
+            animation: bounceUpDown 1s infinite alternate; 
+        }
+        
+        @keyframes bounceUpDown { 
+            0% { transform: translateY(0); } 
+            100% { transform: translateY(-10px); } 
+        }
+        
+        .download-progress-bar-container { 
+            width: 100%; 
+            height: 8px; 
+            background: rgba(255, 255, 255, 0.1); 
+            border-radius: 10px; 
+            margin: 20px 0; 
+            overflow: hidden; 
+        }
+        
+        .download-progress-fill { 
+            width: 0%; 
+            height: 100%; 
+            background: var(--accent-main); 
+            box-shadow: 0 0 15px var(--accent-glow); 
+            transition: width 0.1s linear; 
+        }
+        
+        .download-status-text { 
+            color: #fff; 
+            font-size: 1rem; 
+            font-weight: 500; 
+        }
+
+        /* SYLLABUS STYLES EXPANDED */
+        .topics-card { 
+            padding: 1.5rem; 
+            height: fit-content; 
+        }
+        
+        .card-header h3 { 
+            font-size: 1.2rem; 
+            margin-bottom: 1.5rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            color: var(--accent-main); 
+        }
+        
+        .topic-list { 
+            list-style: none; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+        }
+        
+        .topic-list li { 
+            padding: 15px; 
+            background: rgba(0, 0, 0, 0.3); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+        }
+        
+        .topic-list li:hover:not(.locked) { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-color: var(--accent-main); 
+            transform: translateX(5px); 
+        }
+        
+        .topic-list li.active { 
+            background: var(--accent-glow); 
+            border-color: var(--accent-main); 
+            color: #fff; 
+        }
+        
+        .topic-list li.locked { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+        }
     </style>
 </head>
 <body>
 
-    <!-- साउंड और BGM प्लेयर -->
-    <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
-    <audio id="bgm-audio" loop preload="auto"><source src="bgm1.mp3" type="audio/mpeg"></audio>
+    <!-- 🎵 साउंड और BGM प्लेयर -->
+    <audio id="sfx-click" preload="auto">
+        <source src="click.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgm-audio" loop preload="auto">
+        <source src="bgm1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- बैकग्राउंड कैनवास -->
     <canvas id="bg-canvas"></canvas>
 
+    <!-- डाउनलोड मोडल -->
     <div class="download-modal-overlay" id="download-modal">
         <div class="download-modal-box">
             <i class="ri-file-download-fill download-icon-animate"></i>
             <h3 style="font-family: var(--font-heading); margin-bottom: 10px;">PDF डाउनलोड हो रहा है</h3>
-            <div class="download-progress-bar-container"><div class="download-progress-fill" id="download-progress-fill"></div></div>
+            
+            <div class="download-progress-bar-container">
+                <div class="download-progress-fill" id="download-progress-fill"></div>
+            </div>
+            
             <p class="download-status-text" id="download-status-text">तैयार किया जा रहा है... 0%</p>
         </div>
     </div>
 
+    <!-- मेन कंटेंट -->
     <div class="player-wrapper">
         <header class="dash-header glass-panel" style="display: flex; justify-content: space-between; align-items: center; padding: 1.2rem; border-radius: 20px;">
             <div class="brand-mini sfx-trigger" id="back-to-chapters" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
                 <i class="ri-arrow-left-line" style="font-size: 1.5rem; color: var(--accent-main);"></i>
                 <h2 style="font-size: 1.2rem;">अध्यायों पर लौटें</h2>
             </div>
+            
             <div class="header-profile-fix sfx-trigger" onclick="window.location.href='dashboard.html'" title="डैशबोर्ड पर जाएँ">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" id="nav-profile-img" alt="Profile">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" id="nav-profile-img" alt="Profile Image">
             </div>
         </header>
 
         <main class="player-grid">
+            
             <div class="video-section">
+                <!-- वीडियो प्लेयर बॉक्स -->
                 <div class="video-container glass-card">
                     <iframe id="main-video" src="https://www.youtube.com/embed/ysz5S6PUM-U" title="QMS Video Player" frameborder="0" allowfullscreen></iframe>
                 </div>
                 
+                <!-- चैप्टर डिटेल्स बॉक्स -->
                 <div class="video-info glass-card">
                     <span class="tag" id="player-subject-tag">Subject</span>
                     <h1 id="player-chapter-title">अध्याय लोड हो रहा है...</h1>
                     <p id="player-chapter-subtitle">Chapter Subtitle</p>
                     
                     <div class="action-buttons-container">
+                        
                         <!-- 🔖 NEW BOOKMARK BUTTON -->
                         <button class="btn-bookmark sfx-trigger" id="btn-bookmark">
                             <i class="ri-heart-add-line"></i> बुकमार्क में सेव करें (Save)
@@ -115,13 +417,16 @@
                                 <i class="ri-file-download-fill"></i> PDF डाउनलोड
                             </button>
                         </div>
+                        
                         <button class="btn-mark-complete sfx-trigger" id="mark-complete-btn">
                             <i class="ri-check-double-line"></i> इस अध्याय को पूर्ण चिह्नित करें
                         </button>
+                        
                     </div>
                 </div>
             </div>
 
+            <!-- सिलेबस सेक्शन -->
             <div class="syllabus-section">
                 <div class="glass-card topics-card">
                     <div class="card-header">
@@ -136,9 +441,11 @@
                     </ul>
                 </div>
             </div>
+            
         </main>
     </div>
 
+    <!-- PLAYER JAVASCRIPT LOGIC ENGINE -->
     <script src="player.js"></script>
 </body>
 </html>
