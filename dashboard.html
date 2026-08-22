@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
-    <!-- मुख्य स्टाइलशीट -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,12 +17,10 @@
     <!-- =========================================
          AUDIO PLAYERS (SFX & BGM)
     ========================================== -->
-    <!-- कस्टम क्लिक साउंड -->
     <audio id="sfx-click" preload="auto">
         <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- 🎵 स्मार्ट BGM प्लेयर 🎵 -->
     <audio id="bgm-audio" loop preload="auto">
         <source src="bgm1.mp3" type="audio/mpeg">
     </audio>
@@ -51,7 +48,6 @@
     ========================================== -->
     <canvas id="bg-canvas"></canvas>
     
-    <!-- पैनल ओवरले -->
     <div class="overlay-bg" id="panel-overlay"></div>
 
     <!-- =========================================
@@ -79,7 +75,6 @@
             </p>
         </div>
 
-        <!-- 8 THEMES SECTION -->
         <h3 class="setting-section-title">
             <i class="ri-palette-fill"></i> कस्टमाइज़ेशन (Themes)
         </h3>
@@ -119,7 +114,6 @@
             </div>
         </div>
 
-        <!-- 7 TRACK MUSIC PLAYER (BGM) -->
         <h3 class="setting-section-title">
             <i class="ri-headphone-fill"></i> म्यूजिक प्लेयर (BGM)
         </h3>
@@ -158,7 +152,6 @@
             <input type="range" id="bgm-volume" min="0" max="1" step="0.1" value="0.3" style="width: 120px; accent-color: var(--accent-main); cursor: pointer;">
         </div>
 
-        <!-- STUDY PREFERENCES -->
         <h3 class="setting-section-title">
             <i class="ri-book-read-fill"></i> स्टडी प्रेफरेंस
         </h3>
@@ -188,7 +181,6 @@
             </select>
         </div>
 
-        <!-- APP SETTINGS -->
         <h3 class="setting-section-title">
             <i class="ri-settings-3-fill"></i> ऐप सेटिंग्स
         </h3>
@@ -214,7 +206,6 @@
     ========================================== -->
     <div class="dashboard-wrapper">
         
-        <!-- HEADER -->
         <header class="top-nav glass-panel">
             <div class="brand-mini">
                 <svg viewBox="0 0 100 100" class="mini-qms-logo">
@@ -227,13 +218,12 @@
             </div>
             
             <div class="small-profile-btn sfx-trigger" id="open-panel-btn" title="प्रोफाइल और सेटिंग्स">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" id="dash-small-avatar" alt="Profile">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" id="dash-small-avatar" alt="Profile Image">
             </div>
         </header>
 
         <main class="dash-main-clean">
             
-            <!-- WELCOME BANNER -->
             <div class="welcome-banner glass-card">
                 <div class="welcome-text">
                     <h1 class="greeting">
@@ -249,12 +239,10 @@
                 </div>
             </div>
 
-            <!-- DAILY QUOTE -->
             <div class="quote-box" id="daily-quote">
                 "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।"
             </div>
 
-            <!-- POMODORO TIMER -->
             <div class="timer-card glass-card">
                 <h3 style="margin-bottom: 10px; color: var(--text-secondary);">
                     <i class="ri-timer-line"></i> फोकस टाइमर (Pomodoro)
@@ -266,7 +254,6 @@
                 </div>
             </div>
 
-            <!-- STATS GRID -->
             <div class="stats-grid">
                 <div class="stat-card glass-card">
                     <div class="stat-icon" style="color: #ffc107;">
@@ -309,23 +296,28 @@
                 </div>
             </div>
 
-            <!-- =========================================
-                 🔖 NEW: BOOKMARKS SECTION 🔖
-            ========================================== -->
             <div class="bookmarks-section" style="margin-bottom: 2.5rem; margin-top: 1rem;">
                 <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;">
                     <i class="ri-bookmark-3-fill"></i> सेव्ड नोट्स (Bookmarks)
                 </h3>
                 
-                <!-- JS will render Bookmarks here dynamically -->
                 <div id="bookmarks-container">
                     <p style="color: var(--text-secondary); font-size: 0.9rem;">लोड हो रहा है...</p>
                 </div>
             </div>
 
+            <!-- =========================================
+                 📝 NEW: QUIZ ENTRY BUTTON
+            ========================================== -->
+            <button class="btn-primary-glow sfx-trigger" onclick="window.location.href='quiz.html'" style="width: 100%; padding: 18px; font-size: 1.2rem; border-radius: 15px; margin-bottom: 20px; background: linear-gradient(135deg, #ff00ff 0%, #b535ff 100%); color: #fff; box-shadow: 0 10px 30px rgba(181, 53, 255, 0.4);">
+                <i class="ri-brain-line"></i> मॉक टेस्ट (Quiz) दें
+            </button>
+
+            <!-- REGULAR CONTINUE LEARNING BUTTON -->
             <button class="btn-primary-glow sfx-trigger" onclick="window.location.href='subjects.html'" style="width: 100%; padding: 18px; font-size: 1.2rem; border-radius: 15px; font-family: var(--font-heading); box-shadow: 0 10px 30px var(--accent-glow);">
                 <i class="ri-play-circle-fill"></i> अपनी पढ़ाई जारी रखें
             </button>
+            
         </main>
     </div>
 
