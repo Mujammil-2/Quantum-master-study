@@ -3,12 +3,11 @@
    - 100% COMPLETE FILE WITH DUAL-MEDIUM MEGA DATABASE
    - FEATURES:
      1. Hindi & English Medium Support (Dynamic PDFs & Titles)
-     2. In-App LIVE PDF Viewer (No Google Docs, No Auto-Download)
-     3. Full Syllabus Database (Physics=14, Chem=10, Math=13, Hindi=18, Eng=19)
-     4. Smart BGM Memory Resume
-     5. 🔖 Bookmarks System (Save/Remove)
+     2. 🚀 FIXED: In-App LIVE PDF Viewer (Mozilla PDF.js - NO Downloads, NO Google)
+     3. 🚀 NEW: Dynamic YouTube Search Engine for the 4 Topics
+     4. Full Syllabus Database (Physics=14, Chem=10, Math=13, Hindi=18, Eng=19)
+     5. Smart BGM Memory Resume & Bookmarks System
      6. Complete Status Tracker & Fireflies Particles
-     7. Clickable Topics List Logic
 ========================================================================= */
 
 // --------------------------------------------------------------------------
@@ -135,12 +134,11 @@ window.showCustomToast = function(messageContentText, isErrorNotification = fals
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // A. 🚀 NEW: DYNAMIC MEDIUM SWITCHER (Hindi / English)
+    // A. DYNAMIC MEDIUM SWITCHER (Hindi / English)
     // ==========================================
-    let currentMedium = localStorage.getItem('qms_medium') || 'hi'; // Default Hindi
-    
-    // Inject the Medium Switcher Button in Header dynamically
+    let currentMedium = localStorage.getItem('qms_medium') || 'hi'; 
     const headerEl = document.querySelector('.dash-header');
+    
     if (headerEl) {
         const mediumSwitcherHtml = `
             <div id="medium-toggle-btn" class="sfx-trigger" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: var(--font-heading); font-size: 0.9rem; margin-right: 15px;">
@@ -148,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span id="medium-text">${currentMedium === 'hi' ? 'हिंदी माध्यम' : 'English Medium'}</span>
             </div>
         `;
-        // Insert right before the profile image container
         const profileDiv = document.querySelector('.header-profile-fix');
         if (profileDiv) {
             profileDiv.insertAdjacentHTML('beforebegin', mediumSwitcherHtml);
@@ -194,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // C. LOAD DATA & SET UI CONTENT (BASED ON MEDIUM)
+    // C. LOAD DATA & SET UI CONTENT
     // ==========================================
     const currentlySavedUiTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', currentlySavedUiTheme);
@@ -216,14 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Find Chapter in Database
     let mappedChapterDetailsObj = { title_hi: "अध्याय नहीं मिला", title_en: "Not Found", pdf_hi: "#", pdf_en: "#" };
     if (qmsDatabase[activeSubjectQuery]) { 
         const matchedChapterObject = qmsDatabase[activeSubjectQuery].find(ch => ch.id === activeChapterIdQuery); 
         if (matchedChapterObject) mappedChapterDetailsObj = matchedChapterObject; 
     }
 
-    // Identify which language data to use based on Medium
     const activeTitle = currentMedium === 'hi' ? mappedChapterDetailsObj.title_hi : mappedChapterDetailsObj.title_en;
     const activePdfUrl = currentMedium === 'hi' ? mappedChapterDetailsObj.pdf_hi : mappedChapterDetailsObj.pdf_en;
 
@@ -236,20 +231,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const subtitleDisplayElement = document.getElementById('player-chapter-subtitle');
     if (subtitleDisplayElement) subtitleDisplayElement.innerText = `Chapter ${activeChapterIdQuery}`;
 
-    // SFX Logic
     const sfxClickSoundAudioNode = document.getElementById('sfx-click'); 
     let isSfxTurnedOnAppWide = localStorage.getItem('qms_sound') !== 'off';
-    
     function executeClickSound() {
         if (isSfxTurnedOnAppWide && sfxClickSoundAudioNode) { 
-            sfxClickSoundAudioNode.currentTime = 0; 
-            sfxClickSoundAudioNode.volume = 1.0; 
+            sfxClickSoundAudioNode.currentTime = 0; sfxClickSoundAudioNode.volume = 1.0; 
             sfxClickSoundAudioNode.play().catch(()=>{}); 
         } 
     }
-
     const allSfxClickableButtons = document.querySelectorAll('.sfx-trigger');
-    allSfxClickableButtons.forEach(actionButton => { actionButton.addEventListener('click', executeClickSound); });
+    allSfxClickableButtons.forEach(btn => { btn.addEventListener('click', executeClickSound); });
 
     // ==========================================
     // D. 🔖 BOOKMARK / SAVE NOTES LOGIC
@@ -274,10 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.showCustomToast("नोट्स को बुकमार्क से हटा दिया गया।");
             } else {
                 userBookmarksDataCollection[specificChapterKeyIdentifier] = {
-                    subject: activeSubjectQuery,
-                    id: activeChapterIdQuery,
-                    title: activeTitle, // Saves medium-specific title
-                    subtitle: `Chapter ${activeChapterIdQuery}`
+                    subject: activeSubjectQuery, id: activeChapterIdQuery,
+                    title: activeTitle, subtitle: `Chapter ${activeChapterIdQuery}`
                 };
                 saveBookmarkActionButton.innerHTML = '<i class="ri-heart-fill"></i> सेव्ड नोट्स (Saved)';
                 saveBookmarkActionButton.classList.add('saved');
@@ -288,44 +277,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // E. 🚀 IN-APP PDF VIEWER & DOWNLOAD LOGIC
+    // E. 🚀 IN-APP PDF VIEWER & VIDEO MODAL ENGINE
     // ==========================================
-    
-    // Create In-App Modal HTML inside DOM dynamically
-    const inAppPdfModalHtml = `
-        <div id="in-app-pdf-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.9); z-index: 100000; display: none; flex-direction: column;">
+    // 1. DYNAMIC MODAL CREATION FOR PDF & VIDEOS
+    const contentViewerModalHtml = `
+        <div id="content-viewer-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.95); z-index: 100000; display: none; flex-direction: column;">
             <div style="background: #111; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-main);">
-                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 1.1rem;"><i class="ri-file-pdf-line" style="color: var(--accent-main);"></i> लाइव नोट्स (${currentMedium === 'hi' ? 'हिंदी' : 'English'})</h3>
-                <button id="close-pdf-modal" class="sfx-trigger" style="background: rgba(255,50,50,0.2); border: 1px solid #ff3366; color: #ff3366; padding: 5px 15px; border-radius: 8px; cursor: pointer; font-weight: bold;">X Close</button>
+                <h3 id="content-modal-title" style="color: #fff; font-family: var(--font-heading); font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                    <i class="ri-play-circle-fill" style="color: var(--accent-main);"></i> कंटेंट लोड हो रहा है...
+                </h3>
+                <button id="close-content-modal" class="sfx-trigger" style="background: rgba(255,50,50,0.2); border: 1px solid #ff3366; color: #ff3366; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;">X बंद करें (Close)</button>
             </div>
-            <div style="flex: 1; width: 100%; position: relative;">
-                <p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-secondary); z-index: -1;">PDF लोड हो रही है...</p>
-                <iframe id="pdf-iframe-viewer" src="" style="width: 100%; height: 100%; border: none; background: transparent;"></iframe>
+            <div style="flex: 1; width: 100%; height: 100%; position: relative;">
+                <p id="content-loading-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-secondary); z-index: -1;">लोडिंग...</p>
+                <iframe id="content-iframe-viewer" src="" style="width: 100%; height: 100%; border: none; background: transparent;"></iframe>
             </div>
         </div>
     `;
-    document.body.insertAdjacentHTML('beforeend', inAppPdfModalHtml);
+    document.body.insertAdjacentHTML('beforeend', contentViewerModalHtml);
 
-    const inAppPdfModal = document.getElementById('in-app-pdf-modal');
-    const pdfIframeViewer = document.getElementById('pdf-iframe-viewer');
-    const closePdfModalBtn = document.getElementById('close-pdf-modal');
+    const contentViewerModal = document.getElementById('content-viewer-modal');
+    const contentIframeViewer = document.getElementById('content-iframe-viewer');
+    const closeContentModalBtn = document.getElementById('close-content-modal');
+    const contentModalTitle = document.getElementById('content-modal-title');
 
-    if (closePdfModalBtn) {
-        closePdfModalBtn.addEventListener('click', () => {
-            inAppPdfModal.style.display = 'none';
-            pdfIframeViewer.src = ""; // Stop loading if closed
+    if (closeContentModalBtn) {
+        closeContentModalBtn.addEventListener('click', () => {
+            contentViewerModal.style.display = 'none';
+            contentIframeViewer.src = ""; // Stop playing video or PDF when closed
         });
     }
 
-    // 1. LIVE VIEW LOGIC (Open in Custom IN-APP Modal)
+    // 2. 🚀 FIXED: LIVE PDF VIEWER (USING MOZILLA PDF.JS TO PREVENT DOWNLOAD)
     const buttonLiveViewNotes = document.getElementById('btn-view-notes');
-    
     if (buttonLiveViewNotes) { 
         buttonLiveViewNotes.addEventListener('click', () => { 
             if (activePdfUrl && activePdfUrl !== "#") { 
-                // Show the modal and set the iframe source to the PDF
-                inAppPdfModal.style.display = 'flex';
-                pdfIframeViewer.src = activePdfUrl;
+                contentViewerModal.style.display = 'flex';
+                contentModalTitle.innerHTML = `<i class="ri-file-pdf-line" style="color: var(--accent-main);"></i> लाइव नोट्स (${currentMedium === 'hi' ? 'हिंदी' : 'English'})`;
+                
+                // Using Official Mozilla PDF.js Viewer to FORCE Live rendering on Mobile (No Download)
+                const mozillaViewerUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=';
+                contentIframeViewer.src = mozillaViewerUrl + encodeURIComponent(activePdfUrl);
+                
                 window.showCustomToast("नोट्स लाइव ओपन हो रहे हैं...");
             } else { 
                 window.showCustomToast("इस अध्याय के नोट्स (PDF) अभी उपलब्ध नहीं हैं।", true); 
@@ -333,7 +327,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }); 
     }
 
-    // 2. PREMIUM PDF DOWNLOAD LOGIC
+    // 3. 🚀 NEW: DYNAMIC TOPICS LIST CLICK LOGIC (YOUTUBE VIDEOS)
+    const topicListItems = document.querySelectorAll('.topic-list li:not(.locked)');
+    topicListItems.forEach((item, index) => {
+        item.addEventListener('click', function() {
+            executeClickSound();
+            
+            // Visual Update
+            topicListItems.forEach(li => {
+                li.classList.remove('active');
+                const icon = li.querySelector('i');
+                if (icon && icon.classList.contains('ri-play-circle-fill')) {
+                    icon.classList.remove('ri-play-circle-fill');
+                    icon.classList.add('ri-play-circle-line');
+                }
+            });
+            this.classList.add('active');
+            const icon = this.querySelector('i');
+            if (icon && icon.classList.contains('ri-play-circle-line')) {
+                icon.classList.remove('ri-play-circle-line');
+                icon.classList.add('ri-play-circle-fill');
+            }
+            
+            const topicNameText = this.querySelector('span') ? this.querySelector('span').innerText : this.innerText;
+            window.showCustomToast(`वीडियो: ${topicNameText} शुरू हो रहा है...`);
+
+            // OPEN MODAL WITH DYNAMIC YOUTUBE SEARCH EMBED
+            contentViewerModal.style.display = 'flex';
+            contentModalTitle.innerHTML = `<i class="ri-youtube-fill" style="color: #ff3366;"></i> ${topicNameText}`;
+
+            // Generate YouTube Search Embed Query based on Chapter & Topic
+            let searchQuery = `NCERT Class 12 ${activeSubjectQuery} Chapter ${activeChapterIdQuery}`;
+            if (index === 0) searchQuery += " Introduction in Hindi";
+            else if (index === 1) searchQuery += " Important Formulas";
+            else if (index === 2) searchQuery += " NCERT Examples Solution";
+            else if (index === 3) searchQuery += " Exercise Solution";
+
+            // YouTube Search List Embed
+            const ytEmbedUrl = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(searchQuery)}`;
+            contentIframeViewer.src = ytEmbedUrl;
+        });
+    });
+
+    const lockedTopicItems = document.querySelectorAll('.topic-list li.locked');
+    lockedTopicItems.forEach(item => {
+        item.addEventListener('click', () => {
+            executeClickSound();
+            window.showCustomToast("यह टॉपिक अभी लॉक है। पहले पिछले टॉपिक्स पूरे करें।", true);
+        });
+    });
+
+    // 4. PREMIUM PDF DOWNLOAD LOGIC
     const buttonDownloadPdfNotes = document.getElementById('btn-download-notes');
     const dynamicDownloadModalOverlay = document.getElementById('download-modal');
     const progressFillAnimatedBar = document.getElementById('download-progress-fill');
@@ -342,7 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (buttonDownloadPdfNotes) {
         buttonDownloadPdfNotes.addEventListener('click', () => {
             if (activePdfUrl && activePdfUrl !== "#") {
-                
                 dynamicDownloadModalOverlay.classList.add('active'); 
                 let pseudoProgressValue = 0;
                 
@@ -363,10 +406,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 progressStatusUpdateText.innerText = 'तैयार किया जा रहा है... 0%'; 
                             }, 500);
                             
-                            // REAL DOWNLOAD ACTION
                             const temporaryHyperlink = document.createElement('a'); 
                             temporaryHyperlink.href = activePdfUrl; 
-                            
                             const safeFileName = `QMS_${activeSubjectQuery}_chapter_${activeChapterIdQuery}_${currentMedium}_notes.pdf`;
                             temporaryHyperlink.download = safeFileName; 
                             temporaryHyperlink.target = '_blank'; 
@@ -379,7 +420,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         }, 500);
                     }
                 }, 200);
-                
             } else { 
                 window.showCustomToast("इस अध्याय के नोट्स अभी उपलब्ध नहीं हैं।", true); 
             }
@@ -419,45 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // G. 🚀 CLICKABLE TOPICS LIST LOGIC
-    // ==========================================
-    const topicListItems = document.querySelectorAll('.topic-list li:not(.locked)');
-    topicListItems.forEach(item => {
-        item.addEventListener('click', function() {
-            executeClickSound();
-            
-            topicListItems.forEach(li => {
-                li.classList.remove('active');
-                const icon = li.querySelector('i');
-                if (icon && icon.classList.contains('ri-play-circle-fill')) {
-                    icon.classList.remove('ri-play-circle-fill');
-                    icon.classList.add('ri-play-circle-line');
-                }
-            });
-            
-            this.classList.add('active');
-            
-            const icon = this.querySelector('i');
-            if (icon && icon.classList.contains('ri-play-circle-line')) {
-                icon.classList.remove('ri-play-circle-line');
-                icon.classList.add('ri-play-circle-fill');
-            }
-            
-            const topicName = this.querySelector('span').innerText;
-            window.showCustomToast(`${topicName} लोड हो रहा है...`);
-        });
-    });
-
-    const lockedTopicItems = document.querySelectorAll('.topic-list li.locked');
-    lockedTopicItems.forEach(item => {
-        item.addEventListener('click', () => {
-            executeClickSound();
-            window.showCustomToast("यह टॉपिक अभी लॉक है। पहले पिछले टॉपिक्स पूरे करें।", true);
-        });
-    });
-
-    // ==========================================
-    // H. FIREFLY PARTICLES (GLOWING SYMBOLS)
+    // G. FIREFLY PARTICLES (GLOWING SYMBOLS)
     // ==========================================
     const targetParticleCanvasElement = document.getElementById('bg-canvas');
     if (targetParticleCanvasElement) {
