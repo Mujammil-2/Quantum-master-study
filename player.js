@@ -1,112 +1,112 @@
 /* =========================================================================
    QMS VIDEO PLAYER MASTER ENGINE (EXPANDED FULL CODE)
-   - 100% COMPLETE FILE WITH MEGA DATABASE
+   - 100% COMPLETE FILE WITH DUAL-MEDIUM MEGA DATABASE
    - FEATURES:
-     1. Full Syllabus Database (Physics=14, Chem=10, Math=13, Hindi=18, Eng=19)
-     2. Smart BGM Memory Resume
-     3. 🔖 Bookmarks System (Save/Remove)
-     4. DIRECT LIVE VIEW (No Google Docs Viewer) & Premium Download
-     5. Complete Status Tracker
-     6. Quantum Fireflies Particles
+     1. Hindi & English Medium Support (Dynamic PDFs & Titles)
+     2. In-App LIVE PDF Viewer (No Google Docs, No Auto-Download)
+     3. Full Syllabus Database (Physics=14, Chem=10, Math=13, Hindi=18, Eng=19)
+     4. Smart BGM Memory Resume
+     5. 🔖 Bookmarks System (Save/Remove)
+     6. Complete Status Tracker & Fireflies Particles
      7. Clickable Topics List Logic
 ========================================================================= */
 
 // --------------------------------------------------------------------------
-// 1. QMS MEGA DATABASE (100% FULL SYLLABUS - ALL SUBJECTS, ALL CHAPTERS)
+// 1. QMS DUAL-MEDIUM MEGA DATABASE (Hindi & English PDFs)
 // --------------------------------------------------------------------------
 const qmsDatabase = {
     // ------------------- PHYSICS (14 Chapters) -------------------
     physics: [
-        { id: 1, title: "वैद्युत आवेश तथा क्षेत्र", subtitle: "Electric Charges and Fields", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph101.pdf" },
-        { id: 2, title: "स्थिरवैद्युत विभव तथा धारिता", subtitle: "Electrostatic Potential & Capacitance", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph102.pdf" },
-        { id: 3, title: "विद्युत धारा", subtitle: "Current Electricity", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph103.pdf" },
-        { id: 4, title: "गतिमान आवेश और चुंबकत्व", subtitle: "Moving Charges and Magnetism", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph104.pdf" },
-        { id: 5, title: "चुंबकत्व एवं द्रव्य", subtitle: "Magnetism and Matter", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph105.pdf" },
-        { id: 6, title: "वैद्युतचुंबकीय प्रेरण", subtitle: "Electromagnetic Induction", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph106.pdf" },
-        { id: 7, title: "प्रत्यावर्ती धारा", subtitle: "Alternating Current", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph107.pdf" },
-        { id: 8, title: "वैद्युतचुंबकीय तरंगें", subtitle: "Electromagnetic Waves", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph108.pdf" },
-        { id: 9, title: "किरण प्रकाशिकी एवं प्रकाशिक यंत्र", subtitle: "Ray Optics and Optical Instruments", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph201.pdf" },
-        { id: 10, title: "तरंग प्रकाशिकी", subtitle: "Wave Optics", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph202.pdf" },
-        { id: 11, title: "विकिरण तथा द्रव्य की द्वैत प्रकृति", subtitle: "Dual Nature of Radiation and Matter", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph203.pdf" },
-        { id: 12, title: "परमाणु", subtitle: "Atoms", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph204.pdf" },
-        { id: 13, title: "नाभिक", subtitle: "Nuclei", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph205.pdf" },
-        { id: 14, title: "अर्धचालक इलेक्ट्रॉनिकी", subtitle: "Semiconductor Electronics", pdfUrl: "https://ncert.nic.in/textbook/pdf/leph206.pdf" }
+        { id: 1, title_hi: "वैद्युत आवेश तथा क्षेत्र", title_en: "Electric Charges and Fields", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph101.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph101.pdf" },
+        { id: 2, title_hi: "स्थिरवैद्युत विभव तथा धारिता", title_en: "Electrostatic Potential & Capacitance", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph102.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph102.pdf" },
+        { id: 3, title_hi: "विद्युत धारा", title_en: "Current Electricity", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph103.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph103.pdf" },
+        { id: 4, title_hi: "गतिमान आवेश और चुंबकत्व", title_en: "Moving Charges and Magnetism", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph104.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph104.pdf" },
+        { id: 5, title_hi: "चुंबकत्व एवं द्रव्य", title_en: "Magnetism and Matter", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph105.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph105.pdf" },
+        { id: 6, title_hi: "वैद्युतचुंबकीय प्रेरण", title_en: "Electromagnetic Induction", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph106.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph106.pdf" },
+        { id: 7, title_hi: "प्रत्यावर्ती धारा", title_en: "Alternating Current", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph107.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph107.pdf" },
+        { id: 8, title_hi: "वैद्युतचुंबकीय तरंगें", title_en: "Electromagnetic Waves", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph108.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph108.pdf" },
+        { id: 9, title_hi: "किरण प्रकाशिकी एवं प्रकाशिक यंत्र", title_en: "Ray Optics and Optical Instruments", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph201.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph201.pdf" },
+        { id: 10, title_hi: "तरंग प्रकाशिकी", title_en: "Wave Optics", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph202.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph202.pdf" },
+        { id: 11, title_hi: "विकिरण तथा द्रव्य की द्वैत प्रकृति", title_en: "Dual Nature of Radiation and Matter", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph203.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph203.pdf" },
+        { id: 12, title_hi: "परमाणु", title_en: "Atoms", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph204.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph204.pdf" },
+        { id: 13, title_hi: "नाभिक", title_en: "Nuclei", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph205.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph205.pdf" },
+        { id: 14, title_hi: "अर्धचालक इलेक्ट्रॉनिकी", title_en: "Semiconductor Electronics", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhph206.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/leph206.pdf" }
     ],
 
     // ------------------- CHEMISTRY (10 Chapters) -------------------
     chemistry: [
-        { id: 1, title: "विलयन", subtitle: "Solutions", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech101.pdf" },
-        { id: 2, title: "वैद्युतरसायन", subtitle: "Electrochemistry", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech102.pdf" },
-        { id: 3, title: "रासायनिक बलगतिकी", subtitle: "Chemical Kinetics", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech103.pdf" },
-        { id: 4, title: "d- एवं f- ब्लॉक के तत्व", subtitle: "The d- and f- Block Elements", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech104.pdf" },
-        { id: 5, title: "उपसहसंयोजन यौगिक", subtitle: "Coordination Compounds", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech105.pdf" },
-        { id: 6, title: "हैलोऐल्केन तथा हैलोऐरीन", subtitle: "Haloalkanes and Haloarenes", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech201.pdf" },
-        { id: 7, title: "ऐल्कोहॉल, फ़ीनॉल एवं ईथर", subtitle: "Alcohols, Phenols and Ethers", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech202.pdf" },
-        { id: 8, title: "ऐल्डिहाइड, कीटोन एवं कार्बोक्सिलिक अम्ल", subtitle: "Aldehydes, Ketones and Carboxylic Acids", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech203.pdf" },
-        { id: 9, title: "ऐमीन", subtitle: "Amines", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech204.pdf" },
-        { id: 10, title: "जैव-अणु", subtitle: "Biomolecules", pdfUrl: "https://ncert.nic.in/textbook/pdf/lech205.pdf" }
+        { id: 1, title_hi: "विलयन", title_en: "Solutions", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch101.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech101.pdf" },
+        { id: 2, title_hi: "वैद्युतरसायन", title_en: "Electrochemistry", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch102.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech102.pdf" },
+        { id: 3, title_hi: "रासायनिक बलगतिकी", title_en: "Chemical Kinetics", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch103.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech103.pdf" },
+        { id: 4, title_hi: "d- एवं f- ब्लॉक के तत्व", title_en: "The d- and f- Block Elements", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch104.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech104.pdf" },
+        { id: 5, title_hi: "उपसहसंयोजन यौगिक", title_en: "Coordination Compounds", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch105.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech105.pdf" },
+        { id: 6, title_hi: "हैलोऐल्केन तथा हैलोऐरीन", title_en: "Haloalkanes and Haloarenes", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch201.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech201.pdf" },
+        { id: 7, title_hi: "ऐल्कोहॉल, फ़ीनॉल एवं ईथर", title_en: "Alcohols, Phenols and Ethers", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch202.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech202.pdf" },
+        { id: 8, title_hi: "ऐल्डिहाइड, कीटोन एवं कार्बोक्सिलिक अम्ल", title_en: "Aldehydes, Ketones and Carboxylic Acids", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch203.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech203.pdf" },
+        { id: 9, title_hi: "ऐमीन", title_en: "Amines", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch204.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech204.pdf" },
+        { id: 10, title_hi: "जैव-अणु", title_en: "Biomolecules", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhch205.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lech205.pdf" }
     ],
 
     // ------------------- MATHEMATICS (13 Chapters) -------------------
     mathematics: [
-        { id: 1, title: "संबंध एवं फलन", subtitle: "Relations and Functions", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh101.pdf" },
-        { id: 2, title: "प्रतिलोम त्रिकोणमितीय फलन", subtitle: "Inverse Trigonometric Functions", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh102.pdf" },
-        { id: 3, title: "आव्यूह", subtitle: "Matrices", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh103.pdf" },
-        { id: 4, title: "सारणिक", subtitle: "Determinants", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh104.pdf" },
-        { id: 5, title: "सांतत्य तथा अवकलनीयता", subtitle: "Continuity and Differentiability", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh105.pdf" },
-        { id: 6, title: "अवकलज के अनुप्रयोग", subtitle: "Application of Derivatives", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh106.pdf" },
-        { id: 7, title: "समाकलन", subtitle: "Integrals", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh201.pdf" },
-        { id: 8, title: "समाकलनों के अनुप्रयोग", subtitle: "Application of Integrals", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh202.pdf" },
-        { id: 9, title: "अवकल समीकरण", subtitle: "Differential Equations", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh203.pdf" },
-        { id: 10, title: "सदिश बीजगणित", subtitle: "Vector Algebra", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh204.pdf" },
-        { id: 11, title: "त्रि-विमीय ज्यामिति", subtitle: "Three Dimensional Geometry", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh205.pdf" },
-        { id: 12, title: "रैखिक प्रोग्रामन", subtitle: "Linear Programming", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh206.pdf" },
-        { id: 13, title: "प्रायिकता", subtitle: "Probability", pdfUrl: "https://ncert.nic.in/textbook/pdf/lemh207.pdf" }
+        { id: 1, title_hi: "संबंध एवं फलन", title_en: "Relations and Functions", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh101.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh101.pdf" },
+        { id: 2, title_hi: "प्रतिलोम त्रिकोणमितीय फलन", title_en: "Inverse Trigonometric Functions", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh102.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh102.pdf" },
+        { id: 3, title_hi: "आव्यूह", title_en: "Matrices", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh103.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh103.pdf" },
+        { id: 4, title_hi: "सारणिक", title_en: "Determinants", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh104.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh104.pdf" },
+        { id: 5, title_hi: "सांतत्य तथा अवकलनीयता", title_en: "Continuity and Differentiability", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh105.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh105.pdf" },
+        { id: 6, title_hi: "अवकलज के अनुप्रयोग", title_en: "Application of Derivatives", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh106.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh106.pdf" },
+        { id: 7, title_hi: "समाकलन", title_en: "Integrals", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh201.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh201.pdf" },
+        { id: 8, title_hi: "समाकलनों के अनुप्रयोग", title_en: "Application of Integrals", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh202.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh202.pdf" },
+        { id: 9, title_hi: "अवकल समीकरण", title_en: "Differential Equations", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh203.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh203.pdf" },
+        { id: 10, title_hi: "सदिश बीजगणित", title_en: "Vector Algebra", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh204.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh204.pdf" },
+        { id: 11, title_hi: "त्रि-विमीय ज्यामिति", title_en: "Three Dimensional Geometry", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh205.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh205.pdf" },
+        { id: 12, title_hi: "रैखिक प्रोग्रामन", title_en: "Linear Programming", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh206.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh206.pdf" },
+        { id: 13, title_hi: "प्रायिकता", title_en: "Probability", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhmh207.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lemh207.pdf" }
     ],
 
     // ------------------- HINDI (18 Chapters) -------------------
     hindi: [
-        { id: 1, title: "आत्मपरिचय / एक गीत", subtitle: "हरिवंश राय बच्चन", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar101.pdf" },
-        { id: 2, title: "पतंग", subtitle: "आलोक धन्वा", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar102.pdf" },
-        { id: 3, title: "कविता के बहाने", subtitle: "कुंवर नारायण", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar103.pdf" },
-        { id: 4, title: "कैमरे में बंद अपाहिज", subtitle: "रघुवीर सहाय", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar104.pdf" },
-        { id: 5, title: "सहर्ष स्वीकारा है", subtitle: "गजानन माधव मुक्तिबोध", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar105.pdf" },
-        { id: 6, title: "उषा", subtitle: "शमशेर बहादुर सिंह", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar106.pdf" },
-        { id: 7, title: "बादल राग", subtitle: "सूर्यकांत त्रिपाठी निराला", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar107.pdf" },
-        { id: 8, title: "कवितावली", subtitle: "तुलसीदास", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar108.pdf" },
-        { id: 9, title: "रुबाइयाँ", subtitle: "फिराक गोरखपुरी", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar109.pdf" },
-        { id: 10, title: "छोटा मेरा खेत", subtitle: "उमाशंकर जोशी", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar110.pdf" },
-        { id: 11, title: "भक्तिन", subtitle: "महादेवी वर्मा", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar111.pdf" },
-        { id: 12, title: "बाज़ार दर्शन", subtitle: "जैनेन्द्र कुमार", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar112.pdf" },
-        { id: 13, title: "काले मेघा पानी दे", subtitle: "धर्मवीर भारती", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar113.pdf" },
-        { id: 14, title: "पहलवान की ढोलक", subtitle: "फणीश्वर नाथ रेणु", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar114.pdf" },
-        { id: 15, title: "चार्ली चैप्लिन यानी हम सब", subtitle: "विष्णु खरे", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar115.pdf" },
-        { id: 16, title: "नमक", subtitle: "रज़िया सज्जाद ज़हीर", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar116.pdf" },
-        { id: 17, title: "शिरीष के फूल", subtitle: "हजारी प्रसाद द्विवेदी", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar117.pdf" },
-        { id: 18, title: "श्रम विभाजन और जाति-प्रथा", subtitle: "बी.आर. अम्बेडकर", pdfUrl: "https://ncert.nic.in/textbook/pdf/lhar118.pdf" }
+        { id: 1, title_hi: "आत्मपरिचय / एक गीत", title_en: "Aatmaparichay / Ek Geet", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar101.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar101.pdf" },
+        { id: 2, title_hi: "पतंग", title_en: "Patang", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar102.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar102.pdf" },
+        { id: 3, title_hi: "कविता के बहाने", title_en: "Kavita ke Bahane", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar103.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar103.pdf" },
+        { id: 4, title_hi: "कैमरे में बंद अपाहिज", title_en: "Camere mein band Apahij", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar104.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar104.pdf" },
+        { id: 5, title_hi: "सहर्ष स्वीकारा है", title_en: "Saharsh Swikara Hai", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar105.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar105.pdf" },
+        { id: 6, title_hi: "उषा", title_en: "Usha", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar106.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar106.pdf" },
+        { id: 7, title_hi: "बादल राग", title_en: "Badal Raag", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar107.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar107.pdf" },
+        { id: 8, title_hi: "कवितावली", title_en: "Kavitawali", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar108.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar108.pdf" },
+        { id: 9, title_hi: "रुबाइयाँ", title_en: "Rubaiyan", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar109.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar109.pdf" },
+        { id: 10, title_hi: "छोटा मेरा खेत", title_en: "Chhota Mera Khet", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar110.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar110.pdf" },
+        { id: 11, title_hi: "भक्तिन", title_en: "Bhaktin", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar111.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar111.pdf" },
+        { id: 12, title_hi: "बाज़ार दर्शन", title_en: "Bazar Darshan", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar112.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar112.pdf" },
+        { id: 13, title_hi: "काले मेघा पानी दे", title_en: "Kale Megha Pani De", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar113.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar113.pdf" },
+        { id: 14, title_hi: "पहलवान की ढोलक", title_en: "Pahalwan Ki Dholak", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar114.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar114.pdf" },
+        { id: 15, title_hi: "चार्ली चैप्लिन यानी हम सब", title_en: "Charlie Chaplin", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar115.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar115.pdf" },
+        { id: 16, title_hi: "नमक", title_en: "Namak", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar116.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar116.pdf" },
+        { id: 17, title_hi: "शिरीष के फूल", title_en: "Shirish Ke Phool", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar117.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar117.pdf" },
+        { id: 18, title_hi: "श्रम विभाजन और जाति-प्रथा", title_en: "Shram Vibhajan", pdf_hi: "https://ncert.nic.in/textbook/pdf/lhar118.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lhar118.pdf" }
     ],
 
     // ------------------- ENGLISH (19 Chapters) -------------------
     english: [
-        { id: 1, title: "The Last Lesson", subtitle: "Alphonse Daudet - Flamingo", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl101.pdf" },
-        { id: 2, title: "Lost Spring", subtitle: "Anees Jung - Flamingo", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl102.pdf" },
-        { id: 3, title: "Deep Water", subtitle: "William Douglas - Flamingo", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl103.pdf" },
-        { id: 4, title: "The Rattrap", subtitle: "Selma Lagerlöf - Flamingo", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl104.pdf" },
-        { id: 5, title: "Indigo", subtitle: "Louis Fischer - Flamingo", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl105.pdf" },
-        { id: 6, title: "Poets and Pancakes", subtitle: "Asokamitran - Flamingo", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl106.pdf" },
-        { id: 7, title: "The Interview", subtitle: "Christopher Silvester - Flamingo", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl107.pdf" },
-        { id: 8, title: "Going Places", subtitle: "A. R. Barton - Flamingo", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl108.pdf" },
-        { id: 9, title: "My Mother at Sixty-six", subtitle: "Kamala Das - Poetry", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl109.pdf" },
-        { id: 10, title: "Keeping Quiet", subtitle: "Pablo Neruda - Poetry", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl110.pdf" },
-        { id: 11, title: "A Thing of Beauty", subtitle: "John Keats - Poetry", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl111.pdf" },
-        { id: 12, title: "A Roadside Stand", subtitle: "Robert Frost - Poetry", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl112.pdf" },
-        { id: 13, title: "Aunt Jennifer's Tigers", subtitle: "Adrienne Rich - Poetry", pdfUrl: "https://ncert.nic.in/textbook/pdf/lefl113.pdf" },
-        { id: 14, title: "The Third Level", subtitle: "Jack Finney - Vistas", pdfUrl: "https://ncert.nic.in/textbook/pdf/levt101.pdf" },
-        { id: 15, title: "The Tiger King", subtitle: "Kalki - Vistas", pdfUrl: "https://ncert.nic.in/textbook/pdf/levt102.pdf" },
-        { id: 16, title: "Journey to the end of the Earth", subtitle: "Tishani Doshi - Vistas", pdfUrl: "https://ncert.nic.in/textbook/pdf/levt103.pdf" },
-        { id: 17, title: "The Enemy", subtitle: "Pearl S. Buck - Vistas", pdfUrl: "https://ncert.nic.in/textbook/pdf/levt104.pdf" },
-        { id: 18, title: "On the Face of It", subtitle: "Susan Hill - Vistas", pdfUrl: "https://ncert.nic.in/textbook/pdf/levt105.pdf" },
-        { id: 19, title: "Memories of Childhood", subtitle: "Zitkala-Sa & Bama - Vistas", pdfUrl: "https://ncert.nic.in/textbook/pdf/levt106.pdf" }
+        { id: 1, title_hi: "द लास्ट लेसन", title_en: "The Last Lesson", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl101.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl101.pdf" },
+        { id: 2, title_hi: "लॉस्ट स्प्रिंग", title_en: "Lost Spring", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl102.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl102.pdf" },
+        { id: 3, title_hi: "डीप वाटर", title_en: "Deep Water", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl103.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl103.pdf" },
+        { id: 4, title_hi: "द रैटट्रैप", title_en: "The Rattrap", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl104.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl104.pdf" },
+        { id: 5, title_hi: "इंडिगो", title_en: "Indigo", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl105.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl105.pdf" },
+        { id: 6, title_hi: "पोएट्स एंड पैनकेक्स", title_en: "Poets and Pancakes", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl106.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl106.pdf" },
+        { id: 7, title_hi: "द इंटरव्यू", title_en: "The Interview", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl107.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl107.pdf" },
+        { id: 8, title_hi: "गोइंग प्लेसेस", title_en: "Going Places", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl108.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl108.pdf" },
+        { id: 9, title_hi: "माय मदर एट सिक्सटी-सिक्स", title_en: "My Mother at Sixty-six", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl109.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl109.pdf" },
+        { id: 10, title_hi: "कीपिंग क्वाइट", title_en: "Keeping Quiet", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl110.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl110.pdf" },
+        { id: 11, title_hi: "अ थिंग ऑफ़ ब्यूटी", title_en: "A Thing of Beauty", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl111.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl111.pdf" },
+        { id: 12, title_hi: "अ रोडसाइड स्टैंड", title_en: "A Roadside Stand", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl112.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl112.pdf" },
+        { id: 13, title_hi: "आंट जेनिफर'स टाइगर्स", title_en: "Aunt Jennifer's Tigers", pdf_hi: "https://ncert.nic.in/textbook/pdf/lefl113.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/lefl113.pdf" },
+        { id: 14, title_hi: "द थर्ड लेवल", title_en: "The Third Level", pdf_hi: "https://ncert.nic.in/textbook/pdf/levt101.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/levt101.pdf" },
+        { id: 15, title_hi: "द टाइगर किंग", title_en: "The Tiger King", pdf_hi: "https://ncert.nic.in/textbook/pdf/levt102.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/levt102.pdf" },
+        { id: 16, title_hi: "जर्नी टू द एन्ड ऑफ़ द अर्थ", title_en: "Journey to the end of the Earth", pdf_hi: "https://ncert.nic.in/textbook/pdf/levt103.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/levt103.pdf" },
+        { id: 17, title_hi: "द एनिमी", title_en: "The Enemy", pdf_hi: "https://ncert.nic.in/textbook/pdf/levt104.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/levt104.pdf" },
+        { id: 18, title_hi: "ऑन द फेस ऑफ़ इट", title_en: "On the Face of It", pdf_hi: "https://ncert.nic.in/textbook/pdf/levt105.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/levt105.pdf" },
+        { id: 19, title_hi: "मेमोरीज ऑफ़ चाइल्डहुड", title_en: "Memories of Childhood", pdf_hi: "https://ncert.nic.in/textbook/pdf/levt106.pdf", pdf_en: "https://ncert.nic.in/textbook/pdf/levt106.pdf" }
     ]
 };
 
@@ -115,12 +115,9 @@ const qmsDatabase = {
 // --------------------------------------------------------------------------
 window.showCustomToast = function(messageContentText, isErrorNotification = false) {
     const existingOldToast = document.querySelector('.qms-toast-msg'); 
-    if (existingOldToast) {
-        existingOldToast.remove();
-    }
+    if (existingOldToast) existingOldToast.remove();
     
     const dynamicToastElement = document.createElement('div');
-    
     if (isErrorNotification) {
         dynamicToastElement.className = 'qms-toast-msg qms-toast-error';
         dynamicToastElement.innerHTML = `<i class="ri-error-warning-fill"></i> ${messageContentText}`;
@@ -128,14 +125,8 @@ window.showCustomToast = function(messageContentText, isErrorNotification = fals
         dynamicToastElement.className = 'qms-toast-msg';
         dynamicToastElement.innerHTML = `<i class="ri-checkbox-circle-fill"></i> ${messageContentText}`;
     }
-    
     document.body.appendChild(dynamicToastElement); 
-    
-    setTimeout(() => { 
-        if (dynamicToastElement) {
-            dynamicToastElement.remove(); 
-        }
-    }, 3500);
+    setTimeout(() => { if (dynamicToastElement) dynamicToastElement.remove(); }, 3500);
 };
 
 // --------------------------------------------------------------------------
@@ -144,10 +135,41 @@ window.showCustomToast = function(messageContentText, isErrorNotification = fals
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // A. SMART BGM MEMORY SYSTEM (Resumes Music)
+    // A. 🚀 NEW: DYNAMIC MEDIUM SWITCHER (Hindi / English)
+    // ==========================================
+    let currentMedium = localStorage.getItem('qms_medium') || 'hi'; // Default Hindi
+    
+    // Inject the Medium Switcher Button in Header dynamically
+    const headerEl = document.querySelector('.dash-header');
+    if (headerEl) {
+        const mediumSwitcherHtml = `
+            <div id="medium-toggle-btn" class="sfx-trigger" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: var(--font-heading); font-size: 0.9rem; margin-right: 15px;">
+                <i class="ri-translate-2"></i> 
+                <span id="medium-text">${currentMedium === 'hi' ? 'हिंदी माध्यम' : 'English Medium'}</span>
+            </div>
+        `;
+        // Insert right before the profile image container
+        const profileDiv = document.querySelector('.header-profile-fix');
+        if (profileDiv) {
+            profileDiv.insertAdjacentHTML('beforebegin', mediumSwitcherHtml);
+        }
+
+        const mediumToggleBtn = document.getElementById('medium-toggle-btn');
+        if (mediumToggleBtn) {
+            mediumToggleBtn.addEventListener('click', () => {
+                currentMedium = currentMedium === 'hi' ? 'en' : 'hi';
+                localStorage.setItem('qms_medium', currentMedium);
+                document.getElementById('medium-text').innerText = currentMedium === 'hi' ? 'हिंदी माध्यम' : 'English Medium';
+                window.showCustomToast(`माध्यम बदलकर ${currentMedium === 'hi' ? 'हिंदी' : 'English'} कर दिया गया है। पेज रीलोड हो रहा है...`);
+                setTimeout(() => { window.location.reload(); }, 1500);
+            });
+        }
+    }
+
+    // ==========================================
+    // B. SMART BGM MEMORY SYSTEM
     // ==========================================
     const backgroundAudioPlayerNode = document.getElementById('bgm-audio');
-    
     if (backgroundAudioPlayerNode) {
         let isSystemBgmTurnedOn = localStorage.getItem('qms_bgm') === 'on';
         let currentlySavedBgmVolume = localStorage.getItem('qms_bgm_volume') || 0.3;
@@ -160,19 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const tryPlayBgmSafelyAction = () => { 
             if (isSystemBgmTurnedOn && backgroundAudioPlayerNode.paused) {
-                backgroundAudioPlayerNode.play().catch(errorData => {
-                    console.log("Audio play blocked by browser security.", errorData);
-                }); 
+                backgroundAudioPlayerNode.play().catch(e => console.log(e)); 
             }
         };
-        
         document.body.addEventListener('click', tryPlayBgmSafelyAction, { once: true });
-        
-        if (isSystemBgmTurnedOn) {
-            backgroundAudioPlayerNode.play().catch(errorData => {
-                console.log("Waiting for user manual interaction to start BGM.");
-            });
-        }
+        if (isSystemBgmTurnedOn) { backgroundAudioPlayerNode.play().catch(e => console.log(e)); }
 
         window.addEventListener('beforeunload', () => {
             localStorage.setItem('qms_bgm_time', backgroundAudioPlayerNode.currentTime);
@@ -180,9 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // B. LOAD DATA & SET UI CONTENT
+    // C. LOAD DATA & SET UI CONTENT (BASED ON MEDIUM)
     // ==========================================
-    
     const currentlySavedUiTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', currentlySavedUiTheme);
     
@@ -203,34 +216,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    let mappedChapterDetailsObj = { 
-        title: "अध्याय नहीं मिला", 
-        subtitle: "Not Found", 
-        pdfUrl: "#" 
-    };
-    
+    // Find Chapter in Database
+    let mappedChapterDetailsObj = { title_hi: "अध्याय नहीं मिला", title_en: "Not Found", pdf_hi: "#", pdf_en: "#" };
     if (qmsDatabase[activeSubjectQuery]) { 
         const matchedChapterObject = qmsDatabase[activeSubjectQuery].find(ch => ch.id === activeChapterIdQuery); 
-        if (matchedChapterObject) {
-            mappedChapterDetailsObj = matchedChapterObject; 
-        }
+        if (matchedChapterObject) mappedChapterDetailsObj = matchedChapterObject; 
     }
+
+    // Identify which language data to use based on Medium
+    const activeTitle = currentMedium === 'hi' ? mappedChapterDetailsObj.title_hi : mappedChapterDetailsObj.title_en;
+    const activePdfUrl = currentMedium === 'hi' ? mappedChapterDetailsObj.pdf_hi : mappedChapterDetailsObj.pdf_en;
 
     const tagDisplayElement = document.getElementById('player-subject-tag');
-    if (tagDisplayElement) {
-        tagDisplayElement.innerText = activeSubjectQuery.toUpperCase();
-    }
+    if (tagDisplayElement) tagDisplayElement.innerText = activeSubjectQuery.toUpperCase();
     
     const titleDisplayElement = document.getElementById('player-chapter-title');
-    if (titleDisplayElement) {
-        titleDisplayElement.innerText = mappedChapterDetailsObj.title;
-    }
+    if (titleDisplayElement) titleDisplayElement.innerText = activeTitle;
     
     const subtitleDisplayElement = document.getElementById('player-chapter-subtitle');
-    if (subtitleDisplayElement) {
-        subtitleDisplayElement.innerText = mappedChapterDetailsObj.subtitle;
-    }
+    if (subtitleDisplayElement) subtitleDisplayElement.innerText = `Chapter ${activeChapterIdQuery}`;
 
+    // SFX Logic
     const sfxClickSoundAudioNode = document.getElementById('sfx-click'); 
     let isSfxTurnedOnAppWide = localStorage.getItem('qms_sound') !== 'off';
     
@@ -243,21 +249,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const allSfxClickableButtons = document.querySelectorAll('.sfx-trigger');
-    allSfxClickableButtons.forEach(actionButton => { 
-        actionButton.addEventListener('click', executeClickSound); 
-    });
+    allSfxClickableButtons.forEach(actionButton => { actionButton.addEventListener('click', executeClickSound); });
 
     // ==========================================
-    // C. 🔖 BOOKMARK / SAVE NOTES LOGIC
+    // D. 🔖 BOOKMARK / SAVE NOTES LOGIC
     // ==========================================
     const saveBookmarkActionButton = document.getElementById('btn-bookmark');
-    
-    let userBookmarksDataCollection = {};
-    const existingRawBookmarksData = localStorage.getItem('qms_bookmarks');
-    if (existingRawBookmarksData) {
-        userBookmarksDataCollection = JSON.parse(existingRawBookmarksData);
-    }
-    
+    let userBookmarksDataCollection = JSON.parse(localStorage.getItem('qms_bookmarks')) || {};
     const specificChapterKeyIdentifier = activeSubjectQuery + '_' + activeChapterIdQuery;
 
     if (userBookmarksDataCollection[specificChapterKeyIdentifier]) {
@@ -278,8 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 userBookmarksDataCollection[specificChapterKeyIdentifier] = {
                     subject: activeSubjectQuery,
                     id: activeChapterIdQuery,
-                    title: mappedChapterDetailsObj.title,
-                    subtitle: mappedChapterDetailsObj.subtitle
+                    title: activeTitle, // Saves medium-specific title
+                    subtitle: `Chapter ${activeChapterIdQuery}`
                 };
                 saveBookmarkActionButton.innerHTML = '<i class="ri-heart-fill"></i> सेव्ड नोट्स (Saved)';
                 saveBookmarkActionButton.classList.add('saved');
@@ -290,19 +288,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // D. 🚀 PDF DOWNLOAD & DIRECT LIVE VIEW LOGIC
+    // E. 🚀 IN-APP PDF VIEWER & DOWNLOAD LOGIC
     // ==========================================
     
-    // 1. LIVE VIEW LOGIC (Directly Open NCERT PDF Without Viewer)
+    // Create In-App Modal HTML inside DOM dynamically
+    const inAppPdfModalHtml = `
+        <div id="in-app-pdf-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.9); z-index: 100000; display: none; flex-direction: column;">
+            <div style="background: #111; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-main);">
+                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 1.1rem;"><i class="ri-file-pdf-line" style="color: var(--accent-main);"></i> लाइव नोट्स (${currentMedium === 'hi' ? 'हिंदी' : 'English'})</h3>
+                <button id="close-pdf-modal" class="sfx-trigger" style="background: rgba(255,50,50,0.2); border: 1px solid #ff3366; color: #ff3366; padding: 5px 15px; border-radius: 8px; cursor: pointer; font-weight: bold;">X Close</button>
+            </div>
+            <div style="flex: 1; width: 100%; position: relative;">
+                <p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-secondary); z-index: -1;">PDF लोड हो रही है...</p>
+                <iframe id="pdf-iframe-viewer" src="" style="width: 100%; height: 100%; border: none; background: transparent;"></iframe>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', inAppPdfModalHtml);
+
+    const inAppPdfModal = document.getElementById('in-app-pdf-modal');
+    const pdfIframeViewer = document.getElementById('pdf-iframe-viewer');
+    const closePdfModalBtn = document.getElementById('close-pdf-modal');
+
+    if (closePdfModalBtn) {
+        closePdfModalBtn.addEventListener('click', () => {
+            inAppPdfModal.style.display = 'none';
+            pdfIframeViewer.src = ""; // Stop loading if closed
+        });
+    }
+
+    // 1. LIVE VIEW LOGIC (Open in Custom IN-APP Modal)
     const buttonLiveViewNotes = document.getElementById('btn-view-notes');
     
     if (buttonLiveViewNotes) { 
         buttonLiveViewNotes.addEventListener('click', () => { 
-            if (mappedChapterDetailsObj.pdfUrl && mappedChapterDetailsObj.pdfUrl !== "#") { 
-                
-                // Open the exact URL directly in a new tab
-                window.open(mappedChapterDetailsObj.pdfUrl, '_blank'); 
-                
+            if (activePdfUrl && activePdfUrl !== "#") { 
+                // Show the modal and set the iframe source to the PDF
+                inAppPdfModal.style.display = 'flex';
+                pdfIframeViewer.src = activePdfUrl;
+                window.showCustomToast("नोट्स लाइव ओपन हो रहे हैं...");
             } else { 
                 window.showCustomToast("इस अध्याय के नोट्स (PDF) अभी उपलब्ध नहीं हैं।", true); 
             } 
@@ -317,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (buttonDownloadPdfNotes) {
         buttonDownloadPdfNotes.addEventListener('click', () => {
-            if (mappedChapterDetailsObj.pdfUrl && mappedChapterDetailsObj.pdfUrl !== "#") {
+            if (activePdfUrl && activePdfUrl !== "#") {
                 
                 dynamicDownloadModalOverlay.classList.add('active'); 
                 let pseudoProgressValue = 0;
@@ -341,9 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             
                             // REAL DOWNLOAD ACTION
                             const temporaryHyperlink = document.createElement('a'); 
-                            temporaryHyperlink.href = mappedChapterDetailsObj.pdfUrl; 
+                            temporaryHyperlink.href = activePdfUrl; 
                             
-                            const safeFileName = `QMS_${activeSubjectQuery}_chapter_${activeChapterIdQuery}_notes.pdf`;
+                            const safeFileName = `QMS_${activeSubjectQuery}_chapter_${activeChapterIdQuery}_${currentMedium}_notes.pdf`;
                             temporaryHyperlink.download = safeFileName; 
                             temporaryHyperlink.target = '_blank'; 
                             
@@ -351,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             temporaryHyperlink.click(); 
                             document.body.removeChild(temporaryHyperlink);
                             
-                            window.showCustomToast("PDF सफलतापूर्वक डाउनलोड हो गई है!");
+                            window.showCustomToast(`PDF (${currentMedium === 'hi' ? 'हिंदी' : 'English'}) सफलतापूर्वक डाउनलोड हो गई है!`);
                         }, 500);
                     }
                 }, 200);
@@ -363,16 +387,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // E. MARK COMPLETE LOGIC (XP & Tracker)
+    // F. MARK COMPLETE LOGIC (XP & Tracker)
     // ==========================================
     const buttonMarkCompleteChapter = document.getElementById('mark-complete-btn');
-    
     const savedCompletedDataRawString = localStorage.getItem('qms_completed'); 
-    let allCompletedChaptersDataObj = {}; 
-    
-    if (savedCompletedDataRawString) {
-        allCompletedChaptersDataObj = JSON.parse(savedCompletedDataRawString);
-    }
+    let allCompletedChaptersDataObj = JSON.parse(savedCompletedDataRawString) || {}; 
     
     if (allCompletedChaptersDataObj[specificChapterKeyIdentifier] === true) { 
         if (buttonMarkCompleteChapter) { 
@@ -386,7 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (buttonMarkCompleteChapter) {
         buttonMarkCompleteChapter.addEventListener('click', () => {
             if (allCompletedChaptersDataObj[specificChapterKeyIdentifier] !== true) {
-                
                 allCompletedChaptersDataObj[specificChapterKeyIdentifier] = true; 
                 localStorage.setItem('qms_completed', JSON.stringify(allCompletedChaptersDataObj));
                 
@@ -401,10 +419,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // F. TOPICS LIST CLICK LOGIC
+    // G. 🚀 CLICKABLE TOPICS LIST LOGIC
     // ==========================================
     const topicListItems = document.querySelectorAll('.topic-list li:not(.locked)');
-    
     topicListItems.forEach(item => {
         item.addEventListener('click', function() {
             executeClickSound();
@@ -440,33 +457,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // G. FIREFLY PARTICLES (GLOWING SYMBOLS)
+    // H. FIREFLY PARTICLES (GLOWING SYMBOLS)
     // ==========================================
     const targetParticleCanvasElement = document.getElementById('bg-canvas');
-    
     if (targetParticleCanvasElement) {
         const primaryCanvasContext2D = targetParticleCanvasElement.getContext('2d'); 
         targetParticleCanvasElement.width = window.innerWidth; 
         targetParticleCanvasElement.height = window.innerHeight;
-        
         const listOfScienceFormulaSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ']; 
         let globalActiveParticlesArray = [];
         
         class QuantumFireflyObjectEngine {
             constructor() {
-                const shapeProbabilityFloat = Math.random();
-                if (shapeProbabilityFloat > 0.4) {
-                    this.geometricShapeType = 'dot';
-                } else {
-                    this.geometricShapeType = 'symbol';
-                }
-                
-                const randomSymbolSelectionIndex = Math.floor(Math.random() * listOfScienceFormulaSymbols.length);
-                this.textStringSymbol = listOfScienceFormulaSymbols[randomSymbolSelectionIndex];
-                
+                this.geometricShapeType = Math.random() > 0.4 ? 'dot' : 'symbol';
+                this.textStringSymbol = listOfScienceFormulaSymbols[Math.floor(Math.random() * listOfScienceFormulaSymbols.length)];
                 this.canvasPositionX = Math.random() * targetParticleCanvasElement.width; 
                 this.canvasPositionY = Math.random() * targetParticleCanvasElement.height;
-                
                 if (this.geometricShapeType === 'symbol') { 
                     this.renderPixelSize = Math.random() * 15 + 10; 
                     this.movementSpeedX = Math.random() * 0.5 - 0.25; 
@@ -476,73 +482,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.movementSpeedX = Math.random() * 1 - 0.5; 
                     this.movementSpeedY = Math.random() * -1 - 0.2; 
                 }
-                
                 this.alphaBlinkingVelocity = Math.random() * 0.05 + 0.02; 
                 this.alphaSineWaveAngle = Math.random() * Math.PI * 2;
             }
-            
             recalculateCoordinateLogic() {
-                this.canvasPositionY += this.movementSpeedY; 
-                this.canvasPositionX += this.movementSpeedX; 
-                this.alphaSineWaveAngle += this.alphaBlinkingVelocity;
-                
-                if (this.canvasPositionY < -30) { 
-                    this.canvasPositionY = targetParticleCanvasElement.height + 30; 
-                    this.canvasPositionX = Math.random() * targetParticleCanvasElement.width; 
-                }
-                
-                if (this.canvasPositionX < -30 || this.canvasPositionX > targetParticleCanvasElement.width + 30) { 
-                    this.movementSpeedX = this.movementSpeedX * -1; 
-                }
+                this.canvasPositionY += this.movementSpeedY; this.canvasPositionX += this.movementSpeedX; this.alphaSineWaveAngle += this.alphaBlinkingVelocity;
+                if (this.canvasPositionY < -30) { this.canvasPositionY = targetParticleCanvasElement.height + 30; this.canvasPositionX = Math.random() * targetParticleCanvasElement.width; }
+                if (this.canvasPositionX < -30 || this.canvasPositionX > targetParticleCanvasElement.width + 30) { this.movementSpeedX = this.movementSpeedX * -1; }
             }
-            
             renderVisualsToCanvas(ctx) {
                 const globalRootComputedStyles = getComputedStyle(document.documentElement);
-                let currentThemeAccentColorHex = globalRootComputedStyles.getPropertyValue('--accent-main').trim();
-                
-                if (currentThemeAccentColorHex === "") {
-                    currentThemeAccentColorHex = '#00f0ff';
-                }
-                
+                let currentThemeAccentColorHex = globalRootComputedStyles.getPropertyValue('--accent-main').trim() || '#00f0ff';
                 let dynamicOpacityFloatValue = ((Math.sin(this.alphaSineWaveAngle) + 1) / 2) * 0.8 + 0.1;
-                
-                ctx.fillStyle = `rgba(255, 255, 255, ${dynamicOpacityFloatValue})`; 
-                ctx.shadowBlur = dynamicOpacityFloatValue * 20; 
-                ctx.shadowColor = currentThemeAccentColorHex;
-                
-                if (this.geometricShapeType === 'symbol') { 
-                    ctx.font = `${this.renderPixelSize}px "Space Grotesk", sans-serif`; 
-                    ctx.fillText(this.textStringSymbol, this.canvasPositionX, this.canvasPositionY); 
-                } else { 
-                    ctx.beginPath(); 
-                    ctx.arc(this.canvasPositionX, this.canvasPositionY, this.renderPixelSize, 0, Math.PI * 2); 
-                    ctx.fill(); 
-                }
-                
+                ctx.fillStyle = `rgba(255, 255, 255, ${dynamicOpacityFloatValue})`; ctx.shadowBlur = dynamicOpacityFloatValue * 20; ctx.shadowColor = currentThemeAccentColorHex;
+                if (this.geometricShapeType === 'symbol') { ctx.font = `${this.renderPixelSize}px "Space Grotesk", sans-serif`; ctx.fillText(this.textStringSymbol, this.canvasPositionX, this.canvasPositionY); } 
+                else { ctx.beginPath(); ctx.arc(this.canvasPositionX, this.canvasPositionY, this.renderPixelSize, 0, Math.PI * 2); ctx.fill(); }
                 ctx.shadowBlur = 0; 
             }
         }
-        
-        for (let loopCounter = 0; loopCounter < 60; loopCounter++) {
-            globalActiveParticlesArray.push(new QuantumFireflyObjectEngine());
-        }
-        
+        for (let loopCounter = 0; loopCounter < 60; loopCounter++) { globalActiveParticlesArray.push(new QuantumFireflyObjectEngine()); }
         function runMainRenderingLoop() { 
             primaryCanvasContext2D.clearRect(0, 0, targetParticleCanvasElement.width, targetParticleCanvasElement.height); 
-            
-            globalActiveParticlesArray.forEach(singleParticleElement => { 
-                singleParticleElement.recalculateCoordinateLogic(); 
-                singleParticleElement.renderVisualsToCanvas(primaryCanvasContext2D); 
-            }); 
-            
+            globalActiveParticlesArray.forEach(singleParticleElement => { singleParticleElement.recalculateCoordinateLogic(); singleParticleElement.renderVisualsToCanvas(primaryCanvasContext2D); }); 
             requestAnimationFrame(runMainRenderingLoop); 
         }
-        
         runMainRenderingLoop();
-        
-        window.addEventListener('resize', () => { 
-            targetParticleCanvasElement.width = window.innerWidth; 
-            targetParticleCanvasElement.height = window.innerHeight; 
-        });
+        window.addEventListener('resize', () => { targetParticleCanvasElement.width = window.innerWidth; targetParticleCanvasElement.height = window.innerHeight; });
     }
 });
