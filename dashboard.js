@@ -1,19 +1,19 @@
 /* =========================================================================
-   QMS JAVASCRIPT MASTER ENGINE (DASHBOARD - 100% EXPANDED CODE)
+   QMS JAVASCRIPT MASTER ENGINE (DASHBOARD - 100% EXPANDED FULL CODE)
    - FEATURES:
      1. Multi-Track BGM Memory System
-     2. Advanced Firefly Particles
-     3. User Authentication (Logout, Edit Name) - PRIVACY ENHANCED
-     4. Pomodoro Timer
+     2. 50 MEGA BADGES SYSTEM (Emerald, Diamond, Ruby, etc.)
+     3. User Authentication & Privacy (No Hardcoded Names)
+     4. Pomodoro Focus Timer
      5. Bookmarks (Saved Notes) Renderer
-     6. Gamification & Badges Logic
-     7. DAILY STREAK CALENDAR LOGIC
+     6. Daily Streak Calendar Logic
+     7. Dynamic Medium Switcher (Hindi / English)
 ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // 1. SMART BGM MEMORY SYSTEM (Multi-Track)
+    // 1. SMART BGM MEMORY SYSTEM
     // ==========================================
     const bgmAudio = document.getElementById('bgm-audio');
     const bgmToggle = document.getElementById('bgm-toggle');
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgmTrackSelect = document.getElementById('bgm-track-select');
     
     let isBgmOn = localStorage.getItem('qms_bgm') === 'on';
+    
     let savedBgmVolume = localStorage.getItem('qms_bgm_volume');
     if (savedBgmVolume === null) {
         savedBgmVolume = 0.3; 
@@ -37,7 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateToggleUI(checkboxElement) {
-        if (!checkboxElement) return;
+        if (!checkboxElement) {
+            return;
+        }
         
         const sliderElement = checkboxElement.nextElementSibling;
         
@@ -55,8 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
         bgmAudio.volume = parseFloat(savedBgmVolume);
         bgmAudio.currentTime = parseFloat(savedBgmTime);
 
-        if (bgmTrackSelect) bgmTrackSelect.value = savedBgmTrack;
-        if (bgmVolumeControl) bgmVolumeControl.value = savedBgmVolume;
+        if (bgmTrackSelect) {
+            bgmTrackSelect.value = savedBgmTrack;
+        }
+        
+        if (bgmVolumeControl) {
+            bgmVolumeControl.value = savedBgmVolume;
+        }
+        
         if (bgmToggle) {
             bgmToggle.checked = isBgmOn;
             updateToggleUI(bgmToggle);
@@ -65,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const playBgmSafely = () => {
             if (isBgmOn && bgmAudio.paused) {
                 bgmAudio.play().catch(error => {
-                    console.log("BGM Autoplay blocked by browser.", error);
+                    console.log("Audio play blocked by browser security.", error);
                 });
             }
         };
@@ -77,13 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newTrackValue = event.target.value;
                 localStorage.setItem('qms_bgm_track', newTrackValue); 
                 bgmAudio.src = newTrackValue; 
-                if (isBgmOn) bgmAudio.play();
+                
+                if (isBgmOn) {
+                    bgmAudio.play();
+                }
             });
         }
 
         if (bgmToggle) {
             bgmToggle.addEventListener('change', (event) => {
                 isBgmOn = event.target.checked;
+                
                 if (isBgmOn) {
                     localStorage.setItem('qms_bgm', 'on');
                     bgmAudio.play();
@@ -91,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('qms_bgm', 'off');
                     bgmAudio.pause();
                 }
+                
                 updateToggleUI(event.target);
             });
         }
@@ -119,7 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const loadingInterval = setInterval(() => {
         loadingProgress += Math.random() * 15;
-        if (loadingProgress > 100) loadingProgress = 100;
+        
+        if (loadingProgress > 100) {
+            loadingProgress = 100;
+        }
         
         if (loadingBarElement) {
             loadingBarElement.style.width = `${loadingProgress}%`;
@@ -136,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (loadingProgress === 100) {
             clearInterval(loadingInterval);
+            
             setTimeout(() => {
                 if (splashScreenElement) {
                     splashScreenElement.style.opacity = '0';
@@ -153,9 +171,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentHour = new Date().getHours();
     let dynamicGreetingText = "नमस्ते";
     
-    if (currentHour < 12) dynamicGreetingText = "सुप्रभात (Good Morning)";
-    else if (currentHour < 18) dynamicGreetingText = "शुभ दोपहर (Good Afternoon)";
-    else dynamicGreetingText = "शुभ संध्या (Good Evening)";
+    if (currentHour < 12) {
+        dynamicGreetingText = "सुप्रभात (Good Morning)";
+    } else if (currentHour < 18) {
+        dynamicGreetingText = "शुभ दोपहर (Good Afternoon)";
+    } else {
+        dynamicGreetingText = "शुभ संध्या (Good Evening)";
+    }
     
     const greetingDisplayElement = document.getElementById('dynamic-greeting');
     if (greetingDisplayElement) {
@@ -186,7 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerResetButton = document.getElementById('timer-reset-btn');
 
     function updateTimerUserInterface() {
-        if (!timerDisplayElement) return;
+        if (!timerDisplayElement) {
+            return;
+        }
+        
         const remainingMinutes = Math.floor(focusTimeLeftInSeconds / 60);
         const remainingSeconds = focusTimeLeftInSeconds % 60;
         
@@ -237,13 +262,14 @@ document.addEventListener('DOMContentLoaded', () => {
             isFocusTimerRunning = false; 
             focusTimeLeftInSeconds = 25 * 60; 
             updateTimerUserInterface(); 
+            
             timerStartButton.innerText = "स्टार्ट (Start)"; 
             timerStartButton.style.background = "var(--accent-main)"; 
         });
     }
 
     // ==========================================
-    // 5. 🔖 RENDER BOOKMARKS (SAVED NOTES) LOGIC
+    // 5. 🔖 RENDER BOOKMARKS (SAVED NOTES)
     // ==========================================
     const bookmarksContainerElement = document.getElementById('bookmarks-container');
     
@@ -276,8 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 let bookmarkItem = parsedBookmarks[key];
                 let iconColorHex = 'var(--accent-main)'; 
                 
-                if (bookmarkItem.subject === 'chemistry') { iconColorHex = '#b535ff'; }
-                if (bookmarkItem.subject === 'mathematics') { iconColorHex = '#00ff88'; }
+                if (bookmarkItem.subject === 'chemistry') {
+                    iconColorHex = '#b535ff'; 
+                }
+                
+                if (bookmarkItem.subject === 'mathematics') {
+                    iconColorHex = '#00ff88'; 
+                }
 
                 finalBookmarksHTML += `
                     <div class="glass-card sfx-trigger" 
@@ -308,109 +339,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 6. ADVANCED QUANTUM PARTICLES ENGINE
-    // ==========================================
-    const backgroundCanvasElement = document.getElementById('bg-canvas');
-    
-    if (backgroundCanvasElement) {
-        const canvasContext = backgroundCanvasElement.getContext('2d'); 
-        backgroundCanvasElement.width = window.innerWidth; 
-        backgroundCanvasElement.height = window.innerHeight;
-        
-        const scienceMathSymbolsArray = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ'];
-        let quantumParticlesArray = [];
-        
-        class QuantumFireflyParticle {
-            constructor() {
-                const typeProbability = Math.random();
-                if (typeProbability > 0.4) { this.particleShapeType = 'dot'; } 
-                else { this.particleShapeType = 'symbol'; }
-                
-                const randomSymbolIndex = Math.floor(Math.random() * scienceMathSymbolsArray.length);
-                this.symbolCharacter = scienceMathSymbolsArray[randomSymbolIndex];
-                
-                this.coordinateX = Math.random() * backgroundCanvasElement.width; 
-                this.coordinateY = Math.random() * backgroundCanvasElement.height;
-                
-                if (this.particleShapeType === 'symbol') { 
-                    this.particleSize = Math.random() * 15 + 10; 
-                    this.speedVelocityX = Math.random() * 0.5 - 0.25; 
-                    this.speedVelocityY = Math.random() * -0.8 - 0.2; 
-                } else { 
-                    this.particleSize = Math.random() * 3 + 1; 
-                    this.speedVelocityX = Math.random() * 1 - 0.5; 
-                    this.speedVelocityY = Math.random() * -1 - 0.2; 
-                }
-                
-                this.blinkingSpeed = Math.random() * 0.05 + 0.02; 
-                this.blinkingSineAngle = Math.random() * Math.PI * 2;
-            }
-            
-            updateParticleCoordinates() {
-                this.coordinateY += this.speedVelocityY; 
-                this.coordinateX += this.speedVelocityX; 
-                this.blinkingSineAngle += this.blinkingSpeed;
-                
-                if (this.coordinateY < -30) { 
-                    this.coordinateY = backgroundCanvasElement.height + 30; 
-                    this.coordinateX = Math.random() * backgroundCanvasElement.width; 
-                }
-                if (this.coordinateX < -30 || this.coordinateX > backgroundCanvasElement.width + 30) { 
-                    this.speedVelocityX = this.speedVelocityX * -1; 
-                }
-            }
-            
-            drawParticleToCanvas(ctx) {
-                const rootCssVariables = getComputedStyle(document.documentElement);
-                let themePrimaryColor = rootCssVariables.getPropertyValue('--accent-main').trim() || '#00f0ff';
-                let dynamicOpacityValue = ((Math.sin(this.blinkingSineAngle) + 1) / 2) * 0.8 + 0.1;
-                
-                ctx.fillStyle = `rgba(255, 255, 255, ${dynamicOpacityValue})`;
-                ctx.shadowBlur = dynamicOpacityValue * 20; 
-                ctx.shadowColor = themePrimaryColor;
-                
-                if (this.particleShapeType === 'symbol') { 
-                    ctx.font = `${this.particleSize}px "Space Grotesk", sans-serif`; 
-                    ctx.fillText(this.symbolCharacter, this.coordinateX, this.coordinateY); 
-                } else { 
-                    ctx.beginPath(); 
-                    ctx.arc(this.coordinateX, this.coordinateY, this.particleSize, 0, Math.PI * 2); 
-                    ctx.fill(); 
-                }
-                
-                ctx.shadowBlur = 0; 
-            }
-        }
-        
-        for (let iterationCount = 0; iterationCount < 60; iterationCount++) {
-            quantumParticlesArray.push(new QuantumFireflyParticle());
-        }
-        
-        function executeParticleAnimationLoop() { 
-            canvasContext.clearRect(0, 0, backgroundCanvasElement.width, backgroundCanvasElement.height); 
-            quantumParticlesArray.forEach(singleParticleObject => { 
-                singleParticleObject.updateParticleCoordinates(); 
-                singleParticleObject.drawParticleToCanvas(canvasContext); 
-            }); 
-            requestAnimationFrame(executeParticleAnimationLoop); 
-        }
-        
-        executeParticleAnimationLoop();
-        
-        window.addEventListener('resize', () => { 
-            backgroundCanvasElement.width = window.innerWidth; 
-            backgroundCanvasElement.height = window.innerHeight; 
-        });
-    }
-
-    // ==========================================
-    // 7. PREMIUM CUSTOM MODALS & TOASTS 
+    // 6. CUSTOM TOASTS & MODALS (PROFESSIONAL)
     // ==========================================
     window.showCustomToast = function(messageText, isErrorMessage = false) {
         const existingToastNode = document.querySelector('.qms-toast-msg'); 
-        if (existingToastNode) { existingToastNode.remove(); }
+        
+        if (existingToastNode) {
+            existingToastNode.remove();
+        }
         
         const toastElementNode = document.createElement('div'); 
+        
         if (isErrorMessage) {
             toastElementNode.className = 'qms-toast-msg qms-toast-error';
             toastElementNode.innerHTML = `<i class="ri-error-warning-fill"></i> ${messageText}`;
@@ -420,7 +359,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         document.body.appendChild(toastElementNode); 
-        setTimeout(() => { if (toastElementNode) toastElementNode.remove(); }, 3000); 
+        
+        setTimeout(() => { 
+            if (toastElementNode) {
+                toastElementNode.remove(); 
+            }
+        }, 3000); 
     };
 
     const modalOverlayContainer = document.createElement('div'); 
@@ -444,89 +388,520 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.showCustomPrompt = function(titleText, defaultInputValue, callbackFunc) { 
         targetModalTitle.innerHTML = `<i class="ri-edit-2-line" style="color: var(--accent-main); font-size: 1.5rem; display:block; margin-bottom: 5px;"></i> ${titleText}`; 
+        
         targetModalInput.style.display = 'block'; 
         targetModalInput.value = defaultInputValue; 
+        
         targetModalConfirmButton.style.background = 'var(--accent-main)'; 
         targetModalConfirmButton.style.color = '#000'; 
         targetModalConfirmButton.innerText = 'सेव करें'; 
         
         modalOverlayContainer.classList.add('active'); 
-        setTimeout(() => { targetModalInput.focus(); }, 100); 
+        
+        setTimeout(() => { 
+            targetModalInput.focus(); 
+        }, 100); 
+        
         activeModalCallbackFunction = callbackFunc; 
     };
 
     window.showCustomConfirm = function(titleText, callbackFunc) { 
         targetModalTitle.innerHTML = `<i class="ri-error-warning-line" style="color: #ff4d4d; font-size: 2rem; display:block; margin-bottom: 5px;"></i> ${titleText}`; 
+        
         targetModalInput.style.display = 'none'; 
+        
         targetModalConfirmButton.style.background = '#ff4d4d'; 
         targetModalConfirmButton.style.color = '#fff'; 
         targetModalConfirmButton.innerText = 'हाँ, करें'; 
         
         modalOverlayContainer.classList.add('active'); 
+        
         activeModalCallbackFunction = callbackFunc; 
     };
     
     const modalCancelButton = document.getElementById('qms-modal-cancel');
     if (modalCancelButton) {
-        modalCancelButton.addEventListener('click', () => {
-            modalOverlayContainer.classList.remove('active');
+        modalCancelButton.addEventListener('click', () => { 
+            modalOverlayContainer.classList.remove('active'); 
         });
     }
     
     if (targetModalConfirmButton) {
         targetModalConfirmButton.addEventListener('click', () => { 
             if (activeModalCallbackFunction) {
-                if (targetModalInput.style.display === 'none') { activeModalCallbackFunction(true); } 
-                else { activeModalCallbackFunction(targetModalInput.value); }
+                if (targetModalInput.style.display === 'none') {
+                    activeModalCallbackFunction(true); 
+                } else {
+                    activeModalCallbackFunction(targetModalInput.value); 
+                }
             }
             modalOverlayContainer.classList.remove('active'); 
         });
     }
 
     // ==========================================
-    // 8. 🏆 GAMIFICATION & BADGES ENGINE
+    // 7. 🏆 50 MEGA BADGES SYSTEM (Gamification)
     // ==========================================
-    // 🚀 PRIVACY FIX: Removed hardcoded name "Alina Sami". Fallback is now "Student"
+    
+    // Privacy Fixed: Uses "Student" instead of hardcoded name
     const savedUserNameValue = localStorage.getItem('qms_user_name') || 'Student';
     
     let completedChaptersData = {};
     const rawCompletedData = localStorage.getItem('qms_completed');
+    
     if (rawCompletedData) {
         completedChaptersData = JSON.parse(rawCompletedData);
     }
     
     const completedChaptersCountNumber = Object.keys(completedChaptersData).length;
+    
     let storedExtraXp = parseInt(localStorage.getItem('qms_total_xp')) || 0;
+    
     let grandTotalXp = (completedChaptersCountNumber * 50) + storedExtraXp;
     
     localStorage.setItem('qms_total_xp', grandTotalXp);
 
     const dashUserNameElement = document.getElementById('dash-user-name');
-    if (dashUserNameElement) { dashUserNameElement.innerText = savedUserNameValue; }
+    if (dashUserNameElement) {
+        dashUserNameElement.innerText = savedUserNameValue;
+    }
     
     const panelUserNameElement = document.getElementById('panel-user-name');
-    if (panelUserNameElement) { panelUserNameElement.innerText = savedUserNameValue; }
+    if (panelUserNameElement) {
+        panelUserNameElement.innerText = savedUserNameValue;
+    }
 
     const dashCompletedCountElement = document.getElementById('dash-completed-count');
-    if (dashCompletedCountElement) { dashCompletedCountElement.innerText = completedChaptersCountNumber; }
+    if (dashCompletedCountElement) {
+        dashCompletedCountElement.innerText = completedChaptersCountNumber;
+    }
     
     const dashTotalXpElement = document.getElementById('dash-total-xp');
-    if (dashTotalXpElement) { dashTotalXpElement.innerText = grandTotalXp; }
+    if (dashTotalXpElement) {
+        dashTotalXpElement.innerText = grandTotalXp;
+    }
 
+    // THE ULTIMATE 50 BADGES ARRAY (FULLY EXPANDED)
     const qmsBadgesData = [
-        { id: 'b1', name: 'क्वांटम स्टार्टर', icon: 'ri-seedling-fill', color: '#00f0ff', requiredXp: 0, desc: 'QMS जॉइन किया' },
-        { id: 'b2', name: 'फोकस मास्टर', icon: 'ri-focus-2-fill', color: '#00ff88', requiredXp: 100, desc: '100 XP प्राप्त किए' },
-        { id: 'b3', name: 'सुपर स्कॉलर', icon: 'ri-book-open-fill', color: '#b535ff', requiredXp: 500, desc: '500 XP प्राप्त किए' },
-        { id: 'b4', name: 'क्वांटम लीजेंड', icon: 'ri-vip-crown-fill', color: '#ffc107', requiredXp: 1000, desc: '1000 XP प्राप्त किए' }
+        { 
+            id: 'b1', 
+            name: 'स्टार्टर (Starter)', 
+            icon: 'ri-seedling-line', 
+            color: '#a0a0b0', 
+            requiredXp: 0, 
+            desc: 'QMS जॉइन किया' 
+        },
+        { 
+            id: 'b2', 
+            name: 'लर्नर (Learner)', 
+            icon: 'ri-book-read-line', 
+            color: '#00f0ff', 
+            requiredXp: 50, 
+            desc: '50 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b3', 
+            name: 'एक्सप्लोरर (Explorer)', 
+            icon: 'ri-compass-3-line', 
+            color: '#00ff88', 
+            requiredXp: 100, 
+            desc: '100 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b4', 
+            name: 'जिज्ञासु (Curious)', 
+            icon: 'ri-search-eye-line', 
+            color: '#b535ff', 
+            requiredXp: 150, 
+            desc: '150 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b5', 
+            name: 'ब्रॉन्ज़ I (Bronze I)', 
+            icon: 'ri-medal-line', 
+            color: '#cd7f32', 
+            requiredXp: 200, 
+            desc: '200 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b6', 
+            name: 'ब्रॉन्ज़ II (Bronze II)', 
+            icon: 'ri-medal-line', 
+            color: '#cd7f32', 
+            requiredXp: 300, 
+            desc: '300 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b7', 
+            name: 'ब्रॉन्ज़ III (Bronze III)', 
+            icon: 'ri-medal-fill', 
+            color: '#cd7f32', 
+            requiredXp: 400, 
+            desc: '400 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b8', 
+            name: 'सिल्वर I (Silver I)', 
+            icon: 'ri-award-line', 
+            color: '#c0c0c0', 
+            requiredXp: 500, 
+            desc: '500 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b9', 
+            name: 'सिल्वर II (Silver II)', 
+            icon: 'ri-award-line', 
+            color: '#c0c0c0', 
+            requiredXp: 600, 
+            desc: '600 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b10', 
+            name: 'सिल्वर III (Silver III)', 
+            icon: 'ri-award-fill', 
+            color: '#c0c0c0', 
+            requiredXp: 700, 
+            desc: '700 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b11', 
+            name: 'गोल्ड I (Gold I)', 
+            icon: 'ri-trophy-line', 
+            color: '#ffd700', 
+            requiredXp: 850, 
+            desc: '850 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b12', 
+            name: 'गोल्ड II (Gold II)', 
+            icon: 'ri-trophy-line', 
+            color: '#ffd700', 
+            requiredXp: 1000, 
+            desc: '1000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b13', 
+            name: 'गोल्ड III (Gold III)', 
+            icon: 'ri-trophy-fill', 
+            color: '#ffd700', 
+            requiredXp: 1150, 
+            desc: '1150 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b14', 
+            name: 'प्लेटिनम I (Platinum I)', 
+            icon: 'ri-vip-diamond-line', 
+            color: '#e5e4e2', 
+            requiredXp: 1300, 
+            desc: '1300 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b15', 
+            name: 'प्लेटिनम II (Platinum II)', 
+            icon: 'ri-vip-diamond-line', 
+            color: '#e5e4e2', 
+            requiredXp: 1500, 
+            desc: '1500 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b16', 
+            name: 'प्लेटिनम III (Platinum III)', 
+            icon: 'ri-vip-diamond-fill', 
+            color: '#e5e4e2', 
+            requiredXp: 1700, 
+            desc: '1700 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b17', 
+            name: 'एमराल्ड (Emerald)', 
+            icon: 'ri-gemstone-line', 
+            color: '#50c878', 
+            requiredXp: 2000, 
+            desc: '2000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b18', 
+            name: 'एमराल्ड स्टार (Star)', 
+            icon: 'ri-star-smile-fill', 
+            color: '#50c878', 
+            requiredXp: 2300, 
+            desc: '2300 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b19', 
+            name: 'एमराल्ड क्राउन (Crown)', 
+            icon: 'ri-vip-crown-fill', 
+            color: '#50c878', 
+            requiredXp: 2600, 
+            desc: '2600 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b20', 
+            name: 'रूबी (Ruby)', 
+            icon: 'ri-gemstone-fill', 
+            color: '#e0115f', 
+            requiredXp: 3000, 
+            desc: '3000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b21', 
+            name: 'रूबी स्टार (Star)', 
+            icon: 'ri-star-fill', 
+            color: '#e0115f', 
+            requiredXp: 3400, 
+            desc: '3400 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b22', 
+            name: 'रूबी क्राउन (Crown)', 
+            icon: 'ri-vip-crown-fill', 
+            color: '#e0115f', 
+            requiredXp: 3800, 
+            desc: '3800 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b23', 
+            name: 'नीलम (Sapphire)', 
+            icon: 'ri-gemstone-fill', 
+            color: '#0f52ba', 
+            requiredXp: 4300, 
+            desc: '4300 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b24', 
+            name: 'नीलम स्टार (Star)', 
+            icon: 'ri-star-fill', 
+            color: '#0f52ba', 
+            requiredXp: 4800, 
+            desc: '4800 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b25', 
+            name: 'नीलम क्राउन (Crown)', 
+            icon: 'ri-vip-crown-fill', 
+            color: '#0f52ba', 
+            requiredXp: 5300, 
+            desc: '5300 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b26', 
+            name: 'टोपाज़ (Topaz)', 
+            icon: 'ri-gemstone-fill', 
+            color: '#ffc87c', 
+            requiredXp: 5900, 
+            desc: '5900 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b27', 
+            name: 'टोपाज़ स्टार (Star)', 
+            icon: 'ri-star-fill', 
+            color: '#ffc87c', 
+            requiredXp: 6500, 
+            desc: '6500 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b28', 
+            name: 'टोपाज़ क्राउन (Crown)', 
+            icon: 'ri-vip-crown-fill', 
+            color: '#ffc87c', 
+            requiredXp: 7100, 
+            desc: '7100 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b29', 
+            name: 'एमेथिस्ट (Amethyst)', 
+            icon: 'ri-gemstone-fill', 
+            color: '#9966cc', 
+            requiredXp: 7800, 
+            desc: '7800 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b30', 
+            name: 'एमेथिस्ट स्टार (Star)', 
+            icon: 'ri-star-fill', 
+            color: '#9966cc', 
+            requiredXp: 8500, 
+            desc: '8500 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b31', 
+            name: 'एमेथिस्ट क्राउन (Crown)', 
+            icon: 'ri-vip-crown-fill', 
+            color: '#9966cc', 
+            requiredXp: 9200, 
+            desc: '9200 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b32', 
+            name: 'ओपल (Opal)', 
+            icon: 'ri-gemstone-fill', 
+            color: '#a8c3bc', 
+            requiredXp: 10000, 
+            desc: '10000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b33', 
+            name: 'ओपल स्टार (Star)', 
+            icon: 'ri-star-fill', 
+            color: '#a8c3bc', 
+            requiredXp: 11000, 
+            desc: '11000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b34', 
+            name: 'ओपल क्राउन (Crown)', 
+            icon: 'ri-vip-crown-fill', 
+            color: '#a8c3bc', 
+            requiredXp: 12000, 
+            desc: '12000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b35', 
+            name: 'डायमंड (Diamond)', 
+            icon: 'ri-vip-diamond-fill', 
+            color: '#b9f2ff', 
+            requiredXp: 13500, 
+            desc: '13500 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b36', 
+            name: 'डायमंड स्टार (Star)', 
+            icon: 'ri-star-fill', 
+            color: '#b9f2ff', 
+            requiredXp: 15000, 
+            desc: '15000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b37', 
+            name: 'डायमंड क्राउन (Crown)', 
+            icon: 'ri-vip-crown-fill', 
+            color: '#b9f2ff', 
+            requiredXp: 17000, 
+            desc: '17000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b38', 
+            name: 'पिंक डायमंड (Pink Diamond)', 
+            icon: 'ri-vip-diamond-fill', 
+            color: '#ffb6c1', 
+            requiredXp: 19000, 
+            desc: '19000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b39', 
+            name: 'येलो डायमंड (Yellow Diamond)', 
+            icon: 'ri-vip-diamond-fill', 
+            color: '#fffacd', 
+            requiredXp: 21500, 
+            desc: '21500 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b40', 
+            name: 'ब्लू डायमंड (Blue Diamond)', 
+            icon: 'ri-vip-diamond-fill', 
+            color: '#add8e6', 
+            requiredXp: 24000, 
+            desc: '24000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b41', 
+            name: 'ग्रीन डायमंड (Green Diamond)', 
+            icon: 'ri-vip-diamond-fill', 
+            color: '#90ee90', 
+            requiredXp: 27000, 
+            desc: '27000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b42', 
+            name: 'ब्लैक डायमंड (Black)', 
+            icon: 'ri-vip-diamond-fill', 
+            color: '#555555', 
+            requiredXp: 30000, 
+            desc: '30000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b43', 
+            name: 'रेड डायमंड (Red)', 
+            icon: 'ri-vip-diamond-fill', 
+            color: '#ff0000', 
+            requiredXp: 35000, 
+            desc: '35000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b44', 
+            name: 'क्वांटम नाइट (Knight)', 
+            icon: 'ri-sword-fill', 
+            color: '#ff00ff', 
+            requiredXp: 40000, 
+            desc: '40000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b45', 
+            name: 'क्वांटम लॉर्ड (Lord)', 
+            icon: 'ri-shield-star-fill', 
+            color: '#b535ff', 
+            requiredXp: 45000, 
+            desc: '45000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b46', 
+            name: 'क्वांटम मास्टर (Master)', 
+            icon: 'ri-meteor-fill', 
+            color: '#00f0ff', 
+            requiredXp: 55000, 
+            desc: '55000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b47', 
+            name: 'ग्रैंडमास्टर (Grandmaster)', 
+            icon: 'ri-fire-fill', 
+            color: '#ff4d4d', 
+            requiredXp: 65000, 
+            desc: '65000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b48', 
+            name: 'यूनिवर्स स्कॉलर (Scholar)', 
+            icon: 'ri-planet-fill', 
+            color: '#ffc107', 
+            requiredXp: 80000, 
+            desc: '80000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b49', 
+            name: 'सुप्रीम जीनियस (Genius)', 
+            icon: 'ri-brain-fill', 
+            color: '#00ff88', 
+            requiredXp: 100000, 
+            desc: '100000 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b50', 
+            name: 'लेजेंडरी गॉड (God)', 
+            icon: 'ri-sun-fill', 
+            color: '#ffffff', 
+            requiredXp: 150000, 
+            desc: '150000 XP प्राप्त किए' 
+        }
     ];
 
     const badgesContainerElement = document.getElementById('badges-container');
+    
     if (badgesContainerElement) {
         let badgesHTMLString = '';
+        
         qmsBadgesData.forEach(badgeObject => {
             const isBadgeUnlocked = grandTotalXp >= badgeObject.requiredXp;
-            const badgeStatusClass = isBadgeUnlocked ? 'unlocked' : 'locked';
-            const lockedOverlayHTML = isBadgeUnlocked ? '' : '<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>';
+            
+            let badgeStatusClass = 'locked';
+            if (isBadgeUnlocked) {
+                badgeStatusClass = 'unlocked';
+            }
+            
+            let lockedOverlayHTML = '<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>';
+            if (isBadgeUnlocked) {
+                lockedOverlayHTML = '';
+            }
             
             badgesHTMLString += `
                 <div class="badge-card ${badgeStatusClass} sfx-trigger" title="${badgeObject.desc}">
@@ -537,31 +912,88 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         });
+        
         badgesContainerElement.innerHTML = badgesHTMLString;
     }
 
     // ==========================================
-    // 9. SETTINGS PANEL INTERFACE LOGIC
+    // 8. DYNAMIC MEDIUM SWITCHER (Hindi / English)
+    // ==========================================
+    let currentMedium = localStorage.getItem('qms_medium') || 'hi'; 
+    const headerEl = document.querySelector('.dash-header');
+    
+    if (headerEl) {
+        let mediumTextValue = 'हिंदी माध्यम';
+        if (currentMedium === 'en') {
+            mediumTextValue = 'English Medium';
+        }
+        
+        const mediumSwitcherHtml = `
+            <div id="medium-toggle-btn" class="sfx-trigger" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: var(--font-heading); font-size: 0.9rem; margin-right: 15px;">
+                <i class="ri-translate-2"></i> 
+                <span id="medium-text">${mediumTextValue}</span>
+            </div>
+        `;
+        
+        const profileDiv = document.querySelector('.header-profile-fix');
+        
+        if (profileDiv) {
+            profileDiv.insertAdjacentHTML('beforebegin', mediumSwitcherHtml);
+        }
+
+        const mediumToggleBtn = document.getElementById('medium-toggle-btn');
+        
+        if (mediumToggleBtn) {
+            mediumToggleBtn.addEventListener('click', () => {
+                if (currentMedium === 'hi') {
+                    currentMedium = 'en';
+                } else {
+                    currentMedium = 'hi';
+                }
+                
+                localStorage.setItem('qms_medium', currentMedium);
+                
+                if (currentMedium === 'hi') {
+                    document.getElementById('medium-text').innerText = 'हिंदी माध्यम';
+                    window.showCustomToast('माध्यम बदलकर हिंदी कर दिया गया है। पेज रीलोड हो रहा है...');
+                } else {
+                    document.getElementById('medium-text').innerText = 'English Medium';
+                    window.showCustomToast('माध्यम बदलकर English कर दिया गया है। पेज रीलोड हो रहा है...');
+                }
+                
+                setTimeout(() => { 
+                    window.location.reload(); 
+                }, 1500);
+            });
+        }
+    }
+
+    // ==========================================
+    // 9. SETTINGS PANEL & OTHER LOGIC
     // ==========================================
     const sidePanelElement = document.getElementById('settings-panel'); 
     const sidePanelOverlayBg = document.getElementById('panel-overlay'); 
     
     function closeSettingsPanelAction() { 
-        if (sidePanelElement) { sidePanelElement.classList.remove('active'); }
-        if (sidePanelOverlayBg) { sidePanelOverlayBg.classList.remove('active'); }
+        if (sidePanelElement) {
+            sidePanelElement.classList.remove('active'); 
+        }
+        if (sidePanelOverlayBg) {
+            sidePanelOverlayBg.classList.remove('active'); 
+        }
     }
     
-    const openPanelButtonTrigger = document.getElementById('open-panel-btn');
-    if (openPanelButtonTrigger) {
-        openPanelButtonTrigger.addEventListener('click', () => { 
+    const openPanelBtn = document.getElementById('open-panel-btn');
+    if (openPanelBtn) {
+        openPanelBtn.addEventListener('click', () => { 
             sidePanelElement.classList.add('active'); 
             sidePanelOverlayBg.classList.add('active'); 
         });
     }
     
-    const closePanelButtonTrigger = document.getElementById('close-panel');
-    if (closePanelButtonTrigger) {
-        closePanelButtonTrigger.addEventListener('click', closeSettingsPanelAction); 
+    const closePanelBtn = document.getElementById('close-panel');
+    if (closePanelBtn) {
+        closePanelBtn.addEventListener('click', closeSettingsPanelAction); 
     }
     
     if (sidePanelOverlayBg) {
@@ -569,120 +1001,141 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const allThemeOptionCards = document.querySelectorAll('.theme-option-card');
-    allThemeOptionCards.forEach(singleThemeCard => {
-        singleThemeCard.addEventListener('click', function() { 
-            const newThemeNameSelected = this.getAttribute('data-set-theme'); 
-            document.documentElement.setAttribute('data-theme', newThemeNameSelected); 
-            localStorage.setItem('qms_theme', newThemeNameSelected); 
+    
+    allThemeOptionCards.forEach(card => {
+        card.addEventListener('click', function() { 
+            const newTheme = this.getAttribute('data-set-theme'); 
+            document.documentElement.setAttribute('data-theme', newTheme); 
+            localStorage.setItem('qms_theme', newTheme); 
         });
     });
 
-    const preferenceDropdownIds = ['pdf-location-pref', 'video-quality-pref'];
-    preferenceDropdownIds.forEach(dropdownId => {
-        const targetDropdownElement = document.getElementById(dropdownId); 
-        const previouslySavedPrefValue = localStorage.getItem(`qms_${dropdownId}`); 
-        if (previouslySavedPrefValue && targetDropdownElement) { targetDropdownElement.value = previouslySavedPrefValue; }
-        if (targetDropdownElement) {
-            targetDropdownElement.addEventListener('change', (event) => {
-                localStorage.setItem(`qms_${dropdownId}`, event.target.value);
-            });
-        }
-    });
-
-    const savedProfileImageSrc = localStorage.getItem('qms_profile_img');
-    if (savedProfileImageSrc) {
-        const dashSmallAvatarImage = document.getElementById('dash-small-avatar');
-        if (dashSmallAvatarImage) { dashSmallAvatarImage.src = savedProfileImageSrc; }
-        const panelProfileImageAvatar = document.getElementById('panel-profile-img');
-        if (panelProfileImageAvatar) { panelProfileImageAvatar.src = savedProfileImageSrc; }
-    }
-
-    // ==========================================
-    // 10. SYSTEM AUDIO FX (CLICK SOUNDS)
-    // ==========================================
+    // SFX LOGIC
     const sfxClickAudioNode = document.getElementById('sfx-click'); 
-    let isSystemSoundTurnedOn = true;
-    if (localStorage.getItem('qms_sound') === 'off') { isSystemSoundTurnedOn = false; }
+    let isSystemSoundTurnedOn = localStorage.getItem('qms_sound') !== 'off';
     
     const soundToggleSwitchElement = document.getElementById('sound-toggle');
+    
     if (soundToggleSwitchElement) { 
         soundToggleSwitchElement.checked = isSystemSoundTurnedOn; 
         updateToggleUI(soundToggleSwitchElement); 
         
         soundToggleSwitchElement.addEventListener('change', (event) => { 
             isSystemSoundTurnedOn = event.target.checked; 
-            if (isSystemSoundTurnedOn) { localStorage.setItem('qms_sound', 'on'); } 
-            else { localStorage.setItem('qms_sound', 'off'); }
+            
+            if (isSystemSoundTurnedOn) {
+                localStorage.setItem('qms_sound', 'on'); 
+            } else {
+                localStorage.setItem('qms_sound', 'off'); 
+            }
+            
             updateToggleUI(event.target); 
         }); 
     }
 
-    const allSfxTriggerElements = document.querySelectorAll('.sfx-trigger');
-    allSfxTriggerElements.forEach(triggerBtn => { 
-        triggerBtn.addEventListener('click', () => { 
+    const allSfxTriggers = document.querySelectorAll('.sfx-trigger');
+    
+    allSfxTriggers.forEach(btn => { 
+        btn.addEventListener('click', () => { 
             if (isSystemSoundTurnedOn && sfxClickAudioNode) { 
                 sfxClickAudioNode.currentTime = 0; 
                 sfxClickAudioNode.volume = 1.0; 
-                sfxClickAudioNode.play().catch(err => { console.log("SFX Play Error:", err); }); 
+                sfxClickAudioNode.play().catch(()=>{}); 
             } 
         }); 
     });
 
     // ==========================================
-    // 11. PROFILE IMAGE UPLOAD & COMPRESSOR
+    // 10. PROFILE IMAGE UPLOAD LOGIC
     // ==========================================
     const profileImageUploadInput = document.getElementById('img-upload');
+    
     if (profileImageUploadInput) {
         profileImageUploadInput.addEventListener('change', function(event) {
             const uploadedFile = event.target.files[0];
+            
             if (uploadedFile) {
                 const fileReaderInstance = new FileReader();
+                
                 fileReaderInstance.onload = function(readerEvent) {
                     const tempImgNode = new Image();
+                    
                     tempImgNode.onload = function() {
                         const temporaryCanvas = document.createElement('canvas'); 
                         const temporaryCanvasContext = temporaryCanvas.getContext('2d');
+                        
                         const maxAllowedDimension = 200; 
                         let targetWidth = tempImgNode.width; 
                         let targetHeight = tempImgNode.height;
                         
                         if (targetWidth > targetHeight) { 
-                            if (targetWidth > maxAllowedDimension) { targetHeight *= maxAllowedDimension / targetWidth; targetWidth = maxAllowedDimension; } 
+                            if (targetWidth > maxAllowedDimension) { 
+                                targetHeight *= maxAllowedDimension / targetWidth; 
+                                targetWidth = maxAllowedDimension; 
+                            } 
                         } else { 
-                            if (targetHeight > maxAllowedDimension) { targetWidth *= maxAllowedDimension / targetHeight; targetHeight = maxAllowedDimension; } 
+                            if (targetHeight > maxAllowedDimension) { 
+                                targetWidth *= maxAllowedDimension / targetHeight; 
+                                targetHeight = maxAllowedDimension; 
+                            } 
                         }
                         
                         temporaryCanvas.width = targetWidth; 
                         temporaryCanvas.height = targetHeight; 
+                        
                         temporaryCanvasContext.drawImage(tempImgNode, 0, 0, targetWidth, targetHeight);
+                        
                         const compressedImageBase64String = temporaryCanvas.toDataURL('image/jpeg', 0.8);
                         
                         const dashSmallAvatarImg = document.getElementById('dash-small-avatar');
-                        if (dashSmallAvatarImg) { dashSmallAvatarImg.src = compressedImageBase64String; }
+                        if (dashSmallAvatarImg) {
+                            dashSmallAvatarImg.src = compressedImageBase64String; 
+                        }
+                        
                         const panelProfileImg = document.getElementById('panel-profile-img');
-                        if (panelProfileImg) { panelProfileImg.src = compressedImageBase64String; }
+                        if (panelProfileImg) {
+                            panelProfileImg.src = compressedImageBase64String; 
+                        }
                         
                         try { 
                             localStorage.setItem('qms_profile_img', compressedImageBase64String); 
-                            if(window.showCustomToast) { window.showCustomToast("प्रोफाइल फोटो सफलतापूर्क सेव हो गई!"); }
+                            if(window.showCustomToast) {
+                                window.showCustomToast("प्रोफाइल फोटो सफलतापूर्क सेव हो गई!"); 
+                            }
                         } catch(localStorageError) { 
-                            if(window.showCustomToast) { window.showCustomToast("फोटो बहुत बड़ी है! सेव करने में एरर।", true); }
+                            if(window.showCustomToast) {
+                                window.showCustomToast("फोटो बहुत बड़ी है! सेव करने में एरर।", true); 
+                            }
                         }
                     };
+                    
                     tempImgNode.src = readerEvent.target.result;
                 };
+                
                 fileReaderInstance.readAsDataURL(uploadedFile);
             }
         });
     }
 
+    const savedProfileImageSrc = localStorage.getItem('qms_profile_img');
+    if (savedProfileImageSrc) {
+        const dashSmallAvatarImage = document.getElementById('dash-small-avatar');
+        if (dashSmallAvatarImage) {
+            dashSmallAvatarImage.src = savedProfileImageSrc; 
+        }
+        
+        const panelProfileImageAvatar = document.getElementById('panel-profile-img');
+        if (panelProfileImageAvatar) {
+            panelProfileImageAvatar.src = savedProfileImageSrc; 
+        }
+    }
+
     // ==========================================
-    // 12. EDIT PROFILE NAME & LOGOUT ACTIONS
+    // 11. EDIT NAME & LOGOUT LOGIC
     // ==========================================
     const editUserNameButton = document.getElementById('edit-name-btn');
     if (editUserNameButton) { 
         editUserNameButton.addEventListener('click', function() { 
-            // 🚀 PRIVACY FIX: Default value is 'Student', not 'Alina Sami'
             const currentSavedNameValue = localStorage.getItem('qms_user_name') || 'Student'; 
             
             window.showCustomPrompt("अपना नया नाम दर्ज करें", currentSavedNameValue, (newSubmittedName) => { 
@@ -691,12 +1144,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('qms_user_name', cleanedNewName); 
                     
                     const dashNameEl = document.getElementById('dash-user-name');
-                    if (dashNameEl) { dashNameEl.innerText = cleanedNewName; }
+                    if (dashNameEl) {
+                        dashNameEl.innerText = cleanedNewName; 
+                    }
                     
                     const panelNameEl = document.getElementById('panel-user-name');
-                    if (panelNameEl) { panelNameEl.innerText = cleanedNewName; }
+                    if (panelNameEl) {
+                        panelNameEl.innerText = cleanedNewName; 
+                    }
                     
-                    if(window.showCustomToast) { window.showCustomToast("नाम सफलतापूर्वक अपडेट हो गया!"); }
+                    if(window.showCustomToast) {
+                        window.showCustomToast("नाम सफलतापूर्वक अपडेट हो गया!"); 
+                    }
                 } 
             }); 
         }); 
@@ -715,83 +1174,199 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 13. 📅 DAILY STREAK CALENDAR LOGIC
+    // 12. 📅 DAILY STREAK CALENDAR LOGIC
     // ==========================================
     function initializeDailyStreakCalendar() {
-        const streakCalendarContainer = document.getElementById('streak-calendar');
-        const streakCountTextNode = document.getElementById('streak-count-text');
-        const mainTopStreakDisplay = document.getElementById('main-streak-display');
-        if (!streakCalendarContainer) return;
-
-        const getLocalDateString = (dateObject) => {
-            const timeZoneOffset = dateObject.getTimezoneOffset() * 60000; 
-            return (new Date(dateObject - timeZoneOffset)).toISOString().split('T')[0];
-        };
-
-        const todayDateObject = new Date();
-        const todayDateString = getLocalDateString(todayDateObject);
-
-        let currentStreakHistory = {};
-        const rawStreakData = localStorage.getItem('qms_streak_history');
-        if (rawStreakData) { currentStreakHistory = JSON.parse(rawStreakData); }
+        const streakContainer = document.getElementById('streak-calendar');
         
-        currentStreakHistory[todayDateString] = true;
-        localStorage.setItem('qms_streak_history', JSON.stringify(currentStreakHistory));
-
-        let activeStreakCount = 0;
-        let dateCheckerObject = new Date(todayDateObject);
-        
-        while (true) {
-            let checkerDateString = getLocalDateString(dateCheckerObject);
-            if (currentStreakHistory[checkerDateString] === true) {
-                activeStreakCount++;
-                dateCheckerObject.setDate(dateCheckerObject.getDate() - 1);
-            } else { break; }
+        if (!streakContainer) {
+            return;
         }
         
-        if (streakCountTextNode) { streakCountTextNode.innerText = activeStreakCount; }
-        if (mainTopStreakDisplay) { mainTopStreakDisplay.innerText = activeStreakCount + ' दिन'; }
+        const getLocalDateString = (d) => { 
+            const tz = d.getTimezoneOffset() * 60000; 
+            return (new Date(d - tz)).toISOString().split('T')[0]; 
+        };
+        
+        const todayStr = getLocalDateString(new Date());
+        
+        let streakHistory = {};
+        const rawHistory = localStorage.getItem('qms_streak_history');
+        if (rawHistory) {
+            streakHistory = JSON.parse(rawHistory);
+        }
+        
+        streakHistory[todayStr] = true;
+        localStorage.setItem('qms_streak_history', JSON.stringify(streakHistory));
 
-        let currentDayOfWeekNum = todayDateObject.getDay(); 
-        let daysToSubtractForMonday = todayDateObject.getDate() - currentDayOfWeekNum + (currentDayOfWeekNum === 0 ? -6 : 1); 
-        let mondayDateObject = new Date(todayDateObject.setDate(daysToSubtractForMonday));
+        let activeCount = 0; 
+        let dateChecker = new Date();
+        
+        while (true) {
+            if (streakHistory[getLocalDateString(dateChecker)]) { 
+                activeCount++; 
+                dateChecker.setDate(dateChecker.getDate() - 1); 
+            } else {
+                break;
+            }
+        }
+        
+        const streakTextNode = document.getElementById('streak-count-text');
+        if (streakTextNode) {
+            streakTextNode.innerText = activeCount;
+        }
+        
+        const mainTopStreakDisplay = document.getElementById('main-streak-display');
+        if (mainTopStreakDisplay) {
+            mainTopStreakDisplay.innerText = activeCount + ' दिन';
+        }
 
-        const dayNamesList = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        let calendarHtmlContent = '';
+        let currDay = new Date().getDay(); 
+        let monDiff = new Date().getDate() - currDay + (currDay === 0 ? -6 : 1); 
+        let monday = new Date(new Date().setDate(monDiff));
+        
+        const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        let html = '';
 
-        for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-            let loopTargetDateObj = new Date(mondayDateObject);
-            loopTargetDateObj.setDate(mondayDateObject.getDate() + dayIndex);
-            let loopTargetDateString = getLocalDateString(loopTargetDateObj);
+        for (let i = 0; i < 7; i++) {
+            let loopDate = new Date(monday); 
+            loopDate.setDate(monday.getDate() + i);
             
-            let uiStatusClass = 'future';
-            let iconClassString = 'ri-checkbox-blank-circle-line'; 
-
-            let realTodayDateObj = new Date();
-            let realTodayDateString = getLocalDateString(realTodayDateObj);
-
-            if (loopTargetDateString === realTodayDateString) {
-                uiStatusClass = 'today completed';
-                iconClassString = 'ri-check-line';
-            } 
-            else if (loopTargetDateObj < realTodayDateObj) {
-                if (currentStreakHistory[loopTargetDateString] === true) {
-                    uiStatusClass = 'completed';
-                    iconClassString = 'ri-check-line';
-                } else {
-                    uiStatusClass = 'missed';
-                    iconClassString = 'ri-close-line';
+            let loopStr = getLocalDateString(loopDate);
+            let uiClass = 'future'; 
+            let iconClass = 'ri-checkbox-blank-circle-line'; 
+            
+            if (loopStr === todayStr) { 
+                uiClass = 'today completed'; 
+                iconClass = 'ri-check-line'; 
+            } else if (loopDate < new Date()) {
+                if (streakHistory[loopStr]) { 
+                    uiClass = 'completed'; 
+                    iconClass = 'ri-check-line'; 
+                } else { 
+                    uiClass = 'missed'; 
+                    iconClass = 'ri-close-line'; 
                 }
             }
-
-            calendarHtmlContent += `
-                <div class="streak-day ${uiStatusClass}">
-                    <span class="streak-day-name">${dayNamesList[dayIndex]}</span>
-                    <div class="streak-circle"><i class="${iconClassString}"></i></div>
+            
+            html += `
+                <div class="streak-day ${uiClass}">
+                    <span class="streak-day-name">${dayNames[i]}</span>
+                    <div class="streak-circle"><i class="${iconClass}"></i></div>
                 </div>
             `;
         }
-        streakCalendarContainer.innerHTML = calendarHtmlContent;
+        
+        streakContainer.innerHTML = html;
     }
+    
     initializeDailyStreakCalendar();
+
+    // ==========================================
+    // 13. FIREFLY PARTICLES ENGINE
+    // ==========================================
+    const backgroundCanvasNode = document.getElementById('bg-canvas');
+    
+    if (backgroundCanvasNode) {
+        const renderContext2D = backgroundCanvasNode.getContext('2d'); 
+        backgroundCanvasNode.width = window.innerWidth; 
+        backgroundCanvasNode.height = window.innerHeight;
+        
+        const mathScienceSymbolsList = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ'];
+        let activeParticlesCollection = [];
+        
+        class LoginFireflyParticle {
+            constructor() {
+                const shapeTypeRandomizer = Math.random();
+                if (shapeTypeRandomizer > 0.4) {
+                    this.particleShape = 'dot';
+                } else {
+                    this.particleShape = 'symbol';
+                }
+                
+                const randomSymbolSelection = Math.floor(Math.random() * mathScienceSymbolsList.length);
+                this.textSymbol = mathScienceSymbolsList[randomSymbolSelection];
+                
+                this.coordinateX = Math.random() * backgroundCanvasNode.width; 
+                this.coordinateY = Math.random() * backgroundCanvasNode.height;
+                
+                if (this.particleShape === 'symbol') { 
+                    this.pixelSize = Math.random() * 15 + 10; 
+                    this.velocityVectorX = Math.random() * 0.5 - 0.25; 
+                    this.velocityVectorY = Math.random() * -0.8 - 0.2; 
+                } else { 
+                    this.pixelSize = Math.random() * 3 + 1; 
+                    this.velocityVectorX = Math.random() * 1 - 0.5; 
+                    this.velocityVectorY = Math.random() * -1 - 0.2; 
+                }
+                
+                this.alphaBlinkingSpeed = Math.random() * 0.05 + 0.02; 
+                this.alphaSineAngle = Math.random() * Math.PI * 2;
+            }
+            
+            updatePositionData() {
+                this.coordinateY += this.velocityVectorY; 
+                this.coordinateX += this.velocityVectorX; 
+                this.alphaSineAngle += this.alphaBlinkingSpeed;
+                
+                if (this.coordinateY < -30) { 
+                    this.coordinateY = backgroundCanvasNode.height + 30; 
+                    this.coordinateX = Math.random() * backgroundCanvasNode.width; 
+                }
+                
+                if (this.coordinateX < -30 || this.coordinateX > backgroundCanvasNode.width + 30) { 
+                    this.velocityVectorX = this.velocityVectorX * -1; 
+                }
+            }
+            
+            drawOntoCanvas(ctxObject) {
+                const rootCssVariables = getComputedStyle(document.documentElement); 
+                let currentThemeAccentColor = rootCssVariables.getPropertyValue('--accent-main').trim();
+                
+                if (currentThemeAccentColor === "") {
+                    currentThemeAccentColor = '#00f0ff';
+                }
+                
+                let dynamicOpacityNumber = ((Math.sin(this.alphaSineAngle) + 1) / 2) * 0.8 + 0.1;
+                
+                ctxObject.fillStyle = `rgba(255, 255, 255, ${dynamicOpacityNumber})`; 
+                ctxObject.shadowBlur = dynamicOpacityNumber * 20; 
+                ctxObject.shadowColor = currentThemeAccentColor;
+                
+                if (this.particleShape === 'symbol') { 
+                    ctxObject.font = `${this.pixelSize}px "Space Grotesk", sans-serif`; 
+                    ctxObject.fillText(this.textSymbol, this.coordinateX, this.coordinateY); 
+                } else { 
+                    ctxObject.beginPath(); 
+                    ctxObject.arc(this.coordinateX, this.coordinateY, this.pixelSize, 0, Math.PI * 2); 
+                    ctxObject.fill(); 
+                }
+                
+                ctxObject.shadowBlur = 0; 
+            }
+        }
+        
+        for (let iterationIndex = 0; iterationIndex < 40; iterationIndex++) { 
+            activeParticlesCollection.push(new LoginFireflyParticle()); 
+        }
+        
+        function executeBackgroundAnimation() { 
+            renderContext2D.clearRect(0, 0, backgroundCanvasNode.width, backgroundCanvasNode.height); 
+            
+            activeParticlesCollection.forEach(particleItem => { 
+                particleItem.updatePositionData(); 
+                particleItem.drawOntoCanvas(renderContext2D); 
+            }); 
+            
+            requestAnimationFrame(executeBackgroundAnimation); 
+        }
+        
+        executeBackgroundAnimation();
+        
+        window.addEventListener('resize', () => { 
+            backgroundCanvasNode.width = window.innerWidth; 
+            backgroundCanvasNode.height = window.innerHeight; 
+        });
+    }
+
 });
