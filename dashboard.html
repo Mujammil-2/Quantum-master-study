@@ -260,7 +260,8 @@
                         <i class="ri-fire-fill"></i>
                     </div>
                     <div class="stat-info">
-                        <h3 class="stat-number streak-badge"><span>1 दिन</span></h3>
+                        <!-- ID added for dynamic streak update -->
+                        <h3 class="stat-number streak-badge"><span id="main-streak-display">0 दिन</span></h3>
                         <p style="color: var(--text-secondary); font-size: 0.85rem;">एक्टिव स्ट्रीक</p>
                     </div>
                 </div>
@@ -297,14 +298,27 @@
             </div>
 
             <!-- =========================================
-                 🏆 NEW: ACHIEVEMENTS & BADGES SECTION
+                 📅 NEW: DAILY STREAK CALENDAR SECTION
             ========================================== -->
+            <div class="streak-card glass-card" style="margin-bottom: 2.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.2rem;">
+                        <i class="ri-calendar-check-fill"></i> डेली स्ट्रीक (7 दिन)
+                    </h3>
+                    <span style="font-weight: bold; color: #ffc107; font-size: 0.9rem;"><span id="streak-count-text">0</span> दिन की स्ट्रीक 🔥</span>
+                </div>
+                <!-- JS will inject days here -->
+                <div class="streak-days-grid" id="streak-calendar">
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">लोड हो रहा है...</p>
+                </div>
+            </div>
+
+            <!-- 🏆 ACHIEVEMENTS & BADGES SECTION -->
             <div class="badges-section">
                 <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;">
                     <i class="ri-medal-fill"></i> अचीवमेंट्स और बैज
                 </h3>
                 
-                <!-- JS will render badges dynamically here based on XP -->
                 <div class="badges-grid" id="badges-container">
                     <p style="color: var(--text-secondary); font-size: 0.9rem;">लोड हो रहा है...</p>
                 </div>
