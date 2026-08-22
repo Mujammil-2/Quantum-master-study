@@ -7,51 +7,401 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- मेन स्टाइलशीट -->
     <link rel="stylesheet" href="style.css">
     
     <style>
-        .auth-wrapper { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 2rem; position: relative; z-index: 10; }
-        .auth-card { background: rgba(15, 15, 25, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); padding: 3rem 2rem; border-radius: 20px; text-align: center; max-width: 400px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.5); animation: fadeUp 0.8s ease; }
-        .auth-logo { font-size: 4rem; color: var(--accent-main); margin-bottom: 1rem; text-shadow: 0 0 20px var(--accent-glow); }
-        .auth-card h1 { font-family: var(--font-heading); font-size: 2rem; margin-bottom: 5px; }
-        .auth-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2.5rem; }
-        .google-btn { background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; border: none; transition: 0.3s; }
-        .google-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
-        .google-btn img { width: 24px; }
-        .footer-text { margin-top: 2rem; font-size: 0.75rem; color: var(--text-secondary); }
+        /* ==========================================================================
+           LOGIN SCREEN SPECIFIC STYLES
+        ========================================================================== */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #1a1a2e, #0f0f19);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Elements */
+        .glow-orb-1 { position: absolute; width: 300px; height: 300px; background: var(--accent-main); filter: blur(150px); opacity: 0.15; top: -100px; right: -100px; animation: floatOrb 8s ease-in-out infinite alternate; z-index: 1; }
+        .glow-orb-2 { position: absolute; width: 400px; height: 400px; background: #b535ff; filter: blur(150px); opacity: 0.1; bottom: -150px; left: -150px; animation: floatOrb 10s ease-in-out infinite alternate-reverse; z-index: 1; }
+        
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 50px); }
+        }
+
+        /* Canvas for Particles */
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* Ensure particles show above background but below card */
+            pointer-events: none;
+        }
+
+        /* 🚀 NEW: Floating Features Button */
+        .info-float-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-family: var(--font-hindi);
+            font-size: 0.95rem;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .info-float-btn:hover {
+            background: var(--accent-main);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-glow);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+            z-index: 10;
+            animation: fadeUp 0.8s ease;
+        }
+
+        .auth-card {
+            padding: 2.5rem;
+            border-radius: 24px;
+            text-align: center;
+            background: rgba(15, 15, 25, 0.7);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--accent-main), #b535ff);
+        }
+
+        .app-branding {
+            margin-bottom: 2rem;
+        }
+
+        .brand-logo-svg {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        .app-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .app-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Input Fields */
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .auth-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 16px 16px 45px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .auth-input:focus {
+            border-color: var(--accent-main);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .auth-input:focus + .input-icon {
+            color: var(--accent-main);
+        }
+
+        /* Buttons */
+        .btn-auth-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-main) 0%, #0099ff 100%);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.3);
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-auth-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.5);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .divider:not(:empty)::before { margin-right: .25em; }
+        .divider:not(:empty)::after { margin-left: .25em; }
+
+        /* Social Auth Grid */
+        .social-auth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .social-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Specific Icon Colors for branding */
+        .ri-google-fill { color: #DB4437; }
+        .ri-facebook-circle-fill { color: #4267B2; }
+        .ri-instagram-fill { background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .btn-guest {
+            width: 100%;
+            background: transparent;
+            border: 1px dashed rgba(255,255,255,0.3);
+            color: var(--text-secondary);
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-guest:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border-color: #fff;
+        }
+
+        .privacy-note {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .privacy-note i {
+            color: #00ff88;
+        }
+
+        /* 🚀 NEW: Features Modal Styles */
+        .features-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 10001; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: 0.3s ease;
+        }
+        .features-modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .features-modal-box {
+            background: rgba(15, 15, 25, 0.95); border: 1px solid var(--accent-main);
+            padding: 2.5rem; border-radius: 20px; max-width: 450px; width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            transform: translateY(20px); transition: 0.3s ease;
+            text-align: left;
+        }
+        .features-modal-overlay.active .features-modal-box { transform: translateY(0); }
+        
+        .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 20px; margin-bottom: 25px; }
+        .feature-list li { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 0.95rem; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 12px; border-left: 3px solid var(--accent-main); font-family: var(--font-hindi); }
+        .feature-list li i { font-size: 1.3rem; color: var(--accent-main); }
     </style>
 </head>
 <body>
 
-    <!-- तुम्हारा नया प्रीमियम साउंड यहाँ लग गया है -->
+    <!-- कस्टम क्लिक साउंड -->
     <audio id="sfx-click" preload="auto">
         <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="particle-canvas-container"></div>
+    <!-- Background Decoration & Particles Canvas -->
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="auth-wrapper">
-        <div class="auth-card">
-            <i class="ri-atom-line auth-logo"></i>
-            <h1>QMS</h1>
-            <p>क्वांटम मास्टर स्टडी में आपका स्वागत है।<br>अपना सफर शुरू करें।</p>
-            <button class="google-btn sfx-trigger" onclick="window.location.href='dashboard.html'">
-                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google">
-                Google से साइन इन करें
+    <!-- 🚀 NEW: Floating Features Button -->
+    <button class="info-float-btn sfx-trigger" id="open-features-btn">
+        <i class="ri-information-line" style="font-size: 1.2rem;"></i> ऐप के फीचर्स
+    </button>
+
+    <!-- 🚀 NEW: Features Modal -->
+    <div class="features-modal-overlay" id="features-modal">
+        <div class="features-modal-box">
+            <h2 style="color: var(--accent-main); margin-bottom: 5px; font-family: var(--font-heading); font-size: 1.8rem;">🚀 QMS प्रीमियम फीचर्स</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">लॉगिन करने के बाद आपको ये सुविधाएँ मिलेंगी:</p>
+            
+            <ul class="feature-list">
+                <li><i class="ri-book-read-fill"></i> सभी विषयों के स्मार्ट वीडियो और PDF नोट्स</li>
+                <li><i class="ri-timer-flash-fill"></i> कस्टम टाइमर के साथ लाइव 5 विषयों का मॉक टेस्ट</li>
+                <li><i class="ri-headphone-fill"></i> फोकस बढ़ाने के लिए 7 मल्टी-ट्रैक म्यूजिक प्लेयर (BGM)</li>
+                <li><i class="ri-bookmark-3-fill"></i> फेवरेट चैप्टर्स के लिए स्मार्ट बुकमार्क सिस्टम</li>
+                <li><i class="ri-palette-fill"></i> 8 प्रीमियम कलर थीम्स और कस्टमाइज़ेशन</li>
+                <li><i class="ri-shield-check-fill" style="color: #00ff88;"></i> 100% प्राइवेट (डेटा डिवाइस में सुरक्षित)</li>
+            </ul>
+            
+            <button class="btn-auth-primary sfx-trigger" id="close-features-btn" style="margin-bottom: 0;">
+                समझ गया (Got it) <i class="ri-thumb-up-fill"></i>
             </button>
-            <p class="footer-text">© 2026 QMS Learning</p>
         </div>
     </div>
 
-    <script src="script.js"></script>
-    <script>
-        document.querySelector('.google-btn').addEventListener('click', () => {
-            const sfx = document.getElementById('sfx-click');
-            if(sfx) { sfx.volume = 1.0; sfx.play().catch(()=>{}); }
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 300);
-        });
-    </script>
+    <!-- MAIN LOGIN CARD -->
+    <div class="login-wrapper">
+        <div class="auth-card">
+            
+            <div class="app-branding">
+                <svg viewBox="0 0 100 100" class="brand-logo-svg">
+                    <circle cx="50" cy="50" r="15" fill="var(--accent-main)"/>
+                    <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="var(--accent-main)" stroke-width="4" transform="rotate(0 50 50)"/>
+                    <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="var(--accent-main)" stroke-width="4" transform="rotate(60 50 50)"/>
+                    <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="var(--accent-main)" stroke-width="4" transform="rotate(120 50 50)"/>
+                </svg>
+                <h1 class="app-title">QMS</h1>
+                <p class="app-subtitle">क्वांटम मास्टर स्टडी में आपका स्वागत है</p>
+            </div>
+
+            <!-- Email / Password Login Form -->
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="email" id="auth-email" class="auth-input" placeholder="ईमेल आईडी (Email)" required>
+                    <i class="ri-mail-line input-icon"></i>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="auth-password" class="auth-input" placeholder="पासवर्ड (Password)" required>
+                    <i class="ri-lock-password-line input-icon"></i>
+                </div>
+
+                <button type="submit" class="btn-auth-primary sfx-trigger">
+                    लॉगिन करें <i class="ri-arrow-right-circle-line"></i>
+                </button>
+            </form>
+
+            <div class="divider">या (OR)</div>
+
+            <!-- Social Logins -->
+            <div class="social-auth-grid">
+                <button class="social-btn google sfx-trigger" onclick="handleSocialLogin('Google')">
+                    <i class="ri-google-fill" style="font-size: 1.2rem;"></i> Google
+                </button>
+                <button class="social-btn facebook sfx-trigger" onclick="handleSocialLogin('Facebook')">
+                    <i class="ri-facebook-circle-fill" style="font-size: 1.2rem;"></i> Facebook
+                </button>
+            </div>
+            
+            <button class="social-btn instagram sfx-trigger" onclick="handleSocialLogin('Instagram')" style="width: 100%; margin-bottom: 15px;">
+                <i class="ri-instagram-fill" style="font-size: 1.2rem;"></i> Instagram से साइन इन करें
+            </button>
+
+            <!-- Guest Login -->
+            <button class="btn-guest sfx-trigger" onclick="handleGuestLogin()">
+                <i class="ri-user-smile-line"></i> गेस्ट के रूप में जारी रखें (Guest)
+            </button>
+
+            <!-- Privacy Note -->
+            <p class="privacy-note">
+                <i class="ri-shield-check-fill"></i> हम आपकी प्राइवेसी का सम्मान करते हैं। आपका डेटा आपके डिवाइस पर ही सुरक्षित रहता है।
+            </p>
+
+        </div>
+    </div>
+
+    <!-- Auth Logic File -->
+    <script src="auth.js"></script>
+
 </body>
 </html>
