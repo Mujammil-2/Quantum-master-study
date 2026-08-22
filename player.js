@@ -5,9 +5,10 @@
      1. Full Syllabus Database (Physics=14, Chem=10, Math=13, Hindi=18, Eng=19)
      2. Smart BGM Memory Resume
      3. 🔖 Bookmarks System (Save/Remove)
-     4. Animated Download PDF Logic & DIRECT Live View
+     4. DIRECT LIVE VIEW (No Google Docs Viewer) & Premium Download
      5. Complete Status Tracker
      6. Quantum Fireflies Particles
+     7. Clickable Topics List Logic
 ========================================================================= */
 
 // --------------------------------------------------------------------------
@@ -181,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // B. LOAD DATA & SET UI CONTENT
     // ==========================================
+    
     const currentlySavedUiTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', currentlySavedUiTheme);
     
@@ -232,15 +234,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const sfxClickSoundAudioNode = document.getElementById('sfx-click'); 
     let isSfxTurnedOnAppWide = localStorage.getItem('qms_sound') !== 'off';
     
+    function executeClickSound() {
+        if (isSfxTurnedOnAppWide && sfxClickSoundAudioNode) { 
+            sfxClickSoundAudioNode.currentTime = 0; 
+            sfxClickSoundAudioNode.volume = 1.0; 
+            sfxClickSoundAudioNode.play().catch(()=>{}); 
+        } 
+    }
+
     const allSfxClickableButtons = document.querySelectorAll('.sfx-trigger');
     allSfxClickableButtons.forEach(actionButton => { 
-        actionButton.addEventListener('click', () => { 
-            if (isSfxTurnedOnAppWide && sfxClickSoundAudioNode) { 
-                sfxClickSoundAudioNode.currentTime = 0; 
-                sfxClickSoundAudioNode.volume = 1.0; 
-                sfxClickSoundAudioNode.play().catch(()=>{}); 
-            } 
-        }); 
+        actionButton.addEventListener('click', executeClickSound); 
     });
 
     // ==========================================
@@ -286,17 +290,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // D. PDF DOWNLOAD & DIRECT LIVE VIEW LOGIC
+    // D. 🚀 PDF DOWNLOAD & DIRECT LIVE VIEW LOGIC
     // ==========================================
     
-    // 1. LIVE VIEW LOGIC (Directly Open NCERT PDF)
+    // 1. LIVE VIEW LOGIC (Directly Open NCERT PDF Without Viewer)
     const buttonLiveViewNotes = document.getElementById('btn-view-notes');
     
     if (buttonLiveViewNotes) { 
         buttonLiveViewNotes.addEventListener('click', () => { 
             if (mappedChapterDetailsObj.pdfUrl && mappedChapterDetailsObj.pdfUrl !== "#") { 
                 
-                // 🚀 OPEN DIRECT NCERT PDF URL in NEW TAB
+                // Open the exact URL directly in a new tab
                 window.open(mappedChapterDetailsObj.pdfUrl, '_blank'); 
                 
             } else { 
@@ -335,11 +339,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 progressStatusUpdateText.innerText = 'तैयार किया जा रहा है... 0%'; 
                             }, 500);
                             
-                            // 🚀 REAL DOWNLOAD ACTION (Triggers browser download)
+                            // REAL DOWNLOAD ACTION
                             const temporaryHyperlink = document.createElement('a'); 
                             temporaryHyperlink.href = mappedChapterDetailsObj.pdfUrl; 
                             
-                            // Set filename dynamically based on subject and chapter
                             const safeFileName = `QMS_${activeSubjectQuery}_chapter_${activeChapterIdQuery}_notes.pdf`;
                             temporaryHyperlink.download = safeFileName; 
                             temporaryHyperlink.target = '_blank'; 
@@ -398,7 +401,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // F. FIREFLY PARTICLES (GLOWING SYMBOLS)
+    // F. TOPICS LIST CLICK LOGIC
+    // ==========================================
+    const topicListItems = document.querySelectorAll('.topic-list li:not(.locked)');
+    
+    topicListItems.forEach(item => {
+        item.addEventListener('click', function() {
+            executeClickSound();
+            
+            topicListItems.forEach(li => {
+                li.classList.remove('active');
+                const icon = li.querySelector('i');
+                if (icon && icon.classList.contains('ri-play-circle-fill')) {
+                    icon.classList.remove('ri-play-circle-fill');
+                    icon.classList.add('ri-play-circle-line');
+                }
+            });
+            
+            this.classList.add('active');
+            
+            const icon = this.querySelector('i');
+            if (icon && icon.classList.contains('ri-play-circle-line')) {
+                icon.classList.remove('ri-play-circle-line');
+                icon.classList.add('ri-play-circle-fill');
+            }
+            
+            const topicName = this.querySelector('span').innerText;
+            window.showCustomToast(`${topicName} लोड हो रहा है...`);
+        });
+    });
+
+    const lockedTopicItems = document.querySelectorAll('.topic-list li.locked');
+    lockedTopicItems.forEach(item => {
+        item.addEventListener('click', () => {
+            executeClickSound();
+            window.showCustomToast("यह टॉपिक अभी लॉक है। पहले पिछले टॉपिक्स पूरे करें।", true);
+        });
+    });
+
+    // ==========================================
+    // G. FIREFLY PARTICLES (GLOWING SYMBOLS)
     // ==========================================
     const targetParticleCanvasElement = document.getElementById('bg-canvas');
     
