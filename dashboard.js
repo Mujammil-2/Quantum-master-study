@@ -1,12 +1,12 @@
 /* =========================================================================
-   QMS JAVASCRIPT MASTER ENGINE (DASHBOARD)
-   - 100% FULL CODE (EXPANDED FOR MAXIMUM READABILITY)
+   QMS JAVASCRIPT MASTER ENGINE (DASHBOARD - 100% EXPANDED CODE)
    - FEATURES:
      1. Multi-Track BGM Memory System
      2. Advanced Firefly Particles
      3. User Authentication (Logout, Edit Name)
      4. Pomodoro Timer
      5. Bookmarks (Saved Notes) Renderer
+     6. 🏆 NEW: GAMIFICATION & BADGES LOGIC
 ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -494,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
             existingToastNode.remove();
         }
         
-        // Create new toast DOM element
+        // Create new DOM element for Toast
         const toastElementNode = document.createElement('div'); 
         
         if (isErrorMessage) {
@@ -591,10 +591,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 8. LOAD USER PROFILE DATA
+    // 8. 🏆 NEW: GAMIFICATION & BADGES ENGINE 🏆
     // ==========================================
+    
+    // Step 1: Calculate Total Data (Chapters + Quiz XP)
     const savedUserNameValue = localStorage.getItem('qms_user_name') || 'Alina Sami';
     
+    let completedChaptersData = {};
+    const rawCompletedData = localStorage.getItem('qms_completed');
+    if (rawCompletedData) {
+        completedChaptersData = JSON.parse(rawCompletedData);
+    }
+    
+    const completedChaptersCountNumber = Object.keys(completedChaptersData).length;
+    
+    // Let's grab Quiz XP or any other extra XP saved in localStorage
+    let storedExtraXp = parseInt(localStorage.getItem('qms_total_xp')) || 0;
+    
+    // Total XP = (Each completed chapter * 50) + Quiz XP
+    let grandTotalXp = (completedChaptersCountNumber * 50) + storedExtraXp;
+    
+    // Save it back safely so it's always synced
+    localStorage.setItem('qms_total_xp', grandTotalXp);
+
+    // Update UI Stats
     const dashUserNameElement = document.getElementById('dash-user-name');
     if (dashUserNameElement) {
         dashUserNameElement.innerText = savedUserNameValue; 
@@ -604,29 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (panelUserNameElement) {
         panelUserNameElement.innerText = savedUserNameValue;
     }
-    
-    const savedProfileImageSrc = localStorage.getItem('qms_profile_img');
-    if (savedProfileImageSrc) {
-        const dashSmallAvatarImage = document.getElementById('dash-small-avatar');
-        if (dashSmallAvatarImage) {
-            dashSmallAvatarImage.src = savedProfileImageSrc; 
-        }
-        
-        const panelProfileImageAvatar = document.getElementById('panel-profile-img');
-        if (panelProfileImageAvatar) {
-            panelProfileImageAvatar.src = savedProfileImageSrc; 
-        }
-    }
 
-    // Calculate Completed Chapters & XP
-    let completedChaptersData = {};
-    const rawCompletedData = localStorage.getItem('qms_completed');
-    if (rawCompletedData) {
-        completedChaptersData = JSON.parse(rawCompletedData);
-    }
-    
-    const completedChaptersCountNumber = Object.keys(completedChaptersData).length;
-    
     const dashCompletedCountElement = document.getElementById('dash-completed-count');
     if (dashCompletedCountElement) {
         dashCompletedCountElement.innerText = completedChaptersCountNumber;
@@ -634,7 +632,70 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const dashTotalXpElement = document.getElementById('dash-total-xp');
     if (dashTotalXpElement) {
-        dashTotalXpElement.innerText = completedChaptersCountNumber * 50;
+        dashTotalXpElement.innerText = grandTotalXp;
+    }
+
+    // Step 2: Define Badges Data Array
+    const qmsBadgesData = [
+        { 
+            id: 'b1', 
+            name: 'क्वांटम स्टार्टर', 
+            icon: 'ri-seedling-fill', 
+            color: '#00f0ff', 
+            requiredXp: 0, 
+            desc: 'QMS जॉइन किया' 
+        },
+        { 
+            id: 'b2', 
+            name: 'फोकस मास्टर', 
+            icon: 'ri-focus-2-fill', 
+            color: '#00ff88', 
+            requiredXp: 100, 
+            desc: '100 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b3', 
+            name: 'सुपर स्कॉलर', 
+            icon: 'ri-book-open-fill', 
+            color: '#b535ff', 
+            requiredXp: 500, 
+            desc: '500 XP प्राप्त किए' 
+        },
+        { 
+            id: 'b4', 
+            name: 'क्वांटम लीजेंड', 
+            icon: 'ri-vip-crown-fill', 
+            color: '#ffc107', 
+            requiredXp: 1000, 
+            desc: '1000 XP प्राप्त किए' 
+        }
+    ];
+
+    // Step 3: Render Badges to the Dashboard
+    const badgesContainerElement = document.getElementById('badges-container');
+    
+    if (badgesContainerElement) {
+        let badgesHTMLString = '';
+        
+        qmsBadgesData.forEach(badgeObject => {
+            // Check if user has enough XP to unlock this badge
+            const isBadgeUnlocked = grandTotalXp >= badgeObject.requiredXp;
+            
+            const badgeStatusClass = isBadgeUnlocked ? 'unlocked' : 'locked';
+            const lockedOverlayHTML = isBadgeUnlocked ? '' : '<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>';
+            
+            badgesHTMLString += `
+                <div class="badge-card ${badgeStatusClass} sfx-trigger" title="${badgeObject.desc}">
+                    ${lockedOverlayHTML}
+                    <i class="${badgeObject.icon} badge-icon" style="color: ${badgeObject.color};"></i>
+                    <h4 class="badge-title">${badgeObject.name}</h4>
+                    <p class="badge-desc">${badgeObject.desc}</p>
+                </div>
+            `;
+        });
+        
+        // Inject into DOM
+        badgesContainerElement.innerHTML = badgesHTMLString;
     }
 
     // ==========================================
@@ -697,6 +758,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    // Profile Avatar Logic
+    const savedProfileImageSrc = localStorage.getItem('qms_profile_img');
+    if (savedProfileImageSrc) {
+        const dashSmallAvatarImage = document.getElementById('dash-small-avatar');
+        if (dashSmallAvatarImage) {
+            dashSmallAvatarImage.src = savedProfileImageSrc; 
+        }
+        
+        const panelProfileImageAvatar = document.getElementById('panel-profile-img');
+        if (panelProfileImageAvatar) {
+            panelProfileImageAvatar.src = savedProfileImageSrc; 
+        }
+    }
 
     // ==========================================
     // 10. SYSTEM AUDIO FX (CLICK SOUNDS)
@@ -864,6 +939,10 @@ document.addEventListener('DOMContentLoaded', () => {
         resetLogoutButton.addEventListener('click', () => { 
             window.showCustomConfirm("क्या आप सच में लॉगआउट करना चाहते हैं?", (userConfirmedLogout) => { 
                 if (userConfirmedLogout === true) { 
+                    
+                    // Clear the Auth flag but KEEP the user data and XP safe!
+                    localStorage.setItem('qms_is_logged_in', 'false');
+                    
                     // Redirect to login index page
                     window.location.href = "index.html"; 
                 } 
