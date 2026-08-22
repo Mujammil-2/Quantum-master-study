@@ -13,14 +13,16 @@
 </head>
 <body>
 
-    <!-- कस्टम साउंड -->
+    <!-- कस्टम क्लिक साउंड -->
     <audio id="sfx-click" preload="auto">
         <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- =========================================
-         SPLASH SCREEN / LOADING SCREEN
-    ========================================== -->
+    <!-- 🎵 स्मार्ट BGM प्लेयर 🎵 -->
+    <audio id="bgm-audio" loop preload="auto">
+        <source src="bgm1.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="splash-screen">
         <svg viewBox="0 0 100 100" class="premium-logo">
             <circle cx="50" cy="50" r="12" fill="var(--accent-main)"/>
@@ -36,14 +38,12 @@
         <p class="loading-text" id="loading-text">सिस्टम इनिशियलाइज़ हो रहा है...</p>
     </div>
 
-    <!-- =========================================
-         FIREFLY PARTICLES CANVAS (जुगनू वाले फॉर्मूले)
-    ========================================== -->
+    <!-- जुगनू एनीमेशन -->
     <canvas id="bg-canvas"></canvas>
     <div class="overlay-bg" id="panel-overlay"></div>
 
     <!-- =========================================
-         FULL PREMIUM SETTINGS PANEL (WITH NAMED COLORS)
+         FULL PREMIUM SETTINGS PANEL
     ========================================== -->
     <aside class="profile-side-panel" id="settings-panel">
         <i class="ri-close-line close-panel-btn sfx-trigger" id="close-panel"></i>
@@ -55,7 +55,7 @@
                 <input type="file" id="img-upload" hidden accept="image/*">
             </div>
             <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                <h2 id="panel-user-name" style="font-family: var(--font-heading); font-size: 1.5rem;">Student</h2>
+                <h2 id="panel-user-name" style="font-family: var(--font-heading); font-size: 1.5rem;">Alina Sami</h2>
                 <i class="ri-edit-box-line sfx-trigger" id="edit-name-btn" style="color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;"></i>
             </div>
             <p style="color: var(--accent-main); font-size: 0.85rem; margin-top: 5px; font-weight: 600;">QMS प्रो स्टूडेंट <i class="ri-vip-crown-fill"></i></p>
@@ -63,7 +63,6 @@
 
         <h3 class="setting-section-title"><i class="ri-palette-fill"></i> कस्टमाइज़ेशन (Themes)</h3>
         
-        <!-- NEW NAMED THEME GRID (100% Bug Free) -->
         <div class="theme-grid-named">
             <div class="theme-option-card sfx-trigger" data-set-theme="default">
                 <div class="theme-color-circle" style="background: #00f0ff; box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);"></div>
@@ -99,29 +98,42 @@
             </div>
         </div>
 
-        <h3 class="setting-section-title"><i class="ri-book-read-fill"></i> स्टडी प्रेफरेंस</h3>
+        <!-- NEW: MULTI-TRACK BGM PLAYER (WITH 7 TRACKS) -->
+        <h3 class="setting-section-title"><i class="ri-headphone-fill"></i> म्यूजिक प्लेयर (BGM)</h3>
+        
         <div class="setting-row">
             <div class="setting-info">
-                <h4>PDF डाउनलोड फोल्डर</h4>
-                <p>नोट्स कहाँ सेव करें?</p>
+                <h4>म्यूजिक ट्रैक</h4>
+                <p>अपना पसंदीदा BGM चुनें</p>
             </div>
-            <select class="pro-select sfx-trigger" id="pdf-location-pref">
-                <option value="default">गैलरी / Default</option>
-                <option value="qms_folder">QMS फोल्डर</option>
-                <option value="ask">हर बार पूछें</option>
+            <select class="pro-select sfx-trigger" id="bgm-track-select">
+                <option value="bgm1.mp3">Track 1 - Lo-Fi Chill</option>
+                <option value="bgm2.mp3">Track 2 - Deep Focus</option>
+                <option value="bgm3.mp3">Track 3 - Piano Vibe</option>
+                <option value="bgm4.mp3">Track 4 - Rain Sounds</option>
+                <option value="bgm5.mp3">Track 5 - Nature Ambient</option>
+                <option value="bgm6.mp3">Track 6 - Space Alpha</option>
+                <!-- यह है तुम्हारा नया 7वां ट्रैक -->
+                <option value="bgm7.mp3">Track 7 - Deep Relax & Study</option>
             </select>
         </div>
+
         <div class="setting-row">
             <div class="setting-info">
-                <h4>वीडियो क्वालिटी</h4>
-                <p>डिफ़ॉल्ट प्लेबैक रेज़ोल्यूशन</p>
+                <h4>प्ले / पॉज़ म्यूजिक</h4>
+                <p>बैकग्राउंड म्यूजिक ऑन/ऑफ करें</p>
             </div>
-            <select class="pro-select sfx-trigger" id="video-quality-pref">
-                <option value="auto">Auto (अनुशंसित)</option>
-                <option value="1080p">1080p HD</option>
-                <option value="720p">720p</option>
-                <option value="480p">480p (Data Saver)</option>
-            </select>
+            <label class="switch-clean sfx-trigger" style="position: relative; display: inline-block; width: 44px; height: 24px;">
+                <input type="checkbox" id="bgm-toggle" style="opacity: 0; width: 0; height: 0;">
+                <span class="slider-clean" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); border-radius: 24px; transition: .3s;"></span>
+            </label>
+        </div>
+        
+        <div class="setting-row">
+            <div class="setting-info">
+                <h4>म्यूजिक वॉल्यूम</h4>
+            </div>
+            <input type="range" id="bgm-volume" min="0" max="1" step="0.1" value="0.3" style="width: 120px; accent-color: var(--accent-main); cursor: pointer;">
         </div>
 
         <h3 class="setting-section-title"><i class="ri-settings-3-fill"></i> ऐप सेटिंग्स</h3>
@@ -130,7 +142,6 @@
                 <h4>सिस्टम साउंड (SFX)</h4>
                 <p>क्लिक और अलर्ट साउंड</p>
             </div>
-            <!-- Toggle UI handled by JS -->
             <label class="switch-clean sfx-trigger" style="position: relative; display: inline-block; width: 44px; height: 24px;">
                 <input type="checkbox" id="sound-toggle" checked style="opacity: 0; width: 0; height: 0;">
                 <span class="slider-clean" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--accent-main); border-radius: 24px; transition: .3s; box-shadow: 0 0 10px var(--accent-glow);"></span>
@@ -163,7 +174,6 @@
         </header>
 
         <main class="dash-main-clean">
-            <!-- Dynamic Welcome Banner -->
             <div class="welcome-banner glass-card">
                 <div class="welcome-text">
                     <h1 class="greeting"><span id="dynamic-greeting">नमस्ते</span>, <span class="highlight" id="dash-user-name">Student</span> 👋</h1>
@@ -172,12 +182,10 @@
                 </div>
             </div>
 
-            <!-- Motivational Quote of the session -->
             <div class="quote-box" id="daily-quote">
                 "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।"
             </div>
 
-            <!-- Pomodoro Focus Timer -->
             <div class="timer-card glass-card">
                 <h3 style="margin-bottom: 10px; color: var(--text-secondary);"><i class="ri-timer-line"></i> फोकस टाइमर (Pomodoro)</h3>
                 <div class="timer-display" id="timer-display">25:00</div>
@@ -187,7 +195,6 @@
                 </div>
             </div>
 
-            <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card glass-card">
                     <div class="stat-icon" style="color: #ffc107;"><i class="ri-fire-fill"></i></div>
