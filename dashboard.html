@@ -101,9 +101,7 @@
             </div>
         </div>
 
-        <!-- NEW: MULTI-TRACK BGM PLAYER (WITH 7 TRACKS) -->
         <h3 class="setting-section-title"><i class="ri-headphone-fill"></i> म्यूजिक प्लेयर (BGM)</h3>
-        
         <div class="setting-row">
             <div class="setting-info">
                 <h4>म्यूजिक ट्रैक</h4>
@@ -119,7 +117,6 @@
                 <option value="bgm7.mp3">Track 7 - Deep Relax & Study</option>
             </select>
         </div>
-
         <div class="setting-row">
             <div class="setting-info">
                 <h4>प्ले / पॉज़ म्यूजिक</h4>
@@ -130,37 +127,11 @@
                 <span class="slider-clean" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); border-radius: 24px; transition: .3s;"></span>
             </label>
         </div>
-        
         <div class="setting-row">
             <div class="setting-info">
                 <h4>म्यूजिक वॉल्यूम</h4>
             </div>
             <input type="range" id="bgm-volume" min="0" max="1" step="0.1" value="0.3" style="width: 120px; accent-color: var(--accent-main); cursor: pointer;">
-        </div>
-
-        <h3 class="setting-section-title"><i class="ri-book-read-fill"></i> स्टडी प्रेफरेंस</h3>
-        <div class="setting-row">
-            <div class="setting-info">
-                <h4>PDF डाउनलोड फोल्डर</h4>
-                <p>नोट्स कहाँ सेव करें?</p>
-            </div>
-            <select class="pro-select sfx-trigger" id="pdf-location-pref">
-                <option value="default">गैलरी / Default</option>
-                <option value="qms_folder">QMS फोल्डर</option>
-                <option value="ask">हर बार पूछें</option>
-            </select>
-        </div>
-        <div class="setting-row">
-            <div class="setting-info">
-                <h4>वीडियो क्वालिटी</h4>
-                <p>डिफ़ॉल्ट प्लेबैक रेज़ोल्यूशन</p>
-            </div>
-            <select class="pro-select sfx-trigger" id="video-quality-pref">
-                <option value="auto">Auto (अनुशंसित)</option>
-                <option value="1080p">1080p HD</option>
-                <option value="720p">720p</option>
-                <option value="480p">480p (Data Saver)</option>
-            </select>
         </div>
 
         <h3 class="setting-section-title"><i class="ri-settings-3-fill"></i> ऐप सेटिंग्स</h3>
@@ -250,6 +221,17 @@
                         <h3 class="stat-number" id="dash-total-xp">0</h3>
                         <p style="color: var(--text-secondary); font-size: 0.85rem;">XP पॉइंट्स</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- 🔖 NEW BOOKMARKS SECTION -->
+            <div class="bookmarks-section" style="margin-bottom: 2.5rem; margin-top: 1rem;">
+                <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;">
+                    <i class="ri-bookmark-3-fill"></i> सेव्ड नोट्स (Bookmarks)
+                </h3>
+                <!-- JS विल रेंडर बुकमार्क्स हेयर -->
+                <div id="bookmarks-container">
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">लोड हो रहा है...</p>
                 </div>
             </div>
 
