@@ -4,68 +4,213 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>विषय चुनें | क्वांटम मास्टर स्टडी</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
-    <canvas id="bg-canvas"></canvas> <!-- जुगनू एनीमेशन के लिए -->
+    <!-- साउंड और BGM प्लेयर -->
+    <audio id="sfx-click" preload="auto">
+        <source src="click.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgm-audio" loop preload="auto">
+        <source src="bgm1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="dashboard-wrapper">
-        <header class="glass-panel" style="display: flex; padding: 1.2rem 1.5rem;">
+    <div class="subjects-main">
+        <header class="dash-header glass-panel" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-radius: 20px; margin-bottom: 2rem;">
             <div class="brand-mini sfx-trigger" onclick="window.location.href='dashboard.html'" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
                 <i class="ri-arrow-left-line" style="font-size: 1.5rem; color: var(--accent-main);"></i>
                 <h2 style="font-size: 1.2rem;">डैशबोर्ड पर लौटें</h2>
             </div>
+            
+            <div class="small-profile-btn sfx-trigger" onclick="window.location.href='dashboard.html'" title="प्रोफाइल">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student&backgroundColor=b6e3f4" id="nav-profile-img" alt="Profile">
+            </div>
         </header>
 
-        <main class="subjects-main">
-            <div class="class-selector glass-card">
-                <button class="class-btn active sfx-trigger">कक्षा 12वीं (Board)</button>
-                <button class="class-btn sfx-trigger">कक्षा 11वीं (Foundation)</button>
-            </div>
+        <div class="class-selector">
+            <button class="class-btn active sfx-trigger">कक्षा 12वीं (Board)</button>
+            <button class="class-btn sfx-trigger" onclick="alert('कक्षा 11वीं का पाठ्यक्रम जल्द आ रहा है!')">कक्षा 11वीं (Foundation)</button>
+        </div>
+
+        <div class="subjects-header">
+            <h1 class="page-title">अपना विषय चुनें</h1>
+            <p class="page-subtitle">क्वांटम मास्टर स्टडी का संपूर्ण NCERT पाठ्यक्रम</p>
+        </div>
+
+        <div class="subjects-grid">
             
-            <div class="subjects-header">
-                <h1 class="page-title">अपना विषय चुनें</h1>
-                <p class="page-subtitle">क्वांटम मास्टर स्टडी का संपूर्ण NCERT पाठ्यक्रम</p>
+            <!-- 1. Physics -->
+            <div class="glass-card subject-card sfx-trigger" onclick="window.location.href='chapters.html?subject=physics'">
+                <div class="subject-icon physics-icon">
+                    <i class="ri-flashlight-fill"></i>
+                </div>
+                <div class="subject-details">
+                    <h2>भौतिक विज्ञान</h2>
+                    <p>Physics (PCM / PCB)</p>
+                    <div class="subject-meta">
+                        <span><i class="ri-book-3-line"></i> 14 अध्याय</span>
+                        <span style="margin-left: 10px; color: #00ff88;"><i class="ri-bar-chart-horizontal-line"></i> प्रोग्रेस उपलब्ध</span>
+                    </div>
+                </div>
+                <i class="ri-arrow-right-s-line arrow-icon"></i>
             </div>
-            
-            <div class="subjects-grid">
-                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=physics'">
-                    <div class="subject-icon physics-icon"><i class="ri-flashlight-fill"></i></div>
-                    <div class="subject-details">
-                        <h2>भौतिक विज्ञान</h2>
-                        <p>Physics (PCM)</p>
-                        <div class="subject-meta"><span>14 अध्याय</span><span>प्रोग्रेस उपलब्ध</span></div>
-                    </div>
-                    <i class="ri-arrow-right-s-line arrow-icon"></i>
+
+            <!-- 2. Chemistry -->
+            <div class="glass-card subject-card sfx-trigger" onclick="window.location.href='chapters.html?subject=chemistry'">
+                <div class="subject-icon chemistry-icon">
+                    <i class="ri-test-tube-fill"></i>
                 </div>
-                
-                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=chemistry'">
-                    <div class="subject-icon chemistry-icon"><i class="ri-test-tube-fill"></i></div>
-                    <div class="subject-details">
-                        <h2>रसायन विज्ञान</h2>
-                        <p>Chemistry (PCM)</p>
-                        <div class="subject-meta"><span>10 अध्याय</span><span>प्रोग्रेस उपलब्ध</span></div>
+                <div class="subject-details">
+                    <h2>रसायन विज्ञान</h2>
+                    <p>Chemistry (PCM / PCB)</p>
+                    <div class="subject-meta">
+                        <span><i class="ri-book-3-line"></i> 10 अध्याय</span>
+                        <span style="margin-left: 10px; color: #00ff88;"><i class="ri-bar-chart-horizontal-line"></i> प्रोग्रेस उपलब्ध</span>
                     </div>
-                    <i class="ri-arrow-right-s-line arrow-icon"></i>
                 </div>
-                
-                <div class="subject-card glass-card sfx-trigger" onclick="window.location.href='chapters.html?subject=mathematics'">
-                    <div class="subject-icon math-icon"><i class="ri-functions"></i></div>
-                    <div class="subject-details">
-                        <h2>गणित</h2>
-                        <p>Mathematics (PCM)</p>
-                        <div class="subject-meta"><span>13 अध्याय</span><span>प्रोग्रेस उपलब्ध</span></div>
-                    </div>
-                    <i class="ri-arrow-right-s-line arrow-icon"></i>
-                </div>
+                <i class="ri-arrow-right-s-line arrow-icon"></i>
             </div>
-        </main>
+
+            <!-- 3. Mathematics -->
+            <div class="glass-card subject-card sfx-trigger" onclick="window.location.href='chapters.html?subject=mathematics'">
+                <div class="subject-icon math-icon">
+                    <i class="ri-function-line"></i>
+                </div>
+                <div class="subject-details">
+                    <h2>गणित</h2>
+                    <p>Mathematics (PCM)</p>
+                    <div class="subject-meta">
+                        <span><i class="ri-book-3-line"></i> 13 अध्याय</span>
+                        <span style="margin-left: 10px; color: #00ff88;"><i class="ri-bar-chart-horizontal-line"></i> प्रोग्रेस उपलब्ध</span>
+                    </div>
+                </div>
+                <i class="ri-arrow-right-s-line arrow-icon"></i>
+            </div>
+
+            <!-- 4. Hindi -->
+            <div class="glass-card subject-card sfx-trigger" onclick="window.location.href='chapters.html?subject=hindi'">
+                <div class="subject-icon" style="color: #ffc107;">
+                    <i class="ri-quill-pen-line"></i>
+                </div>
+                <div class="subject-details">
+                    <h2>हिंदी (Hindi)</h2>
+                    <p>आरोह और वितान (साहित्य एवं व्याकरण)</p>
+                    <div class="subject-meta">
+                        <span><i class="ri-book-3-line"></i> 18 अध्याय</span>
+                        <span style="margin-left: 10px; color: #00ff88;"><i class="ri-bar-chart-horizontal-line"></i> प्रोग्रेस उपलब्ध</span>
+                    </div>
+                </div>
+                <i class="ri-arrow-right-s-line arrow-icon"></i>
+            </div>
+
+            <!-- 5. English -->
+            <div class="glass-card subject-card sfx-trigger" onclick="window.location.href='chapters.html?subject=english'">
+                <div class="subject-icon" style="color: #ff3366;">
+                    <i class="ri-english-input"></i>
+                </div>
+                <div class="subject-details">
+                    <h2>अंग्रेज़ी (English)</h2>
+                    <p>Flamingo & Vistas (Literature)</p>
+                    <div class="subject-meta">
+                        <span><i class="ri-book-3-line"></i> 19 अध्याय</span>
+                        <span style="margin-left: 10px; color: #00ff88;"><i class="ri-bar-chart-horizontal-line"></i> प्रोग्रेस उपलब्ध</span>
+                    </div>
+                </div>
+                <i class="ri-arrow-right-s-line arrow-icon"></i>
+            </div>
+
+        </div>
     </div>
-    
-    <!-- हम यहाँ डैशबोर्ड की स्क्रिप्ट लिंक कर रहे हैं ताकि जुगनू इफ़ेक्ट और साउंड काम करे -->
-    <script src="dashboard.js"></script>
+
+    <!-- Script Logic for BGM and Theme Memory -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('qms_theme') || 'default';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const savedProfileImageSrc = localStorage.getItem('qms_profile_img');
+            if (savedProfileImageSrc) {
+                const navProfileImg = document.getElementById('nav-profile-img');
+                if (navProfileImg) navProfileImg.src = savedProfileImageSrc; 
+            }
+
+            const bgmAudio = document.getElementById('bgm-audio');
+            if (bgmAudio) {
+                let isBgmOn = localStorage.getItem('qms_bgm') === 'on';
+                let savedBgmVolume = localStorage.getItem('qms_bgm_volume') || 0.3;
+                let savedBgmTime = localStorage.getItem('qms_bgm_time') || 0;
+                let savedBgmTrack = localStorage.getItem('qms_bgm_track') || 'bgm1.mp3';
+
+                bgmAudio.src = savedBgmTrack;
+                bgmAudio.volume = parseFloat(savedBgmVolume);
+                bgmAudio.currentTime = parseFloat(savedBgmTime);
+
+                const playBgmSafely = () => { if (isBgmOn && bgmAudio.paused) bgmAudio.play().catch(e => console.log(e)); };
+                document.body.addEventListener('click', playBgmSafely, { once: true });
+                if (isBgmOn) bgmAudio.play().catch(e => console.log("Waiting for user interaction"));
+
+                window.addEventListener('beforeunload', () => {
+                    localStorage.setItem('qms_bgm_time', bgmAudio.currentTime);
+                });
+            }
+
+            const sfxClick = document.getElementById('sfx-click');
+            let isSoundOn = localStorage.getItem('qms_sound') !== 'off';
+            document.querySelectorAll('.sfx-trigger').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (isSoundOn && sfxClick) {
+                        sfxClick.currentTime = 0; sfxClick.volume = 1.0; sfxClick.play().catch(()=>{});
+                    }
+                });
+            });
+
+            // Fireflies Logic
+            const canvas = document.getElementById('bg-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+                const scienceSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', 'μ', '⚛', 'α', 'β', 'Δ'];
+                let particlesArray = [];
+                
+                class QuantumParticle {
+                    constructor() {
+                        this.type = Math.random() > 0.4 ? 'dot' : 'symbol';
+                        this.symbol = scienceSymbols[Math.floor(Math.random() * scienceSymbols.length)];
+                        this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                        if (this.type === 'symbol') { this.size = Math.random() * 15 + 10; this.speedX = Math.random() * 0.5 - 0.25; this.speedY = Math.random() * -0.8 - 0.2; } 
+                        else { this.size = Math.random() * 3 + 1; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * -1 - 0.2; }
+                        this.blinkSpeed = Math.random() * 0.05 + 0.02; this.angle = Math.random() * Math.PI * 2;
+                    }
+                    update() {
+                        this.y += this.speedY; this.x += this.speedX; this.angle += this.blinkSpeed;
+                        if (this.y < -30) { this.y = canvas.height + 30; this.x = Math.random() * canvas.width; }
+                        if (this.x < -30 || this.x > canvas.width + 30) this.speedX *= -1;
+                    }
+                    draw() {
+                        const rootStyle = getComputedStyle(document.documentElement);
+                        const accentColor = rootStyle.getPropertyValue('--accent-main').trim() || '#00f0ff';
+                        let currentOpacity = ((Math.sin(this.angle) + 1) / 2) * 0.8 + 0.1;
+                        ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
+                        ctx.shadowBlur = currentOpacity * 20; ctx.shadowColor = accentColor;
+                        if (this.type === 'symbol') { ctx.font = `${this.size}px "Space Grotesk", sans-serif`; ctx.fillText(this.symbol, this.x, this.y); } 
+                        else { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+                        ctx.shadowBlur = 0; 
+                    }
+                }
+                for (let i = 0; i < 60; i++) particlesArray.push(new QuantumParticle());
+                function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
+                animateParticles();
+                window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+            }
+        });
+    </script>
 </body>
 </html>
