@@ -1,9 +1,9 @@
 /* =========================================================================
-   QMS VIDEO PLAYER MASTER ENGINE (FINAL NETLIFY CDN BUILD - PATH FIXED)
+   QMS VIDEO PLAYER MASTER ENGINE (FINAL NETLIFY CDN BUILD)
    - 100% COMPLETE FILE
    - FEATURES:
      1. Hindi & English Medium Support
-     2. 🚀 THE ULTIMATE PDF FIX: Mozilla Viewer + Netlify path '/pdfs/' fix
+     2. 🚀 THE ULTIMATE PDF FIX: Mozilla Viewer + YOUR NEW NETLIFY LINK
      3. Dynamic Question-Answer Pages for the 4 Topics
      4. Smart BGM Memory Resume & Bookmarks System
 ========================================================================= */
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 3. 🎯 NETLIFY LINK FIX (ADDED '/pdfs/' PATH)
+    // 3. 🎯 YOUR FINAL NETLIFY LINK
     // ==========================================
     const currentlySavedUiTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', currentlySavedUiTheme);
@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `chapters.html?subject=${activeSubjectQuery}`; 
     });
 
-    // 🚀 THE FIX IS HERE: Added '/pdfs/' before the filename!
-    const activePdfUrl = `https://glistening-nasturtium-686282.netlify.app/pdfs/${activeSubjectQuery}_${activeChapterIdQuery}_${currentMedium}.pdf`;
+    // 🚀 FINAL FIX: using your exact Netlify link!
+    const activePdfUrl = `https://joyful-entremet-fd3f71.netlify.app/${activeSubjectQuery}_${activeChapterIdQuery}_${currentMedium}.pdf`;
 
     let activeTitle = "अध्याय लोड हो रहा है...";
     if (qmsDatabase[activeSubjectQuery]) {
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // E. 🚀 IN-APP MODAL: LIVE PDF FIX
+    // E. 🚀 IN-APP MODAL: LIVE PDF NATIVE VIEWER
     // ==========================================
     const contentViewerModalHtml = `
         <div id="content-viewer-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-dark); z-index: 100000; display: none; flex-direction: column;">
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contentModalTitle.innerHTML = `<i class="ri-file-pdf-line" style="color: var(--accent-main);"></i> ${modalTitleText}`;
             contentModalBody.style.background = '#f5f5f5';
             
-            // CORS PROXY + MOZILLA VIEWER = 100% SUCCESS NO DOWNLOAD
+            // MOZILLA VIEWER + CORS PROXY for absolute perfection
             const corsProxyUrl = "https://corsproxy.io/?url=" + encodeURIComponent(activePdfUrl);
             const mozillaViewerBaseUrl = "https://mozilla.github.io/pdf.js/web/viewer.html?file=";
             const securePdfViewerUrl = mozillaViewerBaseUrl + encodeURIComponent(corsProxyUrl);
