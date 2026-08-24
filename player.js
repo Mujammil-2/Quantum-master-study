@@ -1,9 +1,9 @@
 /* =========================================================================
-   QMS VIDEO PLAYER MASTER ENGINE (GITHUB DIRECT CDN BUILD)
+   QMS VIDEO PLAYER MASTER ENGINE (JSDELIVR CDN BUILD - 100% FIXED)
    - 100% COMPLETE FILE
    - FEATURES:
      1. Hindi & English Medium Support
-     2. 🚀 THE ULTIMATE PDF FIX: Mozilla Viewer + Direct GitHub Pages Link
+     2. 🚀 THE ULTIMATE PDF FIX: Mozilla Viewer + jsDelivr Global CDN
      3. Dynamic Question-Answer Pages for the 4 Topics
      4. Smart BGM Memory Resume & Bookmarks System
 ========================================================================= */
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 3. 🎯 THE MASTER GITHUB LINK (PERMANENT & BULLETPROOF)
+    // 3. 🎯 JSDELIVR CDN LINK (BYPASSES ALL ERRORS)
     // ==========================================
     const currentlySavedUiTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', currentlySavedUiTheme);
@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `chapters.html?subject=${activeSubjectQuery}`; 
     });
 
-    // 🚀 THE MAGIC URL: Directly hitting your 'Quantum-master-study' GitHub repo folder!
-    const activePdfUrl = `https://mujammil-2.github.io/Quantum-master-study/pdfs/${activeSubjectQuery}_${activeChapterIdQuery}_${currentMedium}.pdf`;
+    // 🚀 THE MAGIC URL: Directly hits raw GitHub files using lightning fast CDN!
+    const activePdfUrl = `https://cdn.jsdelivr.net/gh/Mujammil-2/Quantum-master-study@main/pdfs/${activeSubjectQuery}_${activeChapterIdQuery}_${currentMedium}.pdf`;
 
     let activeTitle = "अध्याय लोड हो रहा है...";
     if (qmsDatabase[activeSubjectQuery]) {
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // E. 🚀 IN-APP MODAL: LIVE PDF VIEW (NO CRASH)
+    // E. 🚀 IN-APP MODAL: LIVE PDF VIEW
     // ==========================================
     const contentViewerModalHtml = `
         <div id="content-viewer-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-dark); z-index: 100000; display: none; flex-direction: column;">
@@ -212,10 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
             contentModalTitle.innerHTML = `<i class="ri-file-pdf-line" style="color: var(--accent-main);"></i> ${modalTitleText}`;
             contentModalBody.style.background = '#f5f5f5';
             
-            // MOZILLA VIEWER + CORS PROXY to ensure absolutely 0 blocking!
-            const corsProxyUrl = "https://corsproxy.io/?url=" + encodeURIComponent(activePdfUrl);
+            // USING NATIVE JSDELIVR LINK (NO CORS PROXY REQUIRED ANYMORE!)
             const mozillaViewerBaseUrl = "https://mozilla.github.io/pdf.js/web/viewer.html?file=";
-            const securePdfViewerUrl = mozillaViewerBaseUrl + encodeURIComponent(corsProxyUrl);
+            const securePdfViewerUrl = mozillaViewerBaseUrl + encodeURIComponent(activePdfUrl);
             
             contentModalBody.innerHTML = `
                 <iframe src="${securePdfViewerUrl}" style="width: 100%; height: 100%; border: none;">
@@ -312,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // G. 🚀 DIRECT DOWNLOAD (GITHUB PATH)
+    // G. 🚀 DIRECT DOWNLOAD
     // ==========================================
     const buttonDownloadPdfNotes = document.getElementById('btn-download-notes');
     const dynamicDownloadModalOverlay = document.getElementById('download-modal');
