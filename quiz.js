@@ -29,7 +29,7 @@ const qmsQuizDatabase = {
         2: [ // Chapter 2
             { q: "विद्युत विभव का SI मात्रक क्या है?", options: ["वोल्ट", "एम्पीयर", "ओम", "वाट"], answer: 0 },
             { q: "धारिता (Capacitance) का मात्रक क्या है?", options: ["फैराड", "हेनरी", "टेस्ला", "वेबर"], answer: 0 }
-            // Add more questions here...
+            // तुम यहाँ और सवाल जोड़ सकते हो...
         ]
     },
     chemistry: {
