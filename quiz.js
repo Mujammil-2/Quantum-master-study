@@ -1,102 +1,140 @@
 /* =========================================================================
-   QMS DYNAMIC QUIZ MASTER ENGINE (DIFFICULTY MODES VERSION)
+   QMS DYNAMIC QUIZ MASTER ENGINE (FINAL PRO VERSION)
    - FEATURES:
-     1. Chapter-wise Question Selection
-     2. Difficulty Selector (Easy, Medium, Difficult)
-     3. Random Auto-Change Engine (Picks 5 random questions)
-     4. Dynamic XP Rewards based on Difficulty
+     1. Active Highlight for Difficulty Modes
+     2. Custom Question Count Selector (5 to 40)
+     3. Hindi & English Medium Support
+     4. Chapter-wise Randomized Question Engine
+     5. Dynamic XP Rewards based on Difficulty
 ========================================================================= */
 
 // --------------------------------------------------------------------------
-// 1. MEGA DYNAMIC QUIZ DATABASE (Subject -> Chapters -> Difficulty Levels)
+// 1. MEGA DYNAMIC QUIZ DATABASE (Subject -> Chapters -> Difficulty -> Medium)
 // --------------------------------------------------------------------------
 const qmsQuizDatabase = {
     physics: {
         1: {
-            easy: [
-                { q: "विद्युत आवेश का SI मात्रक क्या है?", options: ["न्यूटन", "कूलॉम", "जूल", "वोल्ट"], answer: 1 },
-                { q: "इलेक्ट्रॉन पर कितना आवेश होता है?", options: ["1.6 x 10^-19 C", "-1.6 x 10^-19 C", "9.1 x 10^-31 C", "0"], answer: 1 },
-                { q: "दो सजातीय आवेशों के बीच कौन सा बल लगता है?", options: ["आकर्षण", "प्रतिकर्षण", "गुरुत्वाकर्षण", "शून्य"], answer: 1 }
-            ],
-            medium: [
-                { q: "निर्वात की विद्युतशीलता (ε0) का मात्रक क्या है?", options: ["C²/N·m²", "N·m²/C²", "J/C", "V/m"], answer: 0 },
-                { q: "विद्युत क्षेत्र की तीव्रता का मात्रक है?", options: ["N/C", "V/m", "A और B दोनों", "J/C"], answer: 2 },
-                { q: "आवेश का क्वांटमीकरण किसने सिद्ध किया?", options: ["मिलिकन", "थॉमसन", "रदरफोर्ड", "कूलॉम"], answer: 0 }
-            ],
-            difficult: [
-                { q: "एक अनन्त रेखीय आवेश के कारण उससे r दूरी पर विद्युत क्षेत्र की तीव्रता किसके समानुपाती होती है?", options: ["r", "r²", "1/r", "1/r²"], answer: 2 },
-                { q: "यदि किसी खोखले गोले के अंदर विद्युत द्विध्रुव रख दिया जाए, तो गोले से गुजरने वाला कुल फ्लक्स होगा:", options: ["शून्य", "अनंत", "q/ε0", "2q/ε0"], answer: 0 }
-            ]
-        },
-        2: {
-            easy: [
-                { q: "विद्युत विभव का SI मात्रक क्या है?", options: ["वोल्ट", "एम्पीयर", "ओम", "वाट"], answer: 0 }
-            ],
-            medium: [
-                { q: "संधारित्र की धारिता किस पर निर्भर करती है?", options: ["प्लेट के क्षेत्रफल पर", "प्लेटों के बीच की दूरी पर", "माध्यम पर", "उपयुक्त सभी"], answer: 3 }
-            ],
-            difficult: [
-                { q: "समविभव पृष्ठ के किसी बिंदु पर विद्युत क्षेत्र रेखाएं होती हैं?", options: ["पृष्ठ के समांतर", "पृष्ठ के लंबवत", "किसी भी कोण पर", "शून्य"], answer: 1 }
-            ]
+            easy: {
+                hi: [
+                    { q: "विद्युत आवेश का SI मात्रक क्या है?", options: ["न्यूटन", "कूलॉम", "जूल", "वोल्ट"], answer: 1 },
+                    { q: "इलेक्ट्रॉन पर कितना आवेश होता है?", options: ["1.6 x 10^-19 C", "-1.6 x 10^-19 C", "9.1 x 10^-31 C", "0"], answer: 1 },
+                    { q: "दो सजातीय आवेशों के बीच कौन सा बल लगता है?", options: ["आकर्षण", "प्रतिकर्षण", "गुरुत्वाकर्षण", "शून्य"], answer: 1 }
+                ],
+                en: [
+                    { q: "What is the SI unit of electric charge?", options: ["Newton", "Coulomb", "Joule", "Volt"], answer: 1 },
+                    { q: "What is the charge on an electron?", options: ["1.6 x 10^-19 C", "-1.6 x 10^-19 C", "9.1 x 10^-31 C", "0"], answer: 1 }
+                ]
+            },
+            medium: {
+                hi: [
+                    { q: "निर्वात की विद्युतशीलता (ε0) का मात्रक क्या है?", options: ["C²/N·m²", "N·m²/C²", "J/C", "V/m"], answer: 0 },
+                    { q: "विद्युत क्षेत्र की तीव्रता का मात्रक है?", options: ["N/C", "V/m", "A और B दोनों", "J/C"], answer: 2 }
+                ],
+                en: [
+                    { q: "What is the unit of permittivity of free space (ε0)?", options: ["C²/N·m²", "N·m²/C²", "J/C", "V/m"], answer: 0 }
+                ]
+            },
+            difficult: {
+                hi: [
+                    { q: "एक अनन्त रेखीय आवेश के कारण उससे r दूरी पर विद्युत क्षेत्र की तीव्रता किसके समानुपाती होती है?", options: ["r", "r²", "1/r", "1/r²"], answer: 2 }
+                ],
+                en: [
+                    { q: "The electric field intensity due to an infinite line charge at distance r is proportional to:", options: ["r", "r²", "1/r", "1/r²"], answer: 2 }
+                ]
+            }
         }
     },
     chemistry: {
         1: {
-            easy: [
-                { q: "जल (Water) का रासायनिक सूत्र क्या है?", options: ["CO2", "O2", "H2O", "H2O2"], answer: 2 },
-                { q: "सबसे हल्की गैस कौन सी है?", options: ["ऑक्सीजन", "नाइट्रोजन", "हाइड्रोजन", "हीलियम"], answer: 2 }
-            ],
-            medium: [
-                { q: "PH स्केल की रेंज क्या होती है?", options: ["1 से 10", "0 से 14", "1 से 100", "0 से 10"], answer: 1 }
-            ],
-            difficult: [
-                { q: "विलयन के अणुसंख्यक गुणधर्म किस पर निर्भर करते हैं?", options: ["विलेय के कणों की संख्या पर", "विलेय की प्रकृति पर", "विलायक के आयतन पर", "तापमान पर"], answer: 0 }
-            ]
+            easy: {
+                hi: [
+                    { q: "जल (Water) का रासायनिक सूत्र क्या है?", options: ["CO2", "O2", "H2O", "H2O2"], answer: 2 },
+                    { q: "सबसे हल्की गैस कौन सी है?", options: ["ऑक्सीजन", "नाइट्रोजन", "हाइड्रोजन", "हीलियम"], answer: 2 }
+                ],
+                en: [
+                    { q: "What is the chemical formula of water?", options: ["CO2", "O2", "H2O", "H2O2"], answer: 2 }
+                ]
+            },
+            medium: {
+                hi: [
+                    { q: "PH स्केल की रेंज क्या होती है?", options: ["1 से 10", "0 से 14", "1 से 100", "0 से 10"], answer: 1 }
+                ],
+                en: [
+                    { q: "What is the range of the pH scale?", options: ["1 to 10", "0 to 14", "1 to 100", "0 to 10"], answer: 1 }
+                ]
+            },
+            difficult: {
+                hi: [
+                    { q: "विलयन के अणुसंख्यक गुणधर्म किस पर निर्भर करते हैं?", options: ["विलेय के कणों की संख्या पर", "विलेय की प्रकृति पर", "विलायक के आयतन पर", "तापमान पर"], answer: 0 }
+                ],
+                en: [
+                    { q: "Colligative properties of a solution depend upon:", options: ["Number of solute particles", "Nature of solute", "Volume of solvent", "Temperature"], answer: 0 }
+                ]
+            }
         }
     },
     maths: {
         1: {
-            easy: [
-                { q: "sin(90°) का मान क्या होता है?", options: ["0", "1", "1/2", "अनंत"], answer: 1 },
-                { q: "वृत्त के क्षेत्रफल का सूत्र क्या है?", options: ["2πr", "πr²", "4/3πr³", "πd"], answer: 1 }
-            ],
-            medium: [
-                { q: "त्रिभुज के तीनों कोणों का योग कितना होता है?", options: ["90°", "360°", "180°", "270°"], answer: 2 }
-            ],
-            difficult: [
-                { q: "यदि एक फलन f: R -> R, f(x) = 2x द्वारा परिभाषित है, तो यह फलन है:", options: ["एकैकी आच्छादक", "बहुएकैकी", "अंतर्क्षेपी", "इनमें से कोई नहीं"], answer: 0 }
-            ]
+            easy: {
+                hi: [
+                    { q: "sin(90°) का मान क्या होता है?", options: ["0", "1", "1/2", "अनंत"], answer: 1 }
+                ],
+                en: [
+                    { q: "What is the value of sin(90°)?", options: ["0", "1", "1/2", "Infinity"], answer: 1 }
+                ]
+            },
+            medium: {
+                hi: [
+                    { q: "त्रिभुज के तीनों कोणों का योग कितना होता है?", options: ["90°", "360°", "180°", "270°"], answer: 2 }
+                ],
+                en: [
+                    { q: "What is the sum of all interior angles of a triangle?", options: ["90°", "360°", "180°", "270°"], answer: 2 }
+                ]
+            },
+            difficult: {
+                hi: [
+                    { q: "यदि एक फलन f: R -> R, f(x) = 2x द्वारा परिभाषित है, तो यह फलन है:", options: ["एकैकी आच्छादक", "बहुएकैकी", "अंतर्क्षेपी", "इनमें से कोई नहीं"], answer: 0 }
+                ],
+                en: [
+                    { q: "If a function f: R -> R is defined by f(x) = 2x, then the function is:", options: ["One-one onto", "Many-one", "Into", "None of these"], answer: 0 }
+                ]
+            }
         }
     },
     hindi: {
         1: {
-            easy: [
-                { q: "हिंदी भाषा की लिपि क्या है?", options: ["रोमन", "देवनागरी", "गुरुमुखी", "फारसी"], answer: 1 }
-            ],
-            medium: [
-                { q: "‘आकाश’ का पर्यायवाची शब्द है:", options: ["पृथ्वी", "गगन", "पवन", "अग्नि"], answer: 1 }
-            ],
-            difficult: [
-                { q: "कामायनी महाकाव्य के रचयिता कौन हैं?", options: ["जयशंकर प्रसाद", "सुमित्रानंदन पंत", "महादेवी वर्मा", "सूर्यकांत त्रिपाठी निराला"], answer: 0 }
-            ]
+            easy: {
+                hi: [{ q: "हिंदी भाषा की लिपि क्या है?", options: ["रोमन", "देवनागरी", "गुरुमुखी", "फारसी"], answer: 1 }],
+                en: [{ q: "What is the script of Hindi language?", options: ["Roman", "Devanagari", "Gurmukhi", "Persian"], answer: 1 }]
+            },
+            medium: {
+                hi: [{ q: "‘आकाश’ का पर्यायवाची शब्द है:", options: ["पृथ्वी", "गगन", "पवन", "अग्नि"], answer: 1 }],
+                en: [{ q: "Synonym of 'Akash' is:", options: ["Prithvi", "Gagan", "Pavan", "Agni"], answer: 1 }]
+            },
+            difficult: {
+                hi: [{ q: "कामायनी महाकाव्य के रचयिता कौन हैं?", options: ["जयशंकर प्रसाद", "सुमित्रानंदन पंत", "महादेवी वर्मा", "सूर्यकांत त्रिपाठी निराला"], answer: 0 }],
+                en: [{ q: "Who is the author of 'Kamayani'?", options: ["Jaishankar Prasad", "Sumitranandan Pant", "Mahadevi Verma", "Nirala"], answer: 0 }]
+            }
         }
     },
     english: {
         1: {
-            easy: [
-                { q: "What is the past tense of 'Go'?", options: ["Goes", "Gone", "Went", "Going"], answer: 2 }
-            ],
-            medium: [
-                { q: "Which of these is a vowel?", options: ["B", "E", "C", "P"], answer: 1 }
-            ],
-            difficult: [
-                { q: "Identify the figure of speech in 'The camel is the ship of the desert.'", options: ["Simile", "Metaphor", "Personification", "Oxymoron"], answer: 1 }
-            ]
+            easy: {
+                hi: [{ q: "'Go' की भूतकाल (Past tense) फॉर्म क्या है?", options: ["Goes", "Gone", "Went", "Going"], answer: 2 }],
+                en: [{ q: "What is the past tense of 'Go'?", options: ["Goes", "Gone", "Went", "Going"], answer: 2 }]
+            },
+            medium: {
+                hi: [{ q: "इनमें से कौन सा स्वर (Vowel) है?", options: ["B", "E", "C", "P"], answer: 1 }],
+                en: [{ q: "Which of these is a vowel?", options: ["B", "E", "C", "P"], answer: 1 }]
+            },
+            difficult: {
+                hi: [{ q: "'The camel is the ship of the desert' में कौन सा अलंकार (Figure of speech) है?", options: ["Simile", "Metaphor", "Personification", "Oxymoron"], answer: 1 }],
+                en: [{ q: "Identify the figure of speech in 'The camel is the ship of the desert.'", options: ["Simile", "Metaphor", "Personification", "Oxymoron"], answer: 1 }]
+            }
         }
     }
 };
 
-// Chapter Names mapped for the Dropdown Selector
 const chapterNamesMap = {
     physics: { 1: "अध्याय 1: वैद्युत आवेश तथा क्षेत्र", 2: "अध्याय 2: स्थिरवैद्युत विभव तथा धारिता" },
     chemistry: { 1: "अध्याय 1: विलयन" },
@@ -107,7 +145,24 @@ const chapterNamesMap = {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Toast Notification System
+    // Medium Switcher Logic
+    let currentMedium = localStorage.getItem('qms_medium') || 'hi';
+    const mediumTextEl = document.getElementById('quiz-medium-text');
+    if(mediumTextEl) {
+        mediumTextEl.innerText = currentMedium === 'hi' ? 'हिंदी माध्यम' : 'English Medium';
+    }
+
+    const mediumBtn = document.getElementById('quiz-medium-btn');
+    if(mediumBtn) {
+        mediumBtn.addEventListener('click', () => {
+            currentMedium = currentMedium === 'hi' ? 'en' : 'hi';
+            localStorage.setItem('qms_medium', currentMedium);
+            if(mediumTextEl) mediumTextEl.innerText = currentMedium === 'hi' ? 'हिंदी माध्यम' : 'English Medium';
+            window.showCustomToast(currentMedium === 'hi' ? 'माध्यम बदलकर हिंदी कर दिया गया।' : 'Medium changed to English.');
+            setTimeout(() => window.location.reload(), 1000);
+        });
+    }
+
     window.showCustomToast = function(messageText, isErrorMessage = false) {
         const existingToastNode = document.querySelector('.qms-toast-msg'); 
         if (existingToastNode) existingToastNode.remove();
@@ -120,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toastElementNode.className = 'qms-toast-msg';
             toastElementNode.innerHTML = `<i class="ri-checkbox-circle-fill"></i> ${messageText}`;
         }
-        
         document.body.appendChild(toastElementNode); 
         setTimeout(() => { if (toastElementNode) toastElementNode.remove(); }, 3500); 
     };
@@ -155,7 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (targetModalCancelButton) {
         targetModalCancelButton.addEventListener('click', () => modalOverlayContainer.classList.remove('active'));
     }
-    
     if (targetModalConfirmButton) {
         targetModalConfirmButton.addEventListener('click', () => { 
             if (activeModalCallbackFunction) activeModalCallbackFunction(true);
@@ -163,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load Theme & Audio
+    // Theme & Audio
     const savedTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -175,18 +228,19 @@ document.addEventListener('DOMContentLoaded', () => {
             sfxClick.currentTime = 0; sfxClick.volume = 1.0; sfxClick.play().catch(()=>{});
         }
     }
-
     document.querySelectorAll('.sfx-trigger').forEach(btn => btn.addEventListener('click', playClickSound));
 
-    // Setup Selectors (Subject, Chapter, Difficulty)
+    // Setup Selections
     let selectedSubject = 'physics';
     let selectedChapter = 1;
     let selectedDifficulty = 'easy';
-    let selectedTimeMinutes = 5; 
+    let selectedQuestionCount = 10;
+    let selectedTimeMinutes = 10; 
     
     const subjectBtns = document.querySelectorAll('.quiz-subject-btn');
     const chapterSelectElement = document.getElementById('chapter-selector');
     const diffBtns = document.querySelectorAll('.quiz-diff-btn');
+    const countBtns = document.querySelectorAll('.quiz-count-btn');
 
     function updateChapterDropdown(subject) {
         if(!chapterSelectElement) return;
@@ -217,17 +271,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 🚀 FIXED DIFFICULTY HIGHLIGHTING LOGIC 🚀
     diffBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             diffBtns.forEach(b => {
-                b.style.background = 'transparent';
-                b.style.opacity = '0.6';
+                b.style.background = 'rgba(255,255,255,0.08)';
+                b.style.color = '#fff';
+                b.style.border = '1px solid rgba(255,255,255,0.2)';
             });
-            this.style.opacity = '1';
+            
             selectedDifficulty = this.getAttribute('data-diff');
-            if(selectedDifficulty === 'easy') this.style.background = 'rgba(0,255,136,0.15)';
-            if(selectedDifficulty === 'medium') this.style.background = 'rgba(255,193,7,0.15)';
-            if(selectedDifficulty === 'difficult') this.style.background = 'rgba(255,51,102,0.15)';
+            
+            if(selectedDifficulty === 'easy') {
+                this.style.background = '#00ff88';
+                this.style.color = '#000';
+                this.style.border = 'none';
+            } else if(selectedDifficulty === 'medium') {
+                this.style.background = '#ffc107';
+                this.style.color = '#000';
+                this.style.border = 'none';
+            } else if(selectedDifficulty === 'difficult') {
+                this.style.background = '#ff3366';
+                this.style.color = '#fff';
+                this.style.border = 'none';
+            }
+            playClickSound();
+        });
+    });
+
+    // Question Count Buttons Selection
+    countBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            countBtns.forEach(b => {
+                b.style.background = 'rgba(255,255,255,0.05)';
+                b.style.color = '#fff';
+                b.style.border = '1px solid rgba(255,255,255,0.2)';
+            });
+            this.style.background = 'var(--accent-main)';
+            this.style.color = '#000';
+            this.style.border = '1px solid var(--accent-main)';
+            
+            selectedQuestionCount = parseInt(this.getAttribute('data-count'));
+            playClickSound();
         });
     });
 
@@ -269,18 +354,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-quiz-btn').addEventListener('click', () => {
         let chapterQuestionPool = [];
         try {
-            chapterQuestionPool = [...qmsQuizDatabase[selectedSubject][selectedChapter][selectedDifficulty]];
+            chapterQuestionPool = [...qmsQuizDatabase[selectedSubject][selectedChapter][selectedDifficulty][currentMedium]];
         } catch (e) {
             chapterQuestionPool = [];
         }
 
         if (chapterQuestionPool.length === 0) {
-            window.showCustomToast("इस डिफिकल्टी लेवल के सवाल अभी उपलब्ध नहीं हैं।", true);
+            window.showCustomToast("इस अध्याय और डिफिकल्टी के सवाल अभी जोड़े जा रहे हैं।", true);
             return;
         }
 
         chapterQuestionPool.sort(() => Math.random() - 0.5);
-        currentQuestions = chapterQuestionPool.slice(0, Math.min(5, chapterQuestionPool.length));
+        currentQuestions = chapterQuestionPool.slice(0, Math.min(selectedQuestionCount, chapterQuestionPool.length));
         
         currentQuestionIndex = 0;
         score = 0;
@@ -346,9 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(timeLeftSeconds > 0) {
                 timeLeftSeconds--;
                 updateTimerText();
-                if(timeLeftSeconds < 60) { 
-                    timerDisplayBox.style.color = '#ff3366'; 
-                }
+                if(timeLeftSeconds < 60) { timerDisplayBox.style.color = '#ff3366'; }
             } else {
                 clearInterval(timerInterval);
                 window.showCustomToast("समय समाप्त हो गया है!", true);
@@ -372,7 +455,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let totalQ = currentQuestions.length;
         let percentage = Math.round((score / totalQ) * 100);
         
-        // XP multiplier based on difficulty
         let multiplier = 10;
         if(selectedDifficulty === 'medium') multiplier = 20;
         if(selectedDifficulty === 'difficult') multiplier = 30;
