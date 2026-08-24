@@ -1,14 +1,14 @@
 /* =========================================================================
    QMS DYNAMIC QUIZ MASTER ENGINE (FULL SYLLABUS & SMART EXPANDER)
    - FEATURES:
-     1. Complete Chapters List for All Subjects (Physics, Chem, Math, Hindi, Eng)
-     2. Smart Question Expander (Guarantees 5 to 40 questions even from a base pool)
+     1. Complete Chapters List for All Subjects (Physics, Chem, Math, Hindi Part 1 & 2, English Flamingo & Vistas)
+     2. Smart Question Expander (Guarantees 5 to 40 questions)
      3. Dual Medium Support (Hindi & English)
      4. Active Highlight for Difficulty Modes
 ========================================================================= */
 
 // --------------------------------------------------------------------------
-// 1. FULL SYLLABUS MEGA DATABASE & CHAPTERS MAPPING
+// 1. FULL SYLLABUS MEGA CHAPTERS MAPPING (PART 1 & PART 2 INCLUDED)
 // --------------------------------------------------------------------------
 const chapterNamesMap = {
     physics: {
@@ -55,30 +55,50 @@ const chapterNamesMap = {
         13: "अध्याय 13: प्रायिकता"
     },
     hindi: {
-        1: "अध्याय 1: आत्मपरिचय / एक गीत",
-        2: "अध्याय 2: पतंग",
-        3: "अध्याय 3: कविता के बहाने / बात सीधी थी पर",
-        4: "अध्याय 4: कैमरे में बंद अपंग",
-        5: "अध्याय 5: सहर्ष स्वीकार है",
-        6: "अध्याय 6: उषा",
-        7: "अध्याय 7: बादल राग",
-        8: "अध्याय 8: कवितावली / लक्ष्मण-मूर्छा",
-        9: "अध्याय 9: रुबाइयों / गज़ल",
-        10: "अध्याय 10: छोटा मेरा खेत / बगुलों के पंख"
+        1: "अध्याय 1: महादेवी वर्मा - भक्तिन",
+        2: "अध्याय 2: जैनेंद्र कुमार - बाजार दर्शन",
+        3: "अध्याय 3: धर्मवीर भारती - काले मेघा पानी दे",
+        4: "अध्याय 4: फणीश्वरनाथ रेणु - पहलवान की ढोलक",
+        5: "अध्याय 5: विष्णु खरे - चार्ली चैप्लिन यानी हम सब",
+        6: "अध्याय 6: हजारीप्रसाद द्विवेदी - शिरीष के फूल",
+        7: "अध्याय 7: बाबा साहेब भीमराव अंबेडकर - श्रम विभाजन और जाति प्रथा",
+        8: "अध्याय 8: हरिवंश राय बच्चन - आत्मपरिचय / एक गीत",
+        9: "अध्याय 9: आलोक धन्वा - पतंग",
+        10: "अध्याय 10: कुंवर नारायण - कविता के बहाने / बात सीधी थी पर",
+        11: "अध्याय 11: शमशेर बहादुर सिंह - उषा",
+        12: "अध्याय 12: सूर्यकांत त्रिपाठी निराला - बादल राग",
+        13: "अध्याय 13: तुलसीदास - कवितावली / लक्ष्मण-मूर्छा",
+        14: "अध्याय 14: फिराक़ गोरखपुरी - रुबाइयों / गज़ल",
+        15: "अध्याय 15: उमाशंकर जोशी - छोटा मेरा खेत / बगुलों के पंख",
+        16: "वितान 1: सिल्वर वेडिंग (मनोज श्याम जोशी)",
+        17: "वितान 2: जूझ (आनंद यादव)",
+        18: "वितान 3: अतीत में दबे पाँव (ओम थानवी)"
     },
     english: {
-        1: "Chapter 1: The Last Lesson",
-        2: "Chapter 2: Lost Spring",
-        3: "Chapter 3: Deep Water",
-        4: "Chapter 4: The Rattrap",
-        5: "Chapter 5: Indigo",
-        6: "Chapter 6: Poets and Pancakes",
-        7: "Chapter 7: The Interview",
-        8: "Chapter 8: Going Places"
+        1: "Flamingo 1: The Last Lesson",
+        2: "Flamingo 2: Lost Spring",
+        3: "Flamingo 3: Deep Water",
+        4: "Flamingo 4: The Rattrap",
+        5: "Flamingo 5: Indigo",
+        6: "Flamingo 6: Poets and Pancakes",
+        7: "Flamingo 7: The Interview",
+        8: "Flamingo 8: Going Places",
+        9: "Poem 1: My Mother at Sixty-six",
+        10: "Poem 2: An Elementary School Classroom in a Slum",
+        11: "Poem 3: Keeping Quiet",
+        12: "Poem 4: A Thing of Beauty",
+        13: "Poem 5: A Roadside Stand",
+        14: "Poem 6: Aunt Jennifer’s Tigers",
+        15: "Vistas 1: The Third Level",
+        16: "Vistas 2: The Tiger King",
+        17: "Vistas 3: Journey to the End of the Earth",
+        18: "Vistas 4: The Enemy",
+        19: "Vistas 5: On the Face of It",
+        20: "Vistas 6: Memories of Childhood"
     }
 };
 
-// Base Core Question Bank (Expands automatically to match user count)
+// Base Question Pool (Smart Expander scales this up to user-selected count)
 const qmsQuizDatabase = {
     physics: {
         default: {
@@ -297,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-quiz-btn').addEventListener('click', () => {
         let basePool = [];
         try {
-            // Fetch from subject specific or fallback to default pool
             let subObj = qmsQuizDatabase[selectedSubject] || qmsQuizDatabase['physics'];
             let chObj = subObj[selectedChapter] || subObj['default'] || subObj[Object.keys(subObj)[0]];
             let diffObj = chObj[selectedDifficulty] || chObj['easy'];
@@ -309,14 +328,13 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
         }
 
-        // 🚀 SMART EXPANDER LOGIC: Guarantee user-selected count (e.g. 20, 40)
+        // Smart Expander Logic to fulfill 5 to 40 user requirement
         let expandedPool = [];
         while (expandedPool.length < selectedQuestionCount) {
-            // Shuffle base pool and append cloned copies to meet the requested count
-            let shuffledChunk = [...basepx = basePool].sort(() => Math.random() - 0.5);
+            let shuffledChunk = [...basePool].sort(() => Math.random() - 0.5);
             shuffledChunk.forEach(item => {
                 if (expandedPool.length < selectedQuestionCount) {
-                    expandedPool.push({ ...item }); // Clone object to avoid reference issues
+                    expandedPool.push({ ...item });
                 }
             });
         }
