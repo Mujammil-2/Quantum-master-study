@@ -1,14 +1,14 @@
 /* =========================================================================
-   QMS DYNAMIC QUIZ MASTER ENGINE (FULL SYLLABUS & SMART EXPANDER)
+   QMS DYNAMIC QUIZ MASTER ENGINE (ALL SUBJECTS & ALL CHAPTERS FIXED)
    - FEATURES:
-     1. Complete Chapters List for All Subjects (Physics, Chem, Math, Hindi Part 1 & 2, English Flamingo & Vistas)
-     2. Smart Question Expander (Guarantees 5 to 40 questions)
-     3. Dual Medium Support (Hindi & English)
-     4. Active Highlight for Difficulty Modes
+     1. Fixed Subject Fallback Bug (Now Chemistry, Maths, Hindi, English load their own questions)
+     2. Full Syllabus Chapters for All Subjects
+     3. Smart Question Expander (5 to 40 questions support)
+     4. Dual Medium Support (Hindi & English)
 ========================================================================= */
 
 // --------------------------------------------------------------------------
-// 1. FULL SYLLABUS MEGA CHAPTERS MAPPING (PART 1 & PART 2 INCLUDED)
+// 1. FULL SYLLABUS CHAPTERS MAPPING
 // --------------------------------------------------------------------------
 const chapterNamesMap = {
     physics: {
@@ -98,7 +98,9 @@ const chapterNamesMap = {
     }
 };
 
-// Base Question Pool (Smart Expander scales this up to user-selected count)
+// --------------------------------------------------------------------------
+// 2. ALL SUBJECTS MEGA QUESTION DATABASE
+// --------------------------------------------------------------------------
 const qmsQuizDatabase = {
     physics: {
         default: {
@@ -135,6 +137,127 @@ const qmsQuizDatabase = {
                 ],
                 en: [
                     { q: "Electric field intensity due to an infinite line charge at distance r is proportional to:", options: ["r", "r²", "1/r", "1/r²"], answer: 2 }
+                ]
+            }
+        }
+    },
+    chemistry: {
+        default: {
+            easy: {
+                hi: [
+                    { q: "जल का रासायनिक सूत्र क्या है?", options: ["CO2", "O2", "H2O", "H2O2"], answer: 2 },
+                    { q: "सबसे हल्की गैस कौन सी है?", options: ["ऑक्सीजन", "नाइट्रोजन", "हाइड्रोजन", "हीलियम"], answer: 2 },
+                    { q: "सोने का रासायनिक प्रतीक क्या है?", options: ["Ag", "Fe", "Au", "Cu"], answer: 2 }
+                ],
+                en: [
+                    { q: "What is the chemical formula of water?", options: ["CO2", "O2", "H2O", "H2O2"], answer: 2 },
+                    { q: "Which is the lightest gas?", options: ["Oxygen", "Nitrogen", "Hydrogen", "Helium"], answer: 2 }
+                ]
+            },
+            medium: {
+                hi: [
+                    { q: "PH स्केल की रेंज क्या होती है?", options: ["1 से 10", "0 से 14", "1 से 100", "0 से 10"], answer: 1 },
+                    { q: "नर्नस्ट समीकरण किससे संबंधित है?", options: ["इलेक्ट्रोड विभव", "वेग स्थिरांक", "परासरण दाब", "पृष्ठ तनाव"], answer: 0 }
+                ],
+                en: [
+                    { q: "What is the range of the pH scale?", options: ["1 to 10", "0 to 14", "1 to 100", "0 to 10"], answer: 1 }
+                ]
+            },
+            difficult: {
+                hi: [
+                    { q: "विलयन के अणुसंख्यक गुणधर्म किस पर निर्भर करते हैं?", options: ["विलेय के कणों की संख्या पर", "विलेय की प्रकृति पर", "विलायक के आयतन पर", "तापमान पर"], answer: 0 }
+                ],
+                en: [
+                    { q: "Colligative properties depend upon:", options: ["Number of solute particles", "Nature of solute", "Volume", "Temperature"], answer: 0 }
+                ]
+            }
+        }
+    },
+    maths: {
+        default: {
+            easy: {
+                hi: [
+                    { q: "sin(90°) का मान क्या है?", options: ["0", "1", "1/2", "अनंत"], answer: 1 },
+                    { q: "वृत्त के क्षेत्रफल का सूत्र क्या है?", options: ["2πr", "πr²", "4/3πr³", "πd"], answer: 1 }
+                ],
+                en: [
+                    { q: "Value of sin(90°) is:", options: ["0", "1", "1/2", "Infinity"], answer: 1 },
+                    { q: "Formula for area of a circle is:", options: ["2πr", "πr²", "4/3πr³", "πd"], answer: 1 }
+                ]
+            },
+            medium: {
+                hi: [
+                    { q: "त्रिभुज के तीनों कोणों का योग कितना होता है?", options: ["90°", "360°", "180°", "270°"], answer: 2 }
+                ],
+                en: [
+                    { q: "Sum of interior angles of a triangle is:", options: ["90°", "360°", "180°", "270°"], answer: 2 }
+                ]
+            },
+            difficult: {
+                hi: [
+                    { q: "यदि f(x) = 2x है, तो यह फलन है:", options: ["एकैकी आच्छादक", "बहुएकैकी", "अंतर्क्षेपी", "इनमें से कोई नहीं"], answer: 0 }
+                ],
+                en: [
+                    { q: "If f(x) = 2x, then the function is:", options: ["One-one onto", "Many-one", "Into", "None"], answer: 0 }
+                ]
+            }
+        }
+    },
+    hindi: {
+        default: {
+            easy: {
+                hi: [
+                    { q: "हिंदी भाषा की लिपि क्या है?", options: ["रोमन", "देवनागरी", "गुरुमुखी", "फारसी"], answer: 1 },
+                    { q: "‘आकाश’ का पर्यायवाची है:", options: ["पृथ्वी", "गगन", "पवन", "अग्नि"], answer: 1 }
+                ],
+                en: [
+                    { q: "Script of Hindi language is:", options: ["Roman", "Devanagari", "Gurmukhi", "Persian"], answer: 1 }
+                ]
+            },
+            medium: {
+                hi: [
+                    { q: "कामायनी के रचयिता कौन हैं?", options: ["जयशंकर प्रसाद", "पंत", "महादेवी", "निराला"], answer: 0 }
+                ],
+                en: [
+                    { q: "Author of Kamayani is:", options: ["Jaishankar Prasad", "Pant", "Mahadevi", "Nirala"], answer: 0 }
+                ]
+            },
+            difficult: {
+                hi: [
+                    { q: "वीर रस का स्थायी भाव क्या है?", options: ["उत्साह", "क्रोध", "भय", "विस्मय"], answer: 0 }
+                ],
+                en: [
+                    { q: "Permanent mood (Stai Bhav) of Veer Rasa is:", options: ["Utsah (Enthusiasm)", "Krodh", "Bhay", "Vismay"], answer: 0 }
+                ]
+            }
+        }
+    },
+    english: {
+        default: {
+            easy: {
+                hi: [
+                    { q: "'Go' की भूतकाल फॉर्म क्या है?", options: ["Goes", "Gone", "Went", "Going"], answer: 2 },
+                    { q: "इनमें से स्वर (Vowel) कौन सा है?", options: ["B", "E", "C", "P"], answer: 1 }
+                ],
+                en: [
+                    { q: "What is the past tense of 'Go'?", options: ["Goes", "Gone", "Went", "Going"], answer: 2 },
+                    { q: "Which of these is a vowel?", options: ["B", "E", "C", "P"], answer: 1 }
+                ]
+            },
+            medium: {
+                hi: [
+                    { q: "Identify the antonym of 'Ancient':", options: ["Modern", "Old", "Antique", "Age-old"], answer: 0 }
+                ],
+                en: [
+                    { q: "Identify the antonym of 'Ancient':", options: ["Modern", "Old", "Antique", "Age-old"], answer: 0 }
+                ]
+            },
+            difficult: {
+                hi: [
+                    { q: "'The camel is the ship of the desert' में कौन सा अलंकार है?", options: ["Simile", "Metaphor", "Personification", "Oxymoron"], answer: 1 }
+                ],
+                en: [
+                    { q: "Identify figure of speech in 'The camel is the ship of the desert.'", options: ["Simile", "Metaphor", "Personification", "Oxymoron"], answer: 1 }
                 ]
             }
         }
@@ -317,20 +440,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-quiz-btn').addEventListener('click', () => {
         let basePool = [];
         try {
+            // FIXED: Look up by the exact selected subject instead of fallback bug
             let subObj = qmsQuizDatabase[selectedSubject] || qmsQuizDatabase['physics'];
             let chObj = subObj[selectedChapter] || subObj['default'] || subObj[Object.keys(subObj)[0]];
             let diffObj = chObj[selectedDifficulty] || chObj['easy'];
             basePool = [...(diffObj[currentMedium] || diffObj['hi'] || [])];
         } catch (e) {
             basePool = [
-                { q: "विद्युत आवेश का SI मात्रक क्या है?", options: ["न्यूटन", "कूलॉम", "जूल", "वोल्ट"], answer: 1 },
-                { q: "इलेक्ट्रॉन पर कितना आवेश होता है?", options: ["1.6 x 10^-19 C", "-1.6 x 10^-19 C", "9.1 x 10^-31 C", "0"], answer: 1 }
+                { q: "प्रश्न लोड करने में त्रुटि।", options: ["ठीक है"], answer: 0 }
             ];
         }
 
         // Smart Expander Logic to fulfill 5 to 40 user requirement
         let expandedPool = [];
-        while (expandedPool.length < selectedQuestionCount) {
+        while (expandedPool.length < selectedQuestionCount && basePool.length > 0) {
             let shuffledChunk = [...basePool].sort(() => Math.random() - 0.5);
             shuffledChunk.forEach(item => {
                 if (expandedPool.length < selectedQuestionCount) {
