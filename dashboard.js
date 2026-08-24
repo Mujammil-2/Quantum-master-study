@@ -5,8 +5,8 @@
      2. 🏆 NEW: 4-Box Preview & "View All 50 Badges" Modal
      3. 🏆 NEW: Celebration Pop-up Animation on New Badge Unlock
      4. User Authentication & Privacy (No Hardcoded Names)
-     5. Pomodoro Focus Timer
-     6. Bookmarks (Saved Notes) Renderer
+     5. 🚀 UPGRADED: Custom Pomodoro Focus Timer (+/- controls up to 180 mins)
+     6. 🚀 UPGRADED: Smart Bookmarks (Saved Notes) Modal Renderer (Fix for undefined)
      7. Daily Streak Calendar Logic
      8. Dynamic Medium Switcher (Hindi / English)
 ========================================================================= */
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (loadingTextElement) {
             if (loadingProgress > 30 && loadingProgress < 70) {
-                loadingTextElement.innerText = 'यूज़र प्रोफाइल सिंक्रनाइज़ हो रही है...';
+                loadingTextElement.innerText = 'यूज़र प्रोफाइल सिंक्रनाइज़ हो रही है...';
             }
             if (loadingProgress > 70) {
                 loadingTextElement.innerText = 'क्वांटम इंजन लोड हो रहा है...';
@@ -198,30 +198,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 4. POMODORO FOCUS TIMER
+    // 4. 🔥 UPGRADED POMODORO FOCUS TIMER (+/- CONTROLS)
     // ==========================================
     let focusTimerInterval; 
-    let focusTimeLeftInSeconds = 25 * 60; 
+    let configuredFocusMinutes = 25; // Default time
+    let focusTimeLeftInSeconds = configuredFocusMinutes * 60; 
     let isFocusTimerRunning = false;
     
     const timerDisplayElement = document.getElementById('timer-display');
     const timerStartButton = document.getElementById('timer-start-btn');
     const timerResetButton = document.getElementById('timer-reset-btn');
+    const timerPlusButton = document.getElementById('timer-plus-btn');
+    const timerMinusButton = document.getElementById('timer-minus-btn');
 
     function updateTimerUserInterface() {
-        if (!timerDisplayElement) {
-            return;
-        }
-        
+        if (!timerDisplayElement) return;
         const remainingMinutes = Math.floor(focusTimeLeftInSeconds / 60);
         const remainingSeconds = focusTimeLeftInSeconds % 60;
-        
         const formattedMinutes = remainingMinutes.toString().padStart(2, '0');
         const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
-        
         timerDisplayElement.innerText = `${formattedMinutes}:${formattedSeconds}`;
     }
-    
+
+    // Plus Button Logic (Max 180 mins)
+    if (timerPlusButton) {
+        timerPlusButton.addEventListener('click', () => {
+            if (!isFocusTimerRunning) {
+                configuredFocusMinutes = Math.min(180, configuredFocusMinutes + 5);
+                focusTimeLeftInSeconds = configuredFocusMinutes * 60;
+                updateTimerUserInterface();
+            } else {
+                if (window.showCustomToast) window.showCustomToast("टाइमर चालू है। पहले उसे पॉज़ या रीसेट करें।", true);
+            }
+        });
+    }
+
+    // Minus Button Logic (Min 5 mins)
+    if (timerMinusButton) {
+        timerMinusButton.addEventListener('click', () => {
+            if (!isFocusTimerRunning) {
+                configuredFocusMinutes = Math.max(5, configuredFocusMinutes - 5);
+                focusTimeLeftInSeconds = configuredFocusMinutes * 60;
+                updateTimerUserInterface();
+            } else {
+                if (window.showCustomToast) window.showCustomToast("टाइमर चालू है। पहले उसे पॉज़ या रीसेट करें।", true);
+            }
+        });
+    }
+
     if (timerStartButton) {
         timerStartButton.addEventListener('click', () => {
             if (isFocusTimerRunning === false) {
@@ -238,10 +262,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         isFocusTimerRunning = false; 
                         
                         if (window.showCustomToast) {
-                            window.showCustomToast("शानदार! आपका 25 मिनट का फोकस सेशन पूरा हुआ।", false); 
+                            window.showCustomToast(`शानदार! आपका ${configuredFocusMinutes} मिनट का फोकस सेशन पूरा हुआ।`, false); 
                         }
                         
-                        focusTimeLeftInSeconds = 25 * 60; 
+                        focusTimeLeftInSeconds = configuredFocusMinutes * 60; 
                         updateTimerUserInterface(); 
                         
                         timerStartButton.innerText = "स्टार्ट (Start)"; 
@@ -261,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
         timerResetButton.addEventListener('click', () => { 
             clearInterval(focusTimerInterval); 
             isFocusTimerRunning = false; 
-            focusTimeLeftInSeconds = 25 * 60; 
+            focusTimeLeftInSeconds = configuredFocusMinutes * 60; // Reset to configured time
             updateTimerUserInterface(); 
             
             timerStartButton.innerText = "स्टार्ट (Start)"; 
@@ -270,11 +294,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 5. 🔖 RENDER BOOKMARKS (SAVED NOTES)
+    // 5. 🔖 UPGRADED SMART BOOKMARKS (MODAL & FIXES)
     // ==========================================
-    const bookmarksContainerElement = document.getElementById('bookmarks-container');
+    const bookmarksModalContent = document.getElementById('bookmarks-modal-content');
+    const openBookmarksBtn = document.getElementById('open-bookmarks-modal-btn');
+    const closeBookmarksBtn = document.getElementById('close-bookmarks-modal-btn');
+    const bookmarksModalOverlay = document.getElementById('bookmarks-modal-overlay');
     
-    if (bookmarksContainerElement) {
+    // Open Modal Logic
+    if(openBookmarksBtn && bookmarksModalOverlay) {
+        openBookmarksBtn.addEventListener('click', () => {
+            bookmarksModalOverlay.style.display = 'flex';
+            setTimeout(() => { bookmarksModalOverlay.style.opacity = '1'; }, 10);
+        });
+    }
+
+    // Close Modal Logic
+    if(closeBookmarksBtn && bookmarksModalOverlay) {
+        closeBookmarksBtn.addEventListener('click', () => {
+            bookmarksModalOverlay.style.opacity = '0';
+            setTimeout(() => { bookmarksModalOverlay.style.display = 'none'; }, 300);
+        });
+    }
+    
+    // Render Bookmarks inside Modal
+    if (bookmarksModalContent) {
         const rawBookmarksData = localStorage.getItem('qms_bookmarks');
         let parsedBookmarks = {};
         
@@ -285,38 +329,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const bookmarkKeysArray = Object.keys(parsedBookmarks);
 
         if (bookmarkKeysArray.length === 0) {
-            bookmarksContainerElement.innerHTML = `
-                <div class="glass-card" style="padding: 2rem; text-align: center; color: var(--text-secondary);">
-                    <i class="ri-bookmark-line" style="font-size: 2.5rem; margin-bottom: 10px; display: block; opacity: 0.5;"></i>
-                    <p>अभी तक कोई नोट्स सेव नहीं किया गया है।</p>
-                    <p style="font-size: 0.8rem; margin-top: 5px;">वीडियो प्लेयर पर जाकर ❤️ बुकमार्क पर क्लिक करें।</p>
+            bookmarksModalContent.innerHTML = `
+                <div style="padding: 2rem; text-align: center; color: var(--text-secondary);">
+                    <i class="ri-bookmark-line" style="font-size: 3.5rem; margin-bottom: 10px; display: block; opacity: 0.5;"></i>
+                    <p style="font-size: 1.1rem; color: #fff; margin-bottom: 5px;">अभी तक कोई नोट्स सेव नहीं है।</p>
+                    <p style="font-size: 0.85rem;">वीडियो प्लेयर पर जाकर 'बुकमार्क में सेव करें' पर क्लिक करें।</p>
                 </div>
             `;
         } else {
-            bookmarksContainerElement.style.display = 'grid';
-            bookmarksContainerElement.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
-            bookmarksContainerElement.style.gap = '15px';
-            
             let finalBookmarksHTML = '';
             
             bookmarkKeysArray.forEach(key => {
                 let bookmarkItem = parsedBookmarks[key];
                 let iconColorHex = 'var(--accent-main)'; 
                 
-                if (bookmarkItem.subject === 'chemistry') {
-                    iconColorHex = '#b535ff'; 
-                }
-                
-                if (bookmarkItem.subject === 'mathematics') {
-                    iconColorHex = '#00ff88'; 
-                }
+                // Color coding based on subject
+                if (bookmarkItem.subject === 'chemistry') iconColorHex = '#b535ff'; 
+                if (bookmarkItem.subject === 'mathematics') iconColorHex = '#00ff88'; 
+                if (bookmarkItem.subject === 'hindi') iconColorHex = '#ffc107'; 
+                if (bookmarkItem.subject === 'english') iconColorHex = '#ff3366'; 
 
                 finalBookmarksHTML += `
                     <div class="glass-card sfx-trigger" 
-                         style="padding: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.3s; border-left: 4px solid ${iconColorHex};" 
+                         style="padding: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.3s; border-left: 4px solid ${iconColorHex}; background: rgba(255,255,255,0.03); border-radius: 12px;" 
                          onclick="window.location.href='player.html?subject=${bookmarkItem.subject}&chapter=${bookmarkItem.id}'" 
-                         onmouseover="this.style.background='rgba(255,255,255,0.05)'" 
-                         onmouseout="this.style.background='transparent'">
+                         onmouseover="this.style.background='rgba(255,255,255,0.08)'" 
+                         onmouseout="this.style.background='rgba(255,255,255,0.03)'">
                          
                         <div style="width: 45px; height: 45px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: ${iconColorHex}; flex-shrink: 0;">
                             <i class="ri-bookmark-3-fill"></i>
@@ -335,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             });
             
-            bookmarksContainerElement.innerHTML = finalBookmarksHTML;
+            bookmarksModalContent.innerHTML = finalBookmarksHTML;
         }
     }
 
@@ -501,9 +539,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'b23', name: 'नीलम (Sapphire)', icon: 'ri-gemstone-fill', color: '#0f52ba', requiredXp: 26000, desc: '26000 XP प्राप्त किए' },
         { id: 'b24', name: 'नीलम स्टार (Star)', icon: 'ri-star-fill', color: '#0f52ba', requiredXp: 29000, desc: '29000 XP प्राप्त किए' },
         { id: 'b25', name: 'नीलम क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#0f52ba', requiredXp: 33000, desc: '33000 XP प्राप्त किए' },
-        { id: 'b26', name: 'टोपाज़ (Topaz)', icon: 'ri-gemstone-fill', color: '#ffc87c', requiredXp: 37000, desc: '37000 XP प्राप्त किए' },
-        { id: 'b27', name: 'टोपाज़ स्टार (Star)', icon: 'ri-star-fill', color: '#ffc87c', requiredXp: 41000, desc: '41000 XP प्राप्त किए' },
-        { id: 'b28', name: 'टोपाज़ क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#ffc87c', requiredXp: 46000, desc: '46000 XP प्राप्त किए' },
+        { id: 'b26', name: 'टोपाज़ (Topaz)', icon: 'ri-gemstone-fill', color: '#ffc87c', requiredXp: 37000, desc: '37000 XP प्राप्त किए' },
+        { id: 'b27', name: 'टोपाज़ स्टार (Star)', icon: 'ri-star-fill', color: '#ffc87c', requiredXp: 41000, desc: '41000 XP प्राप्त किए' },
+        { id: 'b28', name: 'टोपाज़ क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#ffc87c', requiredXp: 46000, desc: '46000 XP प्राप्त किए' },
         { id: 'b29', name: 'एमेथिस्ट (Amethyst)', icon: 'ri-gemstone-fill', color: '#9966cc', requiredXp: 51000, desc: '51000 XP प्राप्त किए' },
         { id: 'b30', name: 'एमेथिस्ट स्टार (Star)', icon: 'ri-star-fill', color: '#9966cc', requiredXp: 57000, desc: '57000 XP प्राप्त किए' },
         { id: 'b31', name: 'एमेथिस्ट क्राउन (Crown)', icon: 'ri-vip-crown-fill', color: '#9966cc', requiredXp: 63000, desc: '63000 XP प्राप्त किए' },
@@ -879,7 +917,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         } catch(localStorageError) { 
                             if(window.showCustomToast) {
-                                window.showCustomToast("फोटो बहुत बड़ी है! सेव करने में एरर।", true); 
+                                window.showCustomToast("फोटो बहुत बड़ी है! सेव करने में एरर।", true); 
                             }
                         }
                     };
