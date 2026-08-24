@@ -5,201 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Quantum Master Study</title>
     
-    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
     <style>
-        /* =====================================================================
-           QMS PREMIUM LOGIN PAGE (REALISTIC UI + 3D WAVES + AUTHENTIC EFFECTS)
-        ====================================================================== */
-        
+        /* ================== CSS SAME AS BEFORE (Super Premium UI) ================== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-        :root {
-            --bg-deep: #020612; /* Deep Navy Space Color */
-            --card-bg: #0b1120;
-            --btn-bg: #141c2f;
-            --btn-border: #1e293b;
-            --text-main: #ffffff;
-            --text-muted: #8b96a8;
-            --accent-cyan: #00f0ff;
-            --accent-blue: #0055ff;
-        }
-
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            overflow: hidden; position: relative;
-        }
-
-        /* 🌊 1. The Dotted 3D Waves Background (Canvas Container) */
-        #particle-waves {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 100%; height: 60%;
-            z-index: -2;
-            opacity: 0.8;
-        }
-
-        /* Ambient Glow behind waves */
-        .ambient-glow {
-            position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%);
-            width: 80vw; height: 50vh;
-            background: radial-gradient(ellipse, rgba(0, 85, 255, 0.25) 0%, transparent 70%);
-            filter: blur(80px); z-index: -3;
-        }
-
-        /* ⚛️ 2. Floating Science Background Elements */
-        .floating-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none; overflow: hidden;
-        }
-        .f-icon {
-            position: absolute; color: rgba(255, 255, 255, 0.03);
-            font-size: 5rem; animation: floatAnim 8s infinite ease-in-out alternate;
-        }
-        .f-icon:nth-child(1) { top: 15%; left: 8%; } /* Atom */
-        .f-icon:nth-child(2) { top: 35%; left: 4%; font-family: 'Space Grotesk'; font-size: 2.5rem; transform: rotate(-15deg); animation-delay: -2s; } /* E=mc2 */
-        .f-icon:nth-child(3) { top: 65%; left: 10%; font-size: 6rem; animation-delay: -4s; } /* Globe */
-        .f-icon:nth-child(4) { top: 10%; right: 10%; font-size: 4rem; animation-delay: -1s; } /* Geometry */
-        .f-icon:nth-child(5) { top: 40%; right: 5%; font-size: 5rem; animation-delay: -3s; } /* Flask */
-        .f-icon:nth-child(6) { top: 70%; right: 12%; font-family: 'Space Grotesk'; font-size: 2rem; animation-delay: -5s; } /* Math Graph */
-
-        @keyframes floatAnim {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(-30px) rotate(5deg); }
-        }
-
-        /* 🎓 3. Logo & Brand Area */
-        .main-wrapper {
-            width: 100%; max-width: 440px; padding: 20px; z-index: 10;
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        .brand-header {
-            display: flex; align-items: center; gap: 15px; margin-bottom: 25px;
-        }
-        .logo-box svg { width: 70px; height: 70px; filter: drop-shadow(0 0 10px rgba(0, 168, 255, 0.3)); }
+        :root { --bg-deep: #020612; --card-bg: #0b1120; --btn-bg: #141c2f; --btn-border: #1e293b; --accent-cyan: #00f0ff; --accent-blue: #0055ff; }
+        body { background-color: var(--bg-deep); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; position: relative; }
         
+        #particle-waves { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; z-index: -2; opacity: 0.8; }
+        .ambient-glow { position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%); width: 80vw; height: 50vh; background: radial-gradient(ellipse, rgba(0, 85, 255, 0.25) 0%, transparent 70%); filter: blur(80px); z-index: -3; }
+        
+        .floating-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; }
+        .f-icon { position: absolute; color: rgba(255, 255, 255, 0.03); font-size: 5rem; animation: floatAnim 8s infinite ease-in-out alternate; }
+        .f-icon:nth-child(1) { top: 15%; left: 8%; } .f-icon:nth-child(2) { top: 35%; left: 4%; font-family: 'Space Grotesk'; font-size: 2.5rem; transform: rotate(-15deg); } .f-icon:nth-child(3) { top: 65%; left: 10%; font-size: 6rem; } .f-icon:nth-child(4) { top: 10%; right: 10%; font-size: 4rem; } .f-icon:nth-child(5) { top: 40%; right: 5%; font-size: 5rem; } .f-icon:nth-child(6) { top: 70%; right: 12%; font-family: 'Space Grotesk'; font-size: 2rem; }
+        @keyframes floatAnim { 0% { transform: translateY(0px) rotate(0deg); } 100% { transform: translateY(-30px) rotate(5deg); } }
+
+        .main-wrapper { width: 100%; max-width: 440px; padding: 20px; z-index: 10; display: flex; flex-direction: column; align-items: center; }
+        .brand-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .logo-box svg { width: 70px; height: 70px; filter: drop-shadow(0 0 10px rgba(0, 168, 255, 0.3)); }
         .brand-text-col { display: flex; flex-direction: column; }
         .b-title1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: 0.5px; }
         .b-title2 { font-size: 1.8rem; font-weight: 700; color: var(--accent-cyan); line-height: 1.1; }
-        .b-tag { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; }
+        .b-tag { font-size: 0.75rem; color: #8b96a8; margin-top: 4px; letter-spacing: 1px; }
 
         .welcome-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 5px; text-align: center; }
-        .welcome-sub { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 35px; text-align: center; }
+        .welcome-sub { font-size: 0.95rem; color: #8b96a8; margin-bottom: 35px; text-align: center; }
 
-        /* 🎴 4. The Premium Solid Card */
-        .login-card {
-            background: linear-gradient(180deg, rgba(16, 24, 43, 0.95) 0%, rgba(11, 17, 32, 0.95) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px; padding: 35px 30px; width: 100%;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        .card-heading {
-            text-align: center; font-size: 1.2rem; font-weight: 600; margin-bottom: 25px;
-            display: flex; flex-direction: column; align-items: center; gap: 12px;
-        }
+        .login-card { background: linear-gradient(180deg, rgba(16, 24, 43, 0.95) 0%, rgba(11, 17, 32, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 35px 30px; width: 100%; box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+        .card-heading { text-align: center; font-size: 1.2rem; font-weight: 600; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .heading-line { display: flex; align-items: center; gap: 6px; }
         .heading-line span:nth-child(1), .heading-line span:nth-child(3) { width: 30px; height: 1px; background: rgba(255,255,255,0.15); }
         .heading-line span:nth-child(2) { width: 35px; height: 3px; background: var(--accent-blue); border-radius: 2px; box-shadow: 0 0 10px var(--accent-blue); }
 
-        /* 🚀 5. Realistic Buttons (Vercel/Spotify Style) */
-        .auth-btn {
-            width: 100%; background: var(--btn-bg); border: 1px solid var(--btn-border);
-            color: #e2e8f0; padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500;
-            display: flex; align-items: center; justify-content: center; gap: 15px;
-            margin-bottom: 14px; cursor: pointer; position: relative; overflow: hidden;
-            transition: all 0.2s ease;
-        }
-        .auth-btn:hover { background: #1e293b; border-color: #334155; color: #fff; }
-        .auth-btn:active { transform: scale(0.98); }
-        .auth-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .auth-btn { width: 100%; background: var(--btn-bg); border: 1px solid var(--btn-border); color: #e2e8f0; padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 14px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.2s ease; }
+        .auth-btn:hover:not(:disabled) { background: #1e293b; border-color: #334155; color: #fff; }
+        .auth-btn:active:not(:disabled) { transform: scale(0.98); }
+        .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        .btn-icon-box {
-            background: #fff; width: 26px; height: 26px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .btn-icon-box { background: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .auth-btn.fb .btn-icon-box { background: #1877F2; }
         .auth-btn.ig .btn-icon-box { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
         .auth-btn.phone .btn-icon-box { background: #10b981; }
-
         .auth-btn svg, .auth-btn i { width: 16px; height: 16px; color: #fff; font-size: 16px; }
         .auth-btn span.btn-txt { flex: 1; text-align: left; }
 
-        /* Loading Spinner inside Button */
-        .btn-spinner {
-            display: none; position: absolute; left: 50%; top: 50%;
-            transform: translate(-50%, -50%);
-            width: 22px; height: 22px;
-            border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff;
-            border-radius: 50%; animation: spin 0.8s linear infinite;
-        }
+        .btn-spinner { display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-
-        /* Button State when Loading */
         .auth-btn.loading .btn-icon-box, .auth-btn.loading span.btn-txt { opacity: 0; }
         .auth-btn.loading .btn-spinner { display: block; }
 
-        /* Divider */
-        .divider {
-            display: flex; align-items: center; color: var(--text-muted); font-size: 0.8rem; margin: 20px 0;
-        }
+        .divider { display: flex; align-items: center; color: #8b96a8; font-size: 0.8rem; margin: 20px 0; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .divider::before { margin-right: 15px; } .divider::after { margin-left: 15px; }
 
-        /* 👤 Guest Button */
-        .guest-btn {
-            width: 100%; background: transparent; border: 1px solid #0088ff; color: #fff;
-            padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            cursor: pointer; transition: all 0.3s ease;
-            box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.1), 0 0 15px rgba(0, 136, 255, 0.1);
-        }
-        .guest-btn:hover { background: rgba(0, 136, 255, 0.1); box-shadow: inset 0 0 15px rgba(0, 136, 255, 0.2), 0 0 20px rgba(0, 136, 255, 0.2); }
+        .guest-btn { width: 100%; background: transparent; border: 1px solid #0088ff; color: #fff; padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.1), 0 0 15px rgba(0, 136, 255, 0.1); }
+        .guest-btn:hover:not(:disabled) { background: rgba(0, 136, 255, 0.1); box-shadow: inset 0 0 15px rgba(0, 136, 255, 0.2), 0 0 20px rgba(0, 136, 255, 0.2); }
         .guest-btn i { font-size: 1.3rem; color: #0088ff; }
 
-        /* Info Text */
-        .info-box {
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 10px; padding: 14px; margin-top: 25px; display: flex; align-items: center; gap: 15px;
-        }
+        .info-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 14px; margin-top: 25px; display: flex; align-items: center; gap: 15px; }
         .info-box i { color: #0088ff; font-size: 1.5rem; }
         .info-text h4 { font-size: 0.85rem; font-weight: 500; color: #e5e7eb; margin-bottom: 2px; }
-        .info-text p { font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; }
+        .info-text p { font-size: 0.7rem; color: #8b96a8; line-height: 1.4; }
 
-        .footer-terms { margin-top: 25px; text-align: center; font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+        .footer-terms { margin-top: 25px; text-align: center; font-size: 0.75rem; color: #8b96a8; line-height: 1.5; }
         .footer-terms a { color: #0066ff; text-decoration: none; }
-        .footer-terms a:hover { text-decoration: underline; }
 
+        /* Toast Message */
+        .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid var(--accent-cyan); color: #fff; padding: 15px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px; font-size: 0.9rem; transition: right 0.4s ease; z-index: 1000; }
+        .toast-msg.show { right: 20px; }
     </style>
 </head>
 <body>
 
-    <!-- 🌊 HTML5 Canvas for Dotted 3D Waves -->
+    <div id="login-toast" class="toast-msg"><i class="ri-information-line"></i><span id="toast-text">Loading...</span></div>
+
     <canvas id="particle-waves"></canvas>
     <div class="ambient-glow"></div>
 
-    <!-- ⚛️ Floating Elements -->
     <div class="floating-bg">
-        <i class="ri-reactjs-line f-icon"></i>
-        <div class="f-icon">E = mc²</div>
-        <i class="ri-global-line f-icon"></i>
-        <i class="ri-shape-2-line f-icon"></i>
-        <i class="ri-flask-line f-icon"></i>
-        <div class="f-icon">y = sin x</div>
+        <i class="ri-reactjs-line f-icon"></i><div class="f-icon">E = mc²</div><i class="ri-global-line f-icon"></i>
+        <i class="ri-shape-2-line f-icon"></i><i class="ri-flask-line f-icon"></i><div class="f-icon">y = sin x</div>
     </div>
 
-    <!-- Main Content -->
     <div class="main-wrapper">
-        
-        <!-- Premium Logo Matching Exact Image -->
         <div class="brand-header">
             <div class="logo-box">
                 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -210,32 +102,24 @@
                 </svg>
             </div>
             <div class="brand-text-col">
-                <span class="b-title1">Quantum</span>
-                <span class="b-title2">Master Study</span>
-                <span class="b-tag">Learn • Practice • Master</span>
+                <span class="b-title1">Quantum</span><span class="b-title2">Master Study</span><span class="b-tag">Learn • Practice • Master</span>
             </div>
         </div>
 
         <h1 class="welcome-title">Welcome Back!</h1>
         <p class="welcome-sub">Login to continue your learning journey</p>
 
-        <!-- Login Card -->
         <div class="login-card">
-            
-            <div class="card-heading">
-                Login to Your Account
-                <div class="heading-line"><span></span><span></span><span></span></div>
-            </div>
+            <div class="card-heading">Login to Your Account<div class="heading-line"><span></span><span></span><span></span></div></div>
 
-            <!-- Phone Number Auth (NEW) -->
-            <button class="auth-btn phone" onclick="handleAuthClick(this, 'Phone')">
+            <button class="auth-btn phone" onclick="window.triggerAuth(this, 'Phone')">
                 <div class="btn-icon-box"><i class="ri-phone-fill"></i></div>
                 <span class="btn-txt">Continue with Phone Number</span>
                 <div class="btn-spinner"></div>
             </button>
 
-            <!-- Google Auth -->
-            <button class="auth-btn" onclick="handleAuthClick(this, 'Google')">
+            <!-- REAL GOOGLE AUTH BUTTON -->
+            <button class="auth-btn" onclick="window.triggerAuth(this, 'Google')">
                 <div class="btn-icon-box">
                     <svg viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -248,8 +132,8 @@
                 <div class="btn-spinner"></div>
             </button>
 
-            <!-- Facebook Auth -->
-            <button class="auth-btn fb" onclick="handleAuthClick(this, 'Facebook')">
+            <!-- REAL FACEBOOK AUTH BUTTON -->
+            <button class="auth-btn fb" onclick="window.triggerAuth(this, 'Facebook')">
                 <div class="btn-icon-box">
                     <svg viewBox="0 0 24 24" fill="#ffffff">
                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -259,138 +143,135 @@
                 <div class="btn-spinner"></div>
             </button>
 
-            <!-- Instagram Auth -->
-            <button class="auth-btn ig" onclick="handleAuthClick(this, 'Instagram')">
-                <div class="btn-icon-box">
-                    <svg viewBox="0 0 24 24" fill="#ffffff">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                </div>
-                <span class="btn-txt">Continue with Instagram</span>
-                <div class="btn-spinner"></div>
-            </button>
-
             <div class="divider">OR</div>
 
-            <!-- Authentic Guest Button -->
             <button class="guest-btn" onclick="window.location.href='dashboard.html'">
-                <i class="ri-user-line"></i>
-                <span style="flex:1; text-align:left;">Continue as Guest</span>
+                <i class="ri-user-line"></i><span style="flex:1; text-align:left;">Continue as Guest</span>
             </button>
 
             <div class="info-box">
                 <i class="ri-shield-check-line"></i>
                 <div class="info-text">
-                    <h4>Your progress will be saved</h4>
-                    <p>Login to sync your progress across devices and access all features</p>
+                    <h4>Real Authentication Active</h4>
+                    <p>Your actual Google/Facebook profile data will be securely synced.</p>
                 </div>
             </div>
         </div>
-
-        <div class="footer-terms">
-            By continuing, you agree to our<br>
-            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-        </div>
     </div>
 
-    <!-- JS For Realistic Button Clicks (Vercel Style) & 3D Wave Particles -->
+    <!-- UI JS: Toast & Canvas Waves -->
     <script>
-        // --- 1. Realistic Button Click Logic ---
-        function handleAuthClick(clickedBtn, provider) {
-            // Disable ALL buttons to prevent multiple clicks
-            const allBtns = document.querySelectorAll('.auth-btn, .guest-btn');
-            allBtns.forEach(btn => {
-                btn.disabled = true;
-                btn.style.opacity = '0.6';
-            });
-
-            // Keep the clicked button solid and show spinner
-            clickedBtn.style.opacity = '1';
-            clickedBtn.classList.add('loading');
-
-            // Simulate Network Request / Redirection Delay
-            setTimeout(() => {
-                // Here we will eventually trigger Firebase Auth.
-                // For now, it mocks the redirect to Dashboard after a successful "login".
-                window.location.href = 'dashboard.html';
-            }, 2500); // 2.5 seconds fake loading
+        function showToast(msg) {
+            const toast = document.getElementById('login-toast');
+            document.getElementById('toast-text').innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        // --- 2. 3D Dotted Canvas Waves (The Ultimate Magic) ---
+        // 3D Canvas Waves Logic
         const canvas = document.getElementById('particle-waves');
         const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let particles = [];
-        
-        // Grid setup
-        const cols = 40; // Number of dots horizontally
-        const rows = 15; // Number of dots vertically
-        const spacing = 35; // Space between dots
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight * 0.6; // Bottom 60% of screen
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    particles.push({
-                        x: i * spacing - (cols * spacing) / 2, // Centered X
-                        z: j * spacing - (rows * spacing) / 2, // 3D Depth
-                        y: 0,
-                        baseY: 0,
-                        angle: (i * 0.3) + (j * 0.3) // Wave phase offset
-                    });
-                }
-            }
-        }
-
+        let width, height, particles = [];
+        const cols = 40, rows = 15, spacing = 35;
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight * 0.6; }
+        function initParticles() { particles = []; for (let i = 0; i < cols; i++) { for (let j = 0; j < rows; j++) { particles.push({ x: i * spacing - (cols * spacing) / 2, z: j * spacing - (rows * spacing) / 2, y: 0, angle: (i * 0.3) + (j * 0.3) }); } } }
         let time = 0;
         function drawWaves() {
-            ctx.clearRect(0, 0, width, height);
-            time += 0.03; // Wave speed
-
-            const centerX = width / 2;
-            const centerY = height / 1.5; // Vertical position of the wave grid
-
+            ctx.clearRect(0, 0, width, height); time += 0.03;
+            const cx = width / 2, cy = height / 1.5;
             particles.forEach(p => {
-                // Math.sin creates the wave motion
-                p.y = Math.sin(p.angle + time) * 35; // Wave height
-
-                // Fake 3D Projection (Perspective)
-                const scale = 400 / (400 + p.z + 200); // Magic number for perspective
-                const screenX = centerX + p.x * scale;
-                const screenY = centerY + (p.y + p.z * 0.5) * scale;
-
-                // Only draw if on screen
+                p.y = Math.sin(p.angle + time) * 35;
+                const scale = 400 / (400 + p.z + 200);
+                const screenX = cx + p.x * scale, screenY = cy + (p.y + p.z * 0.5) * scale;
                 if (screenX > 0 && screenX < width && screenY > 0 && screenY < height) {
-                    // Dot size based on depth (closer = bigger)
-                    const radius = Math.max(0.5, 3 * scale);
-                    
-                    // Dot color based on height (peaks glow brighter blue)
-                    const opacity = Math.min(1, Math.max(0.1, scale * 1.5));
-                    const intensity = (p.y + 35) / 70; // 0 to 1 based on wave height
-                    
-                    ctx.beginPath();
-                    ctx.arc(screenX, screenY, radius, 0, Math.PI * 2);
-                    // Beautiful Cyan-Blue gradient coloring
-                    ctx.fillStyle = `rgba(${0 + intensity * 0}, ${100 + intensity * 155}, 255, ${opacity})`;
-                    ctx.fill();
+                    ctx.beginPath(); ctx.arc(screenX, screenY, Math.max(0.5, 3 * scale), 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, ${100 + ((p.y + 35)/70) * 155}, 255, ${Math.min(1, scale * 1.5)})`; ctx.fill();
                 }
-            });
-
-            requestAnimationFrame(drawWaves);
+            }); requestAnimationFrame(drawWaves);
         }
-
         window.addEventListener('resize', () => { resize(); initParticles(); });
+        resize(); initParticles(); drawWaves();
+    </script>
+
+    <!-- =========================================================================
+         🚀 REAL FIREBASE AUTHENTICATION LOGIC (The Brain) 🚀
+    ========================================================================= -->
+    <script type="module">
+        // Import Real Firebase Functions from Google CDN
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // ⚠️ IMPORTANT: REPLACE THESE DUMMY KEYS WITH YOUR REAL FIREBASE KEYS
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         
-        // Start Magic
-        resize();
-        initParticles();
-        drawWaves();
+        // Setup Providers
+        const googleProvider = new GoogleAuthProvider();
+        const fbProvider = new FacebookAuthProvider();
+
+        // Attach logic to the window object so buttons can click it
+        window.triggerAuth = async function(btnElement, providerType) {
+            
+            // 1. UI Loading State (Vercel Style)
+            const allBtns = document.querySelectorAll('.auth-btn, .guest-btn');
+            allBtns.forEach(b => { b.disabled = true; });
+            btnElement.classList.add('loading');
+            showToast(`Connecting to ${providerType}...`);
+
+            try {
+                let result;
+                
+                // 2. Open Real Google/Facebook Login Popup
+                if(providerType === 'Google') {
+                    result = await signInWithPopup(auth, googleProvider);
+                } 
+                else if (providerType === 'Facebook') {
+                    result = await signInWithPopup(auth, fbProvider);
+                } 
+                else {
+                    showToast("Phone Auth is coming soon!");
+                    resetBtns(allBtns, btnElement);
+                    return;
+                }
+
+                // 3. SUCCESS! Get Real User Data
+                const user = result.user;
+                
+                // 4. Save User Data to LocalStorage (So Dashboard can use it)
+                localStorage.setItem('qms_user_name', user.displayName || 'QMS User');
+                localStorage.setItem('qms_user_email', user.email || 'No Email');
+                localStorage.setItem('qms_user_photo', user.photoURL || 'default-avatar.png');
+                localStorage.setItem('qms_user_uid', user.uid);
+
+                showToast(`Welcome, ${user.displayName}! Redirecting...`);
+                
+                // 5. Redirect to Dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                // Handle Errors (if user closes popup or network error)
+                console.error("Auth Error:", error);
+                showToast(error.message);
+                resetBtns(allBtns, btnElement);
+            }
+        };
+
+        function resetBtns(allBtns, btnElement) {
+            allBtns.forEach(b => { b.disabled = false; });
+            btnElement.classList.remove('loading');
+        }
     </script>
 </body>
 </html>
