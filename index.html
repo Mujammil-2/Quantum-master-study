@@ -46,8 +46,6 @@
         .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .btn-icon-box { background: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .auth-btn.fb .btn-icon-box { background: #1877F2; }
-        .auth-btn.ig .btn-icon-box { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
         .auth-btn.phone .btn-icon-box { background: #10b981; }
         .auth-btn svg, .auth-btn i { width: 16px; height: 16px; color: #fff; font-size: 16px; }
         .auth-btn span.btn-txt { flex: 1; text-align: left; }
@@ -73,6 +71,16 @@
         .footer-terms { margin-top: 25px; text-align: center; font-size: 0.75rem; color: #8b96a8; line-height: 1.5; }
         .footer-terms a { color: #0066ff; text-decoration: none; }
 
+        /* Modal for Phone OTP Input */
+        .otp-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 18, 0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .otp-box { background: #0b1120; border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+        .otp-box h3 { font-size: 1.4rem; margin-bottom: 10px; color: #fff; }
+        .otp-box p { font-size: 0.85rem; color: #8b96a8; margin-bottom: 20px; }
+        .otp-input { width: 100%; background: #141c2f; border: 1px solid #1e293b; color: #fff; padding: 12px 15px; border-radius: 10px; font-size: 1rem; margin-bottom: 15px; text-align: center; letter-spacing: 2px; }
+        .otp-input:focus { outline: none; border-color: #0088ff; }
+        .otp-btn { width: 100%; background: #0055ff; color: #fff; padding: 12px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .otp-btn:hover { background: #0040cc; }
+
         /* Toast Message */
         .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid var(--accent-cyan); color: #fff; padding: 15px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px; font-size: 0.9rem; transition: right 0.4s ease; z-index: 1000; }
         .toast-msg.show { right: 20px; }
@@ -81,6 +89,17 @@
 <body>
 
     <div id="login-toast" class="toast-msg"><i class="ri-information-line"></i><span id="toast-text">Loading...</span></div>
+
+    <!-- Phone OTP Popup Modal -->
+    <div id="otp-modal" class="otp-modal">
+        <div class="otp-box">
+            <h3 id="otp-title">Enter Phone Number</h3>
+            <p id="otp-desc">We will send a verification code to your phone.</p>
+            <input type="text" id="otp-input-field" class="otp-input" placeholder="+91 98765 43210">
+            <button id="otp-action-btn" class="otp-action-btn otp-btn" onclick="handleOtpSubmit()">Send OTP</button>
+            <div id="recaptcha-container"></div>
+        </div>
+    </div>
 
     <canvas id="particle-waves"></canvas>
     <div class="ambient-glow"></div>
@@ -111,14 +130,15 @@
         <div class="login-card">
             <div class="card-heading">Login to Your Account<div class="heading-line"><span></span><span></span><span></span></div></div>
 
-            <button class="auth-btn phone" onclick="window.triggerAuth(this, 'Phone')">
+            <!-- PHONE AUTH BUTTON -->
+            <button class="auth-btn phone" onclick="window.startPhoneAuth()">
                 <div class="btn-icon-box"><i class="ri-phone-fill"></i></div>
                 <span class="btn-txt">Continue with Phone Number</span>
                 <div class="btn-spinner"></div>
             </button>
 
-            <!-- REAL GOOGLE AUTH BUTTON -->
-            <button class="auth-btn" id="google-login-btn" onclick="window.triggerAuth(this, 'Google')">
+            <!-- GOOGLE AUTH BUTTON -->
+            <button class="auth-btn" onclick="window.triggerGoogleAuth(this)">
                 <div class="btn-icon-box">
                     <svg viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -131,17 +151,6 @@
                 <div class="btn-spinner"></div>
             </button>
 
-            <!-- REAL FACEBOOK AUTH BUTTON -->
-            <button class="auth-btn fb" onclick="window.triggerAuth(this, 'Facebook')">
-                <div class="btn-icon-box">
-                    <svg viewBox="0 0 24 24" fill="#ffffff">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                </div>
-                <span class="btn-txt">Continue with Facebook</span>
-                <div class="btn-spinner"></div>
-            </button>
-
             <div class="divider">OR</div>
 
             <button class="guest-btn" onclick="window.location.href='dashboard.html'">
@@ -151,8 +160,8 @@
             <div class="info-box">
                 <i class="ri-shield-check-line"></i>
                 <div class="info-text">
-                    <h4>Real Authentication Active</h4>
-                    <p>Your actual Google profile data will be securely synced.</p>
+                    <h4>Fully Secure Authentication</h4>
+                    <p>Google & Phone OTP login active with profile synchronization.</p>
                 </div>
             </div>
         </div>
@@ -193,15 +202,13 @@
     </script>
 
     <!-- =========================================================================
-         🚀 REAL FIREBASE AUTHENTICATION LOGIC (With Your Keys!) 🚀
+         🚀 REAL FIREBASE LOGIC (Google + Phone OTP) 🚀
     ========================================================================= -->
     <script type="module">
-        // Import Firebase Functions from Google CDN
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // 🔑 YOUR REAL FIREBASE CONFIGURATION
+        // Your Exact Firebase Config Keys
         const firebaseConfig = {
             apiKey: "AIzaSyBCkxx9bVjvAYarA0WrHfW5k_gxwUPZaaw",
             authDomain: "quantum-master-study.firebaseapp.com",
@@ -212,77 +219,101 @@
             measurementId: "G-SH39JL930R"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const analytics = getAnalytics(app); // Analytics is now active!
-        
-        // Setup Providers
         const googleProvider = new GoogleAuthProvider();
-        const fbProvider = new FacebookAuthProvider();
 
-        // Make triggerAuth available to HTML buttons
-        window.triggerAuth = async function(btnElement, providerType) {
-            
-            // 1. UI Loading State (Vercel Style)
+        let confirmationResultGlobal = null;
+
+        // 1. GOOGLE LOGIN HANDLER
+        window.triggerGoogleAuth = async function(btnElement) {
             const allBtns = document.querySelectorAll('.auth-btn, .guest-btn');
-            allBtns.forEach(b => { b.disabled = true; });
+            allBtns.forEach(b => b.disabled = true);
             btnElement.classList.add('loading');
-            showToast(`Connecting to ${providerType}...`);
+            showToast("Connecting to Google...");
 
             try {
-                let result;
-                
-                // 2. Open Real Google/Facebook Login Popup
-                if(providerType === 'Google') {
-                    result = await signInWithPopup(auth, googleProvider);
-                } 
-                else if (providerType === 'Facebook') {
-                    result = await signInWithPopup(auth, fbProvider);
-                } 
-                else {
-                    showToast("Phone Auth is coming soon!");
-                    resetBtns(allBtns, btnElement);
-                    return;
-                }
-
-                // 3. SUCCESS! Get Real User Data
+                const result = await signInWithPopup(auth, googleProvider);
                 const user = result.user;
                 
-                // 4. Save User Data to LocalStorage (So Dashboard can use it)
                 localStorage.setItem('qms_user_name', user.displayName || 'QMS User');
                 localStorage.setItem('qms_user_email', user.email || 'No Email');
                 localStorage.setItem('qms_user_photo', user.photoURL || 'default-avatar.png');
                 localStorage.setItem('qms_user_uid', user.uid);
 
                 showToast(`Welcome, ${user.displayName}! Redirecting...`);
-                
-                // 5. Redirect to Dashboard
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
-
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
             } catch (error) {
-                // Handle Errors (if user closes popup or network error)
-                console.error("Auth Error:", error);
-                
-                // Make error messages user-friendly
-                if(error.code === 'auth/popup-closed-by-user') {
-                    showToast("Login cancelled. Please try again.");
-                } else if (error.code === 'auth/operation-not-allowed') {
-                    showToast("Please enable Google Login in Firebase Console!");
-                } else {
-                    showToast("Error: " + error.message);
-                }
-                
-                resetBtns(allBtns, btnElement);
+                console.error(error);
+                showToast("Login failed: " + error.message);
+                allBtns.forEach(b => b.disabled = false);
+                btnElement.classList.remove('loading');
             }
         };
 
-        function resetBtns(allBtns, btnElement) {
-            allBtns.forEach(b => { b.disabled = false; });
-            btnElement.classList.remove('loading');
-        }
+        // 2. PHONE OTP MODAL & LOGIC
+        window.startPhoneAuth = function() {
+            document.getElementById('otp-modal').style.display = 'flex';
+            document.getElementById('otp-title').innerText = "Enter Phone Number";
+            document.getElementById('otp-desc').innerText = "Include country code (e.g., +91)";
+            document.getElementById('otp-input-field').value = "+91 ";
+            document.getElementById('otp-input-field').placeholder = "+91 98765 43210";
+            document.getElementById('otp-action-btn').innerText = "Send OTP";
+        };
+
+        window.handleOtpSubmit = async function() {
+            const inputVal = document.getElementById('otp-input-field').value.trim();
+            const btn = document.getElementById('otp-action-btn');
+
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                    'size': 'invisible'
+                });
+            }
+
+            btn.disabled = true;
+
+            if (!confirmationResultGlobal) {
+                // Step A: Send OTP to Phone
+                showToast("Sending OTP...");
+                try {
+                    const appVerifier = window.recaptchaVerifier;
+                    confirmationResultGlobal = await signInWithPhoneNumber(auth, inputVal, appVerifier);
+                    
+                    showToast("OTP Sent Successfully!");
+                    document.getElementById('otp-title').innerText = "Enter Verification Code";
+                    document.getElementById('otp-desc').innerText = "Enter the 6-digit OTP sent to your phone";
+                    document.getElementById('otp-input-field').value = "";
+                    document.getElementById('otp-input-field').placeholder = "123456";
+                    btn.innerText = "Verify OTP";
+                    btn.disabled = false;
+                } catch (error) {
+                    console.error(error);
+                    showToast("SMS Error: " + error.message);
+                    btn.disabled = false;
+                    confirmationResultGlobal = null;
+                }
+            } else {
+                // Step B: Verify OTP Code
+                showToast("Verifying OTP...");
+                try {
+                    const result = await confirmationResultGlobal.confirm(inputVal);
+                    const user = result.user;
+
+                    localStorage.setItem('qms_user_name', user.phoneNumber || 'Phone User');
+                    localStorage.setItem('qms_user_email', 'phone-user@qms.com');
+                    localStorage.setItem('qms_user_photo', 'default-avatar.png');
+                    localStorage.setItem('qms_user_uid', user.uid);
+
+                    showToast("Login Successful! Redirecting...");
+                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+                } catch (error) {
+                    console.error(error);
+                    showToast("Invalid OTP. Try again.");
+                    btn.disabled = false;
+                }
+            }
+        };
     </script>
 </body>
 </html>
