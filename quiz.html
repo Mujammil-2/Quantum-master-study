@@ -22,22 +22,27 @@
 
     <div class="quiz-wrapper">
         <!-- HEADER -->
-        <header class="quiz-header-card glass-card">
+        <header class="quiz-header-card glass-card" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="brand-mini sfx-trigger" id="leave-quiz-btn" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
                 <i class="ri-arrow-left-line" style="font-size: 1.5rem; color: var(--accent-main);"></i>
                 <h2 style="font-size: 1.2rem;">डैशबोर्ड</h2>
             </div>
+            
+            <!-- 🔥 NEW: Quiz Medium Switcher (Hindi / English) 🔥 -->
+            <button id="quiz-medium-btn" class="sfx-trigger" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
+                <i class="ri-translate-2"></i> <span id="quiz-medium-text">हिंदी माध्यम</span>
+            </button>
             
             <div class="quiz-timer-box" id="timer-display" style="display: none;">
                 <i class="ri-timer-flash-line"></i> <span id="time-left">00:00</span>
             </div>
         </header>
 
-        <!-- 1. QUIZ SETUP PANEL (विषय, अध्याय, डिफिकल्टी और समय) -->
+        <!-- 1. QUIZ SETUP PANEL -->
         <div class="glass-card quiz-setup-panel" id="setup-panel">
             <i class="ri-brain-line" style="font-size: 4rem; color: var(--accent-main); margin-bottom: 10px; display: block;"></i>
             <h1 class="quiz-setup-title">मॉक टेस्ट सेट करें</h1>
-            <p style="color: var(--text-secondary);">अपनी परीक्षा की तैयारी को परखें। विषय, अध्याय, डिफिकल्टी और समय चुनें।</p>
+            <p style="color: var(--text-secondary);">अपनी परीक्षा की तैयारी को परखें। विषय, अध्याय, डिफिकल्टी और प्रश्नों की संख्या चुनें।</p>
 
             <div class="subject-select-grid" id="subject-selector">
                 <button class="quiz-subject-btn active sfx-trigger" data-subject="physics">भौतिक विज्ञान</button>
@@ -51,24 +56,39 @@
             <div style="margin-top: 15px; background: rgba(0,0,0,0.3); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); text-align: left;">
                 <p style="margin-bottom: 5px; font-weight: bold; color: #fff; font-size: 0.9rem;">अध्याय (Chapter) चुनें:</p>
                 <select id="chapter-selector" style="width: 100%; padding: 10px; border-radius: 8px; background: #222; color: #fff; border: 1px solid var(--accent-main); outline: none; font-size: 0.95rem; cursor: pointer;">
-                    <!-- Chapters will be loaded automatically -->
+                    <!-- Chapters -->
                 </select>
             </div>
 
-            <!-- 🔥 NEW: Difficulty Mode Selector 🔥 -->
+            <!-- Difficulty Mode Selector (Fixed Highlighting) -->
             <div style="margin-top: 15px; text-align: left;">
                 <p style="margin-bottom: 8px; font-weight: bold; color: #fff; font-size: 0.9rem;">कठिनाई स्तर (Difficulty Mode):</p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;" id="difficulty-selector">
-                    <button class="quiz-diff-btn sfx-trigger active" data-diff="easy" style="padding: 10px; border-radius: 8px; background: rgba(0,255,136,0.15); border: 1px solid #00ff88; color: #00ff88; font-weight: bold; cursor: pointer;">आसान (Easy)</button>
-                    <button class="quiz-diff-btn sfx-trigger" data-diff="medium" style="padding: 10px; border-radius: 8px; background: rgba(255,193,7,0.15); border: 1px solid #ffc107; color: #ffc107; font-weight: bold; cursor: pointer;">मध्यम (Medium)</button>
-                    <button class="quiz-diff-btn sfx-trigger" data-diff="difficult" style="padding: 10px; border-radius: 8px; background: rgba(255,51,102,0.15); border: 1px solid #ff3366; color: #ff3366; font-weight: bold; cursor: pointer;">कठिन (Difficult)</button>
+                    <button class="quiz-diff-btn sfx-trigger active" data-diff="easy" style="padding: 10px; border-radius: 8px; background: #00ff88; color: #000; font-weight: bold; cursor: pointer; border: none; transition: 0.3s;">आसान (Easy)</button>
+                    <button class="quiz-diff-btn sfx-trigger" data-diff="medium" style="padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.08); color: #ffc107; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,193,7,0.3); transition: 0.3s;">मध्यम (Medium)</button>
+                    <button class="quiz-diff-btn sfx-trigger" data-diff="difficult" style="padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.08); color: #ff3366; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,51,102,0.3); transition: 0.3s;">कठिन (Difficult)</button>
+                </div>
+            </div>
+
+            <!-- Extended Question Count Selector (5 to 40) -->
+            <div style="margin-top: 15px; text-align: left;">
+                <p style="margin-bottom: 8px; font-weight: bold; color: #fff; font-size: 0.9rem;">प्रश्नों की संख्या (Number of Questions):</p>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;" id="question-count-selector">
+                    <button class="quiz-count-btn sfx-trigger" data-count="5" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">5</button>
+                    <button class="quiz-count-btn sfx-trigger active" data-count="10" style="padding: 8px; border-radius: 6px; background: var(--accent-main); border: 1px solid var(--accent-main); color: #000; font-weight: bold; cursor: pointer;">10</button>
+                    <button class="quiz-count-btn sfx-trigger" data-count="15" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">15</button>
+                    <button class="quiz-count-btn sfx-trigger" data-count="20" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">20</button>
+                    <button class="quiz-count-btn sfx-trigger" data-count="25" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">25</button>
+                    <button class="quiz-count-btn sfx-trigger" data-count="30" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">30</button>
+                    <button class="quiz-count-btn sfx-trigger" data-count="35" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">35</button>
+                    <button class="quiz-count-btn sfx-trigger" data-count="40" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">40</button>
                 </div>
             </div>
 
             <div class="time-setter" style="margin-top: 15px;">
                 <p>समय (मिनट):</p>
                 <button class="time-btn sfx-trigger" id="btn-time-minus"><i class="ri-subtract-line"></i></button>
-                <span class="time-display" id="selected-time">5</span>
+                <span class="time-display" id="selected-time">10</span>
                 <button class="time-btn sfx-trigger" id="btn-time-plus"><i class="ri-add-line"></i></button>
             </div>
 
@@ -84,7 +104,7 @@
             <div class="options-grid" id="options-container"></div>
 
             <div class="quiz-footer">
-                <span class="question-counter" id="question-counter">प्रश्न 1 / 5</span>
+                <span class="question-counter" id="question-counter">प्रश्न 1 / 10</span>
                 <button class="btn-primary-glow sfx-trigger" id="next-btn" style="display: none; padding: 10px 20px;">
                     अगला <i class="ri-arrow-right-line"></i>
                 </button>
