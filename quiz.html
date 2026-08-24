@@ -33,11 +33,11 @@
             </div>
         </header>
 
-        <!-- 1. QUIZ SETUP PANEL (विषय और टाइमर चुनें) -->
+        <!-- 1. QUIZ SETUP PANEL (विषय, अध्याय और टाइमर चुनें) -->
         <div class="glass-card quiz-setup-panel" id="setup-panel">
             <i class="ri-brain-line" style="font-size: 4rem; color: var(--accent-main); margin-bottom: 10px; display: block;"></i>
             <h1 class="quiz-setup-title">मॉक टेस्ट सेट करें</h1>
-            <p style="color: var(--text-secondary);">अपनी परीक्षा की तैयारी को परखें। अपना विषय और समय चुनें।</p>
+            <p style="color: var(--text-secondary);">अपनी परीक्षा की तैयारी को परखें। विषय, अध्याय और समय चुनें।</p>
 
             <div class="subject-select-grid" id="subject-selector">
                 <button class="quiz-subject-btn active sfx-trigger" data-subject="physics">भौतिक विज्ञान</button>
@@ -47,20 +47,28 @@
                 <button class="quiz-subject-btn sfx-trigger" data-subject="english">अंग्रेज़ी</button>
             </div>
 
-            <div class="time-setter">
+            <!-- 🔥 NEW: Chapter Selector Dropdown 🔥 -->
+            <div style="margin-top: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <p style="margin-bottom: 8px; font-weight: bold; color: #fff;">अध्याय (Chapter) चुनें:</p>
+                <select id="chapter-selector" style="width: 100%; padding: 12px; border-radius: 8px; background: #222; color: #fff; border: 1px solid var(--accent-main); outline: none; font-size: 1rem; cursor: pointer;">
+                    <!-- Chapters will be loaded here automatically -->
+                </select>
+            </div>
+
+            <div class="time-setter" style="margin-top: 20px;">
                 <p>समय (मिनट):</p>
                 <button class="time-btn sfx-trigger" id="btn-time-minus"><i class="ri-subtract-line"></i></button>
                 <span class="time-display" id="selected-time">5</span>
                 <button class="time-btn sfx-trigger" id="btn-time-plus"><i class="ri-add-line"></i></button>
             </div>
 
-            <button class="btn-primary-glow sfx-trigger" id="start-quiz-btn" style="width: 100%; font-size: 1.2rem; padding: 18px;">
+            <button class="btn-primary-glow sfx-trigger" id="start-quiz-btn" style="width: 100%; font-size: 1.2rem; padding: 18px; margin-top: 10px;">
                 <i class="ri-play-fill"></i> टेस्ट शुरू करें
             </button>
         </div>
 
         <!-- 2. QUESTION AREA (टेस्ट चल रहा है) -->
-        <div class="question-container" id="question-panel">
+        <div class="question-container" id="question-panel" style="display: none;">
             <div class="question-text" id="question-text">प्रश्न यहाँ लोड होगा...</div>
             
             <div class="options-grid" id="options-container">
@@ -68,7 +76,7 @@
             </div>
 
             <div class="quiz-footer">
-                <span class="question-counter" id="question-counter">प्रश्न 1 / 10</span>
+                <span class="question-counter" id="question-counter">प्रश्न 1 / 5</span>
                 <button class="btn-primary-glow sfx-trigger" id="next-btn" style="display: none; padding: 10px 20px;">
                     अगला <i class="ri-arrow-right-line"></i>
                 </button>
@@ -76,9 +84,9 @@
         </div>
 
         <!-- 3. RESULT SCREEN (स्कोरकार्ड) -->
-        <div class="glass-card result-container" id="result-panel">
+        <div class="glass-card result-container" id="result-panel" style="display: none;">
             <h2 style="font-size: 2rem; margin-bottom: 5px;">टेस्ट समाप्त!</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem;" id="result-message">बहुत बढ़िया प्रयास।</p>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;" id="result-message">बहुत बढ़िया प्रयास।</p>
 
             <div class="score-circle" id="final-score">0%</div>
 
@@ -104,6 +112,7 @@
 
     </div>
 
+    <!-- 🚀 NEW MODAL SYSTEM INJECTED VIA JS 🚀 -->
     <script src="quiz.js"></script>
 </body>
 </html>
