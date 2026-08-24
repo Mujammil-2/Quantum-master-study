@@ -12,419 +12,272 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
     <style>
+        /* =====================================================================
+           QMS PREMIUM LOGIN PAGE (REALISTIC UI + 3D WAVES + AUTHENTIC EFFECTS)
+        ====================================================================== */
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
         :root {
-            --bg-dark: #040914;
-            --card-bg: rgba(20, 25, 40, 0.65);
+            --bg-deep: #020612; /* Deep Navy Space Color */
+            --card-bg: #0b1120;
+            --btn-bg: #141c2f;
+            --btn-border: #1e293b;
             --text-main: #ffffff;
-            --text-muted: #8b95a5;
+            --text-muted: #8b96a8;
             --accent-cyan: #00f0ff;
             --accent-blue: #0055ff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-deep);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-            position: relative;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; position: relative;
         }
 
-        /* 🌊 Animated Glowing Waves Background */
-        .bg-glow-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden;
+        /* 🌊 1. The Dotted 3D Waves Background (Canvas Container) */
+        #particle-waves {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 60%;
             z-index: -2;
-            background: radial-gradient(circle at center, #0a1128 0%, #040914 100%);
+            opacity: 0.8;
         }
 
-        .glow-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.4;
-            animation: waveMove 12s infinite alternate ease-in-out;
+        /* Ambient Glow behind waves */
+        .ambient-glow {
+            position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%);
+            width: 80vw; height: 50vh;
+            background: radial-gradient(ellipse, rgba(0, 85, 255, 0.25) 0%, transparent 70%);
+            filter: blur(80px); z-index: -3;
         }
 
-        .glow-1 {
-            bottom: -10%; left: -10%;
-            width: 50vw; height: 50vw;
-            background: var(--accent-blue);
-            animation-delay: 0s;
+        /* ⚛️ 2. Floating Science Background Elements */
+        .floating-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: hidden;
         }
-
-        .glow-2 {
-            bottom: -5%; right: -10%;
-            width: 40vw; height: 40vw;
-            background: var(--accent-cyan);
-            animation-delay: -5s;
+        .f-icon {
+            position: absolute; color: rgba(255, 255, 255, 0.03);
+            font-size: 5rem; animation: floatAnim 8s infinite ease-in-out alternate;
         }
+        .f-icon:nth-child(1) { top: 15%; left: 8%; } /* Atom */
+        .f-icon:nth-child(2) { top: 35%; left: 4%; font-family: 'Space Grotesk'; font-size: 2.5rem; transform: rotate(-15deg); animation-delay: -2s; } /* E=mc2 */
+        .f-icon:nth-child(3) { top: 65%; left: 10%; font-size: 6rem; animation-delay: -4s; } /* Globe */
+        .f-icon:nth-child(4) { top: 10%; right: 10%; font-size: 4rem; animation-delay: -1s; } /* Geometry */
+        .f-icon:nth-child(5) { top: 40%; right: 5%; font-size: 5rem; animation-delay: -3s; } /* Flask */
+        .f-icon:nth-child(6) { top: 70%; right: 12%; font-family: 'Space Grotesk'; font-size: 2rem; animation-delay: -5s; } /* Math Graph */
 
-        @keyframes waveMove {
-            0% { transform: translateY(0) scale(1); opacity: 0.3; }
-            50% { transform: translateY(-50px) scale(1.1); opacity: 0.5; }
-            100% { transform: translateY(20px) scale(0.9); opacity: 0.3; }
-        }
-
-        /* ⚛️ Floating Background Math/Science Icons */
-        .floating-icons {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .float-icon {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.05);
-            font-size: 4rem;
-            animation: floatUpDown 6s infinite ease-in-out;
-        }
-
-        .float-icon:nth-child(1) { top: 15%; left: 10%; font-size: 5rem; animation-delay: 0s; } /* Atom */
-        .float-icon:nth-child(2) { top: 30%; left: 5%; font-family: 'Space Grotesk'; font-size: 2.5rem; font-weight: bold; animation-delay: 1s; transform: rotate(-15deg); } /* E=mc2 */
-        .float-icon:nth-child(3) { top: 60%; left: 12%; font-size: 4.5rem; animation-delay: 2s; } /* Globe */
-        .float-icon:nth-child(4) { top: 20%; right: 10%; font-size: 5rem; animation-delay: 0.5s; } /* Triangle */
-        .float-icon:nth-child(5) { top: 45%; right: 8%; font-size: 4rem; animation-delay: 1.5s; } /* Flask */
-        .float-icon:nth-child(6) { top: 70%; right: 12%; font-size: 4.5rem; animation-delay: 2.5s; } /* Graph */
-
-        @keyframes floatUpDown {
+        @keyframes floatAnim {
             0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-30px) rotate(5deg); }
         }
 
-        /* Main Content Container */
-        .login-wrapper {
-            width: 100%;
-            max-width: 480px;
-            padding: 20px;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* 🎓 3. Logo & Brand Area */
+        .main-wrapper {
+            width: 100%; max-width: 440px; padding: 20px; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* 🎓 Logo Area */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
+        .brand-header {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 25px;
         }
+        .logo-box svg { width: 70px; height: 70px; filter: drop-shadow(0 0 10px rgba(0, 168, 255, 0.3)); }
+        
+        .brand-text-col { display: flex; flex-direction: column; }
+        .b-title1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: 0.5px; }
+        .b-title2 { font-size: 1.8rem; font-weight: 700; color: var(--accent-cyan); line-height: 1.1; }
+        .b-tag { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; }
 
-        .logo-svg {
-            width: 60px;
-            height: 60px;
-        }
+        .welcome-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 5px; text-align: center; }
+        .welcome-sub { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 35px; text-align: center; }
 
-        .logo-text-box {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-text-top {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.1;
-        }
-
-        .logo-text-bottom {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            line-height: 1.1;
-        }
-
-        .logo-subtext {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 5px;
-            letter-spacing: 1px;
-        }
-
-        /* Titles */
-        .welcome-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .welcome-subtitle {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        /* 🎴 Glassmorphism Login Card */
+        /* 🎴 4. The Premium Solid Card */
         .login-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: linear-gradient(180deg, rgba(16, 24, 43, 0.95) 0%, rgba(11, 17, 32, 0.95) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 35px 30px;
-            width: 100%;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            border-radius: 20px; padding: 35px 30px; width: 100%;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        .card-header {
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            position: relative;
+        .card-heading {
+            text-align: center; font-size: 1.2rem; font-weight: 600; margin-bottom: 25px;
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
         }
+        .heading-line { display: flex; align-items: center; gap: 6px; }
+        .heading-line span:nth-child(1), .heading-line span:nth-child(3) { width: 30px; height: 1px; background: rgba(255,255,255,0.15); }
+        .heading-line span:nth-child(2) { width: 35px; height: 3px; background: var(--accent-blue); border-radius: 2px; box-shadow: 0 0 10px var(--accent-blue); }
 
-        .card-header::after {
-            content: '';
-            display: block;
-            width: 40px;
-            height: 3px;
-            background: var(--accent-blue);
-            margin: 15px auto 0;
-            border-radius: 5px;
-            box-shadow: 0 0 10px var(--accent-blue);
+        /* 🚀 5. Realistic Buttons (Vercel/Spotify Style) */
+        .auth-btn {
+            width: 100%; background: var(--btn-bg); border: 1px solid var(--btn-border);
+            color: #e2e8f0; padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            margin-bottom: 14px; cursor: pointer; position: relative; overflow: hidden;
+            transition: all 0.2s ease;
         }
+        .auth-btn:hover { background: #1e293b; border-color: #334155; color: #fff; }
+        .auth-btn:active { transform: scale(0.98); }
+        .auth-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
-        /* Buttons */
-        .btn-social {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .btn-icon-box {
+            background: #fff; width: 26px; height: 26px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
         }
+        .auth-btn.fb .btn-icon-box { background: #1877F2; }
+        .auth-btn.ig .btn-icon-box { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+        .auth-btn.phone .btn-icon-box { background: #10b981; }
 
-        .btn-social:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
+        .auth-btn svg, .auth-btn i { width: 16px; height: 16px; color: #fff; font-size: 16px; }
+        .auth-btn span.btn-txt { flex: 1; text-align: left; }
 
-        .btn-social svg {
-            width: 24px;
-            height: 24px;
-            margin-left: 20px;
+        /* Loading Spinner inside Button */
+        .btn-spinner {
+            display: none; position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            width: 22px; height: 22px;
+            border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff;
+            border-radius: 50%; animation: spin 0.8s linear infinite;
         }
+        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        .btn-social span {
-            flex: 1;
-            text-align: left;
-            margin-left: 10px;
-        }
+        /* Button State when Loading */
+        .auth-btn.loading .btn-icon-box, .auth-btn.loading span.btn-txt { opacity: 0; }
+        .auth-btn.loading .btn-spinner { display: block; }
 
         /* Divider */
         .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 25px 0;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            display: flex; align-items: center; color: var(--text-muted); font-size: 0.8rem; margin: 20px 0;
         }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .divider::before { margin-right: 15px; } .divider::after { margin-left: 15px; }
 
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        /* 👤 Guest Button */
+        .guest-btn {
+            width: 100%; background: transparent; border: 1px solid #0088ff; color: #fff;
+            padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            cursor: pointer; transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.1), 0 0 15px rgba(0, 136, 255, 0.1);
         }
+        .guest-btn:hover { background: rgba(0, 136, 255, 0.1); box-shadow: inset 0 0 15px rgba(0, 136, 255, 0.2), 0 0 20px rgba(0, 136, 255, 0.2); }
+        .guest-btn i { font-size: 1.3rem; color: #0088ff; }
 
-        .divider:not(:empty)::before { margin-right: .5em; }
-        .divider:not(:empty)::after { margin-left: .5em; }
-
-        /* Guest Button */
-        .btn-guest {
-            width: 100%;
-            background: rgba(0, 168, 255, 0.05);
-            border: 1px solid #00a8ff;
-            color: #fff;
-            padding: 15px 20px;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 168, 255, 0.15);
-        }
-
-        .btn-guest i {
-            font-size: 1.3rem;
-            color: #00a8ff;
-        }
-
-        .btn-guest:hover {
-            background: rgba(0, 168, 255, 0.15);
-            box-shadow: 0 0 25px rgba(0, 168, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* Info Box */
+        /* Info Text */
         .info-box {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 25px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 10px; padding: 14px; margin-top: 25px; display: flex; align-items: center; gap: 15px;
         }
+        .info-box i { color: #0088ff; font-size: 1.5rem; }
+        .info-text h4 { font-size: 0.85rem; font-weight: 500; color: #e5e7eb; margin-bottom: 2px; }
+        .info-text p { font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; }
 
-        .info-box i {
-            font-size: 1.8rem;
-            color: #00a8ff;
-        }
+        .footer-terms { margin-top: 25px; text-align: center; font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+        .footer-terms a { color: #0066ff; text-decoration: none; }
+        .footer-terms a:hover { text-decoration: underline; }
 
-        .info-text h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-
-        .info-text p {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* Footer */
-        .login-footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .login-footer a {
-            color: #0055ff;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .login-footer a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
 
-    <!-- 🌊 Background Animations -->
-    <div class="bg-glow-container">
-        <div class="glow-blob glow-1"></div>
-        <div class="glow-blob glow-2"></div>
-    </div>
+    <!-- 🌊 HTML5 Canvas for Dotted 3D Waves -->
+    <canvas id="particle-waves"></canvas>
+    <div class="ambient-glow"></div>
 
-    <!-- ⚛️ Floating Science Icons -->
-    <div class="floating-icons">
-        <i class="ri-reactjs-line float-icon"></i> <!-- Atom -->
-        <div class="float-icon">E = mc²</div> <!-- Equation -->
-        <i class="ri-global-line float-icon"></i> <!-- Globe -->
-        <i class="ri-shape-2-line float-icon"></i> <!-- Geometry -->
-        <i class="ri-flask-line float-icon"></i> <!-- Flask -->
-        <div class="float-icon" style="font-family: 'Space Grotesk';">y = sin x</div> <!-- Graph -->
+    <!-- ⚛️ Floating Elements -->
+    <div class="floating-bg">
+        <i class="ri-reactjs-line f-icon"></i>
+        <div class="f-icon">E = mc²</div>
+        <i class="ri-global-line f-icon"></i>
+        <i class="ri-shape-2-line f-icon"></i>
+        <i class="ri-flask-line f-icon"></i>
+        <div class="f-icon">y = sin x</div>
     </div>
 
     <!-- Main Content -->
-    <div class="login-wrapper">
+    <div class="main-wrapper">
         
-        <!-- Logo -->
-        <div class="logo-container">
-            <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Q Circle -->
-                <circle cx="50" cy="55" r="30" stroke="#00a8ff" stroke-width="12" stroke-linecap="round"/>
-                <!-- Q Tail -->
-                <path d="M 65 75 L 85 95" stroke="#0055ff" stroke-width="14" stroke-linecap="round"/>
-                <!-- Graduation Cap -->
-                <path d="M 15 35 L 50 15 L 85 35 L 50 55 Z" fill="#00a8ff"/>
-                <path d="M 85 35 L 85 55" stroke="#00a8ff" stroke-width="4"/>
-            </svg>
-            <div class="logo-text-box">
-                <span class="logo-text-top">Quantum</span>
-                <span class="logo-text-bottom">Master Study</span>
-                <span class="logo-subtext">Learn • Practice • Master</span>
+        <!-- Premium Logo Matching Exact Image -->
+        <div class="brand-header">
+            <div class="logo-box">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 85C30.67 85 15 69.33 15 50C15 30.67 30.67 15 50 15C69.33 15 85 30.67 85 50C85 62.1 78.8 72.8 69.4 79" stroke="#00a8ff" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M62 65L88 91" stroke="#0055ff" stroke-width="14" stroke-linecap="round"/>
+                    <path d="M10 28L50 10L90 28L50 46Z" fill="#00a8ff"/>
+                    <path d="M90 28V45" stroke="#00a8ff" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="brand-text-col">
+                <span class="b-title1">Quantum</span>
+                <span class="b-title2">Master Study</span>
+                <span class="b-tag">Learn • Practice • Master</span>
             </div>
         </div>
 
-        <h2 class="welcome-title">Welcome Back!</h2>
-        <p class="welcome-subtitle">Login to continue your learning journey</p>
+        <h1 class="welcome-title">Welcome Back!</h1>
+        <p class="welcome-sub">Login to continue your learning journey</p>
 
-        <!-- Card -->
+        <!-- Login Card -->
         <div class="login-card">
-            <div class="card-header">Login to Your Account</div>
+            
+            <div class="card-heading">
+                Login to Your Account
+                <div class="heading-line"><span></span><span></span><span></span></div>
+            </div>
 
-            <!-- Social Buttons -->
-            <button class="btn-social">
-                <svg viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                <span>Continue with Google</span>
+            <!-- Phone Number Auth (NEW) -->
+            <button class="auth-btn phone" onclick="handleAuthClick(this, 'Phone')">
+                <div class="btn-icon-box"><i class="ri-phone-fill"></i></div>
+                <span class="btn-txt">Continue with Phone Number</span>
+                <div class="btn-spinner"></div>
             </button>
 
-            <button class="btn-social">
-                <svg viewBox="0 0 24 24" fill="#1877F2">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                <span>Continue with Facebook</span>
+            <!-- Google Auth -->
+            <button class="auth-btn" onclick="handleAuthClick(this, 'Google')">
+                <div class="btn-icon-box">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                </div>
+                <span class="btn-txt">Continue with Google</span>
+                <div class="btn-spinner"></div>
             </button>
 
-            <button class="btn-social">
-                <svg viewBox="0 0 24 24">
-                    <defs>
-                        <linearGradient id="insta-grad" x1="1" y1="1" x2="0" y2="0">
-                            <stop offset="0%" stop-color="#f09433" />
-                            <stop offset="25%" stop-color="#e6683c" />
-                            <stop offset="50%" stop-color="#dc2743" />
-                            <stop offset="75%" stop-color="#cc2366" />
-                            <stop offset="100%" stop-color="#bc1888" />
-                        </linearGradient>
-                    </defs>
-                    <path fill="url(#insta-grad)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-                <span>Continue with Instagram</span>
+            <!-- Facebook Auth -->
+            <button class="auth-btn fb" onclick="handleAuthClick(this, 'Facebook')">
+                <div class="btn-icon-box">
+                    <svg viewBox="0 0 24 24" fill="#ffffff">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </div>
+                <span class="btn-txt">Continue with Facebook</span>
+                <div class="btn-spinner"></div>
+            </button>
+
+            <!-- Instagram Auth -->
+            <button class="auth-btn ig" onclick="handleAuthClick(this, 'Instagram')">
+                <div class="btn-icon-box">
+                    <svg viewBox="0 0 24 24" fill="#ffffff">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </div>
+                <span class="btn-txt">Continue with Instagram</span>
+                <div class="btn-spinner"></div>
             </button>
 
             <div class="divider">OR</div>
 
-            <!-- GUEST BUTTON (Redirects to Dashboard) -->
-            <button class="btn-guest" onclick="window.location.href='dashboard.html'">
+            <!-- Authentic Guest Button -->
+            <button class="guest-btn" onclick="window.location.href='dashboard.html'">
                 <i class="ri-user-line"></i>
-                <span>Continue as Guest</span>
+                <span style="flex:1; text-align:left;">Continue as Guest</span>
             </button>
 
-            <!-- Info Box -->
             <div class="info-box">
                 <i class="ri-shield-check-line"></i>
                 <div class="info-text">
@@ -434,13 +287,110 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="login-footer">
+        <div class="footer-terms">
             By continuing, you agree to our<br>
             <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
         </div>
-
     </div>
 
+    <!-- JS For Realistic Button Clicks (Vercel Style) & 3D Wave Particles -->
+    <script>
+        // --- 1. Realistic Button Click Logic ---
+        function handleAuthClick(clickedBtn, provider) {
+            // Disable ALL buttons to prevent multiple clicks
+            const allBtns = document.querySelectorAll('.auth-btn, .guest-btn');
+            allBtns.forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+            });
+
+            // Keep the clicked button solid and show spinner
+            clickedBtn.style.opacity = '1';
+            clickedBtn.classList.add('loading');
+
+            // Simulate Network Request / Redirection Delay
+            setTimeout(() => {
+                // Here we will eventually trigger Firebase Auth.
+                // For now, it mocks the redirect to Dashboard after a successful "login".
+                window.location.href = 'dashboard.html';
+            }, 2500); // 2.5 seconds fake loading
+        }
+
+        // --- 2. 3D Dotted Canvas Waves (The Ultimate Magic) ---
+        const canvas = document.getElementById('particle-waves');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let particles = [];
+        
+        // Grid setup
+        const cols = 40; // Number of dots horizontally
+        const rows = 15; // Number of dots vertically
+        const spacing = 35; // Space between dots
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight * 0.6; // Bottom 60% of screen
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    particles.push({
+                        x: i * spacing - (cols * spacing) / 2, // Centered X
+                        z: j * spacing - (rows * spacing) / 2, // 3D Depth
+                        y: 0,
+                        baseY: 0,
+                        angle: (i * 0.3) + (j * 0.3) // Wave phase offset
+                    });
+                }
+            }
+        }
+
+        let time = 0;
+        function drawWaves() {
+            ctx.clearRect(0, 0, width, height);
+            time += 0.03; // Wave speed
+
+            const centerX = width / 2;
+            const centerY = height / 1.5; // Vertical position of the wave grid
+
+            particles.forEach(p => {
+                // Math.sin creates the wave motion
+                p.y = Math.sin(p.angle + time) * 35; // Wave height
+
+                // Fake 3D Projection (Perspective)
+                const scale = 400 / (400 + p.z + 200); // Magic number for perspective
+                const screenX = centerX + p.x * scale;
+                const screenY = centerY + (p.y + p.z * 0.5) * scale;
+
+                // Only draw if on screen
+                if (screenX > 0 && screenX < width && screenY > 0 && screenY < height) {
+                    // Dot size based on depth (closer = bigger)
+                    const radius = Math.max(0.5, 3 * scale);
+                    
+                    // Dot color based on height (peaks glow brighter blue)
+                    const opacity = Math.min(1, Math.max(0.1, scale * 1.5));
+                    const intensity = (p.y + 35) / 70; // 0 to 1 based on wave height
+                    
+                    ctx.beginPath();
+                    ctx.arc(screenX, screenY, radius, 0, Math.PI * 2);
+                    // Beautiful Cyan-Blue gradient coloring
+                    ctx.fillStyle = `rgba(${0 + intensity * 0}, ${100 + intensity * 155}, 255, ${opacity})`;
+                    ctx.fill();
+                }
+            });
+
+            requestAnimationFrame(drawWaves);
+        }
+
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        
+        // Start Magic
+        resize();
+        initParticles();
+        drawWaves();
+    </script>
 </body>
 </html>
