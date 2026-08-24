@@ -1,9 +1,9 @@
 /* =========================================================================
-   QMS VIDEO PLAYER MASTER ENGINE (FINAL NETLIFY CDN BUILD)
+   QMS VIDEO PLAYER MASTER ENGINE (GITHUB DIRECT CDN BUILD)
    - 100% COMPLETE FILE
    - FEATURES:
      1. Hindi & English Medium Support
-     2. 🚀 THE ULTIMATE PDF FIX: Mozilla Viewer + YOUR NEW NETLIFY LINK
+     2. 🚀 THE ULTIMATE PDF FIX: Mozilla Viewer + Direct GitHub Pages Link
      3. Dynamic Question-Answer Pages for the 4 Topics
      4. Smart BGM Memory Resume & Bookmarks System
 ========================================================================= */
@@ -24,7 +24,7 @@ window.showCustomToast = function(messageContentText, isErrorNotification = fals
 };
 
 // --------------------------------------------------------------------------
-// 1. QMS DUAL-MEDIUM MEGA DATABASE (Only for Title & Structure)
+// 1. QMS DUAL-MEDIUM MEGA DATABASE 
 // --------------------------------------------------------------------------
 const qmsDatabase = {
     physics: [{ id: 1, title_hi: "वैद्युत आवेश तथा क्षेत्र", title_en: "Electric Charges and Fields" }, { id: 2, title_hi: "स्थिरवैद्युत विभव तथा धारिता", title_en: "Electrostatic Potential & Capacitance" }, { id: 3, title_hi: "विद्युत धारा", title_en: "Current Electricity" }, { id: 4, title_hi: "गतिमान आवेश और चुंबकत्व", title_en: "Moving Charges and Magnetism" }, { id: 5, title_hi: "चुंबकत्व एवं द्रव्य", title_en: "Magnetism and Matter" }, { id: 6, title_hi: "वैद्युतचुंबकीय प्रेरण", title_en: "Electromagnetic Induction" }, { id: 7, title_hi: "प्रत्यावर्ती धारा", title_en: "Alternating Current" }, { id: 8, title_hi: "वैद्युतचुंबकीय तरंगें", title_en: "Electromagnetic Waves" }, { id: 9, title_hi: "किरण प्रकाशिकी एवं प्रकाशिक यंत्र", title_en: "Ray Optics and Optical Instruments" }, { id: 10, title_hi: "तरंग प्रकाशिकी", title_en: "Wave Optics" }, { id: 11, title_hi: "विकिरण तथा द्रव्य की द्वैत प्रकृति", title_en: "Dual Nature of Radiation and Matter" }, { id: 12, title_hi: "परमाणु", title_en: "Atoms" }, { id: 13, title_hi: "नाभिक", title_en: "Nuclei" }, { id: 14, title_hi: "अर्धचालक इलेक्ट्रॉनिकी", title_en: "Semiconductor Electronics" }],
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 3. 🎯 YOUR FINAL NETLIFY LINK
+    // 3. 🎯 THE MASTER GITHUB LINK (PERMANENT & BULLETPROOF)
     // ==========================================
     const currentlySavedUiTheme = localStorage.getItem('qms_theme') || 'default';
     document.documentElement.setAttribute('data-theme', currentlySavedUiTheme);
@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `chapters.html?subject=${activeSubjectQuery}`; 
     });
 
-    // 🚀 FINAL FIX: using your exact Netlify link!
-    const activePdfUrl = `https://joyful-entremet-fd3f71.netlify.app/${activeSubjectQuery}_${activeChapterIdQuery}_${currentMedium}.pdf`;
+    // 🚀 THE MAGIC URL: Directly hitting your 'Quantum-master-study' GitHub repo folder!
+    const activePdfUrl = `https://mujammil-2.github.io/Quantum-master-study/pdfs/${activeSubjectQuery}_${activeChapterIdQuery}_${currentMedium}.pdf`;
 
     let activeTitle = "अध्याय लोड हो रहा है...";
     if (qmsDatabase[activeSubjectQuery]) {
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // E. 🚀 IN-APP MODAL: LIVE PDF NATIVE VIEWER
+    // E. 🚀 IN-APP MODAL: LIVE PDF VIEW (NO CRASH)
     // ==========================================
     const contentViewerModalHtml = `
         <div id="content-viewer-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-dark); z-index: 100000; display: none; flex-direction: column;">
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contentModalTitle.innerHTML = `<i class="ri-file-pdf-line" style="color: var(--accent-main);"></i> ${modalTitleText}`;
             contentModalBody.style.background = '#f5f5f5';
             
-            // MOZILLA VIEWER + CORS PROXY for absolute perfection
+            // MOZILLA VIEWER + CORS PROXY to ensure absolutely 0 blocking!
             const corsProxyUrl = "https://corsproxy.io/?url=" + encodeURIComponent(activePdfUrl);
             const mozillaViewerBaseUrl = "https://mozilla.github.io/pdf.js/web/viewer.html?file=";
             const securePdfViewerUrl = mozillaViewerBaseUrl + encodeURIComponent(corsProxyUrl);
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // G. 🚀 DIRECT DOWNLOAD FROM NETLIFY
+    // G. 🚀 DIRECT DOWNLOAD (GITHUB PATH)
     // ==========================================
     const buttonDownloadPdfNotes = document.getElementById('btn-download-notes');
     const dynamicDownloadModalOverlay = document.getElementById('download-modal');
