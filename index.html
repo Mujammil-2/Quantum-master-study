@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Quantum Master Study</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
@@ -18,7 +15,7 @@
         #particle-waves { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; z-index: -2; opacity: 0.8; }
         .ambient-glow { position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%); width: 80vw; height: 50vh; background: radial-gradient(ellipse, rgba(0, 85, 255, 0.25) 0%, transparent 70%); filter: blur(80px); z-index: -3; }
         
-        .floating-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; }
+        .floating-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .f-icon { position: absolute; color: rgba(255, 255, 255, 0.03); font-size: 5rem; animation: floatAnim 8s infinite ease-in-out alternate; }
         .f-icon:nth-child(1) { top: 15%; left: 8%; } .f-icon:nth-child(2) { top: 35%; left: 4%; font-family: 'Space Grotesk'; font-size: 2.5rem; transform: rotate(-15deg); } .f-icon:nth-child(3) { top: 65%; left: 10%; font-size: 6rem; } .f-icon:nth-child(4) { top: 10%; right: 10%; font-size: 4rem; } .f-icon:nth-child(5) { top: 40%; right: 5%; font-size: 5rem; } .f-icon:nth-child(6) { top: 70%; right: 12%; font-family: 'Space Grotesk'; font-size: 2rem; }
         @keyframes floatAnim { 0% { transform: translateY(0px) rotate(0deg); } 100% { transform: translateY(-30px) rotate(5deg); } }
@@ -34,71 +31,51 @@
         .welcome-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 5px; text-align: center; }
         .welcome-sub { font-size: 0.95rem; color: #8b96a8; margin-bottom: 35px; text-align: center; }
 
-        .login-card { background: linear-gradient(180deg, rgba(16, 24, 43, 0.95) 0%, rgba(11, 17, 32, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 35px 30px; width: 100%; box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+        .login-card { background: linear-gradient(180deg, rgba(16, 24, 43, 0.95) 0%, rgba(11, 17, 32, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 35px 30px; width: 100%; box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
         .card-heading { text-align: center; font-size: 1.2rem; font-weight: 600; margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .heading-line { display: flex; align-items: center; gap: 6px; }
         .heading-line span:nth-child(1), .heading-line span:nth-child(3) { width: 30px; height: 1px; background: rgba(255,255,255,0.15); }
         .heading-line span:nth-child(2) { width: 35px; height: 3px; background: var(--accent-blue); border-radius: 2px; box-shadow: 0 0 10px var(--accent-blue); }
 
-        .auth-btn { width: 100%; background: var(--btn-bg); border: 1px solid var(--btn-border); color: #e2e8f0; padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 14px; cursor: pointer; position: relative; overflow: hidden; transition: all 0.2s ease; }
+        .auth-btn { width: 100%; background: var(--btn-bg); border: 1px solid var(--btn-border); color: #e2e8f0; padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 14px; cursor: pointer; transition: all 0.2s ease; }
         .auth-btn:hover:not(:disabled) { background: #1e293b; border-color: #334155; color: #fff; }
-        .auth-btn:active:not(:disabled) { transform: scale(0.98); }
         .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
         .btn-icon-box { background: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .auth-btn.phone .btn-icon-box { background: #10b981; }
         .auth-btn svg, .auth-btn i { width: 16px; height: 16px; color: #fff; font-size: 16px; }
         .auth-btn span.btn-txt { flex: 1; text-align: left; }
 
-        .btn-spinner { display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-        .auth-btn.loading .btn-icon-box, .auth-btn.loading span.btn-txt { opacity: 0; }
-        .auth-btn.loading .btn-spinner { display: block; }
-
         .divider { display: flex; align-items: center; color: #8b96a8; font-size: 0.8rem; margin: 20px 0; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .divider::before { margin-right: 15px; } .divider::after { margin-left: 15px; }
 
-        .guest-btn { width: 100%; background: transparent; border: 1px solid #0088ff; color: #fff; padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.1), 0 0 15px rgba(0, 136, 255, 0.1); }
-        .guest-btn:hover:not(:disabled) { background: rgba(0, 136, 255, 0.1); box-shadow: inset 0 0 15px rgba(0, 136, 255, 0.2), 0 0 20px rgba(0, 136, 255, 0.2); }
-        .guest-btn i { font-size: 1.3rem; color: #0088ff; }
+        .guest-btn { width: 100%; background: transparent; border: 1px solid #0088ff; color: #fff; padding: 14px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; box-shadow: inset 0 0 10px rgba(0, 136, 255, 0.1); }
 
-        .info-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 14px; margin-top: 25px; display: flex; align-items: center; gap: 15px; }
-        .info-box i { color: #0088ff; font-size: 1.5rem; }
-        .info-text h4 { font-size: 0.85rem; font-weight: 500; color: #e5e7eb; margin-bottom: 2px; }
-        .info-text p { font-size: 0.7rem; color: #8b96a8; line-height: 1.4; }
-
-        /* Professional Modal for Phone OTP (Strict 6 Digits) */
+        /* Strict Auth Modal */
         .auth-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 18, 0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; }
-        .auth-modal-box { background: #0b1120; border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+        .auth-modal-box { background: #0b1120; border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; }
         .auth-modal-box h3 { font-size: 1.4rem; margin-bottom: 10px; color: #fff; }
         .auth-modal-box p { font-size: 0.85rem; color: #8b96a8; margin-bottom: 20px; }
         .modal-input { width: 100%; background: #141c2f; border: 1px solid #1e293b; color: #fff; padding: 12px 15px; border-radius: 10px; font-size: 1.1rem; margin-bottom: 15px; text-align: center; letter-spacing: 2px; }
         .modal-input:focus { outline: none; border-color: #0088ff; }
-        .modal-btn { width: 100%; background: #0055ff; color: #fff; padding: 12px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 8px; }
-        .modal-btn:hover { background: #0040cc; }
-        .modal-alt-btn { background: transparent; border: none; color: #00f0ff; font-size: 0.8rem; cursor: pointer; text-decoration: underline; margin-top: 5px; }
+        .modal-btn { width: 100%; background: #0055ff; color: #fff; padding: 12px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; }
 
-        /* Toast Message */
-        .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid var(--accent-cyan); color: #fff; padding: 15px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px; font-size: 0.9rem; transition: right 0.4s ease; z-index: 1000; }
+        .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid var(--accent-cyan); color: #fff; padding: 15px 20px; border-radius: 8px; z-index: 1000; transition: right 0.4s ease; display: flex; gap:10px; align-items: center; }
         .toast-msg.show { right: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="login-toast" class="toast-msg"><i class="ri-information-line"></i><span id="toast-text">Loading...</span></div>
-
-    <!-- Hidden reCAPTCHA container required for Real Firebase SMS -->
+    <div id="login-toast" class="toast-msg"><i class="ri-information-line"></i><span id="toast-text"></span></div>
     <div id="recaptcha-container"></div>
 
-    <!-- Phone Verification Modal -->
+    <!-- Phone Verification Modal (STRICT) -->
     <div id="auth-modal" class="auth-modal">
         <div class="auth-modal-box">
             <h3 id="modal-title">Phone Verification</h3>
-            <p id="modal-desc">Enter your mobile number with country code (+91)</p>
+            <p id="modal-desc">Enter your mobile number (+91)</p>
             <input type="text" id="modal-input" class="modal-input" placeholder="+91 98765 43210">
-            <button id="modal-btn" class="modal-btn" onclick="handlePhoneAuthAction()">Send OTP</button>
-            <button id="modal-alt-btn" class="modal-alt-btn" style="display:none;" onclick="useInstantDemoOtp()">⚡ Fast Instant OTP (Bypass SMS delay)</button>
+            <button id="modal-btn" class="modal-btn" onclick="handlePhoneAuthAction()">Send Real OTP</button>
         </div>
     </div>
 
@@ -106,8 +83,7 @@
     <div class="ambient-glow"></div>
 
     <div class="floating-bg">
-        <i class="ri-reactjs-line f-icon"></i><div class="f-icon">E = mc²</div><i class="ri-global-line f-icon"></i>
-        <i class="ri-shape-2-line f-icon"></i><i class="ri-flask-line f-icon"></i><div class="f-icon">y = sin x</div>
+        <i class="ri-reactjs-line f-icon"></i><div class="f-icon">E = mc²</div><i class="ri-flask-line f-icon"></i><div class="f-icon">y = sin x</div>
     </div>
 
     <div class="main-wrapper">
@@ -126,19 +102,16 @@
         </div>
 
         <h1 class="welcome-title">Welcome Back!</h1>
-        <p class="welcome-sub">Login to continue your learning journey</p>
+        <p class="welcome-sub">Login securely to continue</p>
 
         <div class="login-card">
             <div class="card-heading">Login to Your Account<div class="heading-line"><span></span><span></span><span></span></div></div>
 
-            <!-- PHONE AUTH BUTTON -->
             <button class="auth-btn phone" onclick="window.openPhoneModal()">
                 <div class="btn-icon-box"><i class="ri-phone-fill"></i></div>
                 <span class="btn-txt">Continue with Phone Number</span>
-                <div class="btn-spinner"></div>
             </button>
 
-            <!-- GOOGLE AUTH BUTTON -->
             <button class="auth-btn" onclick="window.handleGoogleLogin(this)">
                 <div class="btn-icon-box">
                     <svg viewBox="0 0 24 24">
@@ -149,7 +122,6 @@
                     </svg>
                 </div>
                 <span class="btn-txt">Continue with Google</span>
-                <div class="btn-spinner"></div>
             </button>
 
             <div class="divider">OR</div>
@@ -157,18 +129,9 @@
             <button class="guest-btn" onclick="window.location.href='dashboard.html'">
                 <i class="ri-user-line"></i><span style="flex:1; text-align:left;">Continue as Guest</span>
             </button>
-
-            <div class="info-box">
-                <i class="ri-shield-check-line"></i>
-                <div class="info-text">
-                    <h4>Smart Secure Authentication</h4>
-                    <p>Google popup & 6-digit OTP verification with profile setup.</p>
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- UI JS: Toast & Canvas Waves -->
     <script>
         function showToast(msg) {
             const toast = document.getElementById('login-toast');
@@ -177,7 +140,7 @@
             setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        // 3D Canvas Waves Animation
+        // Canvas Waves
         const canvas = document.getElementById('particle-waves');
         const ctx = canvas.getContext('2d');
         let width, height, particles = [];
@@ -202,14 +165,11 @@
         resize(); initParticles(); drawWaves();
     </script>
 
-    <!-- =========================================================================
-         🚀 ADVANCED AUTH LOGIC (Google + Real SMS & Instant Demo Fallback) 🚀
-    ========================================================================= -->
+    <!-- STRICT AUTH SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Your Exact Firebase Config Keys
         const firebaseConfig = {
             apiKey: "AIzaSyBCkxx9bVjvAYarA0WrHfW5k_gxwUPZaaw",
             authDomain: "quantum-master-study.firebaseapp.com",
@@ -223,63 +183,37 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
-
         let confirmationResultGlobal = null;
-        let phoneStep = 1; // 1: Enter Phone, 2: Enter OTP
-        let savedPhoneNumber = "";
+        let phoneStep = 1;
 
-        // 1. GOOGLE LOGIN
-        window.handleGoogleLogin = async function(btnElement) {
-            const allBtns = document.querySelectorAll('.auth-btn, .guest-btn');
-            allBtns.forEach(b => b.disabled = true);
-            btnElement.classList.add('loading');
-            showToast("Connecting to Google...");
-
+        window.handleGoogleLogin = async function(btn) {
+            btn.disabled = true; showToast("Connecting to Google securely...");
             try {
                 const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
-                
-                localStorage.setItem('qms_user_name', user.displayName || 'Quantum Scholar');
-                localStorage.setItem('qms_user_email', user.email || 'scholar@qms.com');
-                localStorage.setItem('qms_user_photo', user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150');
-                localStorage.setItem('qms_user_uid', user.uid);
+                localStorage.setItem('qms_user_name', result.user.displayName || '');
+                localStorage.setItem('qms_user_email', result.user.email || '');
+                localStorage.setItem('qms_user_photo', result.user.photoURL || '');
                 localStorage.setItem('qms_auth_provider', 'Google');
-
-                showToast(`Welcome, ${user.displayName}! Setting up profile...`);
-                setTimeout(() => { window.location.href = 'profile-setup.html'; }, 1200);
-
+                showToast("Authorized! Redirecting to setup...");
+                setTimeout(() => window.location.href = 'profile-setup.html', 1200);
             } catch (error) {
-                console.error("Google Auth Error:", error);
-                // Fallback simulation if domain is restricted on GitHub Pages temporarily
-                localStorage.setItem('qms_user_name', 'Mujammil Khan');
-                localStorage.setItem('qms_user_email', 'khanmujammil33723@gmail.com');
-                localStorage.setItem('qms_user_photo', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150');
-                localStorage.setItem('qms_user_uid', 'google_simulated_' + Date.now());
-                
-                showToast("Google Authenticated! Setting up profile...");
-                setTimeout(() => { window.location.href = 'profile-setup.html'; }, 1200);
+                showToast("Login Failed! Please try again."); btn.disabled = false;
             }
         };
 
-        // 2. PHONE OTP MODAL FLOW
         window.openPhoneModal = function() {
             document.getElementById('auth-modal').style.display = 'flex';
             document.getElementById('modal-title').innerText = "Phone Verification";
-            document.getElementById('modal-desc').innerText = "Enter your mobile number with country code (+91)";
+            document.getElementById('modal-desc').innerText = "Enter your mobile number (+91)";
             const input = document.getElementById('modal-input');
-            input.value = "+91 ";
-            input.placeholder = "+91 98765 43210";
-            input.removeAttribute('maxlength');
+            input.value = "+91 "; input.removeAttribute('maxlength');
             document.getElementById('modal-btn').innerText = "Send Real OTP";
-            document.getElementById('modal-alt-btn').style.display = 'none';
             phoneStep = 1;
         };
 
         window.onload = function() {
             if (!window.recaptchaVerifier) {
-                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                    'size': 'invisible'
-                });
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
             }
         };
 
@@ -289,89 +223,39 @@
             const btn = document.getElementById('modal-btn');
 
             if (phoneStep === 1) {
-                if (val.length < 10) {
-                    showToast("Please enter a valid mobile number!");
-                    return;
-                }
-                savedPhoneNumber = val;
-                btn.innerText = "Sending SMS...";
-                btn.disabled = true;
-                showToast("Sending real OTP via Firebase SMS...");
-
+                if (val.length < 10) { showToast("Enter valid number!"); return; }
+                btn.innerText = "Sending SMS..."; btn.disabled = true;
                 try {
-                    const appVerifier = window.recaptchaVerifier;
-                    confirmationResultGlobal = await signInWithPhoneNumber(auth, val, appVerifier);
-                    
-                    // Switch to Step 2: OTP Entry with STRICT 6-DIGIT LIMIT & FREEZE
+                    confirmationResultGlobal = await signInWithPhoneNumber(auth, val, window.recaptchaVerifier);
                     phoneStep = 2;
-                    document.getElementById('modal-title').innerText = "Enter OTP Code";
-                    document.getElementById('modal-desc').innerText = "Enter the 6-digit code received on your phone";
-                    inputField.value = "";
-                    inputField.placeholder = "123456";
-                    inputField.setAttribute('maxlength', '6'); // STRICTLY FROZEN AT 6 DIGITS
-                    btn.innerText = "Verify & Login";
-                    btn.disabled = false;
-                    document.getElementById('modal-alt-btn').style.display = 'block'; // Show instant backup option if SMS is slow
-                    showToast("Real OTP sent successfully!");
-
+                    document.getElementById('modal-title').innerText = "Enter OTP";
+                    document.getElementById('modal-desc').innerText = `Code sent to ${val}`;
+                    inputField.value = ""; inputField.placeholder = "Enter 6 digits";
+                    inputField.setAttribute('maxlength', '6'); // STRICT 6 DIGIT FREEZE
+                    btn.innerText = "Verify OTP"; btn.disabled = false;
+                    showToast("Real SMS Sent!");
                 } catch (error) {
-                    console.error("SMS Error:", error);
-                    // If SMS quota or network limits block real SMS, enable instant smooth fallback automatically
-                    phoneStep = 2;
-                    document.getElementById('modal-title').innerText = "Enter OTP Code (Instant Mode)";
-                    document.getElementById('modal-desc').innerText = `SMS delayed. Enter any 6 digits (e.g. 123456) to proceed`;
-                    inputField.value = "";
-                    inputField.placeholder = "123456";
-                    inputField.setAttribute('maxlength', '6');
-                    btn.innerText = "Verify & Login";
-                    btn.disabled = false;
-                    showToast("Switched to Instant Verification Mode!");
+                    showToast("Failed to send SMS: " + error.message);
+                    btn.innerText = "Send Real OTP"; btn.disabled = false;
                 }
             } else {
-                // Step 2: Verify OTP (Strictly 6 digits)
-                if (val.length !== 6) {
-                    showToast("OTP must be exactly 6 digits!");
-                    return;
+                if (val.length !== 6) { showToast("Enter exactly 6 digits!"); return; }
+                btn.innerText = "Verifying..."; btn.disabled = true;
+                try {
+                    const result = await confirmationResultGlobal.confirm(val);
+                    localStorage.setItem('qms_user_name', '');
+                    localStorage.setItem('qms_user_email', ''); 
+                    localStorage.setItem('qms_user_photo', ''); 
+                    localStorage.setItem('qms_user_phone', result.user.phoneNumber);
+                    localStorage.setItem('qms_auth_provider', 'Phone');
+                    showToast("OTP Verified! Complete your profile...");
+                    setTimeout(() => window.location.href = 'profile-setup.html', 1200);
+                } catch (error) {
+                    showToast("Wrong OTP! Try again.");
+                    btn.innerText = "Verify OTP"; btn.disabled = false;
                 }
-                btn.innerText = "Verifying...";
-                btn.disabled = true;
-                showToast("Verifying OTP code...");
-
-                if (confirmationResultGlobal) {
-                    try {
-                        const result = await confirmationResultGlobal.confirm(val);
-                        finalizePhoneLogin(result.user.phoneNumber);
-                        return;
-                    } catch (e) {
-                        console.warn("Firebase confirm failed, using instant secure login verification...");
-                    }
-                }
-                
-                // Instant secure verification fallback for smooth experience
-                setTimeout(() => {
-                    finalizePhoneLogin(savedPhoneNumber);
-                }, 800);
             }
         };
-
-        // Instant backup trigger button if user wants 2-second lightning fast login without waiting for SMS
-        window.useInstantDemoOtp = function() {
-            const inputField = document.getElementById('modal-input');
-            inputField.value = "123456";
-            showToast("Instant OTP applied!");
-            window.handlePhoneAuthAction();
-        };
-
-        function finalizePhoneLogin(phoneNum) {
-            localStorage.setItem('qms_user_name', 'Phone User (' + phoneNum.slice(-4) + ')');
-            localStorage.setItem('qms_user_email', phoneNum.replace(/[^0-9]/g, '') + '@phone.qms.com');
-            localStorage.setItem('qms_user_photo', 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150');
-            localStorage.setItem('qms_user_uid', 'phone_' + Date.now());
-            localStorage.setItem('qms_auth_provider', 'Phone');
-
-            showToast("Login Successful! Setting up profile...");
-            setTimeout(() => { window.location.href = 'profile-setup.html'; }, 1000);
-        }
     </script>
 </body>
 </html>
