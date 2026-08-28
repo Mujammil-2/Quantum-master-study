@@ -1,17 +1,80 @@
 /* =========================================================================
    QMS JAVASCRIPT MASTER ENGINE (DASHBOARD - 100% EXPANDED FULL CODE)
    - FEATURES:
+     0. 🔥 NEW: FIREBASE CLOUD DATA FETCHING (Name, Photo, XP from Firestore)
      1. Multi-Track BGM Memory System
-     2. 🏆 NEW: 4-Box Preview & "View All 50 Badges" Modal
-     3. 🏆 NEW: Celebration Pop-up Animation on New Badge Unlock
-     4. User Authentication & Privacy (No Hardcoded Names)
-     5. 🚀 UPGRADED: Custom Pomodoro Focus Timer (+/- controls up to 180 mins)
-     6. 🚀 UPGRADED: Smart Bookmarks (Saved Notes) Modal Renderer (Fix for undefined)
+     2. 🏆 4-Box Preview & "View All 50 Badges" Modal
+     3. 🏆 Celebration Pop-up Animation on New Badge Unlock
+     4. User Authentication & Privacy
+     5. 🚀 Custom Pomodoro Focus Timer (+/- controls up to 180 mins)
+     6. 🚀 Smart Bookmarks (Saved Notes) Modal Renderer
      7. Daily Streak Calendar Logic
      8. Dynamic Medium Switcher (Hindi / English)
 ========================================================================= */
 
-document.addEventListener('DOMContentLoaded', () => {
+// 🔥 0. FIREBASE IMPORT & SETUP 🔥
+// Note: type="module" is required in your dashboard.html <script> tag if using import. 
+// If your HTML just says <script src="dashboard.js"></script>, you MUST change it to:
+// <script type="module" src="dashboard.js"></script>
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBCkxx9bVjvAYarA0WrHfW5k_gxwUPZaaw",
+    authDomain: "quantum-master-study.firebaseapp.com",
+    projectId: "quantum-master-study",
+    storageBucket: "quantum-master-study.firebasestorage.app",
+    messagingSenderId: "193145760847",
+    appId: "1:193145760847:web:7d1f77be123c3edb104e3a",
+    measurementId: "G-SH39JL930R"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+    // ==========================================
+    // 🔥 NEW: CLOUD DATA SYNC (FETCH FROM FIRESTORE) 🔥
+    // ==========================================
+    const uid = localStorage.getItem('qms_user_uid');
+    
+    if (uid) {
+        try {
+            const userDocRef = doc(db, "users", uid);
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (userDocSnap.exists()) {
+                const cloudData = userDocSnap.data();
+                
+                // Update LocalStorage with fresh Cloud Data
+                if(cloudData.name) localStorage.setItem('qms_user_name', cloudData.name);
+                if(cloudData.photoURL) localStorage.setItem('qms_profile_img', cloudData.photoURL);
+                if(cloudData.totalXp) localStorage.setItem('qms_total_xp', cloudData.totalXp); // Sync XP if saved in cloud
+                
+                // Update Dashboard UI Instantly
+                const dashNameEl = document.getElementById('dash-user-name');
+                const panelNameEl = document.getElementById('panel-user-name');
+                const dashAvatarImg = document.getElementById('dash-small-avatar');
+                const panelAvatarImg = document.getElementById('panel-profile-img');
+
+                if (dashNameEl) dashNameEl.innerText = cloudData.name;
+                if (panelNameEl) panelNameEl.innerText = cloudData.name;
+                if (dashAvatarImg && cloudData.photoURL) dashAvatarImg.src = cloudData.photoURL;
+                if (panelAvatarImg && cloudData.photoURL) panelAvatarImg.src = cloudData.photoURL;
+                
+                console.log("✅ Cloud Sync Success: Data loaded from Firestore!");
+            }
+        } catch (error) {
+            console.error("❌ Cloud Sync Failed: Could not fetch user data.", error);
+        }
+    } else {
+        // Security Check: If no UID is found, send back to login
+        console.warn("No User ID found. Redirecting to login...");
+        window.location.href = 'index.html';
+    }
+
 
     // ==========================================
     // 1. SMART BGM MEMORY SYSTEM
@@ -39,12 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateToggleUI(checkboxElement) {
-        if (!checkboxElement) {
-            return;
-        }
-        
+        if (!checkboxElement) return;
         const sliderElement = checkboxElement.nextElementSibling;
-        
         if (checkboxElement.checked) {
             sliderElement.style.backgroundColor = 'var(--accent-main)';
             sliderElement.style.boxShadow = '0 0 10px var(--accent-glow)';
@@ -59,13 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bgmAudio.volume = parseFloat(savedBgmVolume);
         bgmAudio.currentTime = parseFloat(savedBgmTime);
 
-        if (bgmTrackSelect) {
-            bgmTrackSelect.value = savedBgmTrack;
-        }
-        
-        if (bgmVolumeControl) {
-            bgmVolumeControl.value = savedBgmVolume;
-        }
+        if (bgmTrackSelect) bgmTrackSelect.value = savedBgmTrack;
+        if (bgmVolumeControl) bgmVolumeControl.value = savedBgmVolume;
         
         if (bgmToggle) {
             bgmToggle.checked = isBgmOn;
@@ -88,9 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('qms_bgm_track', newTrackValue); 
                 bgmAudio.src = newTrackValue; 
                 
-                if (isBgmOn) {
-                    bgmAudio.play();
-                }
+                if (isBgmOn) bgmAudio.play();
             });
         }
 
@@ -135,13 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingInterval = setInterval(() => {
         loadingProgress += Math.random() * 15;
         
-        if (loadingProgress > 100) {
-            loadingProgress = 100;
-        }
-        
-        if (loadingBarElement) {
-            loadingBarElement.style.width = `${loadingProgress}%`;
-        }
+        if (loadingProgress > 100) loadingProgress = 100;
+        if (loadingBarElement) loadingBarElement.style.width = `${loadingProgress}%`;
         
         if (loadingTextElement) {
             if (loadingProgress > 30 && loadingProgress < 70) {
@@ -154,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (loadingProgress === 100) {
             clearInterval(loadingInterval);
-            
             setTimeout(() => {
                 if (splashScreenElement) {
                     splashScreenElement.style.opacity = '0';
@@ -181,9 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     const greetingDisplayElement = document.getElementById('dynamic-greeting');
-    if (greetingDisplayElement) {
-        greetingDisplayElement.innerText = dynamicGreetingText;
-    }
+    if (greetingDisplayElement) greetingDisplayElement.innerText = dynamicGreetingText;
 
     const motivationalQuotesArray = [
         "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।",
@@ -201,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. 🔥 UPGRADED POMODORO FOCUS TIMER (+/- CONTROLS)
     // ==========================================
     let focusTimerInterval; 
-    let configuredFocusMinutes = 25; // Default time
+    let configuredFocusMinutes = 25; 
     let focusTimeLeftInSeconds = configuredFocusMinutes * 60; 
     let isFocusTimerRunning = false;
     
@@ -220,7 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
         timerDisplayElement.innerText = `${formattedMinutes}:${formattedSeconds}`;
     }
 
-    // Plus Button Logic (Max 180 mins)
     if (timerPlusButton) {
         timerPlusButton.addEventListener('click', () => {
             if (!isFocusTimerRunning) {
@@ -233,7 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Minus Button Logic (Min 5 mins)
     if (timerMinusButton) {
         timerMinusButton.addEventListener('click', () => {
             if (!isFocusTimerRunning) {
@@ -285,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         timerResetButton.addEventListener('click', () => { 
             clearInterval(focusTimerInterval); 
             isFocusTimerRunning = false; 
-            focusTimeLeftInSeconds = configuredFocusMinutes * 60; // Reset to configured time
+            focusTimeLeftInSeconds = configuredFocusMinutes * 60; 
             updateTimerUserInterface(); 
             
             timerStartButton.innerText = "स्टार्ट (Start)"; 
@@ -301,7 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBookmarksBtn = document.getElementById('close-bookmarks-modal-btn');
     const bookmarksModalOverlay = document.getElementById('bookmarks-modal-overlay');
     
-    // Open Modal Logic
     if(openBookmarksBtn && bookmarksModalOverlay) {
         openBookmarksBtn.addEventListener('click', () => {
             bookmarksModalOverlay.style.display = 'flex';
@@ -309,7 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Close Modal Logic
     if(closeBookmarksBtn && bookmarksModalOverlay) {
         closeBookmarksBtn.addEventListener('click', () => {
             bookmarksModalOverlay.style.opacity = '0';
@@ -317,14 +357,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Render Bookmarks inside Modal
     if (bookmarksModalContent) {
         const rawBookmarksData = localStorage.getItem('qms_bookmarks');
         let parsedBookmarks = {};
         
-        if (rawBookmarksData) {
-            parsedBookmarks = JSON.parse(rawBookmarksData);
-        }
+        if (rawBookmarksData) parsedBookmarks = JSON.parse(rawBookmarksData);
         
         const bookmarkKeysArray = Object.keys(parsedBookmarks);
 
@@ -343,7 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 let bookmarkItem = parsedBookmarks[key];
                 let iconColorHex = 'var(--accent-main)'; 
                 
-                // Color coding based on subject
                 if (bookmarkItem.subject === 'chemistry') iconColorHex = '#b535ff'; 
                 if (bookmarkItem.subject === 'mathematics') iconColorHex = '#00ff88'; 
                 if (bookmarkItem.subject === 'hindi') iconColorHex = '#ffc107'; 
@@ -382,10 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     window.showCustomToast = function(messageText, isErrorMessage = false) {
         const existingToastNode = document.querySelector('.qms-toast-msg'); 
-        
-        if (existingToastNode) {
-            existingToastNode.remove();
-        }
+        if (existingToastNode) existingToastNode.remove();
         
         const toastElementNode = document.createElement('div'); 
         
@@ -400,9 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(toastElementNode); 
         
         setTimeout(() => { 
-            if (toastElementNode) {
-                toastElementNode.remove(); 
-            }
+            if (toastElementNode) toastElementNode.remove(); 
         }, 3000); 
     };
 
@@ -437,16 +468,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         modalOverlayContainer.classList.add('active'); 
         
-        setTimeout(() => { 
-            targetModalInput.focus(); 
-        }, 100); 
-        
+        setTimeout(() => { targetModalInput.focus(); }, 100); 
         activeModalCallbackFunction = callbackFunc; 
     };
 
     window.showCustomConfirm = function(titleText, callbackFunc) { 
         targetModalTitle.innerHTML = `<i class="ri-error-warning-line" style="color: #ff4d4d; font-size: 2rem; display:block; margin-bottom: 5px;"></i> ${titleText}`; 
-        
         targetModalInput.style.display = 'none'; 
         
         targetModalConfirmButton.style.background = '#ff4d4d'; 
@@ -454,7 +481,6 @@ document.addEventListener('DOMContentLoaded', () => {
         targetModalConfirmButton.innerText = 'हाँ, करें'; 
         
         modalOverlayContainer.classList.add('active'); 
-        
         activeModalCallbackFunction = callbackFunc; 
     };
     
@@ -487,9 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let completedChaptersData = {};
     const rawCompletedData = localStorage.getItem('qms_completed');
-    if (rawCompletedData) {
-        completedChaptersData = JSON.parse(rawCompletedData);
-    }
+    if (rawCompletedData) completedChaptersData = JSON.parse(rawCompletedData);
     
     const completedChaptersCountNumber = Object.keys(completedChaptersData).length;
     let storedExtraXp = parseInt(localStorage.getItem('qms_total_xp')) || 0;
@@ -498,21 +522,14 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('qms_total_xp', grandTotalXp);
 
     const dashUserNameElement = document.getElementById('dash-user-name');
-    if (dashUserNameElement) {
-        dashUserNameElement.innerText = savedUserNameValue;
-    }
+    if (dashUserNameElement) dashUserNameElement.innerText = savedUserNameValue;
     
     const dashCompletedCountElement = document.getElementById('dash-completed-count');
-    if (dashCompletedCountElement) {
-        dashCompletedCountElement.innerText = completedChaptersCountNumber;
-    }
+    if (dashCompletedCountElement) dashCompletedCountElement.innerText = completedChaptersCountNumber;
     
     const dashTotalXpElement = document.getElementById('dash-total-xp');
-    if (dashTotalXpElement) {
-        dashTotalXpElement.innerText = grandTotalXp;
-    }
+    if (dashTotalXpElement) dashTotalXpElement.innerText = grandTotalXp;
 
-    // THE ULTIMATE 50 BADGES ARRAY (VERY HARD TO COLLECT)
     const qmsBadgesData = [
         { id: 'b1', name: 'स्टार्टर (Starter)', icon: 'ri-seedling-line', color: '#a0a0b0', requiredXp: 0, desc: 'QMS जॉइन किया' },
         { id: 'b2', name: 'लर्नर (Learner)', icon: 'ri-book-read-line', color: '#00f0ff', requiredXp: 100, desc: '100 XP प्राप्त किए' },
@@ -566,9 +583,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'b50', name: 'लेजेंडरी गॉड (God)', icon: 'ri-sun-fill', color: '#ffffff', requiredXp: 500000, desc: '500000 XP प्राप्त किए' }
     ];
 
-    // --- 🚀 NEW: INJECT MEGA MODALS FOR BADGES (View All & Unlock Animation) ---
-    
-    // Modal 1: View All Badges Modal
     const allBadgesModalHtml = `
         <div id="all-badges-modal" class="qms-modal-overlay" style="z-index: 100002;">
             <div class="qms-modal-box" style="max-width: 900px; max-height: 85vh; display:flex; flex-direction: column; padding: 0; background: #0f0f19;">
@@ -577,14 +591,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button id="close-all-badges" class="sfx-trigger" style="background: rgba(255,50,50,0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 5px 15px; border-radius: 8px; cursor:pointer; font-weight: bold;">X Close</button>
                 </div>
                 <div id="all-badges-grid" style="padding: 20px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px;">
-                    <!-- JS will inject all 50 badges here -->
                 </div>
             </div>
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', allBadgesModalHtml);
 
-    // Modal 2: Celebration Unlock Modal
     const unlockModalHtml = `
         <div id="unlock-badge-modal" class="qms-modal-overlay" style="z-index: 100005;">
             <div class="qms-modal-box" style="background: radial-gradient(circle, #2a2a35 0%, #0f0f19 100%); border: 2px solid #ffc107; text-align: center; padding: 3rem 2rem; overflow: hidden; position: relative;">
@@ -601,7 +613,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.insertAdjacentHTML('beforeend', unlockModalHtml);
 
-    // Logic: Render 4 Boxes on Dashboard
     const badgesContainerElement = document.getElementById('badges-container');
     
     if (badgesContainerElement) {
@@ -627,7 +638,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
-        // Render Exactly 4 Boxes
         displayHtml += getCardHtml(highestUnlocked, true);
         displayHtml += getCardHtml(nextTarget1, false);
         displayHtml += getCardHtml(nextTarget2, false);
@@ -642,7 +652,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         badgesContainerElement.innerHTML = displayHtml;
         
-        // Setup "View All Badges" click
         document.getElementById('open-all-badges-btn').addEventListener('click', () => {
             if (document.getElementById('sfx-click') && localStorage.getItem('qms_sound') !== 'off') {
                 document.getElementById('sfx-click').play().catch(()=>{});
@@ -659,13 +668,11 @@ document.addEventListener('DOMContentLoaded', () => {
             modalGrid.innerHTML = allHtml;
             document.getElementById('all-badges-modal').style.display = 'flex';
             
-            // Give a tiny delay then set opacity for smooth fade in
             setTimeout(() => {
                 document.getElementById('all-badges-modal').classList.add('active');
             }, 50);
         });
         
-        // Close View All Modal
         document.getElementById('close-all-badges').addEventListener('click', () => {
             document.getElementById('all-badges-modal').classList.remove('active');
             setTimeout(() => {
@@ -674,19 +681,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Logic: Celebration Animation for NEWLY Unlocked Badges
     let knownUnlockedIds = JSON.parse(localStorage.getItem('qms_known_badges')) || [];
     let currentlyUnlockedIds = qmsBadgesData.filter(b => grandTotalXp >= b.requiredXp).map(b => b.id);
-    
     let newlyUnlockedIds = currentlyUnlockedIds.filter(id => !knownUnlockedIds.includes(id));
     
     if (newlyUnlockedIds.length > 0) {
-        
-        // If it's the very first time loading the app (XP=0), just save Starter badge silently
         if (knownUnlockedIds.length === 0 && grandTotalXp === 0) {
             localStorage.setItem('qms_known_badges', JSON.stringify(currentlyUnlockedIds));
         } else {
-            // They actually earned a new badge! Trigger the sequence.
             let newBadgeObjects = qmsBadgesData.filter(b => newlyUnlockedIds.includes(b.id));
             
             function showUnlockModal(index) {
@@ -696,7 +698,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 let b = newBadgeObjects[index];
-                
                 const iconEl = document.getElementById('unlocked-badge-icon');
                 iconEl.className = b.icon;
                 iconEl.style.color = b.color;
@@ -708,7 +709,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 unlockModal.style.display = 'flex';
                 setTimeout(() => unlockModal.classList.add('active'), 50);
                 
-                // Play sound
                 if (document.getElementById('sfx-click') && localStorage.getItem('qms_sound') !== 'off') {
                     document.getElementById('sfx-click').play().catch(()=>{});
                 }
@@ -722,7 +722,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
             
-            // Start sequence after 1.5 seconds of dashboard loading
             setTimeout(() => {
                 showUnlockModal(0);
             }, 1500);
@@ -737,9 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (headerEl) {
         let mediumTextValue = 'हिंदी माध्यम';
-        if (currentMedium === 'en') {
-            mediumTextValue = 'English Medium';
-        }
+        if (currentMedium === 'en') mediumTextValue = 'English Medium';
         
         const mediumSwitcherHtml = `
             <div id="medium-toggle-btn" class="sfx-trigger" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: var(--font-heading); font-size: 0.9rem; margin-right: 15px;">
@@ -749,21 +746,12 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         
         const profileDiv = document.querySelector('.header-profile-fix');
-        
-        if (profileDiv) {
-            profileDiv.insertAdjacentHTML('beforebegin', mediumSwitcherHtml);
-        }
+        if (profileDiv) profileDiv.insertAdjacentHTML('beforebegin', mediumSwitcherHtml);
 
         const mediumToggleBtn = document.getElementById('medium-toggle-btn');
-        
         if (mediumToggleBtn) {
             mediumToggleBtn.addEventListener('click', () => {
-                if (currentMedium === 'hi') {
-                    currentMedium = 'en';
-                } else {
-                    currentMedium = 'hi';
-                }
-                
+                currentMedium = (currentMedium === 'hi') ? 'en' : 'hi';
                 localStorage.setItem('qms_medium', currentMedium);
                 
                 if (currentMedium === 'hi') {
@@ -773,10 +761,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('medium-text').innerText = 'English Medium';
                     window.showCustomToast('माध्यम बदलकर English कर दिया गया है। पेज रीलोड हो रहा है...');
                 }
-                
-                setTimeout(() => { 
-                    window.location.reload(); 
-                }, 1500);
+                setTimeout(() => { window.location.reload(); }, 1500);
             });
         }
     }
@@ -788,12 +773,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidePanelOverlayBg = document.getElementById('panel-overlay'); 
     
     function closeSettingsPanelAction() { 
-        if (sidePanelElement) {
-            sidePanelElement.classList.remove('active'); 
-        }
-        if (sidePanelOverlayBg) {
-            sidePanelOverlayBg.classList.remove('active'); 
-        }
+        if (sidePanelElement) sidePanelElement.classList.remove('active'); 
+        if (sidePanelOverlayBg) sidePanelOverlayBg.classList.remove('active'); 
     }
     
     const openPanelBtn = document.getElementById('open-panel-btn');
@@ -805,16 +786,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     const closePanelBtn = document.getElementById('close-panel');
-    if (closePanelBtn) {
-        closePanelBtn.addEventListener('click', closeSettingsPanelAction); 
-    }
-    
-    if (sidePanelOverlayBg) {
-        sidePanelOverlayBg.addEventListener('click', closeSettingsPanelAction);
-    }
+    if (closePanelBtn) closePanelBtn.addEventListener('click', closeSettingsPanelAction); 
+    if (sidePanelOverlayBg) sidePanelOverlayBg.addEventListener('click', closeSettingsPanelAction);
 
     const allThemeOptionCards = document.querySelectorAll('.theme-option-card');
-    
     allThemeOptionCards.forEach(card => {
         card.addEventListener('click', function() { 
             const newTheme = this.getAttribute('data-set-theme'); 
@@ -826,7 +801,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // SFX LOGIC
     const sfxClickAudioNode = document.getElementById('sfx-click'); 
     let isSystemSoundTurnedOn = localStorage.getItem('qms_sound') !== 'off';
-    
     const soundToggleSwitchElement = document.getElementById('sound-toggle');
     
     if (soundToggleSwitchElement) { 
@@ -835,19 +809,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         soundToggleSwitchElement.addEventListener('change', (event) => { 
             isSystemSoundTurnedOn = event.target.checked; 
-            
             if (isSystemSoundTurnedOn) {
                 localStorage.setItem('qms_sound', 'on'); 
             } else {
                 localStorage.setItem('qms_sound', 'off'); 
             }
-            
             updateToggleUI(event.target); 
         }); 
     }
 
     const allSfxTriggers = document.querySelectorAll('.sfx-trigger');
-    
     allSfxTriggers.forEach(btn => { 
         btn.addEventListener('click', () => { 
             if (isSystemSoundTurnedOn && sfxClickAudioNode) { 
@@ -869,10 +840,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (uploadedFile) {
                 const fileReaderInstance = new FileReader();
-                
                 fileReaderInstance.onload = function(readerEvent) {
                     const tempImgNode = new Image();
-                    
                     tempImgNode.onload = function() {
                         const temporaryCanvas = document.createElement('canvas'); 
                         const temporaryCanvasContext = temporaryCanvas.getContext('2d');
@@ -895,36 +864,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         temporaryCanvas.width = targetWidth; 
                         temporaryCanvas.height = targetHeight; 
-                        
                         temporaryCanvasContext.drawImage(tempImgNode, 0, 0, targetWidth, targetHeight);
                         
                         const compressedImageBase64String = temporaryCanvas.toDataURL('image/jpeg', 0.8);
                         
                         const dashSmallAvatarImg = document.getElementById('dash-small-avatar');
-                        if (dashSmallAvatarImg) {
-                            dashSmallAvatarImg.src = compressedImageBase64String; 
-                        }
+                        if (dashSmallAvatarImg) dashSmallAvatarImg.src = compressedImageBase64String; 
                         
                         const panelProfileImg = document.getElementById('panel-profile-img');
-                        if (panelProfileImg) {
-                            panelProfileImg.src = compressedImageBase64String; 
-                        }
+                        if (panelProfileImg) panelProfileImg.src = compressedImageBase64String; 
                         
                         try { 
                             localStorage.setItem('qms_profile_img', compressedImageBase64String); 
-                            if(window.showCustomToast) {
-                                window.showCustomToast("प्रोफाइल फोटो सफलतापूर्क सेव हो गई!"); 
-                            }
+                            if(window.showCustomToast) window.showCustomToast("प्रोफाइल फोटो सफलतापूर्क सेव हो गई!"); 
                         } catch(localStorageError) { 
-                            if(window.showCustomToast) {
-                                window.showCustomToast("फोटो बहुत बड़ी है! सेव करने में एरर।", true); 
-                            }
+                            if(window.showCustomToast) window.showCustomToast("फोटो बहुत बड़ी है! सेव करने में एरर।", true); 
                         }
                     };
-                    
                     tempImgNode.src = readerEvent.target.result;
                 };
-                
                 fileReaderInstance.readAsDataURL(uploadedFile);
             }
         });
@@ -933,14 +891,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedProfileImageSrc = localStorage.getItem('qms_profile_img');
     if (savedProfileImageSrc) {
         const dashSmallAvatarImage = document.getElementById('dash-small-avatar');
-        if (dashSmallAvatarImage) {
-            dashSmallAvatarImage.src = savedProfileImageSrc; 
-        }
+        if (dashSmallAvatarImage) dashSmallAvatarImage.src = savedProfileImageSrc; 
         
         const panelProfileImageAvatar = document.getElementById('panel-profile-img');
-        if (panelProfileImageAvatar) {
-            panelProfileImageAvatar.src = savedProfileImageSrc; 
-        }
+        if (panelProfileImageAvatar) panelProfileImageAvatar.src = savedProfileImageSrc; 
     }
 
     // ==========================================
@@ -957,18 +911,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('qms_user_name', cleanedNewName); 
                     
                     const dashNameEl = document.getElementById('dash-user-name');
-                    if (dashNameEl) {
-                        dashNameEl.innerText = cleanedNewName; 
-                    }
+                    if (dashNameEl) dashNameEl.innerText = cleanedNewName; 
                     
                     const panelNameEl = document.getElementById('panel-user-name');
-                    if (panelNameEl) {
-                        panelNameEl.innerText = cleanedNewName; 
-                    }
+                    if (panelNameEl) panelNameEl.innerText = cleanedNewName; 
                     
-                    if(window.showCustomToast) {
-                        window.showCustomToast("नाम सफलतापूर्वक अपडेट हो गया!"); 
-                    }
+                    if(window.showCustomToast) window.showCustomToast("नाम सफलतापूर्वक अपडेट हो गया!"); 
                 } 
             }); 
         }); 
@@ -991,10 +939,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     function initializeDailyStreakCalendar() {
         const streakContainer = document.getElementById('streak-calendar');
-        
-        if (!streakContainer) {
-            return;
-        }
+        if (!streakContainer) return;
         
         const getLocalDateString = (d) => { 
             const tz = d.getTimezoneOffset() * 60000; 
@@ -1002,12 +947,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         const todayStr = getLocalDateString(new Date());
-        
         let streakHistory = {};
         const rawHistory = localStorage.getItem('qms_streak_history');
-        if (rawHistory) {
-            streakHistory = JSON.parse(rawHistory);
-        }
+        if (rawHistory) streakHistory = JSON.parse(rawHistory);
         
         streakHistory[todayStr] = true;
         localStorage.setItem('qms_streak_history', JSON.stringify(streakHistory));
@@ -1025,14 +967,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const streakTextNode = document.getElementById('streak-count-text');
-        if (streakTextNode) {
-            streakTextNode.innerText = activeCount;
-        }
+        if (streakTextNode) streakTextNode.innerText = activeCount;
         
         const mainTopStreakDisplay = document.getElementById('main-streak-display');
-        if (mainTopStreakDisplay) {
-            mainTopStreakDisplay.innerText = activeCount + ' दिन';
-        }
+        if (mainTopStreakDisplay) mainTopStreakDisplay.innerText = activeCount + ' दिन';
 
         let currDay = new Date().getDay(); 
         let monDiff = new Date().getDate() - currDay + (currDay === 0 ? -6 : 1); 
@@ -1069,17 +1007,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
-        
         streakContainer.innerHTML = html;
     }
-    
     initializeDailyStreakCalendar();
 
     // ==========================================
     // 13. FIREFLY PARTICLES ENGINE
     // ==========================================
     const backgroundCanvasNode = document.getElementById('bg-canvas');
-    
     if (backgroundCanvasNode) {
         const renderContext2D = backgroundCanvasNode.getContext('2d'); 
         backgroundCanvasNode.width = window.innerWidth; 
@@ -1099,7 +1034,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const randomSymbolSelection = Math.floor(Math.random() * mathScienceSymbolsList.length);
                 this.textSymbol = mathScienceSymbolsList[randomSymbolSelection];
-                
                 this.coordinateX = Math.random() * backgroundCanvasNode.width; 
                 this.coordinateY = Math.random() * backgroundCanvasNode.height;
                 
@@ -1126,7 +1060,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.coordinateY = backgroundCanvasNode.height + 30; 
                     this.coordinateX = Math.random() * backgroundCanvasNode.width; 
                 }
-                
                 if (this.coordinateX < -30 || this.coordinateX > backgroundCanvasNode.width + 30) { 
                     this.velocityVectorX = this.velocityVectorX * -1; 
                 }
@@ -1135,13 +1068,9 @@ document.addEventListener('DOMContentLoaded', () => {
             drawOntoCanvas(ctxObject) {
                 const rootCssVariables = getComputedStyle(document.documentElement); 
                 let currentThemeAccentColor = rootCssVariables.getPropertyValue('--accent-main').trim();
-                
-                if (currentThemeAccentColor === "") {
-                    currentThemeAccentColor = '#00f0ff';
-                }
+                if (currentThemeAccentColor === "") currentThemeAccentColor = '#00f0ff';
                 
                 let dynamicOpacityNumber = ((Math.sin(this.alphaSineAngle) + 1) / 2) * 0.8 + 0.1;
-                
                 ctxObject.fillStyle = `rgba(255, 255, 255, ${dynamicOpacityNumber})`; 
                 ctxObject.shadowBlur = dynamicOpacityNumber * 20; 
                 ctxObject.shadowColor = currentThemeAccentColor;
@@ -1154,7 +1083,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctxObject.arc(this.coordinateX, this.coordinateY, this.pixelSize, 0, Math.PI * 2); 
                     ctxObject.fill(); 
                 }
-                
                 ctxObject.shadowBlur = 0; 
             }
         }
@@ -1165,15 +1093,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         function executeBackgroundAnimation() { 
             renderContext2D.clearRect(0, 0, backgroundCanvasNode.width, backgroundCanvasNode.height); 
-            
             activeParticlesCollection.forEach(particleItem => { 
                 particleItem.updatePositionData(); 
                 particleItem.drawOntoCanvas(renderContext2D); 
             }); 
-            
             requestAnimationFrame(executeBackgroundAnimation); 
         }
-        
         executeBackgroundAnimation();
         
         window.addEventListener('resize', () => { 
@@ -1181,5 +1106,4 @@ document.addEventListener('DOMContentLoaded', () => {
             backgroundCanvasNode.height = window.innerHeight; 
         });
     }
-
 });
