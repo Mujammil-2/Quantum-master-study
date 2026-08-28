@@ -105,7 +105,7 @@
         <button id="final-save-btn" class="save-btn" onclick="saveProfileData()">Save Profile & Go to Dashboard</button>
     </div>
 
-    <!-- FIREBASE & LOGIC SCRIPT (type="module" is necessary for Firebase 10+) -->
+    <!-- FIREBASE (FIRESTORE) + IMGBB API LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -121,7 +121,7 @@
             measurementId: "G-SH39JL930R"
         };
 
-        // Initialize Firebase & Firestore Database
+        // Initialize Firebase Apps
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
@@ -133,7 +133,7 @@
             setTimeout(() => toast.classList.remove('show'), 3500);
         };
 
-        // Load existing data on startup
+        // Load existing data
         window.onload = () => {
             document.getElementById('p-name').value = localStorage.getItem('qms_user_name') || '';
             const emailField = document.getElementById('p-email');
@@ -192,7 +192,7 @@
             showToast("सेल्फी सफलतापूर्वक कैप्चर हो गई! 🤩");
         };
 
-        // 💾 SAVE DATA TO FIRESTORE & LOCALSTORAGE
+        // 💾 ADVANCED SAVE: Upload Photo to ImgBB -> Get Clean URL -> Save to Firestore
         window.saveProfileData = async () => {
             const name = document.getElementById('p-name').value.trim();
             const email = document.getElementById('p-email').value.trim();
@@ -207,10 +207,10 @@
                 return; 
             }
 
-            saveBtn.innerText = "Saving to Cloud...";
+            saveBtn.innerText = "Saving Profile Data...";
             saveBtn.disabled = true;
 
-            // 1. Save locally for fast loading
+            // Save locally
             localStorage.setItem('qms_user_name', name);
             localStorage.setItem('qms_user_email', email);
             localStorage.setItem('qms_user_gender', gender);
@@ -220,10 +220,38 @@
 
             const uid = localStorage.getItem('qms_user_uid');
             const photoBase64 = localStorage.getItem('qms_user_photo') || "";
+            let finalPhotoURL = "";
 
-            // 2. Save to Firestore Database
             if(uid) {
                 try {
+                    // 🔥 IMGBB UPLOAD SYSTEM 🔥
+                    if (photoBase64 && photoBase64.startsWith('data:image')) {
+                        saveBtn.innerText = "Uploading Photo securely...";
+                        
+                        // तुम्हारी ImgBB API Key सेट कर दी गई है 👇
+                        const IMGBB_API_KEY = "239ed7737d416ac877f93a09dc169afa"; 
+                        
+                        const rawBase64 = photoBase64.split(',')[1];
+                        const formData = new FormData();
+                        formData.append("image", rawBase64);
+
+                        const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        const imgbbData = await imgbbResponse.json();
+                        if(imgbbData.success) {
+                            finalPhotoURL = imgbbData.data.url; // एकदम साफ और छोटा लिंक
+                            localStorage.setItem('qms_user_photo_url', finalPhotoURL);
+                        } else {
+                            console.error("ImgBB Upload Failed:", imgbbData);
+                        }
+                    }
+
+                    saveBtn.innerText = "Saving to Cloud Database...";
+
+                    // 🔥 FIREBASE FIRESTORE SAVE 🔥
                     await setDoc(doc(db, "users", uid), {
                         name: name,
                         email: email,
@@ -231,16 +259,16 @@
                         city: city,
                         state: state,
                         country: country,
-                        photoURL: photoBase64,
+                        photoURL: finalPhotoURL, // ImgBB वाला साफ लिंक यहाँ जा रहा है
                         profileCompleted: true,
                         updatedAt: new Date().toISOString()
                     }, { merge: true });
 
-                    showToast("प्रोफाइल क्लाउड में सेव हो गई! डैशबोर्ड लोड हो रहा है...");
+                    showToast("प्रोफाइल सफलतापूर्वक सेव हो गई!");
                     setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
                 } catch (error) {
-                    console.error("Firestore Error: ", error);
-                    showToast("क्लाउड में सेव करने में दिक्कत आई!");
+                    console.error("Database Error: ", error);
+                    showToast("डेटा सेव करने में कुछ दिक्कत आई!");
                     saveBtn.innerText = "Save Profile & Go to Dashboard";
                     saveBtn.disabled = false;
                 }
