@@ -35,7 +35,9 @@
         .row-2 { display: flex; gap: 15px; }
         .row-2 .form-group { flex: 1; }
 
-        .save-btn { width: 100%; background: var(--accent-blue); color: #fff; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 15px; }
+        .save-btn { width: 100%; background: var(--accent-blue); color: #fff; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        .save-btn:hover { background: #0044cc; }
+        .save-btn:disabled { background: #333; color: #888; cursor: not-allowed; }
         
         .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid var(--accent-cyan); color: #fff; padding: 15px 20px; border-radius: 8px; z-index: 1000; transition: 0.4s; }
         .toast-msg.show { right: 20px; }
@@ -100,25 +102,46 @@
             </div>
         </div>
 
-        <button class="save-btn" onclick="saveProfileData()">Save Profile & Go to Dashboard</button>
+        <button id="final-save-btn" class="save-btn" onclick="saveProfileData()">Save Profile & Go to Dashboard</button>
     </div>
 
-    <script>
-        function showToast(msg) {
+    <!-- FIREBASE & LOGIC SCRIPT (type="module" is necessary for Firebase 10+) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCkxx9bVjvAYarA0WrHfW5k_gxwUPZaaw",
+            authDomain: "quantum-master-study.firebaseapp.com",
+            projectId: "quantum-master-study",
+            storageBucket: "quantum-master-study.firebasestorage.app",
+            messagingSenderId: "193145760847",
+            appId: "1:193145760847:web:7d1f77be123c3edb104e3a",
+            measurementId: "G-SH39JL930R"
+        };
+
+        // Initialize Firebase & Firestore Database
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Toast Function
+        window.showToast = (msg) => {
             const toast = document.getElementById('toast');
             document.getElementById('toast-text').innerText = msg;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3500);
-        }
+        };
 
-        // Load existing data if logged in via Google
+        // Load existing data on startup
         window.onload = () => {
             document.getElementById('p-name').value = localStorage.getItem('qms_user_name') || '';
             const emailField = document.getElementById('p-email');
             emailField.value = localStorage.getItem('qms_user_email') || '';
             
             if(localStorage.getItem('qms_auth_provider') === 'Google') {
-                emailField.readOnly = true; emailField.style.opacity = '0.6';
+                emailField.readOnly = true; 
+                emailField.style.opacity = '0.6';
             }
             const savedPhoto = localStorage.getItem('qms_user_photo');
             if(savedPhoto) document.getElementById('avatar-preview').src = savedPhoto;
@@ -127,9 +150,8 @@
         // 📷 LIVE CAMERA LOGIC
         let videoStream = null;
 
-        async function startCamera() {
+        window.startCamera = async () => {
             try {
-                // Request camera permission
                 videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
                 const video = document.getElementById('camera-stream');
                 video.srcObject = videoStream;
@@ -138,59 +160,95 @@
                 
                 document.getElementById('start-cam-btn').style.display = 'none';
                 document.getElementById('capture-cam-btn').style.display = 'flex';
-                showToast("Camera started! Smile please :)");
+                showToast("कैमरा चालू हो गया! 📸");
             } catch (err) {
-                showToast("Camera access denied! Please allow camera permissions.");
+                showToast("कैमरा एक्सेस नहीं मिला! परमिशन चेक करें।");
             }
-        }
+        };
 
-        function captureSelfie() {
+        window.captureSelfie = () => {
             const video = document.getElementById('camera-stream');
             const canvas = document.getElementById('camera-canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             
-            // Draw image on canvas and convert to Base64 Image URL
             const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = canvas.toDataURL('image/png'); // This is the selfie!
+            const imageData = canvas.toDataURL('image/png'); 
 
-            // Stop Camera
             videoStream.getTracks().forEach(track => track.stop());
             video.style.display = 'none';
 
-            // Show Selfie in Avatar Box
             const img = document.getElementById('avatar-preview');
             img.src = imageData;
             img.style.display = 'block';
 
-            // Reset buttons
             document.getElementById('capture-cam-btn').style.display = 'none';
             const startBtn = document.getElementById('start-cam-btn');
             startBtn.innerHTML = '<i class="ri-refresh-line"></i> Retake Selfie';
             startBtn.style.display = 'flex';
 
-            // Save selfie temporarily
             localStorage.setItem('qms_user_photo', imageData);
-            showToast("Selfie Captured Successfully! 📸");
-        }
+            showToast("सेल्फी सफलतापूर्वक कैप्चर हो गई! 🤩");
+        };
 
-        // 💾 SAVE FINAL DATA
-        function saveProfileData() {
+        // 💾 SAVE DATA TO FIRESTORE & LOCALSTORAGE
+        window.saveProfileData = async () => {
             const name = document.getElementById('p-name').value.trim();
             const email = document.getElementById('p-email').value.trim();
-            if(!name || !email) { showToast("Name and Email are required!"); return; }
+            const gender = document.getElementById('p-gender').value;
+            const city = document.getElementById('p-city').value.trim();
+            const state = document.getElementById('p-state').value.trim();
+            const country = document.getElementById('p-country').value.trim();
+            const saveBtn = document.getElementById('final-save-btn');
 
+            if(!name || !email) { 
+                showToast("नाम और ईमेल भरना ज़रुरी है!"); 
+                return; 
+            }
+
+            saveBtn.innerText = "Saving to Cloud...";
+            saveBtn.disabled = true;
+
+            // 1. Save locally for fast loading
             localStorage.setItem('qms_user_name', name);
             localStorage.setItem('qms_user_email', email);
-            localStorage.setItem('qms_user_gender', document.getElementById('p-gender').value);
-            localStorage.setItem('qms_user_city', document.getElementById('p-city').value.trim());
-            localStorage.setItem('qms_user_state', document.getElementById('p-state').value.trim());
-            localStorage.setItem('qms_user_country', document.getElementById('p-country').value.trim());
+            localStorage.setItem('qms_user_gender', gender);
+            localStorage.setItem('qms_user_city', city);
+            localStorage.setItem('qms_user_state', state);
+            localStorage.setItem('qms_user_country', country);
 
-            showToast("Profile Saved! Welcome to Quantum Master Study.");
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
-        }
+            const uid = localStorage.getItem('qms_user_uid');
+            const photoBase64 = localStorage.getItem('qms_user_photo') || "";
+
+            // 2. Save to Firestore Database
+            if(uid) {
+                try {
+                    await setDoc(doc(db, "users", uid), {
+                        name: name,
+                        email: email,
+                        gender: gender,
+                        city: city,
+                        state: state,
+                        country: country,
+                        photoURL: photoBase64,
+                        profileCompleted: true,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true });
+
+                    showToast("प्रोफाइल क्लाउड में सेव हो गई! डैशबोर्ड लोड हो रहा है...");
+                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+                } catch (error) {
+                    console.error("Firestore Error: ", error);
+                    showToast("क्लाउड में सेव करने में दिक्कत आई!");
+                    saveBtn.innerText = "Save Profile & Go to Dashboard";
+                    saveBtn.disabled = false;
+                }
+            } else {
+                showToast("यूज़र ID नहीं मिली! कृपया दोबारा लॉगिन करें।");
+                setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+            }
+        };
     </script>
 </body>
 </html>
