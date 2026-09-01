@@ -7,139 +7,106 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root { --bg-deep: #020612; --accent-cyan: #00f0ff; --accent-blue: #0055ff; --accent-purple: #b535ff; }
+        body { background-color: var(--bg-deep); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; flex-direction: column; }
+        
+        /* टॉप नेविगेशन */
+        .quiz-header { width: 100%; max-width: 800px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .back-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 8px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
+        .back-btn:hover { background: var(--accent-cyan); color: #000; }
+        .quiz-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; color: var(--accent-cyan); font-weight: bold; text-transform: capitalize; }
+        
+        /* मेन क्विज़ कार्ड */
+        .quiz-card { background: linear-gradient(180deg, #10182b 0%, #0b1120 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; width: 100%; max-width: 800px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); position: relative; overflow: hidden; }
+        
+        .loading-state { text-align: center; padding: 50px 0; color: var(--accent-cyan); }
+        
+        .quiz-content { display: none; } /* डेटा आने पर इसे दिखाएंगे */
+        
+        .question-meta { display: flex; justify-content: space-between; margin-bottom: 20px; color: #8b96a8; font-size: 0.9rem; font-weight: 500; }
+        .question-text { font-size: 1.4rem; line-height: 1.5; margin-bottom: 30px; font-weight: 600; }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 15px; }
+        .option-btn { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); color: #fff; padding: 18px 20px; border-radius: 12px; font-size: 1.1rem; text-align: left; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px; }
+        .option-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); transform: translateX(5px); }
+        
+        /* सही-गलत के लिए क्लासेज़ (JS से लगेंगी) */
+        .option-btn.selected { background: rgba(0, 240, 255, 0.2); border-color: var(--accent-cyan); }
+        .option-btn.correct { background: rgba(0, 255, 136, 0.2); border-color: #00ff88; color: #00ff88; }
+        .option-btn.wrong { background: rgba(255, 51, 102, 0.2); border-color: #ff3366; color: #ff3366; }
+
+        .next-btn { width: 100%; background: var(--accent-blue); color: #fff; padding: 16px; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 30px; transition: 0.3s; display: none; }
+        .next-btn:hover { background: #0044cc; box-shadow: 0 0 15px rgba(0, 85, 255, 0.5); }
+        
+        /* रिजल्ट स्क्रीन */
+        .result-screen { display: none; text-align: center; padding: 20px 0; }
+        .trophy-icon { font-size: 5rem; color: #ffd700; margin-bottom: 15px; animation: pulseGlow 2s infinite alternate; }
+        .result-score { font-size: 2.5rem; font-weight: bold; margin-bottom: 10px; font-family: 'Space Grotesk', sans-serif; }
+        .xp-earned { color: #00ff88; font-size: 1.2rem; font-weight: bold; margin-bottom: 30px; background: rgba(0,255,136,0.1); display: inline-block; padding: 10px 20px; border-radius: 30px; border: 1px dashed #00ff88; }
+        
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(255,215,0,0.5)); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 30px rgba(255,215,0,0.8)); transform: scale(1.1); }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- 🎵 साउंड और BGM प्लेयर -->
-    <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
-    <audio id="bgm-audio" loop preload="auto"><source src="bgm1.mp3" type="audio/mpeg"></audio>
-    
-    <!-- बैकग्राउंड कैनवास (पार्टिकल्स) -->
-    <canvas id="bg-canvas"></canvas>
-
-    <div class="quiz-wrapper">
-        <!-- HEADER -->
-        <header class="quiz-header-card glass-card" style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="brand-mini sfx-trigger" id="leave-quiz-btn" style="cursor:pointer; display: flex; align-items: center; gap: 8px;">
-                <i class="ri-arrow-left-line" style="font-size: 1.5rem; color: var(--accent-main);"></i>
-                <h2 style="font-size: 1.2rem;">डैशबोर्ड</h2>
-            </div>
-            
-            <!-- 🔥 NEW: Quiz Medium Switcher (Hindi / English) 🔥 -->
-            <button id="quiz-medium-btn" class="sfx-trigger" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 10px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
-                <i class="ri-translate-2"></i> <span id="quiz-medium-text">हिंदी माध्यम</span>
-            </button>
-            
-            <div class="quiz-timer-box" id="timer-display" style="display: none;">
-                <i class="ri-timer-flash-line"></i> <span id="time-left">00:00</span>
-            </div>
-        </header>
-
-        <!-- 1. QUIZ SETUP PANEL -->
-        <div class="glass-card quiz-setup-panel" id="setup-panel">
-            <i class="ri-brain-line" style="font-size: 4rem; color: var(--accent-main); margin-bottom: 10px; display: block;"></i>
-            <h1 class="quiz-setup-title">मॉक टेस्ट सेट करें</h1>
-            <p style="color: var(--text-secondary);">अपनी परीक्षा की तैयारी को परखें। विषय, अध्याय, डिफिकल्टी और प्रश्नों की संख्या चुनें।</p>
-
-            <div class="subject-select-grid" id="subject-selector">
-                <button class="quiz-subject-btn active sfx-trigger" data-subject="physics">भौतिक विज्ञान</button>
-                <button class="quiz-subject-btn sfx-trigger" data-subject="chemistry">रसायन विज्ञान</button>
-                <button class="quiz-subject-btn sfx-trigger" data-subject="maths">गणित</button>
-                <button class="quiz-subject-btn sfx-trigger" data-subject="hindi">हिंदी</button>
-                <button class="quiz-subject-btn sfx-trigger" data-subject="english">अंग्रेज़ी</button>
-            </div>
-
-            <!-- Chapter Selector Dropdown -->
-            <div style="margin-top: 15px; background: rgba(0,0,0,0.3); padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); text-align: left;">
-                <p style="margin-bottom: 5px; font-weight: bold; color: #fff; font-size: 0.9rem;">अध्याय (Chapter) चुनें:</p>
-                <select id="chapter-selector" style="width: 100%; padding: 10px; border-radius: 8px; background: #222; color: #fff; border: 1px solid var(--accent-main); outline: none; font-size: 0.95rem; cursor: pointer;">
-                    <!-- Chapters -->
-                </select>
-            </div>
-
-            <!-- Difficulty Mode Selector (Fixed Highlighting) -->
-            <div style="margin-top: 15px; text-align: left;">
-                <p style="margin-bottom: 8px; font-weight: bold; color: #fff; font-size: 0.9rem;">कठिनाई स्तर (Difficulty Mode):</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;" id="difficulty-selector">
-                    <button class="quiz-diff-btn sfx-trigger active" data-diff="easy" style="padding: 10px; border-radius: 8px; background: #00ff88; color: #000; font-weight: bold; cursor: pointer; border: none; transition: 0.3s;">आसान (Easy)</button>
-                    <button class="quiz-diff-btn sfx-trigger" data-diff="medium" style="padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.08); color: #ffc107; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,193,7,0.3); transition: 0.3s;">मध्यम (Medium)</button>
-                    <button class="quiz-diff-btn sfx-trigger" data-diff="difficult" style="padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.08); color: #ff3366; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,51,102,0.3); transition: 0.3s;">कठिन (Difficult)</button>
-                </div>
-            </div>
-
-            <!-- Extended Question Count Selector (5 to 40) -->
-            <div style="margin-top: 15px; text-align: left;">
-                <p style="margin-bottom: 8px; font-weight: bold; color: #fff; font-size: 0.9rem;">प्रश्नों की संख्या (Number of Questions):</p>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;" id="question-count-selector">
-                    <button class="quiz-count-btn sfx-trigger" data-count="5" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">5</button>
-                    <button class="quiz-count-btn sfx-trigger active" data-count="10" style="padding: 8px; border-radius: 6px; background: var(--accent-main); border: 1px solid var(--accent-main); color: #000; font-weight: bold; cursor: pointer;">10</button>
-                    <button class="quiz-count-btn sfx-trigger" data-count="15" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">15</button>
-                    <button class="quiz-count-btn sfx-trigger" data-count="20" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">20</button>
-                    <button class="quiz-count-btn sfx-trigger" data-count="25" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">25</button>
-                    <button class="quiz-count-btn sfx-trigger" data-count="30" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">30</button>
-                    <button class="quiz-count-btn sfx-trigger" data-count="35" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">35</button>
-                    <button class="quiz-count-btn sfx-trigger" data-count="40" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; cursor: pointer;">40</button>
-                </div>
-            </div>
-
-            <div class="time-setter" style="margin-top: 15px;">
-                <p>समय (मिनट):</p>
-                <button class="time-btn sfx-trigger" id="btn-time-minus"><i class="ri-subtract-line"></i></button>
-                <span class="time-display" id="selected-time">10</span>
-                <button class="time-btn sfx-trigger" id="btn-time-plus"><i class="ri-add-line"></i></button>
-            </div>
-
-            <button class="btn-primary-glow sfx-trigger" id="start-quiz-btn" style="width: 100%; font-size: 1.2rem; padding: 15px; margin-top: 10px;">
-                <i class="ri-play-fill"></i> टेस्ट शुरू करें
-            </button>
-        </div>
-
-        <!-- 2. QUESTION AREA -->
-        <div class="question-container" id="question-panel" style="display: none;">
-            <div class="question-text" id="question-text">प्रश्न यहाँ लोड होगा...</div>
-            
-            <div class="options-grid" id="options-container"></div>
-
-            <div class="quiz-footer">
-                <span class="question-counter" id="question-counter">प्रश्न 1 / 10</span>
-                <button class="btn-primary-glow sfx-trigger" id="next-btn" style="display: none; padding: 10px 20px;">
-                    अगला <i class="ri-arrow-right-line"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- 3. RESULT SCREEN -->
-        <div class="glass-card result-container" id="result-panel" style="display: none;">
-            <h2 style="font-size: 2rem; margin-bottom: 5px;">टेस्ट समाप्त!</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem;" id="result-message">बहुत बढ़िया प्रयास।</p>
-
-            <div class="score-circle" id="final-score">0%</div>
-
-            <div class="result-stats">
-                <div class="r-stat">
-                    <h3>सही उत्तर</h3>
-                    <p class="text-green" id="stat-correct">0</p>
-                </div>
-                <div class="r-stat">
-                    <h3>गलत उत्तर</h3>
-                    <p class="text-red" id="stat-wrong">0</p>
-                </div>
-                <div class="r-stat">
-                    <h3>XP मिले</h3>
-                    <p class="text-gold" id="stat-xp">+0 XP</p>
-                </div>
-            </div>
-
-            <button class="btn-primary-glow sfx-trigger" onclick="window.location.reload()" style="width: 100%;">
-                <i class="ri-refresh-line"></i> एक और टेस्ट दें
-            </button>
-        </div>
-
+    <div class="quiz-header">
+        <button class="back-btn" onclick="window.location.href='dashboard.html'"><i class="ri-arrow-left-line"></i> डैशबोर्ड</button>
+        <div class="quiz-title" id="quiz-header-title">प्रश्नोत्तरी (Quiz)</div>
     </div>
 
-    <script src="quiz.js"></script>
+    <div class="quiz-card">
+        <!-- 1. लोडिंग स्टेट -->
+        <div class="loading-state" id="loading-box">
+            <i class="ri-loader-4-line" style="font-size: 3rem; animation: spin 1s linear infinite; display: inline-block; margin-bottom: 15px;"></i>
+            <h3>क्लाउड से आपके लिए बेहतरीन सवाल छांटे जा रहे हैं...</h3>
+            <p style="color: #8b96a8; font-size: 0.9rem; margin-top: 5px;">थोड़ा इंतज़ार करें</p>
+        </div>
+
+        <!-- 2. क्विज़ इंटरफ़ेस -->
+        <div class="quiz-content" id="quiz-box">
+            <div class="question-meta">
+                <span id="q-counter">प्रश्न 1 / 20</span>
+                <span style="color: var(--accent-cyan);"><i class="ri-timer-line"></i> <span id="timer-display">30</span>s</span>
+            </div>
+            
+            <div class="question-text" id="question-text">
+                प्रश्न यहाँ आएगा...
+            </div>
+            
+            <div class="options-grid" id="options-box">
+                <!-- ऑप्शंस JS से आएँगे -->
+            </div>
+            
+            <button class="next-btn" id="next-btn">अगला प्रश्न <i class="ri-arrow-right-line"></i></button>
+        </div>
+
+        <!-- 3. रिजल्ट स्क्रीन -->
+        <div class="result-screen" id="result-box">
+            <i class="ri-trophy-fill trophy-icon"></i>
+            <h2>टेस्ट पूरा हुआ!</h2>
+            <div class="result-score" id="final-score-text">15 / 20</div>
+            <div class="xp-earned" id="xp-earned-text">+150 XP क्लाउड में सेव हुआ!</div>
+            
+            <button class="next-btn" style="display: block; width: 100%;" onclick="window.location.href='leaderboard.html'">
+                <i class="ri-bar-chart-fill"></i> लीडरबोर्ड देखें
+            </button>
+            <button class="back-btn" style="width: 100%; justify-content: center; margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05);" onclick="window.location.href='dashboard.html'">
+                डैशबोर्ड पर वापस जाएँ
+            </button>
+        </div>
+    </div>
+
+    <!-- FIREBASE AND QUIZ ENGINE (ES MODULE) -->
+    <script type="module" src="quiz.js"></script>
+    
+    <style> @keyframes spin { 100% { transform: rotate(360deg); } } </style>
 </body>
 </html>
