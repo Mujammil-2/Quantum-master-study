@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="default">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QMS PRO अपग्रेड | क्वांटम मास्टर स्टडी</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root { --bg-deep: #020612; --accent-gold: #ffd700; --accent-cyan: #00f0ff; }
+        body { background-color: var(--bg-deep); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        .checkout-container { background: linear-gradient(180deg, #10182b 0%, #0b1120 100%); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 30px; width: 100%; max-width: 450px; box-shadow: 0 20px 50px rgba(255,215,0,0.1); position: relative; overflow: hidden; }
+        
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-family: 'Space Grotesk', sans-serif; color: var(--accent-gold); font-size: 1.8rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .header p { color: #8b96a8; font-size: 0.9rem; margin-top: 5px; }
+
+        .price-card { background: rgba(255,215,0,0.05); border: 1px dashed var(--accent-gold); padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: #cbd5e1; font-size: 0.95rem; }
+        .total-row { display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 1.3rem; font-weight: bold; color: var(--accent-gold); }
+
+        .coupon-box { display: flex; gap: 10px; margin-bottom: 25px; }
+        .coupon-box input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; color: #fff; text-transform: uppercase; outline: none; }
+        .coupon-box input:focus { border-color: var(--accent-cyan); }
+        .coupon-box button { background: var(--accent-cyan); color: #000; border: none; padding: 0 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .coupon-box button:hover { background: #00c4cc; }
+
+        .qr-section { text-align: center; margin-bottom: 25px; background: #fff; padding: 15px; border-radius: 15px; }
+        .qr-section img { width: 200px; height: 200px; }
+        .qr-text { color: #000; font-weight: bold; margin-top: 10px; font-size: 0.9rem; }
+        .upi-id-show { color: #555; font-size: 0.8rem; margin-top: 5px; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 5px; }
+        .form-control { width: 100%; background: #141c2f; border: 1px solid #1e293b; color: #fff; padding: 12px 15px; border-radius: 8px; font-size: 1rem; outline: none; }
+        .form-control:focus { border-color: var(--accent-gold); }
+
+        .submit-btn { width: 100%; background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #000; padding: 15px; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,215,0,0.3); }
+
+        .back-nav { position: absolute; top: 15px; left: 15px; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 5px; font-size: 0.9rem; opacity: 0.7; }
+        .back-nav:hover { opacity: 1; color: var(--accent-gold); }
+
+        /* Toast CSS */
+        .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid var(--accent-gold); color: #fff; padding: 15px 20px; border-radius: 8px; z-index: 1000; transition: 0.4s; }
+        .toast-msg.show { right: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast-msg"><span id="toast-text"></span></div>
+
+    <div class="checkout-container">
+        <a href="dashboard.html" class="back-nav"><i class="ri-arrow-left-line"></i> वापस</a>
+        
+        <div class="header">
+            <h1><i class="ri-vip-crown-fill"></i> QMS PRO</h1>
+            <p>सारे फीचर्स, बैज और क्विज़ अनलॉक करें</p>
+        </div>
+
+        <div class="price-card">
+            <div class="price-row">
+                <span>QMS प्रो मेंबरशिप</span>
+                <span>₹50</span>
+            </div>
+            <div class="price-row" id="discount-row" style="display: none; color: #00ff88;">
+                <span>कूपन डिस्काउंट (<span id="applied-coupon-name"></span>)</span>
+                <span>- ₹<span id="discount-amount">0</span></span>
+            </div>
+            <div class="total-row">
+                <span>कुल भुगतान:</span>
+                <span>₹<span id="final-price">50</span></span>
+            </div>
+        </div>
+
+        <div class="coupon-box">
+            <input type="text" id="coupon-input" placeholder="कूपन कोड (Coupon Code)">
+            <button id="apply-coupon-btn">Apply</button>
+        </div>
+
+        <div class="qr-section">
+            <img id="dynamic-qr" src="" alt="UPI QR Code">
+            <div class="qr-text">अपने पेमेंट ऐप (PhonePe/GPay) से स्कैन करें</div>
+            <div class="upi-id-show">UPI ID: <span id="display-upi-id">तुम्हारी_UPI_ID</span></div>
+        </div>
+
+        <div class="form-group">
+            <label>पेमेंट करने के बाद 12-अंकों का UTR / Ref No. डालें</label>
+            <input type="number" id="utr-input" class="form-control" placeholder="उदा: 312456789012" maxlength="12">
+        </div>
+
+        <button class="submit-btn" id="submit-payment-btn">
+            <i class="ri-shield-check-fill"></i> पेमेंट वेरीफाई करें
+        </button>
+    </div>
+
+    <!-- MAIN JAVASCRIPT (ES MODULE) -->
+    <script type="module" src="premium.js"></script>
+</body>
+</html>
