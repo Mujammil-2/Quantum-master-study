@@ -23,8 +23,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// 🚨🚨🚨 अपना असली UPI ID यहाँ डालें 🚨🚨🚨
-const MY_UPI_ID = "यहाँ_अपनी_असली_UPI_ID_डालें"; // उदा: "9876543210@ybl" या "bittu@paytm"
+// 🚨🚨🚨 तुम्हारी असली और फाइनल UPI ID (Central Bank of India) 🚨🚨🚨
+const MY_UPI_ID = "mujammil.khan06618-2@okaxis"; 
 const PAYEE_NAME = "Quantum Master Study";
 
 // 🎁 कूपन कोड लिस्ट (तुम यहाँ और भी कूपन जोड़ सकते हो)
@@ -160,7 +160,7 @@ submitBtn.addEventListener('click', async () => {
             basePrice: basePrice,
             couponUsed: appliedCouponCode,
             utrNumber: utr,
-            status: "Pending", // तुम फायरबेस से इसे "Approved" करोगे
+            status: "Pending", 
             createdAt: serverTimestamp()
         });
 
