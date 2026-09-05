@@ -12,7 +12,7 @@
         :root { --bg-deep: #020612; --accent-cyan: #00f0ff; --accent-blue: #0055ff; }
         body { background-color: var(--bg-deep); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         
-        .profile-card { background: linear-gradient(180deg, #10182b 0%, #0b1120 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 35px 30px; width: 100%; max-width: 500px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
+        .profile-card { background: linear-gradient(180deg, #10182b 0%, #0b1120 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 35px 30px; width: 100%; max-width: 550px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
         .card-header { text-align: center; margin-bottom: 25px; }
         .card-header h2 { font-size: 1.8rem; font-weight: 700; color: #fff; }
         .card-header p { font-size: 0.9rem; color: #8b96a8; }
@@ -35,7 +35,7 @@
         .row-2 { display: flex; gap: 15px; }
         .row-2 .form-group { flex: 1; }
 
-        .save-btn { width: 100%; background: var(--accent-blue); color: #fff; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+        .save-btn { width: 100%; background: var(--accent-blue); color: #fff; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 15px; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .save-btn:hover { background: #0044cc; }
         .save-btn:disabled { background: #333; color: #888; cursor: not-allowed; }
         
@@ -66,43 +66,46 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="p-name" class="form-control" placeholder="Enter your full name">
-        </div>
-
-        <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="p-email" class="form-control" placeholder="Enter your email address">
+        <!-- FORM SECTION -->
+        <div class="row-2">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="p-name" class="form-control" placeholder="Enter full name">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="p-email" class="form-control" placeholder="Enter email">
+            </div>
         </div>
 
         <div class="row-2">
             <div class="form-group">
-                <label>Gender</label>
-                <select id="p-gender" class="form-control">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
+                <label>WhatsApp Number</label>
+                <input type="tel" id="p-phone" class="form-control" placeholder="+91 00000 00000">
             </div>
+            <div class="form-group">
+                <label>Class / Course</label>
+                <input type="text" id="p-class" class="form-control" placeholder="e.g. 12th Science / JEE">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Full Local Address</label>
+            <input type="text" id="p-address" class="form-control" placeholder="Street, Colony, Landmark">
+        </div>
+
+        <div class="row-2">
             <div class="form-group">
                 <label>City</label>
                 <input type="text" id="p-city" class="form-control" placeholder="e.g. Maihar">
             </div>
-        </div>
-
-        <div class="row-2">
             <div class="form-group">
                 <label>State</label>
                 <input type="text" id="p-state" class="form-control" placeholder="e.g. Madhya Pradesh">
             </div>
-            <div class="form-group">
-                <label>Country</label>
-                <input type="text" id="p-country" class="form-control" value="India">
-            </div>
         </div>
 
-        <button id="final-save-btn" class="save-btn" onclick="saveProfileData()">Save Profile & Go to Dashboard</button>
+        <button id="final-save-btn" class="save-btn" onclick="saveProfileData()">Save Profile & Continue <i class="ri-arrow-right-line"></i></button>
     </div>
 
     <!-- FIREBASE (FIRESTORE) + IMGBB API LOGIC -->
@@ -110,7 +113,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBCkxx9bVjvAYarA0WrHfW5k_gxwUPZaaw",
             authDomain: "quantum-master-study.firebaseapp.com",
@@ -121,11 +123,9 @@
             measurementId: "G-SH39JL930R"
         };
 
-        // Initialize Firebase Apps
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Toast Function
         window.showToast = (msg) => {
             const toast = document.getElementById('toast');
             document.getElementById('toast-text').innerText = msg;
@@ -135,14 +135,24 @@
 
         // Load existing data
         window.onload = () => {
+            // Name & Email
             document.getElementById('p-name').value = localStorage.getItem('qms_user_name') || '';
             const emailField = document.getElementById('p-email');
             emailField.value = localStorage.getItem('qms_user_email') || '';
             
-            if(localStorage.getItem('qms_auth_provider') === 'Google') {
+            // Phone (Auto-fill if logged in via Mobile OTP)
+            const phoneField = document.getElementById('p-phone');
+            phoneField.value = localStorage.getItem('qms_user_phone') || '';
+            
+            if(localStorage.getItem('qms_auth_provider') === 'Google' || localStorage.getItem('qms_user_email')) {
                 emailField.readOnly = true; 
                 emailField.style.opacity = '0.6';
             }
+            if(localStorage.getItem('qms_user_phone')) {
+                phoneField.readOnly = true; 
+                phoneField.style.opacity = '0.6';
+            }
+
             const savedPhoto = localStorage.getItem('qms_user_photo');
             if(savedPhoto) document.getElementById('avatar-preview').src = savedPhoto;
         };
@@ -192,32 +202,30 @@
             showToast("सेल्फी सफलतापूर्वक कैप्चर हो गई! 🤩");
         };
 
-        // 💾 ADVANCED SAVE: Upload Photo to ImgBB -> Get Clean URL -> Save to Firestore
+        // 💾 ADVANCED SAVE: Upload Photo to ImgBB -> Save to Firestore -> Redirect to Entry Pass
         window.saveProfileData = async () => {
             const name = document.getElementById('p-name').value.trim();
             const email = document.getElementById('p-email').value.trim();
-            const gender = document.getElementById('p-gender').value;
+            const phone = document.getElementById('p-phone').value.trim();
+            const course = document.getElementById('p-class').value.trim();
+            const address = document.getElementById('p-address').value.trim();
             const city = document.getElementById('p-city').value.trim();
             const state = document.getElementById('p-state').value.trim();
-            const country = document.getElementById('p-country').value.trim();
             const saveBtn = document.getElementById('final-save-btn');
 
-            if(!name || !email) { 
-                showToast("नाम और ईमेल भरना ज़रुरी है!"); 
+            if(!name || (!email && !phone)) { 
+                showToast("नाम और संपर्क जानकारी (Email/Phone) भरना ज़रुरी है!"); 
                 return; 
             }
 
-            saveBtn.innerText = "Saving Profile Data...";
+            saveBtn.innerHTML = '<div class="spinner" style="width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;"></div> Saving...';
             saveBtn.disabled = true;
 
             // Save locally
             localStorage.setItem('qms_user_name', name);
-            localStorage.setItem('qms_user_email', email);
-            localStorage.setItem('qms_user_gender', gender);
-            localStorage.setItem('qms_user_city', city);
-            localStorage.setItem('qms_user_state', state);
-            localStorage.setItem('qms_user_country', country);
-
+            if(email) localStorage.setItem('qms_user_email', email);
+            if(phone) localStorage.setItem('qms_user_phone', phone);
+            
             const uid = localStorage.getItem('qms_user_uid');
             const photoBase64 = localStorage.getItem('qms_user_photo') || "";
             let finalPhotoURL = "";
@@ -226,11 +234,9 @@
                 try {
                     // 🔥 IMGBB UPLOAD SYSTEM 🔥
                     if (photoBase64 && photoBase64.startsWith('data:image')) {
-                        saveBtn.innerText = "Uploading Photo securely...";
+                        saveBtn.innerText = "Uploading Photo...";
                         
-                        // तुम्हारी ImgBB API Key सेट कर दी गई है 👇
                         const IMGBB_API_KEY = "239ed7737d416ac877f93a09dc169afa"; 
-                        
                         const rawBase64 = photoBase64.split(',')[1];
                         const formData = new FormData();
                         formData.append("image", rawBase64);
@@ -242,34 +248,38 @@
                         
                         const imgbbData = await imgbbResponse.json();
                         if(imgbbData.success) {
-                            finalPhotoURL = imgbbData.data.url; // एकदम साफ और छोटा लिंक
+                            finalPhotoURL = imgbbData.data.url; 
                             localStorage.setItem('qms_user_photo_url', finalPhotoURL);
-                        } else {
-                            console.error("ImgBB Upload Failed:", imgbbData);
                         }
                     }
 
-                    saveBtn.innerText = "Saving to Cloud Database...";
+                    saveBtn.innerText = "Saving to Database...";
 
                     // 🔥 FIREBASE FIRESTORE SAVE 🔥
                     await setDoc(doc(db, "users", uid), {
                         name: name,
                         email: email,
-                        gender: gender,
+                        phone: phone,
+                        course: course,
+                        address: address,
                         city: city,
                         state: state,
-                        country: country,
-                        photoURL: finalPhotoURL, // ImgBB वाला साफ लिंक यहाँ जा रहा है
+                        country: "India",
+                        photoURL: finalPhotoURL,
                         profileCompleted: true,
+                        hasEntryPass: false,
+                        isPremium: false,
                         updatedAt: new Date().toISOString()
                     }, { merge: true });
 
-                    showToast("प्रोफाइल सफलतापूर्वक सेव हो गई!");
-                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+                    showToast("प्रोफाइल सेव हो गई! Entry Pass पेज पर जा रहे हैं...");
+                    
+                    // 🚀 Redirect to Entry Pass (The Fix!)
+                    setTimeout(() => { window.location.href = 'entry-pass.html'; }, 1500);
                 } catch (error) {
                     console.error("Database Error: ", error);
                     showToast("डेटा सेव करने में कुछ दिक्कत आई!");
-                    saveBtn.innerText = "Save Profile & Go to Dashboard";
+                    saveBtn.innerHTML = 'Save Profile & Continue <i class="ri-arrow-right-line"></i>';
                     saveBtn.disabled = false;
                 }
             } else {
