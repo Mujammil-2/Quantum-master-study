@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quantum Master Study | Login</title>
 
-    <!-- Google Search Console & SEO Tags (Added for Indexing) -->
+    <!-- Google Search Console & SEO Tags -->
     <meta name="google-site-verification" content="c2zHDjpHwQgjVuzd6EeghMA3H1WsfIOELTaZrX80-yY" />
     <meta name="description" content="Quantum Master Study - बेहतरीन ऑनलाइन एजुकेशन, मॉक टेस्ट और क्विज़ प्लेटफॉर्म। अपनी तैयारी पक्की करें।">
     <meta name="keywords" content="Quantum Master Study, QMS, Online Mock Test, Free Quiz, Education Platform, QMS Study">
     <meta name="author" content="Mujammil Khan">
+
+    <!-- Favicon (Google Search Logo) -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <!-- SEO & Strict Site Name Fix for Google -->
+    <meta property="og:site_name" content="Quantum Master Study">
+    <meta property="og:title" content="Quantum Master Study | Login">
+    <meta property="og:description" content="Quantum Master Study - बेहतरीन ऑनलाइन एजुकेशन, मॉक टेस्ट और क्विज़ प्लेटफॉर्म।">
+    <meta property="og:image" content="https://mujammil-2.github.io/Quantum-master-study/logo.png">
+    <meta property="og:url" content="https://mujammil-2.github.io/Quantum-master-study/">
+
+    <!-- JSON-LD Schema (Google को असली नाम बताने के लिए) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Quantum Master Study",
+      "alternateName": "QMS",
+      "url": "https://mujammil-2.github.io/Quantum-master-study/"
+    }
+    </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -33,10 +55,10 @@
         /* Header & Logo */
         .header { text-align: center; margin-bottom: 30px; }
         .logo-box { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .logo-box img { height: 50px; } /* You can replace this with your actual logo img tag if you have one */
+        .logo-box img { height: 65px; border-radius: 8px; } /* Updated for new PNG logo */
         .logo-text { text-align: left; line-height: 1.1; }
         .logo-text h1 { font-size: 1.5rem; font-weight: 700; color: #fff; }
-        .logo-text h1 span { color: #00a8ff; }
+        .logo-text h1 span { color: #d4af37; } /* Changed to Gold to match logo */
         .logo-text p { font-size: 0.65rem; color: #8b96a8; letter-spacing: 1px; }
         
         .welcome-text h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; }
@@ -130,12 +152,8 @@
         <!-- Header -->
         <div class="header">
             <div class="logo-box">
-                <!-- SVG Logo replicating the Q in image -->
-                <svg width="45" height="45" viewBox="0 0 100 100" fill="none">
-                    <path d="M50 85C30.67 85 15 69.33 15 50C15 30.67 30.67 15 50 15C69.33 15 85 30.67 85 50C85 62.1 78.8 72.8 69.4 79" stroke="#00a8ff" stroke-width="12" stroke-linecap="round"/>
-                    <path d="M62 65L88 91" stroke="#0055ff" stroke-width="14" stroke-linecap="round"/>
-                    <path d="M10 28L50 10L90 28L50 46Z" fill="#00a8ff"/>
-                </svg>
+                <!-- New QMS Logo Image -->
+                <img src="logo.png" alt="Quantum Master Study Logo">
                 <div class="logo-text">
                     <h1>Quantum <span>Master Study</span></h1>
                     <p>Learn • Practice • Master</p>
@@ -159,7 +177,7 @@
                 <span class="btn-text">Continue with Google</span>
             </button>
 
-            <!-- Phone (Styled like FB in image) -->
+            <!-- Phone -->
             <button class="auth-btn" onclick="openModal('phone-modal')">
                 <div class="icon-circle" style="background: #1877F2;">
                     <i class="ri-phone-fill" style="color:#fff;"></i>
@@ -169,13 +187,13 @@
 
             <div class="divider">OR</div>
 
-            <!-- Quantum Account (Guest replacement) -->
+            <!-- Quantum Account -->
             <button class="guest-btn" onclick="openModal('quantum-modal')">
                 <i class="ri-user-line" style="margin-right: 15px;"></i>
                 <span style="flex:1; text-align:left;">Create Quantum Account</span>
             </button>
 
-            <!-- Security Box matching image -->
+            <!-- Security Box -->
             <div class="security-box">
                 <i class="ri-shield-check-line"></i>
                 <div class="sec-text">
@@ -242,7 +260,7 @@
             } catch (error) { showToast("Login Failed!"); }
         };
 
-        // 2. Quantum Custom Account (Email/Pass Registration)
+        // 2. Quantum Custom Account
         window.createQuantumAccount = async () => {
             const name = document.getElementById('q-name').value.trim();
             const email = document.getElementById('q-email').value.trim();
@@ -254,7 +272,7 @@
 
             try {
                 const result = await createUserWithEmailAndPassword(auth, email, pass);
-                localStorage.setItem('qms_user_name', name); // Save name temporarily
+                localStorage.setItem('qms_user_name', name);
                 localStorage.setItem('qms_user_email', email);
                 localStorage.setItem('qms_user_uid', result.user.uid);
                 showToast("Quantum ID Created! Complete your profile...");
@@ -282,7 +300,7 @@
                     document.getElementById('phone-title').innerText = "Enter OTP";
                     document.getElementById('phone-desc').innerText = `Sent to ${val}`;
                     input.value = ""; input.placeholder = "Enter 6 digits";
-                    input.setAttribute('maxlength', '6'); // STRICT 6 DIGIT
+                    input.setAttribute('maxlength', '6');
                     btn.innerText = "Verify OTP"; btn.disabled = false;
                     showToast("SMS Sent!");
                 } catch (error) { showToast("SMS Error: " + error.message); btn.innerText = "Send Real OTP"; btn.disabled = false; }
