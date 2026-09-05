@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entry Pass | Quantum Master Study</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #050b14; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; position: relative; }
+        
+        /* Premium Background Matching Index */
+        .bg-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80vw; height: 80vh; background: radial-gradient(circle, rgba(0, 85, 255, 0.1) 0%, transparent 70%); filter: blur(80px); z-index: -3; }
+        .bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; opacity: 0.15; background-image: radial-gradient(#d4af37 1px, transparent 1px); background-size: 50px 50px; }
+        
+        .main-container { width: 100%; max-width: 450px; padding: 20px; z-index: 10; }
+        
+        /* Header */
+        .header { text-align: center; margin-bottom: 30px; }
+        .header img { height: 60px; border-radius: 8px; margin-bottom: 15px; }
+        .header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.2; }
+        .header h1 span { color: #d4af37; } /* Gold */
+        .header p { font-size: 0.9rem; color: #8b96a8; margin-top: 8px; }
+
+        /* Glassmorphism Card */
+        .glass-card { background: rgba(12, 19, 34, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px 25px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); text-align: center; }
+        
+        /* Custom Tabs */
+        .tabs { display: flex; background: rgba(0,0,0,0.4); border-radius: 12px; padding: 5px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
+        .tab { flex: 1; padding: 10px; text-align: center; font-size: 0.9rem; font-weight: 600; color: #8b96a8; cursor: pointer; border-radius: 8px; transition: 0.3s; }
+        .tab.active { background: #0055ff; color: #fff; box-shadow: 0 4px 15px rgba(0, 85, 255, 0.4); }
+
+        /* Sections */
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Pay UI */
+        .price-tag { font-size: 2.5rem; font-weight: 700; color: #d4af37; margin-bottom: 15px; }
+        .price-tag span { font-size: 1rem; color: #8b96a8; font-weight: 500; }
+        .qr-box { background: #fff; padding: 10px; border-radius: 12px; display: inline-block; margin-bottom: 15px; }
+        .qr-box img { width: 180px; height: 180px; border-radius: 8px; }
+        .upi-id { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; display: inline-block; border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Inputs & Buttons */
+        .input-group { position: relative; margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; font-size: 0.8rem; color: #8b96a8; margin-bottom: 5px; margin-left: 5px; }
+        .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px 15px; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; }
+        .custom-input:focus { border-color: #0055ff; box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.2); }
+        .custom-input::placeholder { color: #475569; letter-spacing: 1px; }
+
+        .btn-primary { width: 100%; background: linear-gradient(135deg, #0055ff, #003ebd); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0, 85, 255, 0.3); display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(0, 85, 255, 0.4); }
+        .btn-primary:disabled { background: #1e293b; color: #64748b; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        /* Pending State UI */
+        #pending-state { display: none; text-align: center; padding: 20px 0; }
+        .pending-icon { font-size: 4rem; color: #f59e0b; animation: pulse 2s infinite; margin-bottom: 15px; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* Toast */
+        .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid #0055ff; color: #fff; padding: 15px 20px; border-radius: 8px; z-index: 3000; transition: 0.4s; display: flex; align-items: center; gap:10px; font-size: 0.9rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .toast-msg.show { right: 20px; }
+        .toast-msg.error { border-left-color: #ea4335; }
+        .toast-msg.success { border-left-color: #10b981; }
+
+        /* Full Screen Loader */
+        #page-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050b14; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #d4af37; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="page-loader">
+        <div class="spinner"></div>
+        <p style="color: #8b96a8; font-size: 0.9rem;">Checking Access...</p>
+    </div>
+
+    <div id="toast" class="toast-msg"><i class="ri-information-line" id="toast-icon"></i><span id="toast-text"></span></div>
+
+    <div class="bg-glow"></div>
+    <div class="bg-pattern"></div>
+
+    <div class="main-container">
+        <div class="header">
+            <img src="logo.png" alt="QMS Logo">
+            <h1>Unlock Your <br><span>Learning Journey</span></h1>
+            <p>Get your Entry Pass to access the Dashboard</p>
+        </div>
+
+        <div class="glass-card" id="main-card">
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('pay')"><i class="ri-secure-payment-line"></i> Pay ₹5</div>
+                <div class="tab" onclick="switchTab('coupon')"><i class="ri-coupon-3-line"></i> Have a Coupon?</div>
+            </div>
+
+            <!-- SECTION: PAY VIA UPI -->
+            <div id="pay-section" class="section active">
+                <div class="price-tag">₹5 <span>/ one-time</span></div>
+                
+                <div class="qr-box">
+                    <!-- Dynamic QR Code for ₹5 via UPI -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=mujammil.khan06618-2@okaxis&pn=Quantum%20Master%20Study&am=5.00&cu=INR" alt="Pay QR">
+                </div>
+                
+                <div class="upi-id"><i class="ri-file-copy-line" style="cursor:pointer;" onclick="copyUPI()"></i> mujammil.khan06618-2@okaxis</div>
+
+                <div class="input-group">
+                    <label>Enter 12-Digit UTR / Ref Number</label>
+                    <input type="number" id="utr-input" class="custom-input" placeholder="e.g. 312456789012">
+                </div>
+                <button class="btn-primary" id="submit-utr-btn" onclick="submitUTR()">
+                    Verify Payment <i class="ri-arrow-right-line"></i>
+                </button>
+            </div>
+
+            <!-- SECTION: COUPON CODE -->
+            <div id="coupon-section" class="section">
+                <i class="ri-vip-crown-2-line" style="font-size: 3rem; color: #d4af37; margin-bottom: 15px; display: block;"></i>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 20px;">Got a special entry pass from the Admin? Redeem it here.</p>
+                
+                <div class="input-group">
+                    <label>Enter Coupon Code</label>
+                    <input type="text" id="coupon-input" class="custom-input" placeholder="e.g. WELCOME100" style="text-transform: uppercase;">
+                </div>
+                <button class="btn-primary" id="apply-coupon-btn" onclick="applyCoupon()" style="background: linear-gradient(135deg, #d4af37, #b5952f); color: #000;">
+                    Apply Coupon <i class="ri-check-line"></i>
+                </button>
+            </div>
+
+        </div> <!-- End Glass Card -->
+
+        <!-- SECTION: PENDING STATE (Visible only if payment is pending) -->
+        <div class="glass-card" id="pending-state">
+            <i class="ri-time-line pending-icon"></i>
+            <h2 style="font-size: 1.5rem; margin-bottom: 10px;">Verification Pending</h2>
+            <p style="color: #8b96a8; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5;">Your ₹5 payment request has been sent to the Admin. Please wait while we verify your UTR number.</p>
+            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+                <p style="color: #f59e0b; font-size: 0.85rem; font-weight: 600; margin: 0;">UTR: <span id="display-utr">...</span></p>
+            </div>
+            <button class="btn-primary" onclick="checkAccessStatus()" style="background: rgba(255,255,255,0.1); color:#fff;">
+                <i class="ri-refresh-line"></i> Check Status
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCkxx9bVjvAYarA0WrHfW5k_gxwUPZaaw",
+            authDomain: "quantum-master-study.firebaseapp.com",
+            projectId: "quantum-master-study",
+            storageBucket: "quantum-master-study.firebasestorage.app",
+            messagingSenderId: "193145760847",
+            appId: "1:193145760847:web:7d1f77be123c3edb104e3a",
+            measurementId: "G-SH39JL930R"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // UI Helpers
+        window.showToast = (msg, type = "info") => {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerText = msg;
+            toast.className = `toast-msg show ${type}`;
+            document.getElementById('toast-icon').className = type === 'error' ? 'ri-error-warning-line' : (type === 'success' ? 'ri-checkbox-circle-line' : 'ri-information-line');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        };
+
+        window.switchTab = (tabName) => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            if(tabName === 'pay') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('pay-section').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('coupon-section').classList.add('active');
+            }
+        };
+
+        window.copyUPI = () => {
+            navigator.clipboard.writeText("mujammil.khan06618-2@okaxis");
+            showToast("UPI ID Copied!", "success");
+        };
+
+        // Authentication & Status Check
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await checkAccessStatus(); // Check DB
+            } else {
+                // Not logged in -> kick to index
+                window.location.href = "index.html";
+            }
+        });
+
+        window.checkAccessStatus = async () => {
+            if(!currentUser) return;
+            try {
+                const docRef = doc(db, "users", currentUser.uid);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    // 1. If Entry Pass is already Active
+                    if (data.hasEntryPass === true) {
+                        showToast("Entry Pass Verified! Welcome.", "success");
+                        setTimeout(() => window.location.href = "dashboard.html", 1000);
+                        return;
+                    }
+
+                    // 2. If Payment is Pending
+                    if (data.entryPaymentStatus === "pending") {
+                        document.getElementById("main-card").style.display = "none";
+                        document.getElementById("pending-state").style.display = "block";
+                        document.getElementById("display-utr").innerText = data.entryUtrNumber || "N/A";
+                    }
+                    
+                    // 3. If Rejected
+                    if (data.entryPaymentStatus === "rejected") {
+                        showToast("Previous payment was rejected. Try again.", "error");
+                        await updateDoc(docRef, { entryPaymentStatus: null }); // Reset so they can try again
+                    }
+                }
+                
+                // Hide loader, show UI
+                document.getElementById('page-loader').style.display = "none";
+            } catch (error) {
+                console.error(error);
+                showToast("Error connecting to server.", "error");
+            }
+        };
+
+        // Submit UTR
+        window.submitUTR = async () => {
+            const utr = document.getElementById('utr-input').value.trim();
+            if (utr.length < 12) {
+                showToast("Please enter a valid 12-digit UTR number.", "error");
+                return;
+            }
+
+            const btn = document.getElementById('submit-utr-btn');
+            btn.innerHTML = `<div class="spinner" style="width:20px;height:20px;border-width:3px;margin:0;"></div> Submitting...`;
+            btn.disabled = true;
+
+            try {
+                const userRef = doc(db, "users", currentUser.uid);
+                await setDoc(userRef, {
+                    name: localStorage.getItem('qms_user_name') || currentUser.displayName || "Student",
+                    email: localStorage.getItem('qms_user_email') || currentUser.email || "",
+                    phone: localStorage.getItem('qms_user_phone') || "",
+                    hasEntryPass: false,
+                    isPremium: false,
+                    entryPaymentStatus: "pending",
+                    entryUtrNumber: utr,
+                    timestamp: new Date().toISOString()
+                }, { merge: true });
+
+                showToast("Request Submitted Successfully!", "success");
+                setTimeout(() => window.location.reload(), 1500); // Reload to show pending screen
+            } catch (error) {
+                showToast("Error: " + error.message, "error");
+                btn.innerHTML = `Verify Payment <i class="ri-arrow-right-line"></i>`;
+                btn.disabled = false;
+            }
+        };
+
+        // Apply Coupon (Demo Logic - Later connected to Admin)
+        window.applyCoupon = async () => {
+            const code = document.getElementById('coupon-input').value.trim().toUpperCase();
+            if (!code) return showToast("Enter a coupon code!", "error");
+
+            const btn = document.getElementById('apply-coupon-btn');
+            btn.innerHTML = `<div class="spinner" style="width:20px;height:20px;border-width:3px;border-top-color:#000;margin:0;"></div> Verifying...`;
+            btn.disabled = true;
+
+            // Simple demo validation (Hardcoded for now, dynamic later)
+            if (code === "WELCOME100" || code === "FREEENTRY") {
+                try {
+                    const userRef = doc(db, "users", currentUser.uid);
+                    await setDoc(userRef, {
+                        name: localStorage.getItem('qms_user_name') || currentUser.displayName || "Student",
+                        email: localStorage.getItem('qms_user_email') || currentUser.email || "",
+                        hasEntryPass: true,
+                        entryMethod: "coupon",
+                        usedCoupon: code,
+                        timestamp: new Date().toISOString()
+                    }, { merge: true });
+
+                    showToast("Coupon Applied! Unlocking Gate...", "success");
+                    setTimeout(() => window.location.href = "dashboard.html", 1500);
+                } catch (error) {
+                    showToast("Server error.", "error");
+                    btn.innerHTML = `Apply Coupon <i class="ri-check-line"></i>`;
+                    btn.disabled = false;
+                }
+            } else {
+                setTimeout(() => {
+                    showToast("Invalid or Expired Coupon Code.", "error");
+                    btn.innerHTML = `Apply Coupon <i class="ri-check-line"></i>`;
+                    btn.disabled = false;
+                }, 1000); // Fake delay for realism
+            }
+        };
+    </script>
+</body>
+</html>
