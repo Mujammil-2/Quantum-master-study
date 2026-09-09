@@ -1,104 +1,391 @@
 <!DOCTYPE html>
-<html lang="hi" data-theme="default">
+<html lang="hi" data-theme="gold">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QMS PRO अपग्रेड | क्वांटम मास्टर स्टडी</title>
+    <title>QMS PRO Upgrade | Quantum Master Study</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        :root { --bg-deep: #020612; --accent-gold: #ffd700; --accent-cyan: #00f0ff; }
-        body { background-color: var(--bg-deep); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        /* Premium Page Specific CSS */
+        body { background-color: #050b14; color: #fff; min-height: 100vh; overflow-x: hidden; position: relative; }
         
-        .checkout-container { background: linear-gradient(180deg, #10182b 0%, #0b1120 100%); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 30px; width: 100%; max-width: 450px; box-shadow: 0 20px 50px rgba(255,215,0,0.1); position: relative; overflow: hidden; }
+        .premium-bg-glow { position: absolute; top: -10%; left: 50%; transform: translateX(-50%); width: 100vw; height: 60vh; background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -2; }
+        .bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; opacity: 0.1; background-image: radial-gradient(#d4af37 1px, transparent 1px); background-size: 40px 40px; }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; position: relative; z-index: 10; }
+        .back-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: #fff; cursor: pointer; transition: 0.3s; }
+        .back-btn:hover { background: rgba(212, 175, 55, 0.2); border-color: #d4af37; color: #d4af37; }
+
+        .main-container { max-width: 1000px; margin: 0 auto; padding: 20px 5% 80px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
         
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-family: 'Space Grotesk', sans-serif; color: var(--accent-gold); font-size: 1.8rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .header p { color: #8b96a8; font-size: 0.9rem; margin-top: 5px; }
+        @media (max-width: 768px) {
+            .main-container { grid-template-columns: 1fr; gap: 30px; }
+        }
 
-        .price-card { background: rgba(255,215,0,0.05); border: 1px dashed var(--accent-gold); padding: 15px; border-radius: 12px; margin-bottom: 20px; }
-        .price-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: #cbd5e1; font-size: 0.95rem; }
-        .total-row { display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 1.3rem; font-weight: bold; color: var(--accent-gold); }
+        /* Left Side: Features & Pitch */
+        .pitch-section h1 { font-size: 2.8rem; font-family: var(--font-heading); line-height: 1.2; margin-bottom: 15px; }
+        .pitch-section h1 span { color: #d4af37; text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+        .pitch-section p { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 30px; line-height: 1.6; }
 
-        .coupon-box { display: flex; gap: 10px; margin-bottom: 25px; }
-        .coupon-box input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; color: #fff; text-transform: uppercase; outline: none; }
-        .coupon-box input:focus { border-color: var(--accent-cyan); }
-        .coupon-box button { background: var(--accent-cyan); color: #000; border: none; padding: 0 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .coupon-box button:hover { background: #00c4cc; }
+        .features-list { display: flex; flex-direction: column; gap: 15px; }
+        .feature-item { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .feature-item i { font-size: 1.5rem; color: #d4af37; width: 40px; height: 40px; background: rgba(212, 175, 55, 0.1); border-radius: 10px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+        .feature-item div h4 { font-size: 1rem; color: #fff; margin-bottom: 3px; }
+        .feature-item div p { font-size: 0.8rem; color: var(--text-secondary); }
 
-        .qr-section { text-align: center; margin-bottom: 25px; background: #fff; padding: 15px; border-radius: 15px; }
-        .qr-section img { width: 200px; height: 200px; }
-        .qr-text { color: #000; font-weight: bold; margin-top: 10px; font-size: 0.9rem; }
-        .upi-id-show { color: #555; font-size: 0.8rem; margin-top: 5px; }
+        /* Right Side: Payment Card */
+        .payment-card { background: rgba(12, 19, 34, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid #d4af37; border-radius: 24px; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 40px rgba(212, 175, 55, 0.15); position: relative; overflow: hidden; }
+        .popular-badge { position: absolute; top: 15px; right: -30px; background: #d4af37; color: #000; font-size: 0.75rem; font-weight: 700; padding: 5px 30px; transform: rotate(45deg); text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
 
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 5px; }
-        .form-control { width: 100%; background: #141c2f; border: 1px solid #1e293b; color: #fff; padding: 12px 15px; border-radius: 8px; font-size: 1rem; outline: none; }
-        .form-control:focus { border-color: var(--accent-gold); }
+        .price-display { text-align: center; margin-bottom: 25px; }
+        .price-display h2 { font-size: 3.5rem; font-family: var(--font-heading); color: #fff; line-height: 1; }
+        .price-display h2 span { font-size: 1.2rem; color: var(--text-secondary); font-weight: 500; font-family: var(--font-main); }
+        .price-display p { font-size: 0.9rem; color: #00ff88; font-weight: 600; margin-top: 8px; }
 
-        .submit-btn { width: 100%; background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #000; padding: 15px; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,215,0,0.3); }
+        .tabs { display: flex; background: rgba(0,0,0,0.4); border-radius: 12px; padding: 5px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
+        .tab { flex: 1; padding: 12px; text-align: center; font-size: 0.9rem; font-weight: 600; color: #8b96a8; cursor: pointer; border-radius: 8px; transition: 0.3s; }
+        .tab.active { background: #d4af37; color: #000; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
 
-        .back-nav { position: absolute; top: 15px; left: 15px; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 5px; font-size: 0.9rem; opacity: 0.7; }
-        .back-nav:hover { opacity: 1; color: var(--accent-gold); }
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Toast CSS */
-        .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid var(--accent-gold); color: #fff; padding: 15px 20px; border-radius: 8px; z-index: 1000; transition: 0.4s; }
+        /* UPI Buttons */
+        .pay-btn-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .pay-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 15px; border-radius: 12px; font-weight: 600; text-decoration: none; font-size: 1rem; transition: 0.3s; cursor: pointer; border: none; }
+        .pay-btn i { font-size: 1.5rem; }
+        .btn-phonepe { background: #5f259f; color: #fff; }
+        .btn-phonepe:hover { background: #4a1d7c; box-shadow: 0 8px 15px rgba(95, 37, 159, 0.4); }
+        .btn-gpay { background: #fff; color: #3c4043; border: 1px solid #dadce0; }
+        .btn-gpay:hover { background: #f8f9fa; box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        .btn-paytm { background: #002970; color: #fff; }
+        .btn-paytm:hover { background: #001b4d; box-shadow: 0 8px 15px rgba(0, 41, 112, 0.4); }
+
+        .input-group { position: relative; margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; font-size: 0.85rem; color: #8b96a8; margin-bottom: 8px; margin-left: 5px; font-weight: 500; }
+        .custom-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 15px; border-radius: 12px; font-size: 1rem; outline: none; transition: 0.3s; }
+        .custom-input:focus { border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2); }
+
+        .btn-primary { width: 100%; background: linear-gradient(135deg, #d4af37, #b5952f); color: #000; border: none; padding: 15px; border-radius: 12px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); display: flex; justify-content: center; align-items: center; gap: 8px; text-transform: uppercase; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.5); }
+        .btn-primary:disabled { background: #333; color: #888; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        /* Status Panels */
+        #pending-state, #success-state { display: none; text-align: center; padding: 20px 0; }
+        .status-icon { font-size: 5rem; margin-bottom: 15px; }
+        .icon-pending { color: #f59e0b; animation: pulse 2s infinite; }
+        .icon-success { color: #00ff88; }
+
+        .toast-msg { position: fixed; top: 20px; right: -350px; background: #111827; border-left: 4px solid #d4af37; color: #fff; padding: 15px 20px; border-radius: 8px; z-index: 3000; transition: 0.4s; display: flex; align-items: center; gap:10px; font-size: 0.95rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-weight: 500; }
         .toast-msg.show { right: 20px; }
+        
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #d4af37; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div id="toast" class="toast-msg"><span id="toast-text"></span></div>
+    <div id="toast" class="toast-msg"><i class="ri-information-fill" id="toast-icon"></i><span id="toast-text"></span></div>
 
-    <div class="checkout-container">
-        <a href="dashboard.html" class="back-nav"><i class="ri-arrow-left-line"></i> वापस</a>
-        
-        <div class="header">
-            <h1><i class="ri-vip-crown-fill"></i> QMS PRO</h1>
-            <p>सारे फीचर्स, बैज और क्विज़ अनलॉक करें</p>
+    <div class="premium-bg-glow"></div>
+    <div class="bg-pattern"></div>
+    <canvas id="bg-canvas" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:-1; opacity: 0.4; pointer-events: none;"></canvas>
+
+    <div class="header-top">
+        <div class="back-btn" onclick="window.location.href='dashboard.html'" title="डैशबोर्ड पर लौटें">
+            <i class="ri-arrow-left-line"></i>
         </div>
-
-        <div class="price-card">
-            <div class="price-row">
-                <span>QMS प्रो मेंबरशिप</span>
-                <span>₹50</span>
-            </div>
-            <div class="price-row" id="discount-row" style="display: none; color: #00ff88;">
-                <span>कूपन डिस्काउंट (<span id="applied-coupon-name"></span>)</span>
-                <span>- ₹<span id="discount-amount">0</span></span>
-            </div>
-            <div class="total-row">
-                <span>कुल भुगतान:</span>
-                <span>₹<span id="final-price">50</span></span>
-            </div>
-        </div>
-
-        <div class="coupon-box">
-            <input type="text" id="coupon-input" placeholder="कूपन कोड (Coupon Code)">
-            <button id="apply-coupon-btn">Apply</button>
-        </div>
-
-        <div class="qr-section">
-            <img id="dynamic-qr" src="" alt="UPI QR Code">
-            <div class="qr-text">अपने पेमेंट ऐप (PhonePe/GPay) से स्कैन करें</div>
-            <div class="upi-id-show">UPI ID: <span id="display-upi-id">तुम्हारी_UPI_ID</span></div>
-        </div>
-
-        <div class="form-group">
-            <label>पेमेंट करने के बाद 12-अंकों का UTR / Ref No. डालें</label>
-            <input type="number" id="utr-input" class="form-control" placeholder="उदा: 312456789012" maxlength="12">
-        </div>
-
-        <button class="submit-btn" id="submit-payment-btn">
-            <i class="ri-shield-check-fill"></i> पेमेंट वेरीफाई करें
-        </button>
+        <img src="logo.png" alt="QMS Logo" style="height: 45px; border-radius: 8px;">
+        <div style="width: 45px;"></div>
     </div>
 
-    <!-- MAIN JAVASCRIPT (ES MODULE) -->
-    <script type="module" src="premium.js"></script>
+    <div class="main-container">
+        
+        <!-- Left Side: Pitch & Features -->
+        <div class="pitch-section">
+            <h1>अनलॉक करें <br><span>क्वांटम PRO की ताक़त</span></h1>
+            <p>सिर्फ ₹30 के वन-टाइम पेमेंट (One-Time) के साथ क्वांटम मास्टर स्टडी के सभी प्रीमियम फीचर्स, लाइव क्लासेज और VIP सपोर्ट का एक्सेस पाएं।</p>
+            
+            <div class="features-list">
+                <div class="feature-item">
+                    <i class="ri-forbid-2-line" style="color: #ea4335; background: rgba(234, 67, 53, 0.1);"></i>
+                    <div><h4>100% Ad-Free डैशबोर्ड</h4><p>बिना किसी रुकावट या स्पॉन्सरशिप बैनर के पढ़ाई करें।</p></div>
+                </div>
+                <div class="feature-item">
+                    <i class="ri-lock-unlock-fill"></i>
+                    <div><h4>PRO ज़ोन अनलॉक (Live Classes)</h4><p>सभी लाइव लेक्चर और प्रीमियम वीडियो का पूरा एक्सेस।</p></div>
+                </div>
+                <div class="feature-item">
+                    <i class="ri-file-pdf-2-fill"></i>
+                    <div><h4>प्रीमियम PDF नोट्स</h4><p>टॉपर्स के हैंड-रिटन नोट्स और एक्सक्लूसिव स्टडी मटेरियल।</p></div>
+                </div>
+                <div class="feature-item">
+                    <i class="ri-vip-crown-fill"></i>
+                    <div><h4>VIP बैज और डायरेक्ट सपोर्ट</h4><p>गोल्डन UI, प्रोफाइल बैज और सीधा एडमिन सपोर्ट।</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Payment Logic -->
+        <div class="payment-card" id="main-payment-card">
+            <div class="popular-badge">Best Value</div>
+            
+            <div class="price-display">
+                <h2>₹30 <span>/ One-time</span></h2>
+                <p><i class="ri-checkbox-circle-fill"></i> लाइफटाइम PRO वैलिडिटी</p>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('pay')">Pay UPI</div>
+                <div class="tab" onclick="switchTab('coupon')">PRO Coupon</div>
+            </div>
+
+            <!-- SECTION 1: PAY UPI -->
+            <div id="pay-section" class="section active">
+                <p style="color: #cbd5e1; font-size: 0.85rem; margin-bottom: 15px; text-align: center;">अपने पसंदीदा UPI ऐप से सुरक्षित पेमेंट करें</p>
+                
+                <div class="pay-btn-group">
+                    <a href="upi://pay?pa=mujammil.khan06618-2@okaxis&pn=Quantum%20Master%20Study&am=30.00&cu=INR" class="pay-btn btn-phonepe">
+                        <i class="ri-smartphone-line"></i> Pay ₹30 via PhonePe
+                    </a>
+                    <a href="upi://pay?pa=mujammil.khan06618-2@okaxis&pn=Quantum%20Master%20Study&am=30.00&cu=INR" class="pay-btn btn-gpay">
+                        <i class="ri-google-fill" style="color:#EA4335;"></i> Pay ₹30 via GPay
+                    </a>
+                    <a href="upi://pay?pa=mujammil.khan06618-2@okaxis&pn=Quantum%20Master%20Study&am=30.00&cu=INR" class="pay-btn btn-paytm">
+                        <i class="ri-wallet-3-line"></i> Pay ₹30 via Paytm
+                    </a>
+                </div>
+                
+                <p style="color: #8b96a8; font-size: 0.75rem; margin-bottom: 20px; text-align: center;">
+                    Or copy UPI ID: <span onclick="copyUPI()" style="color:#d4af37; cursor:pointer; font-weight:bold;">mujammil.khan06618-2@okaxis <i class="ri-file-copy-line"></i></span>
+                </p>
+
+                <hr style="border: 0; border-bottom: 1px dashed rgba(255,255,255,0.1); margin: 20px 0;">
+
+                <div class="input-group">
+                    <label>पेमेंट के बाद 12-अंकों का UTR / Ref Number डालें</label>
+                    <input type="number" id="utr-input" class="custom-input" placeholder="e.g. 312456789012" style="text-transform: none;">
+                </div>
+                <button class="btn-primary" id="submit-utr-btn" onclick="submitPROUtr()">
+                    वेरिफाई करें <i class="ri-arrow-right-line"></i>
+                </button>
+            </div>
+
+            <!-- SECTION 2: PRO COUPON -->
+            <div id="coupon-section" class="section">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <i class="ri-coupon-3-fill" style="font-size: 3.5rem; color: #d4af37;"></i>
+                    <p style="color: #cbd5e1; font-size: 0.9rem; margin-top: 10px;">एडमिन द्वारा दिया गया PRO कूपन कोड यहाँ डालें।</p>
+                </div>
+                
+                <div class="input-group">
+                    <label>PRO कूपन कोड (Coupon Code)</label>
+                    <input type="text" id="coupon-input" class="custom-input" placeholder="e.g. QMSPRO100" style="text-transform: uppercase;">
+                </div>
+                <button class="btn-primary" id="apply-coupon-btn" onclick="applyProCoupon()">
+                    कूपन अप्लाई करें <i class="ri-check-line"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- PENDING STATE UI -->
+        <div class="payment-card" id="pending-state">
+            <i class="ri-time-fill status-icon icon-pending"></i>
+            <h2 style="font-size: 1.8rem; font-family: var(--font-heading); margin-bottom: 10px;">पेमेंट वेरिफिकेशन पेंडिंग</h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">आपकी ₹30 की पेमेंट रिक्वेस्ट एडमिन को भेज दी गई है। कृपया UTR वेरिफिकेशन का इंतज़ार करें।</p>
+            
+            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 15px; border-radius: 12px; margin-bottom: 25px;">
+                <p style="color: #f59e0b; font-size: 0.9rem; font-weight: 600; margin: 0;">आपका UTR: <span id="display-utr">...</span></p>
+            </div>
+            
+            <button class="btn-primary" onclick="window.location.href='dashboard.html'" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); box-shadow: none;">
+                डैशबोर्ड पर लौटें
+            </button>
+        </div>
+
+    </div>
+
+    <!-- FIREBASE & LOGIC SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCkxx9bVjvAYarA0WrHfW5k_gxwUPZaaw",
+            authDomain: "quantum-master-study.firebaseapp.com",
+            projectId: "quantum-master-study",
+            storageBucket: "quantum-master-study.firebasestorage.app",
+            messagingSenderId: "193145760847",
+            appId: "1:193145760847:web:7d1f77be123c3edb104e3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // UI Helpers
+        window.showToast = (msg, type = "success") => {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerText = msg;
+            toast.style.borderLeftColor = type === 'error' ? '#ea4335' : '#d4af37';
+            document.getElementById('toast-icon').className = type === 'error' ? 'ri-error-warning-fill' : 'ri-checkbox-circle-fill';
+            document.getElementById('toast-icon').style.color = type === 'error' ? '#ea4335' : '#d4af37';
+            toast.className = `toast-msg show`;
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        };
+
+        window.switchTab = (tabName) => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            if(tabName === 'pay') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('pay-section').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('coupon-section').classList.add('active');
+            }
+        };
+
+        window.copyUPI = () => {
+            navigator.clipboard.writeText("mujammil.khan06618-2@okaxis");
+            showToast("UPI ID Copied!", "success");
+        };
+
+        // Firebase Auth & Status Check
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                try {
+                    const docRef = doc(db, "users", currentUser.uid);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        
+                        // If already PRO, send back to dashboard
+                        if (data.isPremium === true) {
+                            showToast("आप पहले से ही PRO मेंबर हैं!", "success");
+                            setTimeout(() => window.location.href = "dashboard.html", 2000);
+                            return;
+                        }
+
+                        // Check if Upgrade Payment is Pending
+                        if (data.upgradePaymentStatus === "pending") {
+                            document.getElementById("main-payment-card").style.display = "none";
+                            document.getElementById("pending-state").style.display = "block";
+                            document.getElementById("display-utr").innerText = data.upgradeUtrNumber || "N/A";
+                        }
+                    }
+                } catch (error) { console.error(error); }
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        // 📝 Submit PRO UTR Logic
+        window.submitPROUtr = async () => {
+            const utr = document.getElementById('utr-input').value.trim();
+            if (utr.length < 12) {
+                return showToast("कृपया सही 12-अंकों का UTR नंबर डालें।", "error");
+            }
+
+            const btn = document.getElementById('submit-utr-btn');
+            btn.innerHTML = `<div class="spinner"></div> वेरिफाई हो रहा है...`;
+            btn.disabled = true;
+
+            try {
+                const userRef = doc(db, "users", currentUser.uid);
+                await updateDoc(userRef, {
+                    upgradePaymentStatus: "pending",
+                    upgradeUtrNumber: utr,
+                    upgradeTimestamp: new Date().toISOString()
+                });
+
+                showToast("रिक्वेस्ट एडमिन को भेज दी गई है!", "success");
+                setTimeout(() => window.location.reload(), 1500); 
+            } catch (error) {
+                showToast("एरर: " + error.message, "error");
+                btn.innerHTML = `वेरिफाई करें <i class="ri-arrow-right-line"></i>`;
+                btn.disabled = false;
+            }
+        };
+
+        // 🎟️ PRO Coupon Logic
+        window.applyProCoupon = async () => {
+            const code = document.getElementById('coupon-input').value.trim().toUpperCase();
+            if (!code) return showToast("कृपया कूपन कोड दर्ज करें!", "error");
+
+            const btn = document.getElementById('apply-coupon-btn');
+            btn.innerHTML = `<div class="spinner" style="border-top-color:#000;"></div> वेरिफाई हो रहा है...`;
+            btn.disabled = true;
+
+            try {
+                const couponRef = doc(db, "coupons", code);
+                const couponSnap = await getDoc(couponRef);
+
+                if (couponSnap.exists()) {
+                    const couponData = couponSnap.data();
+
+                    if (couponData.active !== false && couponData.type === "pro") {
+                        const userRef = doc(db, "users", currentUser.uid);
+                        
+                        await updateDoc(userRef, {
+                            isPremium: true,
+                            upgradePaymentStatus: "approved",
+                            upgradeMethod: "coupon",
+                            usedProCoupon: code,
+                            upgradeTimestamp: new Date().toISOString()
+                        });
+
+                        showToast("🎉 बधाई हो! आपका PRO पास एक्टिवेट हो गया है!", "success");
+                        setTimeout(() => window.location.href = "dashboard.html", 2000);
+                    } else {
+                        showToast("यह कूपन अमान्य (Invalid) है या PRO के लिए नहीं है।", "error");
+                        btn.innerHTML = `कूपन अप्लाई करें <i class="ri-check-line"></i>`;
+                        btn.disabled = false;
+                    }
+                } else {
+                    showToast("इनवैलिड या एक्सपायर्ड कूपन कोड।", "error");
+                    btn.innerHTML = `कूपन अप्लाई करें <i class="ri-check-line"></i>`;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error(error);
+                showToast("सर्वर एरर, कृपया फिर से प्रयास करें।", "error");
+                btn.innerHTML = `कूपन अप्लाई करें <i class="ri-check-line"></i>`;
+                btn.disabled = false;
+            }
+        };
+
+        // Golden Firefly Canvas Animation (Cosmetic)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = [];
+        for(let i=0; i<40; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2+1, vx: Math.random()*1-0.5, vy: Math.random()*1-0.5 });
+        function animate() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.6)';
+            ctx.shadowBlur = 10; ctx.shadowColor = '#d4af37';
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
+            });
+            ctx.shadowBlur = 0;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>
