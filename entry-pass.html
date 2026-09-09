@@ -53,9 +53,9 @@
         /* Inputs & Buttons */
         .input-group { position: relative; margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; font-size: 0.8rem; color: #8b96a8; margin-bottom: 5px; margin-left: 5px; }
-        .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px 15px; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; }
+        .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px 15px; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; text-transform: uppercase; }
         .custom-input:focus { border-color: #0055ff; box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.2); }
-        .custom-input::placeholder { color: #475569; letter-spacing: 1px; }
+        .custom-input::placeholder { color: #475569; letter-spacing: 1px; text-transform: none; }
 
         .btn-primary { width: 100%; background: linear-gradient(135deg, #0055ff, #003ebd); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0, 85, 255, 0.3); display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(0, 85, 255, 0.4); }
@@ -108,7 +108,6 @@
                 <div class="price-tag">₹5 <span>/ one-time</span></div>
                 <p style="color: #cbd5e1; font-size: 0.85rem; margin-bottom: 15px;">Pay safely with 1-Click using your UPI app</p>
                 
-                <!-- Direct UPI Payment Links -->
                 <div class="pay-btn-group">
                     <a href="upi://pay?pa=mujammil.khan06618-2@okaxis&pn=Quantum%20Master%20Study&am=5.00&cu=INR" class="pay-btn btn-phonepe">
                         <i class="ri-smartphone-line"></i> Pay via PhonePe
@@ -129,28 +128,28 @@
 
                 <div class="input-group">
                     <label>Step 2: Enter 12-Digit UTR / Ref Number</label>
-                    <input type="number" id="utr-input" class="custom-input" placeholder="e.g. 312456789012">
+                    <input type="number" id="utr-input" class="custom-input" placeholder="e.g. 312456789012" style="text-transform: none;">
                 </div>
                 <button class="btn-primary" id="submit-utr-btn" onclick="submitUTR()">
                     Verify My Payment <i class="ri-arrow-right-line"></i>
                 </button>
             </div>
 
-            <!-- SECTION: COUPON CODE -->
+            <!-- SECTION: COUPON CODE (100% FIXED & FIREBASE CONNECTED) -->
             <div id="coupon-section" class="section">
                 <i class="ri-vip-crown-2-line" style="font-size: 3rem; color: #d4af37; margin-bottom: 15px; display: block;"></i>
                 <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 20px;">Got a special entry pass from the Admin? Redeem it here.</p>
                 
                 <div class="input-group">
                     <label>Enter Coupon Code</label>
-                    <input type="text" id="coupon-input" class="custom-input" placeholder="e.g. WELCOME100" style="text-transform: uppercase;">
+                    <input type="text" id="coupon-input" class="custom-input" placeholder="e.g. OLDSTUDENT">
                 </div>
                 <button class="btn-primary" id="apply-coupon-btn" onclick="applyCoupon()" style="background: linear-gradient(135deg, #d4af37, #b5952f); color: #000;">
                     Apply Coupon <i class="ri-check-line"></i>
                 </button>
             </div>
 
-        </div> <!-- End Glass Card -->
+        </div>
 
         <!-- SECTION: PENDING STATE -->
         <div class="glass-card" id="pending-state">
@@ -167,10 +166,11 @@
 
     </div>
 
-    <!-- Firebase Scripts -->
+    <!-- Firebase Scripts (Full imports included) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        // ✅ Added all necessary Firestore modules here
         import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -294,7 +294,7 @@
             }
         };
 
-        // Apply Coupon (Demo Logic)
+        // 🔥 REAL FIREBASE COUPON LOGIC (MK_EDITOR66 FIXED)
         window.applyCoupon = async () => {
             const code = document.getElementById('coupon-input').value.trim().toUpperCase();
             if (!code) return showToast("Enter a coupon code!", "error");
@@ -303,31 +303,50 @@
             btn.innerHTML = `<div class="spinner" style="width:20px;height:20px;border-width:3px;border-top-color:#000;margin:0;"></div> Verifying...`;
             btn.disabled = true;
 
-            if (code === "WELCOME100" || code === "FREEENTRY") {
-                try {
-                    const userRef = doc(db, "users", currentUser.uid);
-                    await setDoc(userRef, {
-                        name: localStorage.getItem('qms_user_name') || currentUser.displayName || "Student",
-                        email: localStorage.getItem('qms_user_email') || currentUser.email || "",
-                        hasEntryPass: true,
-                        entryMethod: "coupon",
-                        usedCoupon: code,
-                        timestamp: new Date().toISOString()
-                    }, { merge: true });
+            try {
+                // 1. Firebase से कूपन ढूंढो
+                const couponRef = doc(db, "coupons", code);
+                const couponSnap = await getDoc(couponRef);
 
-                    showToast("Coupon Applied! Unlocking Gate...", "success");
-                    setTimeout(() => window.location.href = "dashboard.html", 1500);
-                } catch (error) {
-                    showToast("Server error.", "error");
-                    btn.innerHTML = `Apply Coupon <i class="ri-check-line"></i>`;
-                    btn.disabled = false;
-                }
-            } else {
-                setTimeout(() => {
+                if (couponSnap.exists()) {
+                    const couponData = couponSnap.data();
+
+                    // 2. चेक करो कूपन Active है या नहीं
+                    if (couponData.active !== false) {
+                        
+                        const userRef = doc(db, "users", currentUser.uid);
+                        const isProUpgrade = (couponData.type === "pro");
+
+                        // 3. बच्चे की कुण्डली में 'hasEntryPass' सेव कर दो
+                        await setDoc(userRef, {
+                            name: localStorage.getItem('qms_user_name') || currentUser.displayName || "Student",
+                            email: localStorage.getItem('qms_user_email') || currentUser.email || "",
+                            hasEntryPass: true,
+                            isPremium: isProUpgrade,
+                            entryPaymentStatus: "approved", 
+                            entryMethod: "coupon",
+                            usedCoupon: code,
+                            timestamp: new Date().toISOString()
+                        }, { merge: true });
+
+                        showToast("Coupon Applied! Unlocking Gate...", "success");
+                        setTimeout(() => window.location.href = "dashboard.html", 1500);
+
+                    } else {
+                        showToast("This Coupon has been Deactivated by Admin.", "error");
+                        btn.innerHTML = `Apply Coupon <i class="ri-check-line"></i>`;
+                        btn.disabled = false;
+                    }
+                } else {
                     showToast("Invalid or Expired Coupon Code.", "error");
                     btn.innerHTML = `Apply Coupon <i class="ri-check-line"></i>`;
                     btn.disabled = false;
-                }, 1000); 
+                }
+            } catch (error) {
+                console.error("Coupon Error: ", error);
+                showToast("Server error connecting to database.", "error");
+                btn.innerHTML = `Apply Coupon <i class="ri-check-line"></i>`;
+                btn.disabled = false;
             }
         };
     </script>
