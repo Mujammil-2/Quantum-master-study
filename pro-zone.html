@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="default">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRO VIP Zone | Quantum Master Study</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* PRO Zone Specific CSS */
+        .pro-header { text-align: center; margin-bottom: 40px; margin-top: 20px; }
+        .pro-header h1 { font-size: 2.5rem; font-family: var(--font-heading); color: #fff; text-shadow: 0 0 20px #d4af37; margin-bottom: 10px; }
+        .pro-header h1 i { color: #d4af37; }
+        .pro-header p { color: var(--text-secondary); font-size: 1rem; }
+
+        .pro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 0 20px; max-width: 1000px; margin: 0 auto; }
+        
+        .feature-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 25px 20px; display: flex; align-items: center; gap: 20px; transition: 0.3s; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); border-color: rgba(212, 175, 55, 0.4); }
+        
+        .feature-icon { width: 60px; height: 60px; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 2rem; flex-shrink: 0; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        .feature-info h3 { font-size: 1.2rem; color: #fff; margin-bottom: 5px; font-family: var(--font-heading); }
+        .feature-info p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4; }
+
+        /* Lock / Action Button Style */
+        .action-btn { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; cursor: pointer; transition: 0.3s; border: none; }
+        
+        /* State 1: Locked (For Free Users) */
+        .btn-locked { background: rgba(234, 67, 53, 0.1); color: #ea4335; border: 1px solid rgba(234, 67, 53, 0.3); }
+        .btn-locked:hover { background: #ea4335; color: #fff; box-shadow: 0 0 15px rgba(234, 67, 53, 0.5); }
+        
+        /* State 2: Unlocked (For PRO Users) */
+        .btn-unlocked { background: rgba(212, 175, 55, 0.1); color: #d4af37; border: 1px solid rgba(212, 175, 55, 0.3); display: none; /* Hidden by default */ }
+        .btn-unlocked:hover { background: #d4af37; color: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
+
+        /* UPGRADE MODAL */
+        #upgrade-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100000; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s ease; }
+        #upgrade-modal-overlay.active { display: flex; opacity: 1; }
+        .upgrade-modal-box { background: linear-gradient(180deg, #1a1a24 0%, #050b14 100%); border: 2px solid #d4af37; border-radius: 20px; width: 90%; max-width: 400px; padding: 30px 20px; text-align: center; box-shadow: 0 25px 50px rgba(212, 175, 55, 0.2); transform: translateY(30px); transition: 0.3s ease; position: relative; overflow: hidden; }
+        #upgrade-modal-overlay.active .upgrade-modal-box { transform: translateY(0); }
+        
+        .modal-icon-lock { font-size: 4rem; color: #ea4335; margin-bottom: 15px; animation: shakeLock 0.5s ease-in-out; }
+        @keyframes shakeLock { 0% { transform: rotate(0); } 25% { transform: rotate(-15deg); } 50% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } 100% { transform: rotate(0); } }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Top Navigation -->
+    <div class="top-nav glass-panel" style="display: flex; justify-content: space-between; padding: 15px 20px; position: sticky; top: 0; z-index: 100;">
+        <div class="small-profile-btn" onclick="window.location.href='dashboard.html'" title="वापस डैशबोर्ड पर जाएँ">
+            <i class="ri-arrow-left-line" style="font-size: 1.5rem; color: #fff;"></i>
+        </div>
+        <div style="font-family: var(--font-heading); font-size: 1.2rem; color: #d4af37; font-weight: 700;">
+            <i class="ri-vip-crown-fill"></i> VIP ZONE
+        </div>
+        <div style="width: 40px;"></div> <!-- Spacer -->
+    </div>
+
+    <!-- Main Content -->
+    <div class="pro-header">
+        <h1><i class="ri-vip-crown-fill"></i> PRO Vault</h1>
+        <p>क्वांटम मास्टर स्टडी का प्रीमियम खज़ाना सिर्फ आपके लिए।</p>
+    </div>
+
+    <div class="pro-grid">
+        
+        <!-- 1. AI Chatbot -->
+        <div class="feature-card">
+            <div class="feature-icon" style="background: rgba(0, 240, 255, 0.1); color: #00f0ff;"><i class="ri-robot-2-fill"></i></div>
+            <div class="feature-info">
+                <h3>AI डाउट सॉल्वर बॉट</h3>
+                <p>24/7 अपने सवाल पूछें और AI से तुरंत सही जवाब पाएं।</p>
+            </div>
+            <button class="action-btn btn-locked pro-feature-btn" onclick="checkAccess('AI Chatbot')"><i class="ri-lock-2-fill"></i></button>
+            <button class="action-btn btn-unlocked pro-feature-btn" onclick="openFeature('AI Chatbot')"><i class="ri-arrow-right-line"></i></button>
+        </div>
+
+        <!-- 2. PRO PDFs -->
+        <div class="feature-card">
+            <div class="feature-icon" style="background: rgba(181, 53, 255, 0.1); color: #b535ff;"><i class="ri-file-pdf-2-fill"></i></div>
+            <div class="feature-info">
+                <h3>PRO PDF नोट्स</h3>
+                <p>टॉपर्स के हैंड-रिटन नोट्स और माइंड मैप्स सीधे डाउनलोड करें।</p>
+            </div>
+            <button class="action-btn btn-locked pro-feature-btn" onclick="checkAccess('PRO PDFs')"><i class="ri-lock-2-fill"></i></button>
+            <button class="action-btn btn-unlocked pro-feature-btn" onclick="openFeature('PRO PDFs')"><i class="ri-arrow-right-line"></i></button>
+        </div>
+
+        <!-- 3. VIP Comments & Chat -->
+        <div class="feature-card">
+            <div class="feature-icon" style="background: rgba(0, 255, 136, 0.1); color: #00ff88;"><i class="ri-discuss-fill"></i></div>
+            <div class="feature-info">
+                <h3>VIP कम्युनिटी चैट</h3>
+                <p>क्लास के दौरान डाउट पूछें और सीधे टीचर्स से बात करें।</p>
+            </div>
+            <button class="action-btn btn-locked pro-feature-btn" onclick="checkAccess('VIP Chat')"><i class="ri-lock-2-fill"></i></button>
+            <button class="action-btn btn-unlocked pro-feature-btn" onclick="openFeature('VIP Chat')"><i class="ri-arrow-right-line"></i></button>
+        </div>
+
+        <!-- 4. Premium Lectures -->
+        <div class="feature-card">
+            <div class="feature-icon" style="background: rgba(255, 51, 102, 0.1); color: #ff3366;"><i class="ri-video-chat-fill"></i></div>
+            <div class="feature-info">
+                <h3>प्रीमियम लाइव लेक्चर्स</h3>
+                <p>एक्सक्लूसिव लाइव क्लासेज और रिकॉर्डेड मास्टरक्लास।</p>
+            </div>
+            <button class="action-btn btn-locked pro-feature-btn" onclick="checkAccess('Premium Lectures')"><i class="ri-lock-2-fill"></i></button>
+            <button class="action-btn btn-unlocked pro-feature-btn" onclick="openFeature('Premium Lectures')"><i class="ri-arrow-right-line"></i></button>
+        </div>
+
+        <!-- 5. Previous Year Papers -->
+        <div class="feature-card">
+            <div class="feature-icon" style="background: rgba(255, 193, 7, 0.1); color: #ffc107;"><i class="ri-test-tube-fill"></i></div>
+            <div class="feature-info">
+                <h3>PYQ & मॉक टेस्ट</h3>
+                <p>पिछले 10 सालों के पेपर्स और प्रीमियम टेस्ट सीरीज़।</p>
+            </div>
+            <button class="action-btn btn-locked pro-feature-btn" onclick="checkAccess('Mock Tests')"><i class="ri-lock-2-fill"></i></button>
+            <button class="action-btn btn-unlocked pro-feature-btn" onclick="openFeature('Mock Tests')"><i class="ri-arrow-right-line"></i></button>
+        </div>
+
+        <!-- 6. Direct Mentorship -->
+        <div class="feature-card">
+            <div class="feature-icon" style="background: rgba(255, 255, 255, 0.1); color: #fff;"><i class="ri-mic-2-fill"></i></div>
+            <div class="feature-info">
+                <h3>1-on-1 मेंटरशिप</h3>
+                <p>अपने करियर और पढ़ाई के लिए सीधे एक्सपर्ट्स से गाइडेंस लें।</p>
+            </div>
+            <button class="action-btn btn-locked pro-feature-btn" onclick="checkAccess('Mentorship')"><i class="ri-lock-2-fill"></i></button>
+            <button class="action-btn btn-unlocked pro-feature-btn" onclick="openFeature('Mentorship')"><i class="ri-arrow-right-line"></i></button>
+        </div>
+
+    </div>
+    
+    <div style="height: 50px;"></div>
+
+    <!-- 🔒 THE FOMO UPGRADE MODAL (For Free Users) -->
+    <div id="upgrade-modal-overlay">
+        <div class="upgrade-modal-box">
+            <button onclick="closeUpgradeModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer;"><i class="ri-close-line"></i></button>
+            
+            <i class="ri-lock-2-fill modal-icon-lock"></i>
+            <h2 style="color: #fff; font-family: var(--font-heading); margin-bottom: 10px; font-size: 1.6rem;">PRO फीचर लॉक है!</h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.5;">
+                <span id="locked-feature-name" style="color: #d4af37; font-weight: bold;">यह फीचर</span> केवल PRO मेंबर्स के लिए उपलब्ध है। इस ताले को खोलने और सभी प्रीमियम फीचर्स का मज़ा लेने के लिए अभी अपग्रेड करें!
+            </p>
+            
+            <button onclick="window.location.href='premium.html'" style="background: linear-gradient(135deg, #d4af37, #b5952f); color: #000; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.4); text-transform: uppercase;">
+                <i class="ri-vip-crown-fill"></i> सिर्फ ₹30 में PRO लें
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase & Logic Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCkxx9bVjvAYarA0WrHfW5k_gxwUPZaaw",
+            authDomain: "quantum-master-study.firebaseapp.com",
+            projectId: "quantum-master-study",
+            storageBucket: "quantum-master-study.firebasestorage.app",
+            messagingSenderId: "193145760847",
+            appId: "1:193145760847:web:7d1f77be123c3edb104e3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let userIsPremium = false;
+
+        // Check user status
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docSnap = await getDoc(doc(db, "users", user.uid));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    if (data.isPremium === true) {
+                        userIsPremium = true;
+                        
+                        // 🔓 MAGIC: Hide all Locks, Show all Unlocked Arrow buttons!
+                        const lockedBtns = document.querySelectorAll('.btn-locked');
+                        const unlockedBtns = document.querySelectorAll('.btn-unlocked');
+                        
+                        lockedBtns.forEach(btn => btn.style.display = 'none');
+                        unlockedBtns.forEach(btn => btn.style.display = 'flex');
+                    }
+                }
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        // 🔒 Logic for Free Users (Show Modal)
+        window.checkAccess = (featureName) => {
+            document.getElementById('locked-feature-name').innerText = featureName;
+            const modal = document.getElementById('upgrade-modal-overlay');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        };
+
+        window.closeUpgradeModal = () => {
+            const modal = document.getElementById('upgrade-modal-overlay');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        };
+
+        // 🔓 Logic for PRO Users (Open actual feature)
+        window.openFeature = (featureName) => {
+            alert(`🎉 ${featureName} पेज खुल रहा है! (यहाँ हम बाद में असली पेजेस के लिंक लगा देंगे)`);
+            // Example: if(featureName === 'AI Chatbot') window.location.href = "ai-bot.html";
+        };
+
+        // Firefly Background (Simple Version for this page)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = [];
+        for(let i=0; i<30; i++) {
+            particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2+1, vx: Math.random()*0.5-0.25, vy: Math.random()*0.5-0.25 });
+        }
+        function animate() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.3)';
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
