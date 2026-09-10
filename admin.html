@@ -118,14 +118,14 @@
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-    <!-- 👁️ KUNDALI MODAL -->
+    <!-- 👁️ KUNDALI MODAL (SMART PRO/FREE AWARE) -->
     <div id="kundali-modal" class="modal-overlay">
         <div class="glass-modal">
             <button class="close-btn" onclick="closeKundali()"><i class="ri-close-line"></i></button>
             <div class="k-header">
                 <img id="k-photo" src="logo.png" alt="User DP">
                 <h2 id="k-name">Loading...</h2>
-                <span id="k-course" style="color:#d4af37; font-size:0.8rem;">Course Name</span>
+                <div id="k-req-label" style="margin-top: 5px;"></div>
             </div>
             <div class="k-body">
                 <div class="k-row"><i class="ri-whatsapp-line"></i> <span id="k-phone"></span></div>
@@ -137,8 +137,8 @@
                 </div>
             </div>
             <div class="k-actions">
-                <button class="btn-approve" onclick="approveEntry()"><i class="ri-check-double-line"></i> Approve / Restore</button>
-                <button class="btn-reject" onclick="rejectEntry()"><i class="ri-close-circle-line"></i> Block / Reject</button>
+                <button class="btn-approve" onclick="approveAction()"><i class="ri-check-double-line"></i> Approve</button>
+                <button class="btn-reject" onclick="rejectAction()"><i class="ri-close-circle-line"></i> Reject</button>
             </div>
         </div>
     </div>
@@ -153,12 +153,9 @@
         <div class="menu-item active" onclick="switchTab('requests-tab', this)">
             <i class="ri-group-line"></i> Pending Requests
         </div>
-
-        <!-- NEW OPTION: ALL STUDENTS DATA -->
         <div class="menu-item" onclick="switchTab('all-users-tab', this)">
             <i class="ri-user-star-line"></i> All Students
         </div>
-
         <div class="menu-item" onclick="switchTab('coupons-tab', this)">
             <i class="ri-coupon-3-line"></i> Coupon Master
         </div>
@@ -189,7 +186,7 @@
         <div id="requests-tab" class="tab-content active">
             <div class="admin-card">
                 <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
-                    <h3 style="font-size: 1.1rem;">Verification Queue</h3>
+                    <h3 style="font-size: 1.1rem;">Verification Queue (Entry & PRO)</h3>
                     <button class="btn-primary" onclick="fetchPendingRequests()"><i class="ri-refresh-line"></i> Refresh</button>
                 </div>
                 <div class="table-responsive">
@@ -198,19 +195,19 @@
                             <tr>
                                 <th>Student Name</th>
                                 <th>Mobile Number</th>
-                                <th>Status</th>
+                                <th>Request Type</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="requests-body">
-                            <tr><td colspan="4">Loading data...</td></tr>
+                            <tr><td colspan="4" style="text-align:center;">Loading data...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- 🔥 NEW TAB: ALL STUDENTS (User Database) 🔥 -->
+        <!-- TAB 2: ALL STUDENTS (User Database) -->
         <div id="all-users-tab" class="tab-content">
             <div class="admin-card">
                 <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
@@ -224,7 +221,7 @@
                                 <th>Student Name</th>
                                 <th>Contact Details</th>
                                 <th>Access Level</th>
-                                <th>Action</th>
+                                <th>Action & Manage</th>
                             </tr>
                         </thead>
                         <tbody id="all-users-body">
@@ -235,7 +232,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: COUPON MASTER -->
+        <!-- TAB 3: COUPON MASTER -->
         <div id="coupons-tab" class="tab-content">
             <div class="admin-card">
                 <h3>Generate New Coupon</h3>
@@ -268,7 +265,7 @@
             </div>
         </div>
 
-        <!-- TAB 3: SYLLABUS UPLOAD -->
+        <!-- TAB 4: SYLLABUS UPLOAD -->
         <div id="syllabus-tab" class="tab-content">
             <div class="admin-card">
                 <h3>Upload New Material</h3>
@@ -305,7 +302,7 @@
             </div>
         </div>
 
-        <!-- TAB 4: DYNAMIC PRICING -->
+        <!-- TAB 5: DYNAMIC PRICING -->
         <div id="pricing-tab" class="tab-content">
             <div class="admin-card pricing-box">
                 <h3 style="color:#d4af37; margin-bottom:15px; font-size:1.3rem;"><i class="ri-settings-4-fill"></i> Master Pricing Control</h3>
@@ -339,8 +336,7 @@
             projectId: "quantum-master-study",
             storageBucket: "quantum-master-study.firebasestorage.app",
             messagingSenderId: "193145760847",
-            appId: "1:193145760847:web:7d1f77be123c3edb104e3a",
-            measurementId: "G-SH39JL930R"
+            appId: "1:193145760847:web:7d1f77be123c3edb104e3a"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -350,6 +346,7 @@
         const ADMIN_EMAILS = ["khanmujammil33723@gmail.com", "mujammil.khan06618@gmail.com"];
         let usersDataCache = {};
         let currentSelectedUserId = null;
+        let currentRequestType = 'entry'; // Can be 'entry' or 'pro'
 
         // Mobile Sidebar Toggle Logic
         window.toggleSidebar = () => {
@@ -392,11 +389,9 @@
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
-            // Close sidebar on mobile after clicking a tab
             if(window.innerWidth <= 768) toggleSidebar();
         };
 
-        // Init All Data
         window.initAdmin = () => {
             fetchPendingRequests();
             fetchAllUsers();
@@ -406,52 +401,68 @@
         };
 
         // ==========================
-        // 🕒 TAB 1: PENDING REQUESTS
+        // 🕒 TAB 1: PENDING REQUESTS (Entry & PRO)
         // ==========================
         window.fetchPendingRequests = async () => {
             const tbody = document.getElementById('requests-body');
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Fetching...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Fetching Requests...</td></tr>`;
             try {
-                const q = query(collection(db, "users"), where("entryPaymentStatus", "==", "pending"));
-                const snaps = await getDocs(q);
+                // Fetching all users to check both Entry and PRO pending statuses efficiently
+                const snaps = await getDocs(collection(db, "users"));
                 tbody.innerHTML = "";
-                // Do NOT clear usersDataCache completely here so we don't break "All Students" cache
-                if(snaps.empty) return tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#8b96a8;">No pending requests!</td></tr>`;
+                let hasPending = false;
 
                 snaps.forEach((docSnap) => {
                     let data = docSnap.data();
-                    usersDataCache[docSnap.id] = data;
-                    tbody.innerHTML += `
-                        <tr>
-                            <td><strong>${data.name || 'N/A'}</strong></td>
-                            <td>${data.phone || data.email || 'N/A'}</td>
-                            <td><span class="badge pending">Pending</span></td>
-                            <td><button class="view-btn" onclick="openKundali('${docSnap.id}')"><i class="ri-eye-line"></i> View</button></td>
-                        </tr>
-                    `;
+                    usersDataCache[docSnap.id] = data; // Cache data for Kundali
+
+                    // Check for Entry Pass (₹5) Pending
+                    if (data.entryPaymentStatus === "pending") {
+                        hasPending = true;
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><strong>${data.name || 'N/A'}</strong></td>
+                                <td>${data.phone || data.email || 'N/A'}</td>
+                                <td><span class="badge pending">Pending ₹5 (Entry)</span></td>
+                                <td><button class="view-btn" onclick="openKundali('${docSnap.id}', 'entry')"><i class="ri-eye-line"></i> View</button></td>
+                            </tr>
+                        `;
+                    }
+                    
+                    // Check for PRO Upgrade (₹30) Pending
+                    if (data.upgradePaymentStatus === "pending") {
+                        hasPending = true;
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><strong>${data.name || 'N/A'}</strong></td>
+                                <td>${data.phone || data.email || 'N/A'}</td>
+                                <td><span class="badge pro" style="color:#d4af37; border-color:#d4af37;"><i class="ri-vip-crown-fill"></i> Pending ₹30 (PRO)</span></td>
+                                <td><button class="view-btn" onclick="openKundali('${docSnap.id}', 'pro')" style="color:#d4af37; border-color:#d4af37;"><i class="ri-eye-line"></i> View</button></td>
+                            </tr>
+                        `;
+                    }
                 });
+                
+                if(!hasPending) tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#8b96a8;">No pending requests! 🎉</td></tr>`;
             } catch (e) { console.error(e); }
         };
 
         // ==========================
-        // 👥 NEW TAB: ALL STUDENTS
+        // 👥 TAB 2: ALL STUDENTS
         // ==========================
         window.fetchAllUsers = async () => {
             const tbody = document.getElementById('all-users-body');
             tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Fetching student database...</td></tr>`;
             try {
-                // Fetch all users
-                const q = query(collection(db, "users"));
-                const snaps = await getDocs(q);
+                const snaps = await getDocs(collection(db, "users"));
                 tbody.innerHTML = "";
                 
                 if(snaps.empty) return tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#8b96a8;">No registered students yet!</td></tr>`;
 
                 snaps.forEach((docSnap) => {
                     let data = docSnap.data();
-                    usersDataCache[docSnap.id] = data; // Cache data for Kundali
+                    usersDataCache[docSnap.id] = data; 
                     
-                    // Logic to show beautiful Badges based on their access
                     let accessBadge = '<span class="badge blocked">Blocked / Pending</span>';
                     if (data.isPremium === true) {
                         accessBadge = '<span class="badge pro"><i class="ri-vip-crown-fill"></i> PRO Member</span>';
@@ -461,55 +472,99 @@
                         accessBadge = '<span class="badge pending">Pending ₹5</span>';
                     }
 
+                    // Direct PRO Toggle Button
+                    const proActionBtn = data.isPremium 
+                        ? `<button class="btn-danger" style="padding: 6px; font-size: 0.75rem;" onclick="toggleProStatus('${docSnap.id}', false)">Revoke PRO</button>`
+                        : `<button class="view-btn" style="color:#d4af37; border-color:#d4af37; padding: 6px; font-size: 0.75rem;" onclick="toggleProStatus('${docSnap.id}', true)"><i class="ri-vip-crown-fill"></i> Make PRO</button>`;
+
                     tbody.innerHTML += `
                         <tr>
                             <td><strong>${data.name || 'N/A'}</strong></td>
                             <td>${data.phone || data.email || 'N/A'}</td>
                             <td>${accessBadge}</td>
-                            <td><button class="view-btn" onclick="openKundali('${docSnap.id}')"><i class="ri-eye-line"></i> View Profile</button></td>
+                            <td>
+                                <div style="display:flex; gap:8px;">
+                                    <button class="view-btn" onclick="openKundali('${docSnap.id}', 'entry')"><i class="ri-eye-line"></i> View</button>
+                                    ${proActionBtn}
+                                </div>
+                            </td>
                         </tr>
                     `;
                 });
             } catch (e) { console.error(e); }
         };
 
-        // KUNDALI MODAL LOGIC (Works for both Pending and All Students)
-        window.openKundali = (userId) => {
+        // Direct PRO Toggle Logic
+        window.toggleProStatus = async (uid, makePro) => {
+            if(!confirm(`Are you sure you want to ${makePro ? 'MAKE PRO' : 'REVOKE PRO'} for this user?`)) return;
+            await updateDoc(doc(db, "users", uid), { isPremium: makePro });
+            showToast(makePro ? "User is now a PRO Member!" : "PRO access revoked.");
+            fetchAllUsers();
+            fetchPendingRequests();
+        };
+
+        // ==========================
+        // 👁️ SMART KUNDALI LOGIC
+        // ==========================
+        window.openKundali = (userId, type = 'entry') => {
             currentSelectedUserId = userId;
+            currentRequestType = type;
             const data = usersDataCache[userId];
+            
             document.getElementById('k-photo').src = data.photoURL || "logo.png";
             document.getElementById('k-name').innerText = data.name || "N/A";
-            document.getElementById('k-course').innerText = data.course || "General Student";
             document.getElementById('k-phone').innerText = data.phone || "N/A";
             document.getElementById('k-email').innerText = data.email || "N/A";
             document.getElementById('k-address').innerText = [data.address, data.city, data.state].filter(Boolean).join(", ") || "N/A";
-            document.getElementById('k-utr').innerText = data.entryUtrNumber || "N/A";
+            
+            // Smart Logic: Show correct UTR and Badge based on request type
+            if (type === 'pro') {
+                document.getElementById('k-utr').innerText = data.upgradeUtrNumber || "N/A";
+                document.getElementById('k-req-label').innerHTML = `<span class="badge pro"><i class="ri-vip-crown-fill"></i> PRO Upgrade Request (₹30)</span>`;
+            } else {
+                document.getElementById('k-utr').innerText = data.entryUtrNumber || "N/A";
+                document.getElementById('k-req-label').innerHTML = `<span class="badge free">Entry Pass Request (₹5)</span>`;
+            }
+            
             document.getElementById('kundali-modal').style.display = "flex";
         };
         
         window.closeKundali = () => document.getElementById('kundali-modal').style.display = "none";
 
-        window.approveEntry = async () => {
-            if(!confirm("Are you sure you want to approve/restore access to this student?")) return;
-            await updateDoc(doc(db, "users", currentSelectedUserId), { entryPaymentStatus: "approved", hasEntryPass: true });
-            showToast("Access Granted Successfully!");
+        window.approveAction = async () => {
+            if(!confirm(`Are you sure you want to approve this ${currentRequestType.toUpperCase()} request?`)) return;
+            
+            const userRef = doc(db, "users", currentSelectedUserId);
+            if (currentRequestType === 'pro') {
+                await updateDoc(userRef, { isPremium: true, upgradePaymentStatus: "approved" });
+            } else {
+                await updateDoc(userRef, { entryPaymentStatus: "approved", hasEntryPass: true });
+            }
+            
+            showToast("Approved Successfully!");
             closeKundali(); 
             fetchPendingRequests(); 
-            fetchAllUsers(); // Refresh both tables
+            fetchAllUsers(); 
         };
 
-        window.rejectEntry = async () => {
-            if(!confirm("WARNING: Are you sure you want to BLOCK or REJECT this student? They won't be able to enter the dashboard.")) return;
-            // Removed entryUtrNumber logic so their past UTR isn't deleted, just access revoked.
-            await updateDoc(doc(db, "users", currentSelectedUserId), { entryPaymentStatus: "rejected", hasEntryPass: false, isPremium: false });
-            showToast("Student Access Blocked!");
+        window.rejectAction = async () => {
+            if(!confirm("WARNING: Are you sure you want to REJECT this request?")) return;
+            
+            const userRef = doc(db, "users", currentSelectedUserId);
+            if (currentRequestType === 'pro') {
+                await updateDoc(userRef, { upgradePaymentStatus: "rejected", upgradeUtrNumber: null });
+            } else {
+                await updateDoc(userRef, { entryPaymentStatus: "rejected", entryUtrNumber: null, hasEntryPass: false });
+            }
+            
+            showToast("Request Rejected!");
             closeKundali(); 
             fetchPendingRequests(); 
-            fetchAllUsers(); // Refresh both tables
+            fetchAllUsers(); 
         };
 
         // ==========================
-        // 🎟️ TAB 2: COUPON MASTER
+        // 🎟️ TAB 3: COUPON MASTER
         // ==========================
         window.createCoupon = async () => {
             const code = document.getElementById('c-code').value.trim().toUpperCase();
@@ -543,7 +598,7 @@
         };
 
         // ==========================
-        // 📚 TAB 3: SYLLABUS UPLOAD
+        // 📚 TAB 4: SYLLABUS UPLOAD
         // ==========================
         window.uploadSyllabus = async () => {
             const title = document.getElementById('s-title').value.trim();
@@ -580,7 +635,7 @@
         };
 
         // ==========================
-        // ⚙️ TAB 4: DYNAMIC PRICING
+        // ⚙️ TAB 5: DYNAMIC PRICING
         // ==========================
         window.fetchPricing = async () => {
             const snap = await getDoc(doc(db, "settings", "pricing"));
