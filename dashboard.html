@@ -15,20 +15,11 @@
 </head>
 <body>
 
-    <!-- =========================================
-         AUDIO PLAYERS (SFX & BGM)
-    ========================================== -->
-    <audio id="sfx-click" preload="auto">
-        <source src="click.mp3" type="audio/mpeg">
-    </audio>
+    <!-- AUDIO PLAYERS (SFX & BGM) -->
+    <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
+    <audio id="bgm-audio" loop preload="auto"><source src="bgm1.mp3" type="audio/mpeg"></audio>
 
-    <audio id="bgm-audio" loop preload="auto">
-        <source src="bgm1.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- =========================================
-         SPLASH SCREEN / LOADING SCREEN
-    ========================================== -->
+    <!-- SPLASH SCREEN -->
     <div id="splash-screen">
         <svg viewBox="0 0 100 100" class="premium-logo">
             <circle cx="50" cy="50" r="12" fill="var(--accent-main)"/>
@@ -37,51 +28,49 @@
             <ellipse cx="50" cy="50" rx="45" ry="15" fill="none" stroke="var(--accent-main)" stroke-width="3" class="orbit-reverse" transform="rotate(120 50 50)"/>
         </svg>
         <h1 class="splash-title">QMS</h1>
-        <div class="loading-bar-container">
-            <div class="loading-bar-fill" id="loading-bar"></div>
-        </div>
+        <div class="loading-bar-container"><div class="loading-bar-fill" id="loading-bar"></div></div>
         <p class="loading-text" id="loading-text">सिस्टम इनिशियलाइज़ हो रहा है...</p>
     </div>
 
-    <!-- =========================================
-         FIREFLY PARTICLES CANVAS
-    ========================================== -->
     <canvas id="bg-canvas"></canvas>
     <div class="overlay-bg" id="panel-overlay"></div>
 
-    <!-- =========================================
-         FULL PREMIUM SETTINGS PANEL (RIGHT SIDEBAR)
-    ========================================== -->
+    <!-- SETTINGS PANEL (RIGHT SIDEBAR) -->
     <aside class="profile-side-panel" id="settings-panel">
         <i class="ri-close-line close-panel-btn sfx-trigger" id="close-panel"></i>
         
         <div class="panel-header">
             <div class="image-upload-wrapper-clean">
                 <img id="panel-profile-img" src="logo.png" alt="User Profile Image">
-                <label for="img-upload" class="upload-btn-clean sfx-trigger">
-                    <i class="ri-camera-fill"></i>
-                </label>
+                <label for="img-upload" class="upload-btn-clean sfx-trigger"><i class="ri-camera-fill"></i></label>
                 <input type="file" id="img-upload" hidden accept="image/*">
             </div>
-            
             <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
                 <h2 id="panel-user-name" style="font-family: var(--font-heading); font-size: 1.5rem;">Student</h2>
                 <i class="ri-edit-box-line sfx-trigger" id="edit-name-btn" style="color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;" title="नाम बदलें"></i>
             </div>
-            
-            <p id="panel-status-text" style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px; font-weight: 600;">
-                QMS स्टूडेंट 
-            </p>
+            <p id="panel-status-text" style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 5px; font-weight: 600;">QMS स्टूडेंट</p>
         </div>
 
+        <!-- 🔥 FIX 1: THEMES DROPDOWN (10 COLORS) 🔥 -->
         <h3 class="setting-section-title"><i class="ri-palette-fill"></i> कस्टमाइज़ेशन (Themes)</h3>
-        <div class="theme-grid-named">
-            <div class="theme-option-card sfx-trigger" data-set-theme="default"><div class="theme-color-circle" style="background: #00f0ff; box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);"></div><span class="theme-name">Cyan</span></div>
-            <div class="theme-option-card sfx-trigger" data-set-theme="purple"><div class="theme-color-circle" style="background: #b535ff; box-shadow: 0 0 10px rgba(181, 53, 255, 0.4);"></div><span class="theme-name">Purple</span></div>
-            <div class="theme-option-card sfx-trigger" data-set-theme="emerald"><div class="theme-color-circle" style="background: #00ff88; box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);"></div><span class="theme-name">Emerald</span></div>
-            <div class="theme-option-card sfx-trigger" data-set-theme="gold"><div class="theme-color-circle" style="background: #ffc107; box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);"></div><span class="theme-name">Gold</span></div>
+        <div class="setting-row">
+            <div class="setting-info"><h4>ऐप थीम</h4><p>10 प्रीमियम कलर्स</p></div>
+            <select class="pro-select sfx-trigger" id="theme-select">
+                <option value="default">Cyan (Default)</option>
+                <option value="purple">Purple</option>
+                <option value="emerald">Emerald</option>
+                <option value="crimson">Crimson</option>
+                <option value="gold">Gold</option>
+                <option value="royal">Royal Blue</option>
+                <option value="sunset">Sunset Orange</option>
+                <option value="neonpink">Neon Pink</option>
+                <option value="ruby">Ruby Red</option>
+                <option value="matrix">Matrix Green</option>
+            </select>
         </div>
 
+        <!-- 🔥 FIX 2: BGM DROPDOWN (7 SONGS) 🔥 -->
         <h3 class="setting-section-title"><i class="ri-headphone-fill"></i> म्यूजिक प्लेयर (BGM)</h3>
         <div class="setting-row">
             <div class="setting-info"><h4>म्यूजिक ट्रैक</h4><p>अपना पसंदीदा BGM चुनें</p></div>
@@ -89,8 +78,13 @@
                 <option value="bgm1.mp3">Track 1 - Lo-Fi Chill</option>
                 <option value="bgm2.mp3">Track 2 - Deep Focus</option>
                 <option value="bgm3.mp3">Track 3 - Piano Vibe</option>
+                <option value="bgm4.mp3">Track 4 - Ambient Space</option>
+                <option value="bgm5.mp3">Track 5 - Rain Sounds</option>
+                <option value="bgm6.mp3">Track 6 - Alpha Waves</option>
+                <option value="bgm7.mp3">Track 7 - Study Beats</option>
             </select>
         </div>
+        
         <div class="setting-row">
             <div class="setting-info"><h4>प्ले / पॉज़ म्यूजिक</h4></div>
             <label class="switch-clean sfx-trigger" style="position: relative; display: inline-block; width: 44px; height: 24px;">
@@ -117,9 +111,7 @@
         </button>
     </aside>
 
-    <!-- =========================================
-         MAIN DASHBOARD CONTENT
-    ========================================== -->
+    <!-- MAIN DASHBOARD CONTENT -->
     <div class="dashboard-wrapper">
         <header class="top-nav glass-panel dash-header">
             <div class="brand-mini">
@@ -132,11 +124,10 @@
             </div>
             
             <div style="display:flex; align-items:center;">
-                <!-- Upgrade PRO Button (Will hide if user is PRO) -->
+                <!-- PRO Upgrade Button -->
                 <button id="upgrade-pro-btn" class="sfx-trigger" onclick="window.location.href='premium.html'" style="background: linear-gradient(135deg, #d4af37, #b5952f); color: #000; border: none; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; cursor: pointer; margin-right: 15px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);">
                     <i class="ri-vip-crown-fill"></i> PRO खरीदें
                 </button>
-                
                 <div class="small-profile-btn header-profile-fix sfx-trigger" id="open-panel-btn" title="प्रोफाइल">
                     <img src="logo.png" id="dash-small-avatar" alt="Profile Image" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent-main); object-fit: cover;">
                 </div>
@@ -144,8 +135,7 @@
         </header>
 
         <main class="dash-main-clean" style="padding: 20px;">
-            
-            <!-- 📢 SPONSOR AD BANNER (Will hide if user is PRO) -->
+            <!-- Ad Banner -->
             <div id="ad-banner" class="glass-card" style="background: linear-gradient(90deg, rgba(12, 19, 34, 0.9), rgba(0, 85, 255, 0.1)); border-left: 4px solid #ea4335; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 15px;">
                 <div>
                     <span style="background: rgba(234, 67, 53, 0.2); color: #ea4335; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; text-transform: uppercase;">Sponsored</span>
@@ -155,6 +145,7 @@
                 <button class="sfx-trigger" style="background: #fff; color: #000; padding: 8px 15px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer;">Buy Now</button>
             </div>
 
+            <!-- Welcome Banner -->
             <div class="welcome-banner glass-card" id="welcome-banner" style="background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.2) 100%); border-left: 4px solid var(--accent-main); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
                 <div class="welcome-text">
                     <h1 class="greeting" style="font-size: 1.6rem; font-family: var(--font-heading);">
@@ -162,9 +153,7 @@
                         <span class="highlight" id="dash-user-name" style="color: var(--accent-main);">Student</span> 
                         <span id="pro-crown"></span>
                     </h1>
-                    <p class="subtitle" style="color: var(--text-secondary); margin-top: 5px;">
-                        आज आपका लक्ष्य क्या है? चलिए कुछ नया सीखते हैं!
-                    </p>
+                    <p class="subtitle" style="color: var(--text-secondary); margin-top: 5px;">आज आपका लक्ष्य क्या है? चलिए कुछ नया सीखते हैं!</p>
                     <div class="level-badge" id="user-level-badge" style="display: inline-flex; align-items: center; gap: 5px; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-top: 12px; border: 1px solid rgba(0, 240, 255, 0.3);">
                         <i class="ri-rocket-2-fill"></i> फ्री मेंबर
                     </div>
@@ -175,23 +164,21 @@
                 "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।"
             </div>
 
-            <!-- 🔥 POMODORO TIMER CARD -->
+            <!-- Pomodoro Timer -->
             <div class="timer-card glass-card" style="display: flex; flex-direction: column; align-items: center; border-top: 3px solid var(--accent-main); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
                 <h3 style="margin-bottom: 10px; color: var(--text-secondary);"><i class="ri-timer-line"></i> फोकस टाइमर (Pomodoro)</h3>
-                
                 <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin: 15px 0;">
                     <button id="timer-minus-btn" class="sfx-trigger" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer;"><i class="ri-subtract-line"></i></button>
                     <div class="timer-display" id="timer-display" style="font-size: 3.5rem; font-family: var(--font-heading); font-weight: 700; color: #fff; text-shadow: 0 0 20px var(--accent-glow);">25:00</div>
                     <button id="timer-plus-btn" class="sfx-trigger" style="background: rgba(255,255,255,0.1); border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer;"><i class="ri-add-line"></i></button>
                 </div>
-                
                 <div class="timer-controls" style="display: flex; gap: 15px;">
                     <button class="timer-btn sfx-trigger" id="timer-start-btn" style="background: var(--accent-main); color: #000; padding: 10px 25px; border-radius: 30px; font-weight: 600; cursor: pointer; border: none; box-shadow: 0 5px 15px var(--accent-glow);">स्टार्ट</button>
                     <button class="timer-btn sfx-trigger" id="timer-reset-btn" style="background: rgba(255,255,255,0.1); color: #fff; padding: 10px 25px; border-radius: 30px; font-weight: 600; cursor: pointer; border: none;">रीसेट</button>
                 </div>
             </div>
 
-            <!-- 📊 STATS GRID -->
+            <!-- Stats Grid -->
             <div class="stats-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px;">
                 <div class="stat-card glass-card" style="display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 16px;">
                     <div style="width: 45px; height: 45px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: #ffc107;"><i class="ri-fire-fill"></i></div>
@@ -211,30 +198,30 @@
                 </div>
             </div>
 
-            <!-- 📅 DAILY STREAK CALENDAR -->
+            <!-- Daily Streak -->
             <div class="streak-card glass-card" style="margin-bottom: 2.5rem; padding: 20px; border-radius: 16px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3 style="color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.2rem;"><i class="ri-calendar-check-fill"></i> डेली स्ट्रीक</h3>
                     <span style="font-weight: bold; color: #ffc107; font-size: 0.9rem;"><span id="streak-count-text">0</span> दिन की स्ट्रीक 🔥</span>
                 </div>
                 <div class="streak-days-grid" id="streak-calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 15px; text-align: center;">
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; grid-column: span 7;">लोड हो रहा है...</p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; grid-column: span 7;">लोड हो रहा...</p>
                 </div>
             </div>
 
-            <!-- 🏅 BADGES SECTION -->
+            <!-- Badges -->
             <div class="badges-section" style="margin-bottom: 2.5rem;">
-                <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;"><i class="ri-medal-fill"></i> अचीवमेंट्स (Badges)</h3>
+                <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;"><i class="ri-medal-fill"></i> अचीवमेंट्स</h3>
                 <div class="badges-grid" id="badges-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; text-align: center;">
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">लोड हो रहा है...</p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">लोड हो रहा...</p>
                 </div>
             </div>
 
-            <!-- 🔖 SMART BOOKMARKS SECTION -->
+            <!-- Smart Bookmarks -->
             <div class="bookmarks-section" style="margin-bottom: 2.5rem;">
                 <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;"><i class="ri-bookmark-3-fill"></i> सेव्ड नोट्स</h3>
                 <button id="open-bookmarks-modal-btn" class="sfx-trigger" style="width: 100%; padding: 15px; background: rgba(0,255,136,0.1); border: 1px solid #00ff88; color: #00ff88; border-radius: 12px; font-size: 1.1rem; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer;">
-                    <i class="ri-folder-open-fill"></i> मेरी बुकमार्क लिस्ट देखें
+                    <i class="ri-folder-open-fill"></i> मेरी बुकमार्क लिस्ट
                 </button>
             </div>
 
@@ -248,7 +235,7 @@
         </main>
     </div>
 
-    <!-- 🔖 BOOKMARKS MODAL -->
+    <!-- BOOKMARKS MODAL -->
     <div id="bookmarks-modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100000; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s ease;">
         <div id="bookmarks-modal-box" style="background: #111; border: 1px solid var(--accent-main); border-radius: 20px; width: 90%; max-width: 450px; max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform: translateY(30px); transition: 0.3s ease;">
             <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5);">
@@ -259,7 +246,6 @@
         </div>
     </div>
 
-    <!-- MAIN JAVASCRIPT LOGIC (MUST BE TYPE MODULE FOR FIREBASE) -->
     <script type="module" src="dashboard.js"></script>
 </body>
 </html>
