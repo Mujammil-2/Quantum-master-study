@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
@@ -38,6 +38,7 @@
         
         <div class="panel-header">
             <div class="image-upload-wrapper-clean">
+                <!-- 🔥 FIX: Single Clean Image Wrapper with Frame Class -->
                 <div class="avatar-frame-wrapper" id="panel-avatar-frame">
                     <img id="panel-profile-img" src="logo.png" alt="User Profile Image">
                 </div>
@@ -56,33 +57,32 @@
         <button id="open-leaderboard-btn" class="sfx-trigger" style="width: 100%; margin-bottom: 15px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 0, 0, 0.5)); color: #d4af37; border: 1px solid #d4af37; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display:flex; justify-content:center; align-items:center; gap:8px;">
             <i class="ri-bar-chart-grouped-fill"></i> Top 50 लीडरबोर्ड देखें
         </button>
-        <div class="setting-row">
-            <div class="setting-info"><h4>अवतार फ्रेम</h4><p>प्रोफाइल का प्रीमियम बॉर्डर</p></div>
-            <select class="pro-select sfx-trigger" id="avatar-frame-select">
-                <option value="none">कोई नहीं (None)</option>
-                <option value="frame-gold">Gold (Level 10+)</option>
-                <option value="frame-diamond">Diamond (Level 25+)</option>
-                <option value="frame-quantum">Quantum (PRO Only)</option>
-            </select>
-        </div>
+        
+        <!-- 🔥 FIX: Gaming Style Frame Gallery Button -->
+        <button id="open-frames-btn" class="sfx-trigger" style="width: 100%; margin-bottom: 15px; background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid #00f0ff; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display:flex; justify-content:center; align-items:center; gap:8px;">
+            <i class="ri-focus-3-line"></i> अवतार फ्रेम्स गैलरी (30+)
+        </button>
 
         <!-- 🎨 CUSTOMIZATION & UI -->
         <h3 class="setting-section-title"><i class="ri-palette-fill"></i> कस्टमाइज़ेशन</h3>
-        <div class="setting-row">
-            <div class="setting-info"><h4>ऐप थीम</h4><p>10 प्रीमियम कलर्स</p></div>
-            <select class="pro-select sfx-trigger" id="theme-select">
-                <option value="default">Cyan (Default)</option>
-                <option value="purple">Purple</option>
-                <option value="emerald">Emerald</option>
-                <option value="crimson">Crimson</option>
-                <option value="gold">Gold</option>
-                <option value="royal">Royal Blue</option>
-                <option value="sunset">Sunset Orange</option>
-                <option value="neonpink">Neon Pink</option>
-                <option value="ruby">Ruby Red</option>
-                <option value="matrix">Matrix Green</option>
-            </select>
+        
+        <!-- 🔥 FIX: 10 Color Dots (Visual UI) instead of Dropdown -->
+        <div style="margin-bottom: 15px;">
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;">ऐप की डिफ़ॉल्ट थीम चुनें:</p>
+            <div class="theme-chooser" id="theme-dots-container">
+                <div class="theme-circle active sfx-trigger" data-color="default" style="background: #00f0ff; color: #00f0ff;"></div>
+                <div class="theme-circle sfx-trigger" data-color="purple" style="background: #b535ff; color: #b535ff;"></div>
+                <div class="theme-circle sfx-trigger" data-color="emerald" style="background: #00ff88; color: #00ff88;"></div>
+                <div class="theme-circle sfx-trigger" data-color="crimson" style="background: #ff3366; color: #ff3366;"></div>
+                <div class="theme-circle sfx-trigger" data-color="gold" style="background: #ffc107; color: #ffc107;"></div>
+                <div class="theme-circle sfx-trigger" data-color="royal" style="background: #4169e1; color: #4169e1;"></div>
+                <div class="theme-circle sfx-trigger" data-color="sunset" style="background: #ff7f50; color: #ff7f50;"></div>
+                <div class="theme-circle sfx-trigger" data-color="neonpink" style="background: #ff00ff; color: #ff00ff;"></div>
+                <div class="theme-circle sfx-trigger" data-color="ruby" style="background: #e0115f; color: #e0115f;"></div>
+                <div class="theme-circle sfx-trigger" data-color="matrix" style="background: #00ff41; color: #00ff41;"></div>
+            </div>
         </div>
+
         <div class="setting-row">
             <div class="setting-info"><h4>बैकग्राउंड एनीमेशन</h4><p>फॉर्मूले और ग्लो इफ़ेक्ट</p></div>
             <label class="switch-clean sfx-trigger"><input type="checkbox" id="anim-toggle" checked><span class="slider-clean"></span></label>
@@ -110,6 +110,17 @@
             <div class="setting-info"><h4>प्ले / पॉज़ BGM</h4></div>
             <label class="switch-clean sfx-trigger"><input type="checkbox" id="bgm-toggle"><span class="slider-clean"></span></label>
         </div>
+        
+        <!-- 🔥 FIX: Beautiful Volume Slider -->
+        <div style="background: rgba(255,255,255,0.02); padding: 12px 15px; border-radius: 10px; margin-bottom: 15px;">
+            <p style="font-size: 0.85rem; color: #fff; margin-bottom: 8px;">म्यूजिक वॉल्यूम</p>
+            <div class="volume-slider-container">
+                <i class="ri-volume-down-fill" style="color: var(--text-secondary);"></i>
+                <input type="range" id="bgm-volume" min="0" max="1" step="0.05" value="0.3" class="custom-range sfx-trigger">
+                <i class="ri-volume-up-fill" style="color: var(--text-secondary);"></i>
+            </div>
+        </div>
+
         <div class="setting-row">
             <div class="setting-info"><h4>टाइमर अलार्म</h4><p>पोमोडोरो खत्म होने की आवाज़</p></div>
             <select class="pro-select sfx-trigger" id="pomodoro-tone-select">
@@ -125,14 +136,9 @@
 
         <!-- ⚙️ DATA & ACCOUNT -->
         <h3 class="setting-section-title"><i class="ri-settings-3-fill"></i> सिस्टम सेटिंग्स</h3>
-        <div class="setting-row">
-            <div class="setting-info"><h4>वीकली पेरेंट रिपोर्ट</h4><p>प्रोग्रेस ईमेल पर भेजें</p></div>
-            <label class="switch-clean sfx-trigger"><input type="checkbox" id="report-toggle"><span class="slider-clean"></span></label>
-        </div>
         <button id="clear-cache-btn" class="sfx-trigger" style="width: 100%; margin-top: 10px; background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 500;">
             <i class="ri-delete-bin-line"></i> ऑफलाइन कैशे (Cache) मिटाएं
         </button>
-
         <button id="reset-btn" class="sfx-trigger" style="width: 100%; margin-top: 1.5rem; margin-bottom: 3rem; background: rgba(234, 67, 53, 0.1); color: #ea4335; border: 1px solid rgba(234, 67, 53, 0.3); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600;">
             <i class="ri-logout-box-r-line"></i> लॉगआउट करें
         </button>
@@ -151,14 +157,21 @@
                 <!-- Top-Right: Circular Profile Settings -->
                 <div class="small-profile-btn header-profile-fix sfx-trigger" id="open-panel-btn" title="सेटिंग्स & प्रोफाइल">
                     <div class="avatar-frame-wrapper" id="header-avatar-frame">
-                        <img src="logo.png" id="dash-small-avatar" alt="Profile Image" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent-main); object-fit: cover;">
+                        <img src="logo.png" id="dash-small-avatar" alt="Profile Image">
                     </div>
                 </div>
             </div>
         </header>
 
         <main class="dash-main-clean" style="padding: 20px;">
-            <!-- Welcome Banner & Pomodoro (Same as before, kept safe!) -->
+            
+            <!-- 🔥 FIX: Motivation Section Restored! -->
+            <div class="quote-box glass-card" id="daily-quote-box" style="margin-bottom: 20px; text-align: center; padding: 15px; border-top: 3px solid var(--accent-main);">
+                <i class="ri-double-quotes-l" style="color: var(--accent-main); font-size: 1.8rem; margin-bottom: 5px; display: inline-block;"></i>
+                <p id="daily-quote" style="font-style: italic; color: #fff; font-size: 1rem; font-weight: 500;">"शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।"</p>
+            </div>
+
+            <!-- Welcome Banner -->
             <div class="welcome-banner glass-card" id="welcome-banner" style="background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.2) 100%); border-left: 4px solid var(--accent-main); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
                 <div class="welcome-text">
                     <h1 class="greeting" style="font-size: 1.6rem; font-family: var(--font-heading);">
@@ -186,7 +199,7 @@
                 </div>
             </div>
 
-            <!-- Stats & Streak Data (Kept Safe) -->
+            <!-- Stats Grid -->
             <div class="stats-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px;">
                 <div class="stat-card glass-card" style="padding: 15px; border-radius: 16px;">
                     <h3 id="main-streak-display">0 दिन</h3><p>एक्टिव स्ट्रीक</p>
@@ -196,14 +209,21 @@
                 </div>
             </div>
             
-            <!-- Badges System Container (Kept Safe) -->
-            <div class="badges-grid" id="badges-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; margin-bottom: 25px; text-align: center;"></div>
+            <!-- 🔥 FIX: Badges Area (Restored to Main Dashboard) -->
+            <div class="badges-section" style="margin-bottom: 2.5rem;">
+                <h3 style="margin-bottom: 15px; color: var(--accent-main); font-family: var(--font-heading); display:flex; align-items:center; gap:8px; font-size: 1.3rem;"><i class="ri-medal-fill"></i> अचीवमेंट्स & मेडल्स</h3>
+                <div class="badges-grid" id="badges-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; text-align: center;">
+                    <!-- JS fills this -->
+                </div>
+            </div>
+            
         </main>
     </div>
 
-    <!-- 🌟 NEW: BOTTOM NAVIGATION BAR (5 BUTTONS) 🌟 -->
+    <!-- 🌟 BOTTOM NAVIGATION BAR (5 BUTTONS) 🌟 -->
     <nav class="bottom-nav glass-panel">
-        <a href="dashboard.html" class="nav-item active sfx-trigger">
+        <!-- 🔥 FIX: Study Button links to subjects.html -->
+        <a href="subjects.html" class="nav-item active sfx-trigger">
             <i class="ri-home-smile-fill"></i><span>Study</span>
         </a>
         <a href="quiz.html" class="nav-item sfx-trigger">
@@ -218,10 +238,23 @@
         <a href="chat.html" class="nav-item sfx-trigger">
             <i class="ri-discuss-line"></i><span>Chat</span>
         </a>
-        <a href="bookmarks.html" class="nav-item sfx-trigger" id="open-bookmarks-nav">
+        <a href="bookmarks.html" class="nav-item sfx-trigger">
             <i class="ri-bookmark-3-line"></i><span>Saved</span>
         </a>
     </nav>
+
+    <!-- 🖼️ 30 AVATAR FRAMES GALLERY MODAL -->
+    <div id="frames-modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100000; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s ease;">
+        <div id="frames-modal-box" style="background: #0c1322; border: 1px solid var(--accent-main); border-radius: 20px; width: 95%; max-width: 500px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform: translateY(30px); transition: 0.3s ease;">
+            <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5);">
+                <h3 style="color: #fff; font-family: var(--font-heading); font-size: 1.2rem;"><i class="ri-focus-3-line" style="color: var(--accent-main);"></i> अवतार गैलरी</h3>
+                <button id="close-frames-btn" class="sfx-trigger" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="ri-close-line"></i></button>
+            </div>
+            <div id="frames-content" style="padding: 20px; overflow-y: auto; flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; align-content: start;">
+                <!-- JS will generate 20 Free + 10 PRO frames here -->
+            </div>
+        </div>
+    </div>
 
     <!-- 🏆 TOP 50 LEADERBOARD MODAL -->
     <div id="leaderboard-modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100000; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s ease;">
@@ -231,9 +264,7 @@
                 <button id="close-leaderboard-btn" class="sfx-trigger" style="background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;"><i class="ri-close-line"></i></button>
             </div>
             <div id="leaderboard-content" style="padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px;">
-                <div style="text-align:center; color:var(--text-secondary); margin-top: 50px;">
-                    <div class="spinner" style="margin: 0 auto 10px auto; border-top-color: #d4af37;"></div> डेटा लोड हो रहा है...
-                </div>
+                <div style="text-align:center; color:var(--text-secondary); margin-top: 50px;"><div class="spinner" style="margin: 0 auto 10px auto; border-top-color: #d4af37;"></div> डेटा लोड हो रहा है...</div>
             </div>
             <div style="padding: 15px; background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #fff;">
                 आपकी करंट रैंक: <strong id="my-current-rank" style="color: var(--accent-main);">#--</strong>
@@ -241,7 +272,6 @@
         </div>
     </div>
 
-    <!-- JS WILL BE IN PART 2 -->
     <script type="module" src="dashboard.js"></script>
 </body>
 </html>
