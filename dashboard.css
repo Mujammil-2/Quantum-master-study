@@ -1,5 +1,5 @@
 /* =========================================================================
-   DASHBOARD MASTER CSS ENGINE (100 FRAMES, 10 COLORS & FULL FIXES)
+   DASHBOARD MASTER CSS ENGINE (100 FRAMES & 10 COLORS EDITION)
 ========================================================================= */
 
 :root {
@@ -37,7 +37,7 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .loading-bar-fill { width: 0%; height: 100%; background: var(--accent-main); box-shadow: 0 0 10px var(--accent-main); transition: width 0.2s ease; }
 #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.6; pointer-events: none; }
 
-/* 🌟 COLOR THEME CIRCLES & CUSTOM VOLUME SLIDER 🌟 */
+/* 🌟 NEW: THEME CIRCLES & CUSTOM VOLUME SLIDER 🌟 */
 .theme-chooser { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
 .theme-chooser::-webkit-scrollbar { display: none; }
 .theme-circle { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; display: flex; justify-content: center; align-items: center; transition: 0.3s; opacity: 0.6; }
@@ -49,9 +49,11 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .custom-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-main); cursor: pointer; box-shadow: 0 0 10px var(--accent-glow); transition: 0.2s; }
 .custom-range::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-/* 🖼️ REAL AVATAR IMAGE FRAMES OVERLAY */
+/* 🖼️ FIXED: REAL AVATAR IMAGE FRAMES OVERLAY */
 .avatar-frame-wrapper { position: relative; display: inline-flex; justify-content: center; align-items: center; border-radius: 50%; padding: 0; background: transparent !important; box-shadow: none !important; border: none !important; transition: 0.3s; }
+/* Original profile picture sits behind */
 .avatar-frame-wrapper img:not(.real-image-frame-overlay) { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; z-index: 1; border: 2px solid var(--bg-main); }
+/* Frame overlay sits on top */
 .real-image-frame-overlay { pointer-events: none; z-index: 10; }
 
 #dash-small-avatar { width: 38px; height: 38px; border: none; } 
@@ -91,6 +93,7 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: rgba(255,255,255,0.02); padding: 12px 15px; border-radius: 10px; }
 .setting-info h4 { font-size: 0.9rem; color: #fff; margin-bottom: 2px; }
 .setting-info p { font-size: 0.75rem; color: var(--text-secondary); }
+
 .pro-select { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 12px; border-radius: 8px; outline: none; font-size: 0.85rem; cursor: pointer; transition: 0.3s; }
 .switch-clean input:checked + .slider-clean { background-color: var(--accent-main); box-shadow: 0 0 10px var(--accent-glow); }
 .switch-clean input:checked + .slider-clean:before { transform: translateX(20px); }
@@ -110,43 +113,11 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .badge-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px 10px; text-align: center; position: relative; overflow: hidden; transition: 0.3s; }
 .badge-card.unlocked { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); }
 .badge-card.unlocked:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); border-color: var(--accent-main); }
+.badge-card.locked { opacity: 0.5; filter: grayscale(100%); cursor: not-allowed; }
+.locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; font-size: 2rem; color: #fff; backdrop-filter: blur(2px); z-index: 2; }
 .badge-icon { font-size: 2.5rem; margin-bottom: 8px; display: block; filter: drop-shadow(0 0 10px currentColor); }
 .badge-title { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
 .badge-desc { font-size: 0.65rem; color: var(--text-secondary); }
-
-/* 🖼️ FIXED FRAME BOX (Half Cut & Text Bug Solved) */
-.frame-box {
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 12px;
-    padding: 20px 5px 15px 5px !important;
-    text-align: center;
-    position: relative;
-    transition: 0.3s;
-    min-height: 140px; /* Box lamba rahega */
-    cursor: pointer;
-    /* overflow: hidden HATA DIYA GAYA HAI! */
-}
-.frame-box:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-3px);
-    border-color: var(--accent-main);
-}
-.frame-box.locked { opacity: 0.5; filter: grayscale(100%); cursor: not-allowed; }
-.locked-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: flex; justify-content: center; align-items: center;
-    font-size: 2rem; color: #fff;
-    backdrop-filter: blur(2px);
-    z-index: 20;
-    border-radius: 12px;
-}
 
 /* TOASTS */
 .qms-toast-msg { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: #111827; border-left: 4px solid var(--accent-main); color: #fff; padding: 12px 20px; border-radius: 8px; z-index: 100000; display: flex; align-items: center; gap: 10px; font-size: 0.95rem; box-shadow: 0 15px 40px rgba(0,0,0,0.6); animation: toastFade 3s forwards; }
