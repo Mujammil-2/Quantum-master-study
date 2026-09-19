@@ -1,20 +1,5 @@
 /* =========================================================================
-   QMS JAVASCRIPT MASTER ENGINE (100 FRAMES GAMING GALLERY EDITION)
-   - FEATURES INCLUDED:
-     0. Firebase Cloud Data Sync & VIP PRO Logic
-     1. Multi-Track BGM, UI Volume Slider & Alarms
-     2. Splash Screen Loading Logic
-     3. Dynamic Greetings & Motivation Quotes
-     4. Pomodoro Focus Timer (+/- controls)
-     5. Smart Bookmarks (Saved Notes)
-     6. Custom Toasts & UI Modals
-     7. 🏆 50 Mega Badges System (Main Dashboard)
-     8. ✨ 10 Color Theme Dots & Eye Care
-     9. 🖼️ 100 REAL IMAGE AVATAR FRAMES (30 Free + 70 PRO)
-     10. 🏆 TOP 50 LEADERBOARD FIREBASE LOGIC
-     11. Profile Image Upload
-     12. Logout & Cache Manager
-     13. 🌌 Firefly Particles Engine
+   QMS JAVASCRIPT MASTER ENGINE (100 FRAMES, FIXED NUMBERING & FULL LOGIC)
 ========================================================================= */
 
 // 🔥 0. FIREBASE IMPORT & SETUP
@@ -64,7 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     document.getElementById('panel-profile-img').src = cloudData.photoURL;
                 }
                 
-                // 👑 PRO VIP LOGIC
                 if (cloudData.isPremium === true) {
                     const proCrown = document.getElementById('pro-crown');
                     if (proCrown) proCrown.innerHTML = '<i class="ri-vip-crown-fill" style="color: #d4af37;"></i>';
@@ -89,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ==========================================
-    // 1. SMART BGM MEMORY, VOLUME SLIDER & ALARMS
+    // 1. SMART BGM MEMORY & VOLUME SLIDER
     // ==========================================
     const bgmAudio = document.getElementById('bgm-audio');
     const bgmToggle = document.getElementById('bgm-toggle');
@@ -171,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 200);
 
     // ==========================================
-    // 4. POMODORO FOCUS TIMER (WITH ALARM)
+    // 4. POMODORO FOCUS TIMER
     // ==========================================
     let focusTimerInterval; 
     let configuredFocusMinutes = 25; 
@@ -230,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // ==========================================
-    // 7. 🏆 XP & 50 MEGA BADGES SYSTEM 
+    // 7. 🏆 XP SYSTEM 
     // ==========================================
     let completedChaptersData = {};
     const rawCompletedData = localStorage.getItem('qms_completed');
@@ -289,63 +273,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ==========================================
-    // 9. 🖼️ 100 REAL IMAGE AVATAR FRAMES (30 FREE + 70 PRO)
+    // 9. 🖼️ 100 REAL IMAGE AVATAR FRAMES (30 FREE + 70 PRO) WITH NUMBERING
     // ==========================================
     const framesModalOverlay = document.getElementById('frames-modal-overlay');
     const openFramesBtn = document.getElementById('open-frames-btn');
     const closeFramesBtn = document.getElementById('close-frames-btn');
     const framesContent = document.getElementById('frames-content');
     
-    // Apply Active Image Frame Function
     function applyRealImageFrame(frameUrl) {
-        // Remove existing real frames
         document.querySelectorAll('.real-image-frame-overlay').forEach(el => el.remove());
-        
         if (frameUrl && frameUrl !== 'none') {
             const headerAvatar = document.getElementById('header-avatar-frame');
             const panelAvatar = document.getElementById('panel-avatar-frame');
-            
             const frameImgHTML = `<img src="${frameUrl}" class="real-image-frame-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none; transform: scale(1.3);">`;
             
-            if(headerAvatar) {
-                headerAvatar.style.position = 'relative';
-                headerAvatar.insertAdjacentHTML('beforeend', frameImgHTML);
-            }
-            if(panelAvatar) {
-                panelAvatar.style.position = 'relative';
-                panelAvatar.insertAdjacentHTML('beforeend', frameImgHTML);
-            }
+            if(headerAvatar) { headerAvatar.style.position = 'relative'; headerAvatar.insertAdjacentHTML('beforeend', frameImgHTML); }
+            if(panelAvatar) { panelAvatar.style.position = 'relative'; panelAvatar.insertAdjacentHTML('beforeend', frameImgHTML); }
         }
     }
 
-    // Load saved frame on startup
     const savedFrameUrl = localStorage.getItem('qms_avatar_frame_url') || 'none';
     applyRealImageFrame(savedFrameUrl);
 
-    // Auto-Generate 100 Frames Data
     const galleryFramesData = [];
     galleryFramesData.push({ id: 'none', name: 'No Frame', type: 'free', reqXp: 0, url: 'none' });
 
-    // Frames 1 to 30 (FREE - Unlock via XP)
     for(let i = 1; i <= 30; i++) {
-        galleryFramesData.push({
-            id: `frame${i}`,
-            name: `QMS Frame ${i}`,
-            type: 'free',
-            reqXp: i * 3000, // XP increases by 3000 for each frame
-            url: `frames/frame${i}.png`
-        });
+        galleryFramesData.push({ id: `frame${i}`, name: `QMS Frame`, type: 'free', reqXp: i * 3000, url: `frames/frame${i}.png` });
     }
-
-    // Frames 31 to 100 (PRO VIP ONLY)
     for(let i = 31; i <= 100; i++) {
-        galleryFramesData.push({
-            id: `frame${i}`,
-            name: `PRO Elite ${i}`,
-            type: 'pro',
-            reqXp: 0,
-            url: `frames/frame${i}.png`
-        });
+        galleryFramesData.push({ id: `frame${i}`, name: `PRO Elite`, type: 'pro', reqXp: 0, url: `frames/frame${i}.png` });
     }
 
     if (openFramesBtn && framesModalOverlay) {
@@ -354,7 +311,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             setTimeout(() => framesModalOverlay.style.opacity = '1', 10);
             
             let html = '';
-            galleryFramesData.forEach(frame => {
+            
+            // 🛠️ LOOP WITH NUMBERING & FIXED LAYOUT
+            galleryFramesData.forEach((frame, index) => {
                 let isLocked = false;
                 let lockMsg = '';
                 
@@ -367,17 +326,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const statusClass = isLocked ? 'locked' : '';
                 const userDp = localStorage.getItem('qms_profile_img') || 'logo.png';
                 
-                // Display frame in gallery grid
-                const overlayHTML = frame.url !== 'none' ? `<img src="${frame.url}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; transform:scale(1.2);">` : '';
+                // #1, #2 Numbering Logic
+                let displayName = index === 0 ? frame.name : `#${index} ${frame.name}`;
+                
+                const overlayHTML = frame.url !== 'none' ? `<img src="${frame.url}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; transform:scale(1.3); pointer-events:none;">` : '';
+                const lockedOverlay = isLocked ? `<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>` : '';
 
                 html += `
-                    <div class="frame-box ${statusClass} sfx-trigger" data-url="${frame.url}" data-locked="${isLocked}" data-msg="${lockMsg}" style="position:relative; padding:15px 5px; text-align:center; background:rgba(255,255,255,0.05); border-radius:12px; cursor:pointer; overflow:hidden;">
-                        <div style="position:relative; width:60px; height:60px; margin: 0 auto;">
-                            <img src="${userDp}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                    <div class="frame-box ${statusClass} sfx-trigger" data-url="${frame.url}" data-locked="${isLocked}" data-msg="${lockMsg}">
+                        ${lockedOverlay}
+                        <div style="position:relative; width:55px; height:55px; margin: 0 auto 15px auto;">
+                            <img src="${userDp}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border: 2px solid #050b14;">
                             ${overlayHTML}
                         </div>
-                        <h4 style="font-size:0.7rem; color:#fff; margin-top:12px; font-weight:600;">${frame.name}</h4>
-                        ${frame.type==='pro' ? '<p style="font-size:0.6rem; color:#d4af37; margin-top:3px;"><i class="ri-vip-crown-fill"></i> PRO</p>' : `<p style="font-size:0.6rem; color:var(--text-secondary); margin-top:3px;">${frame.reqXp} XP</p>`}
+                        <h4 style="font-size:0.75rem; color:#fff; margin-bottom:4px; font-weight:700; line-height:1.2;">${displayName}</h4>
+                        ${frame.type==='pro' ? '<p style="font-size:0.65rem; color:#d4af37; font-weight:600;"><i class="ri-vip-crown-fill"></i> PRO</p>' : `<p style="font-size:0.65rem; color:var(--text-secondary); font-weight:600;">${frame.reqXp} XP</p>`}
                     </div>
                 `;
             });
@@ -390,10 +353,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const lockedMsg = box.getAttribute('data-msg');
                     const selectedUrl = box.getAttribute('data-url');
                     
-                    if (isBoxLocked) {
-                        window.showCustomToast(`Locked: ${lockedMsg}`, true);
-                        return;
-                    }
+                    if (isBoxLocked) { window.showCustomToast(`Locked: ${lockedMsg}`, true); return; }
                     
                     localStorage.setItem('qms_avatar_frame_url', selectedUrl);
                     applyRealImageFrame(selectedUrl);
