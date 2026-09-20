@@ -1,5 +1,5 @@
 /* =========================================================================
-   QMS JAVASCRIPT MASTER ENGINE (100 FRAMES, FIXED NUMBERING & FULL LOGIC)
+   QMS JAVASCRIPT MASTER ENGINE (FORMULAS RESTORED, FRAME SIZES FIXED)
 ========================================================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         eyeCareToggle.addEventListener('change', (e) => { if (e.target.checked) { document.body.classList.add('eye-care-active'); localStorage.setItem('qms_eye_care', 'on'); } else { document.body.classList.remove('eye-care-active'); localStorage.setItem('qms_eye_care', 'off'); } updateToggleUI(e.target); });
     }
 
-    // 9. 🖼️ 100 REAL IMAGE AVATAR FRAMES WITH NUMBERING
+    // 9. 🖼️ 100 REAL IMAGE AVATAR FRAMES
     const framesModalOverlay = document.getElementById('frames-modal-overlay');
     const openFramesBtn = document.getElementById('open-frames-btn');
     const closeFramesBtn = document.getElementById('close-frames-btn');
@@ -180,7 +180,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (frameUrl && frameUrl !== 'none') {
             const hAvatar = document.getElementById('header-avatar-frame');
             const pAvatar = document.getElementById('panel-avatar-frame');
-            const imgHTML = `<img src="${frameUrl}" class="real-image-frame-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none; transform: scale(1.3);">`;
+            /* 🔥 SCALE THODA BADA KIYA TAAKI BADE PROFILE PAR FIT HO (1.35) */
+            const imgHTML = `<img src="${frameUrl}" class="real-image-frame-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none; transform: scale(1.35);">`;
             if(hAvatar) { hAvatar.style.position = 'relative'; hAvatar.insertAdjacentHTML('beforeend', imgHTML); }
             if(pAvatar) { pAvatar.style.position = 'relative'; pAvatar.insertAdjacentHTML('beforeend', imgHTML); }
         }
@@ -196,7 +197,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             framesModalOverlay.style.display = 'flex'; setTimeout(() => framesModalOverlay.style.opacity = '1', 10);
             let html = '';
             
-            // 🛠️ NUMBERING & FIXED LAYOUT
             galleryFramesData.forEach((frame, index) => {
                 let isLocked = false, lockMsg = '';
                 if (frame.type === 'pro') { if (!currentQmsUser || currentQmsUser.isPremium !== true) { isLocked = true; lockMsg = "Requires PRO VIP"; } } 
@@ -204,14 +204,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 let displayName = index === 0 ? frame.name : `#${index} ${frame.name}`;
                 const userDp = localStorage.getItem('qms_profile_img') || 'logo.png';
-                const overlayHTML = frame.url !== 'none' ? `<img src="${frame.url}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; transform:scale(1.3); pointer-events:none;">` : '';
+                
+                /* 🔥 BORDER NONE KIYA TAAKI GREEN NA DIKHE */
+                const overlayHTML = frame.url !== 'none' ? `<img src="${frame.url}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; transform:scale(1.35); pointer-events:none;">` : '';
                 const lockedOverlay = isLocked ? `<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>` : '';
 
                 html += `
                     <div class="frame-box ${isLocked ? 'locked' : ''} sfx-trigger" data-url="${frame.url}" data-locked="${isLocked}" data-msg="${lockMsg}">
                         ${lockedOverlay}
                         <div style="position:relative; width:55px; height:55px; margin: 0 auto 15px auto;">
-                            <img src="${userDp}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border: 2px solid #050b14;">
+                            <img src="${userDp}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border: none !important;">
                             ${overlayHTML}
                         </div>
                         <h4 style="font-size:0.75rem; color:#fff; margin-bottom:4px; font-weight:700; line-height:1.2;">${displayName}</h4>
@@ -287,22 +289,68 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('reset-btn')?.addEventListener('click', () => { if(confirm("लॉगआउट करें?")) { signOut(auth).then(() => { localStorage.setItem('qms_is_logged_in', 'false'); window.location.href = "index.html"; }); } }); 
 
-    // 13. FIREFLY PARTICLES ENGINE
+    // 13. 🌌 ADVANCED FORMULAS & FIREFLY ENGINE (RESTORED)
     const canvas = document.getElementById('bg-canvas');
     if (canvas) {
-        const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let particles = Array.from({length: 40}, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 3 + 1, vx: Math.random() * 1 - 0.5, vy: Math.random() * -1 - 0.2, angle: Math.random() * Math.PI * 2 }));
-        function drawParticles() { 
-            if (localStorage.getItem('qms_anim') !== 'off') {
-                ctx.clearRect(0, 0, canvas.width, canvas.height); 
-                particles.forEach(p => { 
-                    p.y += p.vy; p.x += p.vx; p.angle += 0.05; if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
-                    ctx.fillStyle = `rgba(255, 255, 255, ${((Math.sin(p.angle) + 1) / 2) * 0.5 + 0.1})`; 
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); 
-                }); 
+        const ctx = canvas.getContext('2d'); 
+        canvas.width = window.innerWidth; 
+        canvas.height = window.innerHeight;
+        
+        // 📚 मैथ्स और साइंस के सिंबल्स
+        const mathSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', '⚛', 'α', 'β'];
+        let particles = [];
+        
+        class Particle {
+            constructor() {
+                this.isSymbol = Math.random() > 0.5; // 50% सिंबल, 50% पार्टिकल
+                this.text = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                
+                if (this.isSymbol) {
+                    this.size = Math.random() * 12 + 10;
+                    this.vx = Math.random() * 0.5 - 0.25;
+                    this.vy = Math.random() * -0.8 - 0.2;
+                } else {
+                    this.size = Math.random() * 3 + 1;
+                    this.vx = Math.random() * 1 - 0.5;
+                    this.vy = Math.random() * -1 - 0.2;
+                }
+                this.angle = Math.random() * Math.PI * 2;
+                this.spin = Math.random() * 0.05 + 0.02;
             }
-            requestAnimationFrame(drawParticles); 
+            update() {
+                this.y += this.vy; this.x += this.vx; this.angle += this.spin;
+                if (this.y < -30) { this.y = canvas.height + 30; this.x = Math.random() * canvas.width; }
+                if (this.x < -30 || this.x > canvas.width + 30) { this.vx *= -1; }
+            }
+            draw(ctx) {
+                let op = ((Math.sin(this.angle) + 1) / 2) * 0.5 + 0.1;
+                ctx.fillStyle = `rgba(255, 255, 255, ${op})`;
+                
+                if (this.isSymbol) {
+                    ctx.font = `${this.size}px "Space Grotesk", sans-serif`;
+                    ctx.fillText(this.text, this.x, this.y);
+                } else {
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+        }
+        
+        for (let i = 0; i < 40; i++) particles.push(new Particle());
+        
+        function drawParticles() {
+            if (localStorage.getItem('qms_anim') !== 'off') {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(ctx); });
+            }
+            requestAnimationFrame(drawParticles);
         }
         drawParticles();
+        
+        window.addEventListener('resize', () => { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
+        });
     }
 });
