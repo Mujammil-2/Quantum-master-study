@@ -1,5 +1,5 @@
 /* =========================================================================
-   DASHBOARD MASTER CSS ENGINE (100 FRAMES, FIXED SIZES & NO BORDERS)
+   DASHBOARD MASTER CSS ENGINE (100 FRAMES, NO GLOW, NO BORDERS, BIG SIZE)
 ========================================================================= */
 
 :root {
@@ -9,6 +9,7 @@
     --font-main: 'Inter', sans-serif; --font-heading: 'Space Grotesk', sans-serif;
 }
 
+/* 🎨 10 PREMIUM THEMES */
 [data-theme="purple"] { --accent-main: #b535ff; --accent-glow: rgba(181, 53, 255, 0.4); }
 [data-theme="emerald"] { --accent-main: #00ff88; --accent-glow: rgba(0, 255, 136, 0.4); }
 [data-theme="crimson"] { --accent-main: #ff3366; --accent-glow: rgba(255, 51, 102, 0.4); }
@@ -22,8 +23,11 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
 body { background-color: var(--bg-main); color: var(--text-primary); overflow-x: hidden; min-height: 100vh; }
 a { text-decoration: none; }
+
+/* 🌟 EYE CARE MODE */
 body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255, 200, 150, 0.12); pointer-events: none; z-index: 999999; mix-blend-mode: multiply; }
 
+/* 🔥 REAL LOGOS & SPLASH */
 .premium-logo-img { width: 100px; height: 100px; border-radius: 18px; margin-bottom: 20px; animation: pulseImgLogo 2s infinite alternate; box-shadow: 0 0 15px var(--accent-glow); border: 2px solid var(--accent-main); object-fit: cover; }
 .mini-qms-logo-img { width: 35px; height: 35px; border-radius: 8px; box-shadow: 0 0 10px var(--accent-glow); object-fit: cover; border: 1px solid var(--accent-main); }
 @keyframes pulseImgLogo { 0% { filter: drop-shadow(0 0 10px var(--accent-glow)); transform: scale(1); } 100% { filter: drop-shadow(0 0 30px var(--accent-main)); transform: scale(1.05); } }
@@ -33,6 +37,7 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .loading-bar-fill { width: 0%; height: 100%; background: var(--accent-main); box-shadow: 0 0 10px var(--accent-main); transition: width 0.2s ease; }
 #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.6; pointer-events: none; }
 
+/* 🌟 COLOR THEMES & SLIDER */
 .theme-chooser { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
 .theme-chooser::-webkit-scrollbar { display: none; }
 .theme-circle { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; display: flex; justify-content: center; align-items: center; transition: 0.3s; opacity: 0.6; }
@@ -44,19 +49,42 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .custom-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-main); cursor: pointer; box-shadow: 0 0 10px var(--accent-glow); transition: 0.2s; }
 .custom-range::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-/* 🛠️ PROFILE SIZE & GREEN BORDER FIX */
+/* 🖼️ REAL AVATAR IMAGE FRAMES (100% GLOW & BORDER REMOVED, BIG SIZE) */
 .top-nav, .header-profile-fix, .avatar-frame-wrapper { overflow: visible !important; }
-.header-profile-fix { margin-right: 15px !important; margin-top: 5px !important; background: transparent !important; box-shadow: none !important; border: none !important; }
-.avatar-frame-wrapper { position: relative; display: inline-flex; justify-content: center; align-items: center; border-radius: 50%; padding: 0; background: transparent !important; box-shadow: none !important; border: none !important; transition: 0.3s; }
+.header-profile-fix { margin-right: 15px !important; margin-top: 5px !important; }
 
-/* Removed solid borders, kept background transparent */
-.avatar-frame-wrapper img:not(.real-image-frame-overlay) { border-radius: 50%; object-fit: cover; z-index: 1; border: none !important; background: transparent !important; box-shadow: none !important; }
+.image-upload-wrapper-clean { 
+    position: relative; margin-bottom: 15px; 
+    background: transparent !important; 
+    box-shadow: none !important; 
+    border: none !important; 
+}
+
+.avatar-frame-wrapper { 
+    position: relative; display: inline-flex; justify-content: center; align-items: center; 
+    border-radius: 50%; padding: 0; 
+    background: transparent !important; 
+    box-shadow: none !important; 
+    border: none !important; 
+    transition: 0.3s; 
+}
+
+/* 🔥 MAIN FIX: Box-shadow (Glow) permanently removed from all profile images */
+.avatar-frame-wrapper img:not(.real-image-frame-overlay) { 
+    width: 100%; height: 100%; border-radius: 50%; object-fit: cover; z-index: 1; 
+    border: none !important; 
+    box-shadow: none !important; /* <-- YE THA ASLI CULPRIT (GLOW) */
+    outline: none !important;
+    background: transparent !important;
+}
+
 .real-image-frame-overlay { pointer-events: none; z-index: 10; }
 
-/* Increased Profile Sizes */
-#dash-small-avatar { width: 45px !important; height: 45px !important; border: none !important; } 
-#panel-profile-img { width: 100px !important; height: 100px !important; border: none !important; margin-bottom: 5px; } 
+/* 🔥 PROFILE SIZE BADA KAR DIYA */
+#dash-small-avatar { width: 50px !important; height: 50px !important; } 
+#panel-profile-img { width: 110px !important; height: 110px !important; } 
 
+/* Dashboard Layout */
 .dashboard-wrapper { max-width: 900px; margin: 0 auto; padding-bottom: 100px; position: relative; z-index: 10; }
 .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .glass-panel { background: rgba(5, 11, 20, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -64,6 +92,7 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .brand-mini { display: flex; align-items: center; gap: 10px; }
 .brand-mini h2 { font-family: var(--font-heading); font-size: 1.2rem; letter-spacing: 1px; }
 
+/* 🌟 BOTTOM NAVIGATION */
 .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid rgba(255,255,255,0.05); box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
 .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-secondary); text-decoration: none; width: 20%; transition: 0.3s; cursor: pointer; }
 .nav-item.active { color: var(--accent-main); transform: translateY(-3px); }
@@ -75,13 +104,13 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .center-fab:hover { transform: scale(1.1); box-shadow: 0 15px 35px var(--accent-main); }
 @keyframes pulseFab { 0% { transform: scale(1); box-shadow: 0 0 15px var(--accent-glow); } 100% { transform: scale(1.05); box-shadow: 0 0 30px var(--accent-main); } }
 
+/* SETTINGS PANEL */
 .profile-side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 350px; height: 100vh; background: var(--panel-bg); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.05); z-index: 10000; padding: 30px 20px; overflow-y: auto; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .profile-side-panel.active { right: 0; }
 .overlay-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 9999; display: none; backdrop-filter: blur(3px); opacity: 0; transition: 0.3s; }
 .overlay-bg.active { display: block; opacity: 1; }
 .close-panel-btn { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary); transition: 0.2s; }
 .panel-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; text-align: center; }
-.image-upload-wrapper-clean { position: relative; margin-bottom: 15px; }
 .upload-btn-clean { position: absolute; bottom: 0; right: -5px; background: var(--accent-main); color: #000; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 2px solid #050b14; z-index: 20; }
 .setting-section-title { font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
 .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: rgba(255,255,255,0.02); padding: 12px 15px; border-radius: 10px; }
@@ -92,11 +121,13 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .switch-clean input:checked + .slider-clean:before { transform: translateX(20px); }
 .slider-clean:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
 
+/* 🖼️ FIXED FRAME BOX */
 .frame-box { display: flex !important; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px 5px 15px 5px !important; text-align: center; position: relative !important; transition: 0.3s; min-height: 140px; cursor: pointer; }
 .frame-box:hover { background: rgba(255,255,255,0.08); transform: translateY(-3px); border-color: var(--accent-main); }
 .frame-box.locked { opacity: 0.5; filter: grayscale(100%); cursor: not-allowed; }
 .locked-overlay { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; font-size: 2rem; color: #fff; backdrop-filter: blur(2px); z-index: 20; border-radius: 12px !important; }
 
+/* TOASTS & LEADERBOARD */
 .qms-toast-msg { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: #111827; border-left: 4px solid var(--accent-main); color: #fff; padding: 12px 20px; border-radius: 8px; z-index: 100000; display: flex; align-items: center; gap: 10px; font-size: 0.95rem; box-shadow: 0 15px 40px rgba(0,0,0,0.6); animation: toastFade 3s forwards; }
 @keyframes toastFade { 0% { opacity: 0; bottom: 70px; } 10% { opacity: 1; bottom: 90px; } 90% { opacity: 1; bottom: 90px; } 100% { opacity: 0; bottom: 90px; } }
 
@@ -104,13 +135,6 @@ body.eye-care-active::after { content: ''; position: fixed; top: 0; left: 0; wid
 .lb-rank { font-size: 1.2rem; font-weight: 700; width: 35px; color: var(--text-secondary); }
 .lb-rank.top-1 { color: #ffd700; font-size: 1.5rem; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
 .lb-user-info { flex: 1; display: flex; align-items: center; gap: 12px; }
-.lb-user-info img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: none; }
+.lb-user-info img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.1); }
 .lb-name { font-size: 0.95rem; font-weight: 600; color: #fff; }
 .lb-xp { font-family: var(--font-heading); font-size: 1rem; color: var(--accent-main); font-weight: 700; }
-
-.badge-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px 10px; text-align: center; position: relative; overflow: hidden; transition: 0.3s; }
-.badge-card.unlocked { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); }
-.badge-card.unlocked:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); border-color: var(--accent-main); }
-.badge-icon { font-size: 2.5rem; margin-bottom: 8px; display: block; filter: drop-shadow(0 0 10px currentColor); }
-.badge-title { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
-.badge-desc { font-size: 0.65rem; color: var(--text-secondary); }
