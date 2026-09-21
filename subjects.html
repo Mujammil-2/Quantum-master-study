@@ -3,8 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>विषय चुनें | क्वांटम मास्टर स्टडी</title>
-    
+
+    <!-- 🚀 1. PRIMARY SEO: TITLE & DESCRIPTION (Bilingual) -->
+    <title>Quantum Master Study (QMS) | क्वांटम मास्टर स्टडी</title>
+    <meta name="description" content="Quantum Master Study (QMS) - कक्षा 11वीं और 12वीं (Class 11 & 12) के छात्रों के लिए भारत का सबसे बेहतरीन और प्रीमियम ऑनलाइन एजुकेशन प्लेटफॉर्म। यहाँ आपको मिलेगा Physics, Chemistry, और Mathematics (PCM/PCB) का संपूर्ण NCERT पाठ्यक्रम, स्मार्ट फोकस टाइमर (Pomodoro), डेली अचीवमेंट्स, 100+ गेमिंग अवतार फ्रेम्स और PRO VIP लीडरबोर्ड। आज ही QMS जॉइन करें!">
+
+    <!-- 🚀 2. MEGA KEYWORDS -->
+    <meta name="keywords" content="Quantum Master Study, QMS, क्वांटम मास्टर स्टडी, qms, Qms, QUANTUM MASTER STUDY, quantum master study app, qms edtech, qms website, Class 12th Board, Class 11th Foundation, NCERT solutions, Physics, Chemistry, Mathematics, PCB, PCM, IIT JEE, NEET, smart study platform, online education india, pomodoro study app, gaming avatar study app, qms login, best study app for class 12">
+
+    <!-- 🚀 3. FAVICON & SEARCH LOGO FIX (Globe Hataane ke liye) -->
+    <link rel="icon" type="image/png" sizes="192x192" href="logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png"> 
+    <meta name="theme-color" content="#00f0ff">
+
+    <!-- 🚀 4. OPEN GRAPH (WhatsApp/Facebook Share Fix) -->
+    <meta property="og:title" content="Quantum Master Study (QMS) | क्वांटम मास्टर स्टडी">
+    <meta property="og:description" content="कक्षा 11वीं और 12वीं के लिए भारत का सबसे प्रीमियम स्मार्ट एजुकेशन प्लेटफॉर्म। Physics, Chemistry, Math के NCERT कोर्सेस, फोकस टाइमर और PRO VIP बैजेज़।">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:url" content="https://mujammil-2.github.io/Quantum-master-study/">
+    <meta property="og:type" content="website">
+
+    <!-- 🚀 FONTS & CSS LINKS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -18,10 +39,8 @@
         .tab-btn { flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-family: var(--font-heading); border: none; cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
         .tab-btn.active { background: var(--accent-main); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
         .tab-btn:not(.active) { background: transparent; color: var(--text-secondary); }
-        
         .subject-card { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; text-decoration: none; transition: 0.3s; }
         .subject-card:hover { transform: translateY(-3px); border-color: var(--accent-main); background: rgba(255,255,255,0.05); }
-        
         .sub-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; flex-shrink: 0; background: rgba(255,255,255,0.05); }
         .sub-details { flex: 1; margin-left: 15px; }
         .sub-title { font-family: var(--font-heading); font-size: 1.2rem; color: #fff; margin-bottom: 2px; font-weight: 700; }
@@ -34,13 +53,13 @@
     <!-- 🌌 FIREFLY PARTICLES CANVAS -->
     <canvas id="bg-canvas"></canvas>
     
-    <!-- 🎵 AUDIO PLAYERS (For background music and SFX) -->
+    <!-- 🎵 AUDIO PLAYERS -->
     <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
     <audio id="bgm-audio" loop preload="auto"><source src="bgm1.mp3" type="audio/mpeg"></audio>
 
     <div class="dashboard-wrapper">
         
-        <!-- 🌟 HEADER: BACK BUTTON & PROFILE FRAME FIX -->
+        <!-- 🌟 HEADER: BACK BUTTON & PROFILE FRAME -->
         <header class="top-nav glass-panel dash-header" style="justify-content: space-between;">
             <a href="dashboard.html" class="sfx-trigger" style="color: #fff; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: 0.2s;">
                 <i class="ri-arrow-left-line" style="color: var(--accent-main); font-size: 1.3rem;"></i> 
@@ -48,7 +67,6 @@
             </a>
             
             <div style="display:flex; align-items:center;">
-                <!-- 🛠️ NEW PROFILE FRAME HTML (For dashboard.js to target) -->
                 <a href="dashboard.html" class="small-profile-btn header-profile-fix sfx-trigger" id="open-panel-btn" title="प्रोफाइल">
                     <div class="avatar-frame-wrapper" id="header-avatar-frame">
                         <img src="logo.png" id="dash-small-avatar" alt="Profile Image">
@@ -74,7 +92,6 @@
             <!-- 📚 SUBJECT CARDS -->
             <div class="subjects-list">
                 
-                <!-- PHYSICS -->
                 <a href="#" class="subject-card glass-card sfx-trigger">
                     <div class="sub-icon" style="color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.2);"><i class="ri-flashlight-fill"></i></div>
                     <div class="sub-details">
@@ -88,7 +105,6 @@
                     <i class="ri-arrow-right-s-line" style="color: var(--text-secondary); font-size: 1.5rem;"></i>
                 </a>
 
-                <!-- CHEMISTRY -->
                 <a href="#" class="subject-card glass-card sfx-trigger">
                     <div class="sub-icon" style="color: #b535ff; border: 1px solid rgba(181, 53, 255, 0.2);"><i class="ri-flask-fill"></i></div>
                     <div class="sub-details">
@@ -102,7 +118,6 @@
                     <i class="ri-arrow-right-s-line" style="color: var(--text-secondary); font-size: 1.5rem;"></i>
                 </a>
 
-                <!-- MATHEMATICS -->
                 <a href="#" class="subject-card glass-card sfx-trigger">
                     <div class="sub-icon" style="color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.2);"><i class="ri-function-line"></i></div>
                     <div class="sub-details">
@@ -129,7 +144,6 @@
             <i class="ri-brain-line"></i><span>Quiz</span>
         </a>
         <div class="nav-item center-fab-wrapper">
-            <!-- 🤖 AI Chatbot VIP Button (Glowing Center) -->
             <button class="center-fab sfx-trigger" onclick="window.location.href='ai-bot.html'">
                 <i class="ri-robot-2-fill"></i>
             </button>
