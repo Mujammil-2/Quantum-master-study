@@ -1,5 +1,6 @@
 /* =========================================================================
-   QMS JAVASCRIPT MASTER ENGINE (FORMULAS RESTORED, FRAME SIZES FIXED)
+   QMS JAVASCRIPT MASTER ENGINE 
+   (JUGNU ANIMATION, DYNAMIC QUOTES, FULL LOGIC PRESERVED)
 ========================================================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -20,7 +21,31 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 let currentQmsUser = null;
 
+// 🌟 1. DYNAMIC QUOTES (SUVICHAR) GENERATOR
+const hindiQuotes = [
+    "शिक्षा भविष्य का पासपोर्ट है, क्योंकि कल उनका है जो आज इसकी तैयारी करते हैं।",
+    "कठिन परिश्रम का कोई विकल्प नहीं होता।",
+    "ज्ञान वह निवेश है जिसका मुनाफा जीवन भर मिलता है।",
+    "सफलता पहले से की गई तैयारी पर निर्भर करती है।",
+    "जो उड़ने का शौक रखते हैं, वो गिरने का खौफ नहीं रखते।",
+    "मंजिलें उन्हें मिलती हैं, जिनके सपनों में जान होती है।",
+    "जितना कठिन संघर्ष होगा, जीत उतनी ही शानदार होगी।",
+    "गलतियां इस बात का सबूत हैं कि आप प्रयास कर रहे हैं।"
+];
+
 document.addEventListener('DOMContentLoaded', async () => {
+
+    // Inject Dynamic Quote into Dashboard
+    const welcomeBanner = document.getElementById('welcome-banner');
+    if (welcomeBanner && !document.getElementById('qms-quote-card')) {
+        const randomQuote = hindiQuotes[Math.floor(Math.random() * hindiQuotes.length)];
+        const quoteHTML = `
+        <div id="qms-quote-card" class="glass-card" style="text-align: center; margin-bottom: 20px; border-color: rgba(0, 240, 255, 0.3);">
+            <i class="ri-double-quotes-l" style="font-size: 2rem; color: var(--accent-main); opacity: 0.5;"></i>
+            <p id="daily-quote-text" style="font-size: 0.95rem; font-weight: 500; font-style: italic; color: #e2e8f0; margin-top: -10px;">"${randomQuote}"</p>
+        </div>`;
+        welcomeBanner.insertAdjacentHTML('beforebegin', quoteHTML);
+    }
 
     // 0. AUTH & DATA SYNC
     const uid = localStorage.getItem('qms_user_uid');
@@ -115,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (loadingProgress === 100) { clearInterval(loadingInterval); setTimeout(() => { if (splashScreenElement) { splashScreenElement.style.opacity = '0'; setTimeout(() => splashScreenElement.style.display = 'none', 800); } }, 600); }
     }, 200);
 
-    // 4. POMODORO
+    // 4. POMODORO TIMER
     let focusTimerInterval, configuredFocusMinutes = 25, focusTimeLeftInSeconds = 1500, isFocusTimerRunning = false;
     const timerDisplayElement = document.getElementById('timer-display');
     const timerStartButton = document.getElementById('timer-start-btn');
@@ -126,12 +151,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('timer-minus-btn')?.addEventListener('click', () => { if (!isFocusTimerRunning) { configuredFocusMinutes = Math.max(5, configuredFocusMinutes - 5); focusTimeLeftInSeconds = configuredFocusMinutes * 60; updateTimerUI(); } });
     timerStartButton?.addEventListener('click', () => {
         if (!isFocusTimerRunning) {
-            isFocusTimerRunning = true; timerStartButton.innerText = "पॉज़"; timerStartButton.style.background = "#ffc107"; 
+            isFocusTimerRunning = true; 
+            timerStartButton.innerText = "पॉज़"; 
+            timerStartButton.classList.add('running'); // CSS styling change
             focusTimerInterval = setInterval(() => {
                 if (focusTimeLeftInSeconds > 0) { focusTimeLeftInSeconds--; updateTimerUI(); } 
-                else { clearInterval(focusTimerInterval); isFocusTimerRunning = false; if (pomodoroAlarmAudio) { pomodoroAlarmAudio.currentTime = 0; pomodoroAlarmAudio.play().catch(()=>{}); } if (window.showCustomToast) window.showCustomToast("शानदार! टाइम पूरा हुआ।", false); focusTimeLeftInSeconds = configuredFocusMinutes * 60; updateTimerUI(); timerStartButton.innerText = "स्टार्ट"; timerStartButton.style.background = "var(--accent-main)"; }
+                else { clearInterval(focusTimerInterval); isFocusTimerRunning = false; if (pomodoroAlarmAudio) { pomodoroAlarmAudio.currentTime = 0; pomodoroAlarmAudio.play().catch(()=>{}); } if (window.showCustomToast) window.showCustomToast("शानदार! टाइम पूरा हुआ।", false); focusTimeLeftInSeconds = configuredFocusMinutes * 60; updateTimerUI(); timerStartButton.innerText = "स्टार्ट"; timerStartButton.classList.remove('running'); }
             }, 1000);
-        } else { clearInterval(focusTimerInterval); isFocusTimerRunning = false; timerStartButton.innerText = "रिज्यूम"; timerStartButton.style.background = "var(--accent-main)"; }
+        } else { clearInterval(focusTimerInterval); isFocusTimerRunning = false; timerStartButton.innerText = "रिज्यूम"; timerStartButton.classList.remove('running'); }
     });
 
     // 6. TOAST
@@ -180,7 +207,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (frameUrl && frameUrl !== 'none') {
             const hAvatar = document.getElementById('header-avatar-frame');
             const pAvatar = document.getElementById('panel-avatar-frame');
-            /* 🔥 SCALE THODA BADA KIYA TAAKI BADE PROFILE PAR FIT HO (1.35) */
             const imgHTML = `<img src="${frameUrl}" class="real-image-frame-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events:none; transform: scale(1.35);">`;
             if(hAvatar) { hAvatar.style.position = 'relative'; hAvatar.insertAdjacentHTML('beforeend', imgHTML); }
             if(pAvatar) { pAvatar.style.position = 'relative'; pAvatar.insertAdjacentHTML('beforeend', imgHTML); }
@@ -205,7 +231,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let displayName = index === 0 ? frame.name : `#${index} ${frame.name}`;
                 const userDp = localStorage.getItem('qms_profile_img') || 'logo.png';
                 
-                /* 🔥 BORDER NONE KIYA TAAKI GREEN NA DIKHE */
                 const overlayHTML = frame.url !== 'none' ? `<img src="${frame.url}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; transform:scale(1.35); pointer-events:none;">` : '';
                 const lockedOverlay = isLocked ? `<div class="locked-overlay"><i class="ri-lock-2-fill"></i></div>` : '';
 
@@ -289,43 +314,52 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('reset-btn')?.addEventListener('click', () => { if(confirm("लॉगआउट करें?")) { signOut(auth).then(() => { localStorage.setItem('qms_is_logged_in', 'false'); window.location.href = "index.html"; }); } }); 
 
-    // 13. 🌌 ADVANCED FORMULAS & FIREFLY ENGINE (RESTORED)
+    // 13. 🌌 NEW ADVANCED JUGNU (FIREFLY) ENGINE WITH SINE WAVE BLINK
     const canvas = document.getElementById('bg-canvas');
     if (canvas) {
         const ctx = canvas.getContext('2d'); 
         canvas.width = window.innerWidth; 
         canvas.height = window.innerHeight;
         
-        // 📚 मैथ्स और साइंस के सिंबल्स
-        const mathSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', '⚛', 'α', 'β'];
+        // 🔥 Naye aur Cool Symbols
+        const mathSymbols = ['∑', 'π', '∞', '∫', 'Ω', 'E=mc²', 'H₂O', 'θ', 'λ', '⚛', 'α', 'β', '🧬', '⌬', '⚡', 'Δ'];
         let particles = [];
         
         class Particle {
             constructor() {
-                this.isSymbol = Math.random() > 0.5; // 50% सिंबल, 50% पार्टिकल
+                this.isSymbol = Math.random() > 0.5;
                 this.text = mathSymbols[Math.floor(Math.random() * mathSymbols.length)];
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 
                 if (this.isSymbol) {
-                    this.size = Math.random() * 12 + 10;
-                    this.vx = Math.random() * 0.5 - 0.25;
-                    this.vy = Math.random() * -0.8 - 0.2;
+                    this.size = Math.random() * 14 + 10;
+                    this.vx = Math.random() * 0.4 - 0.2;
+                    this.vy = Math.random() * -0.6 - 0.1;
                 } else {
-                    this.size = Math.random() * 3 + 1;
-                    this.vx = Math.random() * 1 - 0.5;
-                    this.vy = Math.random() * -1 - 0.2;
+                    this.size = Math.random() * 3 + 1.5;
+                    this.vx = Math.random() * 0.8 - 0.4;
+                    this.vy = Math.random() * -0.8 - 0.2;
                 }
-                this.angle = Math.random() * Math.PI * 2;
-                this.spin = Math.random() * 0.05 + 0.02;
+                // Jugnu Blinking Logic variables
+                this.angle = Math.random() * Math.PI * 2; 
+                this.blinkSpeed = Math.random() * 0.05 + 0.01; 
             }
+            
             update() {
-                this.y += this.vy; this.x += this.vx; this.angle += this.spin;
+                this.y += this.vy; 
+                this.x += this.vx; 
+                this.angle += this.blinkSpeed; // Ye Jugnu (Firefly) ko blink karwayega
+                
                 if (this.y < -30) { this.y = canvas.height + 30; this.x = Math.random() * canvas.width; }
                 if (this.x < -30 || this.x > canvas.width + 30) { this.vx *= -1; }
             }
+            
             draw(ctx) {
-                let op = ((Math.sin(this.angle) + 1) / 2) * 0.5 + 0.1;
+                // Sine wave (0 se 1 ke beech) smooth opacity ke liye
+                let op = (Math.sin(this.angle) + 1) / 2;
+                op = op * 0.8; // Maximum brightness thodi soft rakhi hai
+                
                 ctx.fillStyle = `rgba(255, 255, 255, ${op})`;
                 
                 if (this.isSymbol) {
