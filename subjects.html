@@ -3,73 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>विषय चुनें | Quantum Master Study</title>
 
-    <!-- 🚀 1. PRIMARY SEO: TITLE & DESCRIPTION (Bilingual) -->
-    <title>Quantum Master Study (QMS) | क्वांटम मास्टर स्टडी</title>
-    <meta name="description" content="Quantum Master Study (QMS) - कक्षा 11वीं और 12वीं (Class 11 & 12) के छात्रों के लिए भारत का सबसे बेहतरीन और प्रीमियम ऑनलाइन एजुकेशन प्लेटफॉर्म। यहाँ आपको मिलेगा Physics, Chemistry, और Mathematics (PCM/PCB) का संपूर्ण NCERT पाठ्यक्रम, स्मार्ट फोकस टाइमर (Pomodoro), डेली अचीवमेंट्स, 100+ गेमिंग अवतार फ्रेम्स और PRO VIP लीडरबोर्ड। आज ही QMS जॉइन करें!">
-
-    <!-- 🚀 2. MEGA KEYWORDS -->
-    <meta name="keywords" content="Quantum Master Study, QMS, क्वांटम मास्टर स्टडी, qms, Qms, QUANTUM MASTER STUDY, quantum master study app, qms edtech, qms website, Class 12th Board, Class 11th Foundation, NCERT solutions, Physics, Chemistry, Mathematics, PCB, PCM, IIT JEE, NEET, smart study platform, online education india, pomodoro study app, gaming avatar study app, qms login, best study app for class 12">
-
-    <!-- 🚀 3. FAVICON & SEARCH LOGO FIX (Globe Hataane ke liye) -->
-    <link rel="icon" type="image/png" sizes="192x192" href="logo.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png"> 
+    <!-- SEO & Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
     <meta name="theme-color" content="#00f0ff">
 
-    <!-- 🚀 4. OPEN GRAPH (WhatsApp/Facebook Share Fix) -->
-    <meta property="og:title" content="Quantum Master Study (QMS) | क्वांटम मास्टर स्टडी">
-    <meta property="og:description" content="कक्षा 11वीं और 12वीं के लिए भारत का सबसे प्रीमियम स्मार्ट एजुकेशन प्लेटफॉर्म। Physics, Chemistry, Math के NCERT कोर्सेस, फोकस टाइमर और PRO VIP बैजेज़।">
-    <meta property="og:image" content="logo.png">
-    <meta property="og:url" content="https://mujammil-2.github.io/Quantum-master-study/">
-    <meta property="og:type" content="website">
-
-    <!-- 🚀 FONTS & CSS LINKS -->
+    <!-- Fonts & CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="dashboard.css">
-    <style>
-        /* Subjects Page Specific Styles */
-        .class-tabs { display: flex; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
-        .tab-btn { flex: 1; padding: 12px; border-radius: 10px; font-weight: 700; font-family: var(--font-heading); border: none; cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
-        .tab-btn.active { background: var(--accent-main); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
-        .tab-btn:not(.active) { background: transparent; color: var(--text-secondary); }
-        .subject-card { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; text-decoration: none; transition: 0.3s; }
-        .subject-card:hover { transform: translateY(-3px); border-color: var(--accent-main); background: rgba(255,255,255,0.05); }
-        .sub-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; flex-shrink: 0; background: rgba(255,255,255,0.05); }
-        .sub-details { flex: 1; margin-left: 15px; }
-        .sub-title { font-family: var(--font-heading); font-size: 1.2rem; color: #fff; margin-bottom: 2px; font-weight: 700; }
-        .sub-eng { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px; }
-        .sub-meta { display: flex; gap: 15px; font-size: 0.75rem; font-weight: 600; }
-    </style>
 </head>
 <body>
 
-    <!-- 🌌 FIREFLY PARTICLES CANVAS -->
     <canvas id="bg-canvas"></canvas>
     
-    <!-- 🎵 AUDIO PLAYERS -->
     <audio id="sfx-click" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
     <audio id="bgm-audio" loop preload="auto"><source src="bgm1.mp3" type="audio/mpeg"></audio>
 
     <div class="dashboard-wrapper">
         
-        <!-- 🌟 HEADER: BACK BUTTON & PROFILE FRAME -->
+        <!-- Header -->
         <header class="top-nav glass-panel dash-header" style="justify-content: space-between;">
             <a href="dashboard.html" class="sfx-trigger" style="color: #fff; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: 0.2s;">
                 <i class="ri-arrow-left-line" style="color: var(--accent-main); font-size: 1.3rem;"></i> 
                 डैशबोर्ड पर लौटें
             </a>
-            
             <div style="display:flex; align-items:center;">
-                <a href="dashboard.html" class="small-profile-btn header-profile-fix sfx-trigger" id="open-panel-btn" title="प्रोफाइल">
+                <a href="dashboard.html" class="small-profile-btn header-profile-fix sfx-trigger" title="प्रोफाइल">
                     <div class="avatar-frame-wrapper" id="header-avatar-frame">
-                        <img src="logo.png" id="dash-small-avatar" alt="Profile Image">
+                        <img src="logo.png" id="dash-small-avatar" alt="Profile">
                     </div>
                 </a>
             </div>
@@ -77,65 +43,111 @@
 
         <main style="padding: 20px;">
             
-            <!-- CLASS TOGGLE TABS -->
-            <div class="class-tabs">
-                <button class="tab-btn active sfx-trigger">कक्षा 12वीं (Board)</button>
-                <button class="tab-btn sfx-trigger">कक्षा 11वीं (Foundation)</button>
+            <!-- 🌟 MEDIUM TOGGLE TABS (Hindi / English Medium) -->
+            <div class="class-tabs" style="display: flex; gap: 10px; margin-bottom: 25px;">
+                <button class="glass-btn active sfx-trigger" style="flex: 1; padding: 12px; font-weight: bold; background: var(--accent-main); color: #000; border: none; box-shadow: 0 0 15px var(--accent-glow);">Hindi Medium</button>
+                <button class="glass-btn sfx-trigger" style="flex: 1; padding: 12px; font-weight: bold;">English Medium</button>
             </div>
 
-            <!-- PAGE TITLE -->
+            <!-- Title -->
             <div style="text-align: center; margin-bottom: 30px;">
                 <h1 style="font-family: var(--font-heading); font-size: 2rem; color: #fff; margin-bottom: 5px;">अपना विषय चुनें</h1>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">क्वांटम मास्टर स्टडी का संपूर्ण NCERT पाठ्यक्रम</p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">क्वांटम मास्टर स्टडी (Class 11th & 12th)</p>
             </div>
 
-            <!-- 📚 SUBJECT CARDS -->
+            <!-- 📚 5 SUBJECTS CARDS WITH PDF SYSTEM -->
             <div class="subjects-list">
                 
-                <a href="#" class="subject-card glass-card sfx-trigger">
-                    <div class="sub-icon" style="color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.2);"><i class="ri-flashlight-fill"></i></div>
-                    <div class="sub-details">
-                        <h3 class="sub-title">भौतिक विज्ञान</h3>
-                        <p class="sub-eng">Physics (PCM / PCB)</p>
-                        <div class="sub-meta">
-                            <span style="color: var(--text-secondary);"><i class="ri-book-3-line"></i> 14 अध्याय</span>
-                            <span style="color: #00ff88;"><i class="ri-line-chart-line"></i> प्रोग्रेस उपलब्ध</span>
+                <!-- PHYSICS -->
+                <div class="glass-card" style="display: flex; flex-direction: column; padding: 20px; border-radius: 16px; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="sub-icon" style="width: 50px; height: 50px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.2);"><i class="ri-flashlight-fill"></i></div>
+                            <div>
+                                <h3 style="font-size: 1.2rem; color: #fff; font-weight: 700;">भौतिक विज्ञान</h3>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary);">Physics (PCM/PCB)</p>
+                            </div>
                         </div>
                     </div>
-                    <i class="ri-arrow-right-s-line" style="color: var(--text-secondary); font-size: 1.5rem;"></i>
-                </a>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: var(--accent-main); color: var(--accent-main);"><i class="ri-book-read-fill"></i> Chapters</button>
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: rgba(255,255,255,0.2); color: #fff;"><i class="ri-file-pdf-fill" style="color: #ff3366;"></i> PDFs / Notes</button>
+                    </div>
+                </div>
 
-                <a href="#" class="subject-card glass-card sfx-trigger">
-                    <div class="sub-icon" style="color: #b535ff; border: 1px solid rgba(181, 53, 255, 0.2);"><i class="ri-flask-fill"></i></div>
-                    <div class="sub-details">
-                        <h3 class="sub-title">रसायन विज्ञान</h3>
-                        <p class="sub-eng">Chemistry (PCM / PCB)</p>
-                        <div class="sub-meta">
-                            <span style="color: var(--text-secondary);"><i class="ri-book-3-line"></i> 10 अध्याय</span>
-                            <span style="color: #00ff88;"><i class="ri-line-chart-line"></i> प्रोग्रेस उपलब्ध</span>
+                <!-- CHEMISTRY -->
+                <div class="glass-card" style="display: flex; flex-direction: column; padding: 20px; border-radius: 16px; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="sub-icon" style="width: 50px; height: 50px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; background: rgba(181, 53, 255, 0.1); color: #b535ff; border: 1px solid rgba(181, 53, 255, 0.2);"><i class="ri-flask-fill"></i></div>
+                            <div>
+                                <h3 style="font-size: 1.2rem; color: #fff; font-weight: 700;">रसायन विज्ञान</h3>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary);">Chemistry (PCM/PCB)</p>
+                            </div>
                         </div>
                     </div>
-                    <i class="ri-arrow-right-s-line" style="color: var(--text-secondary); font-size: 1.5rem;"></i>
-                </a>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: #b535ff; color: #b535ff;"><i class="ri-book-read-fill"></i> Chapters</button>
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: rgba(255,255,255,0.2); color: #fff;"><i class="ri-file-pdf-fill" style="color: #ff3366;"></i> PDFs / Notes</button>
+                    </div>
+                </div>
 
-                <a href="#" class="subject-card glass-card sfx-trigger">
-                    <div class="sub-icon" style="color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.2);"><i class="ri-function-line"></i></div>
-                    <div class="sub-details">
-                        <h3 class="sub-title">गणित</h3>
-                        <p class="sub-eng">Mathematics (PCM)</p>
-                        <div class="sub-meta">
-                            <span style="color: var(--text-secondary);"><i class="ri-book-3-line"></i> 13 अध्याय</span>
-                            <span style="color: #00ff88;"><i class="ri-line-chart-line"></i> प्रोग्रेस उपलब्ध</span>
+                <!-- MATHEMATICS -->
+                <div class="glass-card" style="display: flex; flex-direction: column; padding: 20px; border-radius: 16px; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="sub-icon" style="width: 50px; height: 50px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; background: rgba(255, 193, 7, 0.1); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.2);"><i class="ri-function-line"></i></div>
+                            <div>
+                                <h3 style="font-size: 1.2rem; color: #fff; font-weight: 700;">गणित</h3>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary);">Mathematics (PCM)</p>
+                            </div>
                         </div>
                     </div>
-                    <i class="ri-arrow-right-s-line" style="color: var(--text-secondary); font-size: 1.5rem;"></i>
-                </a>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: #ffc107; color: #ffc107;"><i class="ri-book-read-fill"></i> Chapters</button>
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: rgba(255,255,255,0.2); color: #fff;"><i class="ri-file-pdf-fill" style="color: #ff3366;"></i> PDFs / Notes</button>
+                    </div>
+                </div>
+
+                <!-- HINDI -->
+                <div class="glass-card" style="display: flex; flex-direction: column; padding: 20px; border-radius: 16px; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="sub-icon" style="width: 50px; height: 50px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; background: rgba(0, 255, 136, 0.1); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.2);"><i class="ri-translate"></i></div>
+                            <div>
+                                <h3 style="font-size: 1.2rem; color: #fff; font-weight: 700;">हिन्दी</h3>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary);">Hindi (Core / Elective)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: #00ff88; color: #00ff88;"><i class="ri-book-read-fill"></i> Chapters</button>
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: rgba(255,255,255,0.2); color: #fff;"><i class="ri-file-pdf-fill" style="color: #ff3366;"></i> PDFs / Notes</button>
+                    </div>
+                </div>
+
+                <!-- ENGLISH -->
+                <div class="glass-card" style="display: flex; flex-direction: column; padding: 20px; border-radius: 16px; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="sub-icon" style="width: 50px; height: 50px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 1px solid rgba(255, 51, 102, 0.2);"><i class="ri-english-input"></i></div>
+                            <div>
+                                <h3 style="font-size: 1.2rem; color: #fff; font-weight: 700;">अंग्रेज़ी</h3>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary);">English (Flamingo / Vistas)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: #ff3366; color: #ff3366;"><i class="ri-book-read-fill"></i> Chapters</button>
+                        <button class="glass-btn sfx-trigger" style="flex: 1; padding: 10px; border-color: rgba(255,255,255,0.2); color: #fff;"><i class="ri-file-pdf-fill" style="color: #ff3366;"></i> PDFs / Notes</button>
+                    </div>
+                </div>
 
             </div>
         </main>
     </div>
 
-    <!-- 🌟 BOTTOM NAVIGATION BAR 🌟 -->
+    <!-- 🌟 BOTTOM NAVIGATION BAR -->
     <nav class="bottom-nav glass-panel">
         <a href="subjects.html" class="nav-item active sfx-trigger">
             <i class="ri-home-smile-fill"></i><span>Study</span>
@@ -156,7 +168,6 @@
         </a>
     </nav>
 
-    <!-- 🛠️ LINK TO MASTER JS FILE -->
     <script type="module" src="dashboard.js"></script>
 </body>
 </html>
